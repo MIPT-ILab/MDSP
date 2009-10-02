@@ -1,0 +1,3 @@
+===CodingStyle===
+
+Good C/C++ coding conventions of MIPT-VIS project are described [http://code.google.com/p/mipt-vis/wiki/CodingStyle here]. They are also applicable for our project.
