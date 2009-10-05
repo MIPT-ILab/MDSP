@@ -1,9 +1,18 @@
+/**
+ * types.h - Implementation of types that are independent of host system
+ * The types are used in algorithms affected by size of a variable
+ * Copyright 2009 MDSP team
+ */
+ 
 #ifndef TYPES_H
 #define TYPES_H
 
+/* program are compiled for Windows */
+#define WINDOWS 1
+
 #ifdef WINDOWS
 
-#include <assert.h>
+#include <cassert>
 
 /* Signed 8-bit integer type */
 typedef signed __int8 hostSInt8;
@@ -28,7 +37,7 @@ typedef double hostFloat64;
 
 #else
 
-#include <assert.h>
+#include <cassert>
 
 /* Signed 8-bit integer type */
 typedef signed char hostSInt8;
@@ -53,6 +62,12 @@ typedef double hostFloat64;
 
 #endif /* !WINDOWS */
 
+/* Type for mathematical memory address */
+typedef hostUInt32 mathAddr; 
+
+/* Type for phisical register numeration */
+typedef hostUInt32 physRegNum;
+
 typedef enum OperType
 {
     NO_TYPE,
@@ -75,4 +90,5 @@ typedef enum OperCode
     JGT
 } OperCode;
 
-#endif
+#endif /* TYPES_H */
+
