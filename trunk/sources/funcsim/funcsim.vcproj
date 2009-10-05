@@ -179,6 +179,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\memory.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\operation.cpp"
 				>
 			</File>
@@ -189,7 +193,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\memory.h"
+				>
+			</File>
+			<File
 				RelativePath=".\operation.h"
+				>
+			</File>
+			<File
+				RelativePath=".\register_file.h"
 				>
 			</File>
 			<File
