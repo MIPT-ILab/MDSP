@@ -7,12 +7,10 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-/* program are compiled for Windows */
+/* compile for Windows */
 #define WINDOWS 1
 
 #ifdef WINDOWS
-
-#include <cassert>
 
 /* Signed 8-bit integer type */
 typedef signed __int8 hostSInt8;
@@ -36,8 +34,6 @@ typedef float hostFloat32;
 typedef double hostFloat64;
 
 #else
-
-#include <cassert>
 
 /* Signed 8-bit integer type */
 typedef signed char hostSInt8;

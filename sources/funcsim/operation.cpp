@@ -1,3 +1,8 @@
+/**
+* operation.cpp - Implementation of Operation class methods
+* Copyright 2009 MDSP team
+*/
+
 #include "operation.h"
 
 /**
@@ -6,7 +11,7 @@
 void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
                      hostUInt8 am, bool abit, bool rbit, 
                      hostUInt16 imm10, hostUInt16 imm16,
-                     hostUInt8 rS1, hostUInt8 rS2, hostUInt8 rD)
+                     hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd)
 {
 }
 
@@ -15,21 +20,25 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
 */
 void Operation::set( OperType type, OperCode opcode0, 
                      hostUInt16 imm16, 
-                     hostUInt8 rS1, hostUInt8 rD)
+                     hostUInt8 rs1, hostUInt8 rd)
 {
 }
 
 /**
 * Encode operation in binary form
 */
-void Operation::encode()
+MemVal* Operation::encode()
 {
+    MemVal* mem_value = new MemVal(4); // pointer to 32-bit (4 bytes)
+                                       // instruction word
+
+    return mem_value;
 }
 
 /**
 * Decode an operation from binary form
 */
-void Operation::decode()
+void Operation::decode(MemVal* mem_value)
 {
 }
 
