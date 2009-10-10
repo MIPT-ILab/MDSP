@@ -21,18 +21,12 @@ class Byte
     hostUInt8 byte_val;
     
 public:
-    /* Constructors */   
-    Byte()
-    { 
-        this->byte_val = 0;
-    }
-    Byte( hostUInt8 val) 
-    { 
-        this->byte_val = val;
-    }
-    
+    /* Constructors */  
+    Byte( hostUInt8 val = 0):byte_val( val){} 
+    Byte( const Byte& byte):byte_val( byte.getByteVal()){}
+
     /* Get/set methods */
-    hostUInt8 getByteVal()
+    hostUInt8 getByteVal() const
     { 
         return this->byte_val;
     }
@@ -40,8 +34,53 @@ public:
     void setByteVal( hostUInt8 val) 
     { 
          this->byte_val = val;
-    }   
+    }
+
+	/* Member overloaded operators */
+    bool operator== ( const Byte byte)
+    {
+        return this->getByteVal() == byte.getByteVal();
+    }
+
+    bool operator!= ( const Byte byte)
+    {
+        return this->getByteVal() != byte.getByteVal();
+    }
+
+    friend ostream& operator<< ( ostream& os, const Byte& byte);
 };
+
+inline ostream& operator<< ( ostream& os, const Byte& byte)
+{   
+    for( short i = 7; i >= 0; i--) 
+    { 
+        os << ( ( 1 << i) & byte.getByteVal() ? '1' : '0'); 
+    }
+    return os;
+}
+
+/* Non-member overloaded operators */
+Byte operator>> ( const Byte byte, int count)
+{	
+    Byte temp;
+    temp.setByteVal( byte.getByteVal() >> count);
+    return temp;
+}
+
+Byte operator<< ( const Byte byte, int count)
+{	
+    Byte temp;
+    temp.setByteVal( byte.getByteVal() << count);
+    return temp;
+}
+
+Byte operator& ( const Byte left, const Byte right)
+{	
+    Byte temp;
+    temp.setByteVal( left.getByteVal() & right.getByteVal());
+    return temp;
+}
+
 
 /**
  * class ByteLine implements a logical set of bytes 
