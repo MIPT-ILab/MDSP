@@ -75,6 +75,16 @@ hostUInt32 Operation::getMemoryValue(MemVal* mem_value)
 }
 
 /**
+ * Get Value from memory by mask and shift (bitwise operators)
+*/
+
+hostUInt32 Operation::getValueByMask(hostUInt32 bin_value, hostUInt32 mask, int shift)
+{
+    hostUInt32 temp = bin_value & mask;
+    temp = temp >> shift;
+    return temp;
+}
+/**
 * Encode operation in binary form
 */
 MemVal* Operation::encode()
@@ -115,7 +125,7 @@ OperType Operation::decodeType(hostUInt32 bin_value)
 {
     /* get value using the mask */
     hostUInt32 type_mask = 0xE0000000; // 11100000 bin, 224 dec
-    OperType type = (OperType) (type_mask & bin_value);
+    OperType type = (OperType) getValueByMask(bin_value, type_mask, 29);
     return type;
 }
 
@@ -133,22 +143,22 @@ void Operation::decodeMove(hostUInt32 bin_value)
     hostUInt32 imm16_mask = 0x001FFFE0; // imm16 mask
 
     /* get OP */
-    opcode0 = (OperCode) (op_mask & bin_value);
+    opcode0 = (OperCode) getValueByMask(bin_value, op_mask, 26);
 
     switch (opcode0)
     {
             case BRM:
-                sd = sd_mask & bin_value;       // get S/D
-                rs1 = rs_mask & bin_value;      // get source
-                rd = rd_mask & bin_value;       // get desitination
+                sd = getValueByMask(bin_value, sd_mask, 21);     // get S/D
+                rs1 = getValueByMask(bin_value, rs_mask, 5);     // get source
+                rd = getValueByMask(bin_value, rd_mask, 0);      // get desitination
                 break;
             case BRR:
-                rs1 = rs_mask & bin_value;      // get source
-                rd = rd_mask & bin_value;       // get desitination
+                rs1 = getValueByMask(bin_value, rs_mask, 5);     // get source
+                rd = getValueByMask(bin_value, rd_mask, 0);      // get desitination
                 break;
             case LD:
-                imm16 = imm16_mask & bin_value; // get imm16
-                rd = rd_mask & bin_value;       // get desitination
+                imm16 = getValueByMask(bin_value, imm16_mask, 5);// get imm16
+                rd = getValueByMask(bin_value, sd_mask, 0);      // get desitination
                 break;
             default:
                 cout << "Illegal operation \n";
@@ -171,13 +181,13 @@ void Operation::decodeAlu(hostUInt32 bin_value)
     hostUInt32         rs2_mask = 0x000003E0; // RS2 mask
     hostUInt32          rd_mask = 0x0000001F; // RD mask
 
-    opcode0 = (OperCode) (logic_op_mask & bin_value);
-    opcode1 = (OperCode) (arith_op_mask & bin_value);
-    opcode2 = (OperCode) (shift_op_mask & bin_value);
-    am = am_mask & bin_value;
-    rs1 = rs1_mask & bin_value;
-    rs2 = rs2_mask & bin_value;
-    rd = rd_mask & bin_value;
+    opcode0 = (OperCode) getValueByMask(bin_value, logic_op_mask, 26);
+    opcode1 = (OperCode) getValueByMask(bin_value, arith_op_mask, 21);
+    opcode2 = (OperCode) getValueByMask(bin_value, shift_op_mask, 18);
+    am = getValueByMask(bin_value, am_mask, 15);
+    rs1 = getValueByMask(bin_value, rs1_mask, 10);
+    rs2 = getValueByMask(bin_value, rs2_mask, 5);
+    rd = getValueByMask(bin_value, rd_mask, 0);
 }
 
 /**
@@ -192,12 +202,12 @@ void Operation::decodePFlow(hostUInt32 bin_value)
     hostUInt32    imm16_mask = 0x0000FFFF; // imm16 mask
     hostUInt32       rd_mask = 0x0000001F; // RD mask
 
-    opcode0 = (OperCode) (op_mask & bin_value);
-    sd = sd_mask & bin_value;
+    opcode0 = (OperCode) getValueByMask(bin_value, op_mask, 25);
+    sd = getValueByMask(bin_value, sd_mask, 23);
     if (!sd)
-        rd = rd_mask & bin_value;
+        rd = getValueByMask(bin_value, rd_mask, 0);
     else
-        imm16 = imm16_mask & bin_value;
+        imm16 = getValueByMask(bin_value, imm16_mask, 0);
 }
 
 /*
