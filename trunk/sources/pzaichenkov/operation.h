@@ -29,13 +29,18 @@ class Operation
     hostUInt16 imm16;
     hostUInt8 rs1:5, rs2:5, rd:5;
 
+    /* get type */
     OperType decodeType(hostUInt32 bin_value);
 
+    /* methods used for each type */
     void     decodeMove(hostUInt32 bin_value);
     void     decodeAlu(hostUInt32 bin_value);
     void     decodePFlow(hostUInt32 bin_value);
 
+    /* Helper methods */
     hostUInt32 getMemoryValue(MemVal* mem_value);
+    hostUInt32 getValueByMask(hostUInt32 bin_value, hostUInt32 mask, int shift);
+
 
 public:
     Operation();

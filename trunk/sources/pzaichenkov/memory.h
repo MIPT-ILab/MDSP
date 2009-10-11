@@ -60,6 +60,7 @@ inline ostream& operator<< ( ostream& os, const Byte& byte)
 }
 
 /* Non-member overloaded operators */
+/*
 Byte operator>> ( const Byte byte, int count)
 {
     Byte temp;
@@ -79,7 +80,7 @@ Byte operator& ( const Byte left, const Byte right)
     Byte temp;
     temp.setByteVal( left.getByteVal() & right.getByteVal());
     return temp;
-}
+}*/
 
 
 /**
