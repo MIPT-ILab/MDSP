@@ -19,6 +19,8 @@ using namespace std;
 */
 class Operation
 {
+    hostUInt32 instr_word;
+
     OperType type;
     OperCode opcode0, opcode1, opcode2; // all 3 opcodes are needed for ALU only
 
@@ -27,6 +29,9 @@ class Operation
     hostUInt8 am:3; // addressing mode field
     hostUInt16 imm10:10, imm16;
     hostUInt8 rs1:5, rs2:5, rd:5;
+
+    /* set operation in binary form from memory block */
+    void setInstrWord( MemVal* mem_value);
 
 public:
     Operation() {};
@@ -83,6 +88,7 @@ public:
 
     inline void clear()
     {
+        this->instr_word = 0;
         this->type = NO_TYPE;
         this->opcode0 = this->opcode1 = this->opcode2 = NOP;
         this->sd = this->am = 0;

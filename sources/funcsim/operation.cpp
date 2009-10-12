@@ -47,3 +47,13 @@ void Operation::decode( MemVal* mem_value)
 void Operation::dump()
 {
 }
+
+/*
+* Set instruction word (binary representation) from memory block
+*/
+void setInstrWord( MemVal* mem_value)
+{
+    /*
+    this->instr_word = ... 
+    */
+}
