@@ -8,7 +8,9 @@
 #define MEMORY_H
  
 #include <iostream>
+#include <vector>
 #include "types.h"
+
 
 using namespace std;
 
@@ -52,7 +54,7 @@ public:
 
 inline ostream& operator<< ( ostream& os, const Byte& byte)
 {   
-    for( short i = 7; i >= 0; i--) 
+    for ( short i = 7; i >= 0; i--) 
     { 
         os << ( ( 1 << i) & byte.getByteVal() ? '1' : '0'); 
     }
@@ -88,17 +90,17 @@ Byte operator& ( const Byte left, const Byte right)
 
 class ByteLine: public Byte
 {
-    vector<Byte> byte_line;
-	unsigned int size_of_line;
-    
+    vector<Byte> *byte_line;
+	    
 public:
     /* Constructors */
-	ByteLine( unsigned int num_of_bytes_in_line);
-    
+    ByteLine( const ByteLine& line);
+    ByteLine( const Byte& byte);
+	    
     /* Destructor */
     ~ByteLine()
     { 
-        byte_line.~vector<Byte>();
+        delete byte_line;
     }
     
     /* Get/set methods */
@@ -106,47 +108,68 @@ public:
     
     void setByteVal( unsigned int byte_num, hostUInt8 byte_val);
 
-	void addByte( Byte byte);
+    void addByte( const Byte& byte);
 
-	vector<Byte>::iterator getPointFirst() 
-	{
-		return this->byte_line.begin();
-	}
-	vector<Byte>::iterator getPointEnd() 
-	{
-		return this->byte_line.end();
-	}
-
-    unsigned int getSizeOfLine() const
+    int getSizeOfLine() const
     { 
-        return this->size_of_line; 
+        return ( *byte_line).size();
     }
-
-	friend ostream& operator<< ( ostream& os, ByteLine line);
-		
+    ByteLine& operator = ( ByteLine& line);
+    friend ostream& operator<< ( ostream& os,  ByteLine& line);
+    Byte operator[] ( int);
+ 	
 };
 
-inline ostream& operator<< ( ostream& os,  ByteLine line)
-{   
-    vector<Byte>::iterator pos; 
-    for( pos = line.getPointFirst(); pos < line.getPointEnd(); ++pos)
+Byte ByteLine::operator []( int count)
+{
+    if ( ( *byte_line).empty())
     {
-        os << (*pos).getByteVal() << " | ";  
+        cout << "ERROR: Byte line is empty!\n";
+        assert( 0);
+    }
+    if ( count > this->getSizeOfLine())
+    {
+        cout << "ERROR: Size of byte line is less than target byte number!\n";
+        assert( 0);
+    }
+    return ( *byte_line).at( count);
+}
+
+ByteLine& ByteLine::operator = ( ByteLine& line)
+{
+    if ( this != &line)
+    {
+        delete byte_line;
+        byte_line = new vector<Byte>( line.getSizeOfLine());
+        for ( int i = 0 ;i < line.getSizeOfLine() ; i++)
+        {
+        ( *byte_line).at( i).setByteVal( line.getByteVal( i));
+        }
+    }
+    return *this;
+}
+
+inline ostream& operator<< ( ostream& os,  ByteLine& line)
+{   
+    for ( int i = 0; i < line.getSizeOfLine(); i++)
+    {
+        os << line[ i] << " | ";  
     }
     return os;
 }
-ByteLine operator+ ( const Byte a, const Byte b)
+ByteLine operator+ ( const Byte& a, const Byte& b)
 {	
     ByteLine temp( a);
     temp.addByte( b);
     return temp;	
 }
-ByteLine operator+ ( const ByteLine a, const Byte b)
+ByteLine operator+ (  const ByteLine& a,  const Byte& b)
 {
     ByteLine temp( a);
     temp.addByte( b);
     return temp;
 }
+
 
 /**
  * class MemVal implements a object to interaction with memory 
