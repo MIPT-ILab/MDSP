@@ -14,67 +14,74 @@
 /**
  * Implementation of class ByteLine
  */
-
-ByteLine::ByteLine( unsigned int num_of_bytes_in_line) 
+ByteLine::ByteLine( const ByteLine& line)
 {
-    if ( num_of_bytes_in_line == 0)
-    {
-        cout << "ERROR: Size of the line can not be equal to 0 bytes!\n";
-        assert( 0);
-    }
     try
     {
-        this->byte_line.reserve( num_of_bytes_in_line);
+        byte_line = new vector<Byte>( line.getSizeOfLine());
     }catch ( std::bad_alloc)
     {
         cout << "ERROR: Can not allocate memory!\n";
         assert( 0);
     }
-    this->size_of_line = 0;
+    for ( int i = 0 ; i < line.getSizeOfLine(); i++)
+    {
+        ( *byte_line).at( i).setByteVal( line.getByteVal( i));
+    }
+}
+ByteLine::ByteLine( const Byte& byte)
+{
+    try
+    {
+        byte_line = new vector<Byte>;
+        ( *byte_line).push_back( byte);
+    }catch ( std::bad_alloc)
+    {
+        cout << "ERROR: Can not allocate memory!\n";
+        assert( 0);
+    }
 }
 
 hostUInt8 ByteLine::getByteVal( unsigned int byte_num) const
 {
-    if ( byte_num > this->size_of_line)
+    if ( byte_num > this->getSizeOfLine())
     {
         cout << "ERROR: Size of byte line is less than target byte number!\n";
-        assert(0);
+        assert( 0);
     }
-    if ( byte_line.empty())
+    if ( ( *byte_line).empty())
     {
         cout << "ERROR: Byte line is empty!\n";
-        assert(0);
+        assert( 0);
     }        
-    return byte_line[ byte_num].getByteVal();
+    return ( *byte_line).at( byte_num).getByteVal();
 }
 
 void ByteLine::setByteVal( unsigned int byte_num, hostUInt8 byte_val)
 {
-    if ( byte_num > this->size_of_line)
+    if ( byte_num > this->getSizeOfLine())
     {
         cout << "ERROR: Size of byte line is less than target byte number!\n";
-        assert(0);
+        assert( 0);
     }
-	if ( byte_line.empty())
+    if ( ( *byte_line).empty())
     {
         cout << "ERROR: Byte line is empty!\n";
-        assert(0);
+        assert( 0);
     }      
-    this->byte_line[ byte_num].setByteVal( byte_val);
+    ( *byte_line).at( byte_num).setByteVal( byte_val);
 }
-void ByteLine::addByte( Byte byte)
+void ByteLine::addByte( const Byte& byte)
 {
     try
     {
-        byte_line.push_back( byte);
+        ( *byte_line).push_back( byte);
     }catch ( std::bad_alloc)
     {
         cout << "ERROR: Can not allocate memory!\n";
         assert( 0);
     }
-    this->size_of_line += 1;
 }
-
 
 /**
  * Implementation of class MemVal
