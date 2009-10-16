@@ -9,7 +9,6 @@
 #include "types.h"
 #include <cassert>
 
-
 using namespace std;
 
 /**
