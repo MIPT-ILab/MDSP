@@ -4,11 +4,11 @@
  * Copyright 2009 MDSP team
  */
  
-#ifndef MEMORY_H
-#define MEMORY_H
- 
 #include <iostream>
+#include <vector>
 #include "types.h"
+#include <cassert>
+
 
 using namespace std;
 
@@ -37,44 +37,48 @@ public:
     }
 
 	/* Member overloaded operators */
-    bool operator== ( const Byte byte)
+    bool operator== ( const Byte& byte)
     {
         return this->getByteVal() == byte.getByteVal();
     }
 
-    bool operator!= ( const Byte byte)
+    bool operator!= ( const Byte& byte)
     {
         return this->getByteVal() != byte.getByteVal();
     }
 
-    friend ostream& operator<< ( ostream& os, const Byte& byte);
+    friend ostream& operator<< ( ostream&, const Byte&);
+    friend Byte operator>> ( const Byte&, int);
+    friend Byte operator<< ( const Byte&, int);
+    friend Byte operator& ( const Byte&, const Byte&);
 };
 
 inline ostream& operator<< ( ostream& os, const Byte& byte)
 {   
-    for( short i = 7; i >= 0; i--) 
+    for ( short i = 7; i >= 0; i--) 
     { 
         os << ( ( 1 << i) & byte.getByteVal() ? '1' : '0'); 
     }
     return os;
 }
 
+
 /* Non-member overloaded operators */
-Byte operator>> ( const Byte byte, int count)
+inline Byte operator>> ( const Byte& byte, int count)
 {	
     Byte temp;
     temp.setByteVal( byte.getByteVal() >> count);
     return temp;
 }
 
-Byte operator<< ( const Byte byte, int count)
+inline Byte operator<< ( const Byte& byte, int count)
 {	
     Byte temp;
     temp.setByteVal( byte.getByteVal() << count);
     return temp;
 }
 
-Byte operator& ( const Byte left, const Byte right)
+inline Byte operator& ( const Byte& left, const Byte& right)
 {	
     Byte temp;
     temp.setByteVal( left.getByteVal() & right.getByteVal());
@@ -86,32 +90,91 @@ Byte operator& ( const Byte left, const Byte right)
  * class ByteLine implements a logical set of bytes 
  */
 
-class ByteLine: public Byte
+class ByteLine
 {
-    Byte* byte_line;
-    unsigned int size_of_line;
-    
+    vector<Byte> *byte_line;
+	    
 public:
     /* Constructors */
-    ByteLine(){};
-    ByteLine( unsigned int num_of_bytes_in_line);
-    
+    ByteLine( const ByteLine& line);
+    ByteLine( const Byte& byte);
+	    
     /* Destructor */
-    ~ByteLine()
+    virtual ~ByteLine()
     { 
-        delete [] byte_line;
+        delete byte_line;
     }
     
     /* Get/set methods */
-    hostUInt8 getByteVal( unsigned int byte_num);
+    hostUInt8 getByteVal( unsigned int byte_num) const;
     
     void setByteVal( unsigned int byte_num, hostUInt8 byte_val);
-    
-    unsigned int getSizeOfLine() 
+
+    void addByte( const Byte& byte);
+
+    int getSizeOfLine() const
     { 
-        return size_of_line; 
+        return ( *byte_line).size();
     }
+    ByteLine& operator = ( ByteLine&);
+    Byte operator[] ( int);
+    friend ostream& operator<< ( ostream&,  ByteLine&);
+    friend ByteLine operator+ ( const Byte&, const Byte&);
+    friend ByteLine operator+ (  const ByteLine&,  const Byte&);
+    
+ 	
 };
+
+inline Byte ByteLine::operator []( int count)
+{
+    if ( ( *byte_line).empty())
+    {
+        cout << "ERROR: Byte line is empty!\n";
+        assert( 0);
+    }
+    if ( count > this->getSizeOfLine())
+    {
+        cout << "ERROR: Size of byte line is less than target byte number!\n";
+        assert( 0);
+    }
+    return ( *byte_line).at( count);
+}
+
+inline ByteLine& ByteLine::operator = ( ByteLine& line)
+{
+    if ( this != &line)
+    {
+        delete byte_line;
+        byte_line = new vector<Byte>( line.getSizeOfLine());
+        for ( int i = 0 ;i < line.getSizeOfLine() ; i++)
+        {
+        ( *byte_line).at( i).setByteVal( line.getByteVal( i));
+        }
+    }
+    return *this;
+}
+
+inline ostream& operator<< ( ostream& os,  ByteLine& line)
+{   
+    for ( int i = 0; i < line.getSizeOfLine(); i++)
+    {
+        os << line[ i] << " | ";  
+    }
+    return os;
+}
+
+inline ByteLine operator+ ( const Byte& a, const Byte& b)
+{	
+    ByteLine temp( a);
+    temp.addByte( b);
+    return temp;	
+}
+inline ByteLine operator+ (  const ByteLine& a,  const Byte& b)
+{
+    ByteLine temp( a);
+    temp.addByte( b);
+    return temp;
+}
 
 /**
  * class MemVal implements a object to interaction with memory 
@@ -174,4 +237,3 @@ public:
      */
 };
 
-#endif /* MEMORY_H */
