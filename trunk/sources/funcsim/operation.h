@@ -40,7 +40,7 @@ public:
     inline OperType getType() { return this->type; }
     inline OperCode getOpcode( unsigned num)
     {
-        switch ( num)
+        switch( num)
         {
             case 0:
                 return this->opcode0;
@@ -50,7 +50,7 @@ public:
                 return this->opcode2;
             default:
                 cout << "Illegal operation code number\n";
-                assert(0);
+                assert( 0);
         }
     }
     inline hostUInt8 getAM() { return this->am; }
@@ -65,7 +65,7 @@ public:
     inline void setType( OperType type) { this->type = type; }
     inline void setOpcode( unsigned num, OperCode opcode)
     {
-        switch ( num)
+        switch( num)
         {
             case 0:
                 this->opcode0 = opcode;
@@ -96,20 +96,35 @@ public:
         this->rs1 = this->rs2 = this->rd = 0;
     }
 
+    /* Set the operation */
     void set( OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
               hostUInt8 sd, hostUInt8 am, 
               hostUInt16 imm10, hostUInt16 imm16,
               hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd);
     
     void set( OperType type, OperCode opcode0, 
-              hostUInt16 imm16, 
+              hostUInt8 sd, hostUInt16 imm16, 
               hostUInt8 rs1, hostUInt8 rd);
 
+    void set( OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
+              hostUInt8 am, hostUInt16 imm10, 
+              hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd);
+
+    void set( OperType type, OperCode opcode0,
+              hostUInt8 sd, hostUInt16 imm16, 
+              hostUInt8 rd);
+
+    /* Encode / decode the operation */
     MemVal* encode();
     void decode( MemVal* mem_value);
-    void dump();
 
+    /* Execute the operation */
+    void execute();
+    void executeMove();
+    void executeALU();
+    void executePFlow();
+
+    void dump();
 };
 
 #endif
-
