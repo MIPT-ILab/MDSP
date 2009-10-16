@@ -52,7 +52,7 @@ public:
 
     friend ostream& operator<< ( ostream&, const Byte&);
     friend Byte operator>> ( const Byte&, int);
-    friend Byte operator>> ( const Byte&, int);
+    friend Byte operator<< ( const Byte&, int);
     friend Byte operator& ( const Byte&, const Byte&);
 };
 
@@ -110,8 +110,10 @@ public:
     
     /* Get/set methods */
     hostUInt8 getByteVal( unsigned int byte_num) const;
+    Byte getByte( unsigned int byte_num) const;
     
     void setByteVal( unsigned int byte_num, hostUInt8 byte_val);
+    void setByte( unsigned int byte_num, const Byte& byte);
 
     void addByte( const Byte& byte);
 

@@ -58,6 +58,22 @@ hostUInt8 ByteLine::getByteVal( unsigned int byte_num) const
     return ( *byte_line).at( byte_num).getByteVal();
 }
 
+Byte ByteLine::getByte( unsigned int byte_num) const
+{
+    if ( byte_num > this->getSizeOfLine())
+    {
+        cout << "ERROR: Size of byte line is less than target byte number!\n";
+        assert( 0);
+    }
+    if ( ( *byte_line).empty())
+    {
+        cout << "ERROR: Byte line is empty!\n";
+        assert( 0);
+    }    
+    return ( *byte_line).at( byte_num);
+}
+
+
 void ByteLine::setByteVal( unsigned int byte_num, hostUInt8 byte_val)
 {
     if ( byte_num > this->getSizeOfLine())
@@ -72,6 +88,23 @@ void ByteLine::setByteVal( unsigned int byte_num, hostUInt8 byte_val)
     }      
     ( *byte_line).at( byte_num).setByteVal( byte_val);
 }
+
+void ByteLine::setByte( unsigned int byte_num, const Byte& byte)
+{
+    if ( byte_num > this->getSizeOfLine())
+    {
+        cout << "ERROR: Size of byte line is less than target byte number!\n";
+        assert( 0);
+    }
+    if ( ( *byte_line).empty())
+    {
+        cout << "ERROR: Byte line is empty!\n";
+        assert( 0);
+    } 
+    ( *byte_line).at( byte_num) = byte;
+}
+
+
 void ByteLine::addByte( const Byte& byte)
 {
     try
@@ -84,7 +117,4 @@ void ByteLine::addByte( const Byte& byte)
     }
 }
 
-/**
- * Implementation of class MemVal
- */
 
