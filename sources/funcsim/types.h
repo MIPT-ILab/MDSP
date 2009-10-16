@@ -64,6 +64,7 @@ typedef hostUInt32 mathAddr;
 /* Type for phisical register numeration */
 typedef hostUInt32 physRegNum;
 
+/* Operation type */
 typedef enum OperType
 {
     NO_TYPE,
@@ -74,6 +75,7 @@ typedef enum OperType
     P_FLOW
 } OperationType;
 
+/* Operation code */
 typedef enum OperCode
 {
     NOP,
