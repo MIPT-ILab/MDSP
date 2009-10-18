@@ -4,6 +4,7 @@
  */
 
 #include "operation.h"
+#include <stdio.h>
 
 /**
  * Constructor - Fill with zeros
@@ -24,18 +25,75 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
     switch ( type )
     {
         case MOVE:
+            if ( am)
+            {
+                cout << "[WARNING] AM has to be set to 0 in MOVE \n";
+            }
+            if ( imm10)
+            {
+                cout << "[WARNING] Imm10 has to be set to 0 in MOVE \n";
+            }
+            if ( rs2)
+            {
+                cout << "[WARNING] Rs2 has to be set to 0 in MOVE \n";
+            }
+            if ( opcode1)
+            {
+                cout << "[WARNING] OpCode1 has to be set to 0 in MOVE \n";
+            }
+            if ( opcode2)
+            {
+                cout << "[WARNING] OpCode2 has to be set to 0 in MOVE \n";
+            }
             this->setMOVE(opcode0, sd, imm16, rs1, rd);
             break;
         case ALU:
+            if ( sd)
+            {
+                cout << "[WARNING] SD has to be set to 0 in ALU \n";
+            }
+            if ( imm10)
+            {
+                cout << "[WARNING] Imm10 has to be set to 0 in ALU \n";
+            }
+            if ( imm16)
+            {
+                cout << "[WARNING] Imm16 has to be set to 0 in ALU \n";
+            }
             this->setALU(opcode0, opcode1, opcode2, am, rs1, rs2, rd);
             break;
         case P_FLOW:
+            if ( sd)
+            {
+                cout << "[WARNING] SD has to be set to 0 in P_FLOW \n";
+            }
+            if ( am)
+            {
+                cout << "[WARNING] AM has to be set to 0 in P_FLOW \n";
+            }
+            if ( imm10)
+            {
+                cout << "[WARNING] Imm10 has to be set to 0 in P_FLOW \n";
+            }
+            if ( rs2)
+            {
+                cout << "[WARNING] Rs2 has to be set to 0 in P_FLOW \n";
+            }
+            if ( opcode1)
+            {
+                cout << "[WARNING] OpCode1 has to be set to 0 in P_FLOW \n";
+            }
+            if ( opcode2)
+            {
+                cout << "[WARNING] OpCode2 has to be set to 0 in P_FLOW \n";
+            }
             this->setPFLOW(opcode0, sd, rs1, imm16);
             break;
         default:
-            cout << "[SEVERE] Illegal Type in set method \n";
+            cout << "[FATAL] Illegal Type in set method \n";
             assert(0);
     }
+    this->type = type;
 }
 
 /**
@@ -56,41 +114,41 @@ void Operation::setMOVE( OperCode opcode0,
             this->sd = sd;          // get S/D
             this->rs1 = rs1;        // get source
             this->rd = rd;          // get desitination
-            if ( imm16 != 0)
+            if ( imm16)
             {
-                cout << "[WARNING] Imm16 has to be set to 0 in MOVE \n";
+                cout << "[WARNING] Imm16 has to be set to 0 in BRM \n";
             }
             break;
         case BRR:
             this->rs1 = rs1;        // get source
             this->rd = rd;          // get desitination
-            if ( imm16 != 0)
+            if ( imm16)
             {
-                cout << "[WARNING] Imm16 has to be set to 0 in MOVE \n";
+                cout << "[WARNING] Imm16 has to be set to 0 in BRR \n";
             }
-            if ( sd != 0)
+            if ( sd)
             {
-                cout << "[WARNING] SD has to be set to 0 in MOVE \n";
+                cout << "[WARNING] SD has to be set to 0 in BRR \n";
             }
             break;
         case LD:
             this->imm16 = imm16;    // get source
             this->rd = rd;          // get desitination
-            if ( rs1 != 0)
+            if ( rs1)
             {
-                cout << "[WARNING] Rs1 has to be set to 0 in MOVE \n";
+                cout << "[WARNING] Rs1 has to be set to 0 in LD \n";
             }
-            if ( rs2 != 0)
+            if ( rs2)
             {
-                cout << "[WARNING] Rs2 has to be set to 0 in MOVE \n";
+                cout << "[WARNING] Rs2 has to be set to 0 in LD \n";
             }
-            if ( sd != 0)
+            if ( sd)
             {
-                cout << "[WARNING] SD has to be set to 0 in MOVE \n";
+                cout << "[WARNING] SD has to be set to 0 in LD \n";
             }
             break;
         default:
-            cout << "[SEVERE] Illegal operation code in MOVE \n";
+            cout << "[FATAL] Illegal operation code in MOVE \n";
             assert(0);
     }
 }
@@ -127,7 +185,7 @@ void Operation::setPFLOW(OperCode opcode0,
     if ( !sd)
     {
         this->rd = rd;
-        if ( imm16 != 0)
+        if ( !imm16)
         {
             cout << "[WARNING] Imm16 has to be set to 0 in PFLOW \n";
         }
@@ -135,12 +193,86 @@ void Operation::setPFLOW(OperCode opcode0,
     else
     {
         this->imm16 = imm16;
-        if ( rd != 0)
+        if ( !rd)
         {
             cout << "[WARNING] Rd has to be set to 0 in PFLOW \n";
         }
     }
 }
+
+/*
+ * Print MOVE operation to the console
+ * NOTE: printf is used here, because "cout <<" doesn't work properly with some types
+ */
+void Operation::dumpMOVE()
+{
+    switch ( this->opcode0 )
+    {
+        case BRM:
+            printf("BRM %i %i %i\n", this->sd, this->rs1, this->rd);
+            break;
+        case BRR:
+            printf("BRR %i %i\n", this->rs1, this->rd);
+            break;
+        case LD:
+            printf("LD %i %i %i\n", this->sd, this->imm16, this->rd);
+            break;
+        default:
+            cout << "[FATAL] Operation code is invalid in MOVE\n";
+            assert(0);
+    }
+}
+
+/*
+ * Print ALU operation to the console
+ * NOTE: printf is used here, because "cout <<" doesn't work properly with some types
+ */
+void Operation::dumpALU()
+{
+    switch ( this->opcode1 )
+    {
+        case ADD:
+            printf("ADD %i %i %i %i\n", this->am, this->rs1, this-> rs2, this->rd);
+            break;
+        case SUB:
+            printf("SUB %i %i %i %i\n", this->am, this->rs1, this-> rs2, this->rd);
+            break;
+        default:
+            cout << "[FATAL] Operation code is invalid in ALU\n";
+            assert(0);
+    }
+}
+
+/*
+ * Print P_FLOW operation to the console
+ * NOTE: printf is used here, because "cout <<" doesn't work properly with some types
+ */
+void Operation::dumpPFLOW()
+{
+    switch ( this->opcode0 )
+    {
+        /* As in these operations an argument can be either Rd or Imm16 we use this variable */
+        hostUInt16 temp;
+        if ( !this->sd)
+        {
+            temp = this->rd;
+        }
+        else
+        {
+            temp = this->imm16;
+        }
+        case JMP:
+            printf("JMP %i %i\n", this->sd, temp);
+            break;
+        case JGT:
+            printf("JGT %i %i\n", this->sd, temp);
+            break;
+        default:
+            cout << "[FATAL] Operation code is invalid in ALU\n";
+            assert(0);
+    }
+}
+
 /**
  * Get 4 Byte value from MemVal
  *
@@ -156,6 +288,13 @@ void Operation::setPFLOW(OperCode opcode0,
  */
 hostUInt32 Operation::getInstrWord( MemVal* mem_value)
 {
+    /* Perform check for MemVal's size. Should be 4 bytes */
+    if ( mem_value->getSizeOfMemVal() != 4)
+    {
+        cout << "[FATAL] Size of MemVal must be 4 bytes. \n";
+        assert(0);
+    }
+    
     hostUInt32 value = 0;   // returned value
     hostUInt8 temp = 0;     // temporary variable
     for ( int i = 0; i < 4; i++) // we are confident that MemVal's size is 4 bytes
@@ -221,7 +360,7 @@ void Operation::decode( MemVal* mem_value)
             this->decodePFLOW( bin_value);
             break;
         default:
-            cout << "Illegal type \n";
+            cout << "[FATAL] Illegal type in decode() \n";
             assert(0);
      }
 }
@@ -278,7 +417,7 @@ void Operation::decodeMOVE( hostUInt32 bin_value)
             rd = this->getValueByMask( bin_value, sd_mask, 0);      // get desitination
             break;
         default:
-            cout << "Illegal operation \n";
+            cout << "[FATAL] Illegal operation in MOVE \n";
             assert(0);
     }
     this->setMOVE(opcode0, sd, imm16, rs1, rd);
@@ -350,17 +489,19 @@ void Operation::decodePFLOW( hostUInt32 bin_value)
 */
 void Operation::dump()
 {
-    cout << "--- Operation start ---" << endl;
-    cout << "   TYPE: " <<    type << endl;
-    cout << "OPCODE0: " << opcode0 << endl;
-    cout << "OPCODE1: " << opcode1 << endl;
-    cout << "OPCODE2: " << opcode2 << endl;
-    cout << "     SD: " <<      sd << endl;
-    cout << "     AM: " <<      am << endl;
-    cout << "  IMM10: " <<   imm10 << endl;
-    cout << "  IMM16: " <<   imm16 << endl;
-    cout << "    RS1: " <<     rs1 << endl;
-    cout << "    RS2: " <<     rs2 << endl;
-    cout << "     RD: " <<      rd << endl;
-    cout << "---  Operation end  ---" << endl;
+    switch ( this->type )
+    {
+        case MOVE:
+            this->dumpMOVE();
+            break;
+        case ALU:
+            this->dumpALU();
+            break;
+        case P_FLOW:
+            this->dumpPFLOW();
+            break;
+        default:
+            cout << "[FATAL] Can't print to console, because operation has illegel type\n";
+            assert(0);
+    }
 }
