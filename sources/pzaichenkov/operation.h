@@ -1,8 +1,8 @@
 /**
-* operation.h - Header of Operation class,
-* which defines an instruction fields
-* Copyright 2009 MDSP team
-*/
+ * operation.h - Header of Operation class,
+ * which defines an instruction fields
+ * Copyright 2009 MDSP team
+ */
 
 #ifndef OPERATION_H
 #define OPERATION_H
@@ -15,8 +15,8 @@
 using namespace std;
 
 /**
-* Class of operation description
-*/
+ * Class of operation description
+ */
 class Operation
 {
     OperType type;
@@ -30,16 +30,34 @@ class Operation
     hostUInt8 rs1:5, rs2:5, rd:5;
 
     /* get type */
-    OperType decodeType(hostUInt32 bin_value);
+    OperType decodeType( hostUInt32 bin_value);
 
     /* methods used for each type */
-    void     decodeMove(hostUInt32 bin_value);
-    void     decodeAlu(hostUInt32 bin_value);
-    void     decodePFlow(hostUInt32 bin_value);
+    void decodeMOVE( hostUInt32 bin_value);
+    void decodeALU( hostUInt32 bin_value);
+    void decodePFLOW( hostUInt32 bin_value);
 
+    void setMOVE(OperCode opcode0,
+                 hostUInt8 sd,
+                 hostUInt16 imm16,
+                 hostUInt8 rs1,
+                 hostUInt8 rd);
+    void setALU( OperCode opcode0,
+                 OperCode opcode1,
+                 OperCode opcode2,
+                 hostUInt8 am,
+                 hostUInt8 rs1,
+                 hostUInt8 rs2,
+                 hostUInt8 rd);
+
+    void setPFLOW(OperCode opcode0,
+                  hostUInt8 sd,
+                  hostUInt8 rd,
+                  hostUInt16 imm16);
+    
     /* Helper methods */
-    hostUInt32 getMemoryValue(MemVal* mem_value);
-    hostUInt32 getValueByMask(hostUInt32 bin_value, hostUInt32 mask, int shift);
+    hostUInt32 getInstrWord( MemVal* mem_value);
+    hostUInt32 getValueByMask( hostUInt32 bin_value, hostUInt32 mask, int shift);
 
 
 public:
@@ -111,10 +129,6 @@ public:
               hostUInt8 sd, hostUInt8 am, 
               hostUInt16 imm10, hostUInt16 imm16,
               hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd);
-    
-    void set( OperType type, OperCode opcode0, 
-              hostUInt16 imm16, 
-              hostUInt8 rs1, hostUInt8 rd);
 
     MemVal* encode();
     void decode( MemVal* mem_value);
