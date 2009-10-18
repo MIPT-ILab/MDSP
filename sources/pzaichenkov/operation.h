@@ -54,6 +54,10 @@ class Operation
                   hostUInt8 sd,
                   hostUInt8 rd,
                   hostUInt16 imm16);
+
+    void dumpMOVE();
+    void dumpALU();
+    void dumpPFLOW();
     
     /* Helper methods */
     hostUInt32 getInstrWord( MemVal* mem_value);
