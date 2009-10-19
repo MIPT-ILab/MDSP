@@ -18,6 +18,9 @@ using namespace std;
 class Byte
 {
     hostUInt8 byte_val;
+	static bool bin_out;
+	static bool dec_out;
+	static bool hex_out;
     
 public:
     /* Constructors */  
@@ -29,12 +32,43 @@ public:
     { 
         return this->byte_val;
     }
-    
+
     void setByteVal( hostUInt8 val) 
     { 
          this->byte_val = val;
     }
+    
+	/* Set methods for output options*/
+	void setBinOut()
+	{
+		this->bin_out = true;
+	}
+    
 
+	void setDecOut()
+	{
+		this->dec_out = true;
+	}
+
+	void setHexOut()
+	{
+		this->hex_out = true;
+	}
+    /* Clear methods for output options*/
+	void clrBinOut()
+	{
+		this->bin_out = false;
+	}
+
+	void clrDecOut()
+	{
+		this->dec_out = false;
+	}
+
+	void clrHexOut()
+	{
+		this->hex_out = false;
+	}
 	/* Member overloaded operators */
     bool operator== ( const Byte& byte)
     {
