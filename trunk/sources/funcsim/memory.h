@@ -3,7 +3,10 @@
  * Define classes and methods to operate with memory of simulated architecture
  * Copyright 2009 MDSP team
  */
- 
+
+#ifndef MEMORY_H
+#define MEMORY_H
+
 #include <iostream>
 #include <vector>
 #include "types.h"
@@ -236,3 +239,4 @@ public:
      */
 };
 
+#endif /* MEMORY_H */

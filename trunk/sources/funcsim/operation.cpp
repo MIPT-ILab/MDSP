@@ -80,6 +80,13 @@ void Operation::setInstrWord( MemVal* mem_value)
 }
 
 /*
+* Set memory block from instruction word (binary representation)
+*/
+void Operation::setMemBlock( MemVal* mem_value)
+{
+}
+
+/*
 * Execute the operation
 */
 void Operation::execute()

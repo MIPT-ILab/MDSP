@@ -30,8 +30,8 @@ class Operation
     hostUInt16 imm10:10, imm16;
     hostUInt8 rs1:5, rs2:5, rd:5;
 
-    /* set operation in binary form from memory block */
     void setInstrWord( MemVal* mem_value);
+    void setMemBlock( MemVal* mem_value);
 
 public:
     Operation() {};
