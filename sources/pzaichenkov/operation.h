@@ -37,11 +37,11 @@ class Operation
     void decodeALU( hostUInt32 bin_value);
     void decodePFLOW( hostUInt32 bin_value);
 
-    void setMOVE(OperCode opcode0,
-                 hostUInt8 sd,
-                 hostUInt16 imm16,
-                 hostUInt8 rs1,
-                 hostUInt8 rd);
+    void setMOVE( OperCode opcode0,
+                  hostUInt8 sd,
+                  hostUInt16 imm16,
+                  hostUInt8 rs1,
+                  hostUInt8 rd);
     void setALU( OperCode opcode0,
                  OperCode opcode1,
                  OperCode opcode2,
@@ -50,10 +50,10 @@ class Operation
                  hostUInt8 rs2,
                  hostUInt8 rd);
 
-    void setPFLOW(OperCode opcode0,
-                  hostUInt8 sd,
-                  hostUInt8 rd,
-                  hostUInt16 imm16);
+    void setPFLOW( OperCode opcode0,
+                   hostUInt8 sd,
+                   hostUInt8 rd,
+                   hostUInt16 imm16);
 
     void dumpMOVE();
     void dumpALU();
