@@ -41,6 +41,11 @@ public:
          this->byte_val = val;
     }
     
+    enum output_type getOutputVal()
+    {
+        return this->output;
+    }
+
     /* Set methods for output options*/
     void setBinOut()
     {
@@ -89,19 +94,24 @@ public:
     friend Byte operator& ( const Byte&, const Byte&);
 };
 
-/*Binary output*/
+/* Overloaded output operator*/
 inline ostream& operator<< ( ostream& os, const Byte& byte)
 {   
+    switch ( byte.getOutputVal())
+    {
+case BIN:
     for ( short i = 7; i >= 0; i--) 
     { 
         os << ( ( 1 << i) & byte.getByteVal() ? '1' : '0'); 
     }
+case DEC:
+        os << byte.getByteVal();
+case HEX:
+    os.setf( ios::hex);
+    os << byte.getByteVal();
+    os.setf( ios::dec);
+    }
     return os;
-}
-
-inline ostream& operator<< ( ostream& os, const Byte& byte)
-{
-	
 }
 
 /* Non-member overloaded operators */
