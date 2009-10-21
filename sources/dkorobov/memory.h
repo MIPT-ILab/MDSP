@@ -98,7 +98,7 @@ class ByteLine
 	    
 public:
     /* Constructors */
-	ByteLine( unsigned int size_of_line);
+    ByteLine( unsigned int size_of_line);
     ByteLine( const ByteLine& line);
     ByteLine( const Byte& byte);
 	    
@@ -172,7 +172,7 @@ inline ByteLine operator+ ( const Byte& a, const Byte& b)
     temp.addByte( b);
     return temp;	
 }
-inline ByteLine operator+ (  const ByteLine& a,  const Byte& b)
+inline ByteLine operator+ ( const ByteLine& a, const Byte& b)
 {
     ByteLine temp( a);
     temp.addByte( b);
@@ -198,12 +198,12 @@ public:
     /* Get/set methods */
     hostUInt8 getByteVal( unsigned int byte_num)
     {
-        return byte_line->getByteVal(byte_num);
+        return byte_line->getByteVal( byte_num);
     }
     
     void setByteVal( unsigned int byte_num, hostUInt8 byte_val)
     {
-        byte_line->setByteVal(byte_num, byte_val);
+        byte_line->setByteVal( byte_num, byte_val);
     }
     
     unsigned int getSizeOfMemVal() 

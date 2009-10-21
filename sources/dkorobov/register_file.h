@@ -18,33 +18,33 @@
 
 class RegVal: public ByteLine
 {
-    
+  
 public:
     /* Constructors and destructor */
-	RegVal( unsigned int size_in_bytes): ByteLine( size_in_bytes)
+    RegVal( unsigned int size_in_bytes): ByteLine( size_in_bytes)
     {
     }
 
-	~RegVal()
-	{
-	}
+    ~RegVal()
+    {
+    }
 
-	RegVal& operator =(RegVal& reg_val)
-	{
-		if (this->getSizeOfLine() != reg_val.getSizeOfLine())
-		{
-			cout << "Error: you can write to RegVal with the equal length only!\n";
-			assert(0);
-		}
-		int sz_of_ln = this->getSizeOfLine();
+    RegVal& operator =( RegVal& reg_val)
+    {
+        if ( this->getSizeOfLine() != reg_val.getSizeOfLine())
+	    {
+		    cout << "Error: you can write to RegVal with the equal length only!\n";
+		    assert( 0);
+        }
+        int sz_of_ln = this->getSizeOfLine();
 
-		for ( int i = 0; i < sz_of_ln; i++)
-		{
-			this->setByteVal( i, reg_val.getByteVal(i));
-		}
+        for ( int i = 0; i < sz_of_ln; i++)
+        {
+            this->setByteVal( i, reg_val.getByteVal( i));
+        }
 
-		return (*this);
-	}
+        return ( *this);
+    }
 };
 
 /**
@@ -53,8 +53,8 @@ public:
 
 class RegisterFileModel 
 {
-	RegVal** reg_file;
-	unsigned int num_of_reg;
+    RegVal** reg_file;          // Array of RegVal*
+    unsigned int num_of_reg;    // Number of registers in the register file
 
 public:
 	
