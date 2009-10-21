@@ -63,10 +63,6 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
             this->setALU( opcode0, opcode1, opcode2, am, rs1, rs2, rd);
             break;
         case P_FLOW:
-            if ( sd)
-            {
-                cout << "[WARNING] SD has to be set to 0 in P_FLOW \n";
-            }
             if ( am)
             {
                 cout << "[WARNING] AM has to be set to 0 in P_FLOW \n";
@@ -74,6 +70,10 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
             if ( imm10)
             {
                 cout << "[WARNING] Imm10 has to be set to 0 in P_FLOW \n";
+            }
+            if ( rs1)
+            {
+                cout << "[WARNING] Rs1 has to be set to 0 in P_FLOW \n";
             }
             if ( rs2)
             {
@@ -87,7 +87,7 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
             {
                 cout << "[WARNING] OpCode2 has to be set to 0 in P_FLOW \n";
             }
-            this->setPFLOW( opcode0, sd, rs1, imm16);
+            this->setPFLOW( opcode0, sd, rd, imm16);
             break;
         default:
             cout << "[FATAL] Illegal Type in set method \n";
@@ -95,6 +95,78 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
     }
     this->type = type;
 }
+
+/*
+ * Helper method that is used to define the correlation between OperType and hostUInt32
+ */
+OperType Operation::getTypeFromInt32(hostUInt32 type)
+{
+    switch ( type )
+    {
+        case 0:
+            return NO_TYPE;
+        case 1:
+            return MOVE;
+        case 2:
+            return ALU;
+        case 3:
+            return MAC;
+        case 4:
+            return DMAC;
+        case 5:
+            return P_FLOW;
+    }
+}
+
+/*
+ * Helper method that is used to define the correlation between OperCode and hostUInt32
+ */
+OperCode Operation::getCodeFromInt32(OperType type, hostUInt32 code)
+{  
+    switch ( type )
+    {
+        case MOVE:
+            switch ( code )
+            {
+                case 0:
+                    return NOP;
+                case 1:
+                    return BRM;
+                case 3:
+                    return BRR;
+                case 6:
+                    return LD;
+                default:
+                    cout << "[FATAL] Illegal operation in MOVE \n";
+                    assert(0);
+            }
+        case ALU:
+            switch ( code )
+            {
+                case 0:
+                    return NOP;
+                case 1:
+                    return ADD;
+                case 2:
+                    return SUB;
+                default:
+                    cout << "[FATAL] Illegal operation in MOVE \n";
+                    assert(0);
+            }
+        case P_FLOW:
+            switch ( code )
+            {
+                case 0:
+                    return JMP;
+                case 1:
+                    return JGT;
+                default:
+                    cout << "[FATAL] Illegal operation in MOVE \n";
+                    assert(0);
+            }
+    }
+}
+
 
 /**
  * Set an operation of MOVE type
@@ -185,7 +257,7 @@ void Operation::setPFLOW( OperCode opcode0,
     if ( !sd)
     {
         this->rd = rd;
-        if ( !imm16)
+        if ( imm16)
         {
             cout << "[WARNING] Imm16 has to be set to 0 in PFLOW \n";
         }
@@ -193,7 +265,7 @@ void Operation::setPFLOW( OperCode opcode0,
     else
     {
         this->imm16 = imm16;
-        if ( !rd)
+        if ( rd)
         {
             cout << "[WARNING] Rd has to be set to 0 in PFLOW \n";
         }
@@ -209,13 +281,13 @@ void Operation::dumpMOVE()
     switch ( this->opcode0)
     {
         case BRM:
-            printf( "BRM %i %i %i\n", this->sd, this->rs1, this->rd);
+            printf( "brm %i, r%i, r%i;\n", this->sd, this->rs1, this->rd);
             break;
         case BRR:
-            printf( "BRR %i %i\n", this->rs1, this->rd);
+            printf( "brr r%i, r%i;\n", this->rs1, this->rd);
             break;
         case LD:
-            printf( "LD %i %i %i\n", this->sd, this->imm16, this->rd);
+            printf( "ld %i, r%i, r%i;\n", this->sd, this->imm16, this->rd);
             break;
         default:
             cout << "[FATAL] Operation code is invalid in MOVE\n";
@@ -232,10 +304,10 @@ void Operation::dumpALU()
     switch ( this->opcode1)
     {
         case ADD:
-            printf( "ADD %i %i %i %i\n", this->am, this->rs1, this-> rs2, this->rd);
+            printf( "add %i, r%i, r%i, r%i;\n", this->am, this->rs1, this-> rs2, this->rd);
             break;
         case SUB:
-            printf( "SUB %i %i %i %i\n", this->am, this->rs1, this-> rs2, this->rd);
+            printf( "sub %i, r%i, r%i, r%i;\n", this->am, this->rs1, this-> rs2, this->rd);
             break;
         default:
             cout << "[FATAL] Operation code is invalid in ALU\n";
@@ -249,23 +321,23 @@ void Operation::dumpALU()
  */
 void Operation::dumpPFLOW()
 {
+    /* As in these operations an argument can be either Rd or Imm16 we use this variable */
+    hostUInt16 temp;
+    if ( !this->sd)
+    {
+        temp = this->rd;
+    }
+    else
+    {
+        temp = this->imm16;
+    }
     switch ( this->opcode0)
     {
-        /* As in these operations an argument can be either Rd or Imm16 we use this variable */
-        hostUInt16 temp;
-        if ( !this->sd)
-        {
-            temp = this->rd;
-        }
-        else
-        {
-            temp = this->imm16;
-        }
         case JMP:
-            printf( "JMP %i %i\n", this->sd, temp);
+            printf( "jmp %i, r%i;\n", this->sd, temp);
             break;
         case JGT:
-            printf( "JGT %i %i\n", this->sd, temp);
+            printf( "jgt %i, r%i;\n", this->sd, temp);
             break;
         default:
             cout << "[FATAL] Operation code is invalid in ALU\n";
@@ -309,18 +381,18 @@ hostUInt32 Operation::getInstrWord( MemVal* mem_value)
 /**
  * Get Value from memory by mask and shift (bitwise operators)
  * EXAMPLE:
- * bin_value = 101010001001001001010010110111 (32-bit number)
- * mask      = 111000000000000000000000000000 (Let's get first 3 bits.
+ * instr_word = 101010001001001001010010110111 (32-bit number)
+ * mask       = 111000000000000000000000000000 (Let's get first 3 bits.
  *                                             Type value in our case)
- * temp = bin_value & mask =                  (Bitwise operator AND)
- *             101000000000000000000000000000
+ * temp = instr_word & mask =                  (Bitwise operator AND)
+ *              101000000000000000000000000000
  * temp >> shift =                            (In this case SHIFT must be 29)
- *             000000000000000000000000000101
+ *              000000000000000000000000000101
  * Finally, we've got 101 number. It is P_FLOW type!
  */
-hostUInt32 Operation::getValueByMask( hostUInt32 bin_value, hostUInt32 mask, int shift)
+hostUInt32 Operation::getValueByMask( hostUInt32 mask, int shift)
 {
-    hostUInt32 temp = bin_value & mask;
+    hostUInt32 temp = this->instr_word & mask;
     temp = temp >> shift;
     return temp;
 }
@@ -339,9 +411,9 @@ MemVal* Operation::encode()
  */
 void Operation::decode( MemVal* mem_value)
 {
-    hostUInt32 bin_value = this->getInstrWord( mem_value);
+    this->instr_word = this->getInstrWord( mem_value);
     /* we need to decode the type (MOVE, ALU, etc) first to know how to decode further */
-    this->type = this->decodeType( bin_value);
+    this->type = this->decodeType();
     
     /** Choose decode type.
      * It's important to implement it's own decode methode for each command type
@@ -350,14 +422,14 @@ void Operation::decode( MemVal* mem_value)
      switch ( this->type)
      {
         case MOVE:
-            this->decodeMOVE( bin_value);
+            this->decodeMOVE();
             break;
         case ALU:
-            this->decodeALU( bin_value);
+            this->decodeALU();
             /* In this place we must update flags */
             break;
         case P_FLOW:
-            this->decodePFLOW( bin_value);
+            this->decodePFLOW();
             break;
         default:
             cout << "[FATAL] Illegal type in decode() \n";
@@ -371,11 +443,11 @@ void Operation::decode( MemVal* mem_value)
  * mask = 1110000000000000000000000000000 and
  * shift = 29 to get type value (the elderest 3-bits
  */
-OperType Operation::decodeType(hostUInt32 bin_value)
+OperType Operation::decodeType()
 {
     /* get value using the mask */
     hostUInt32 type_mask = 0xE0000000; // 11100000 bin, 224 dec
-    OperType type = ( OperType) this->getValueByMask( bin_value, type_mask, 29);
+    OperType type = this->getTypeFromInt32( this->getValueByMask( type_mask, 29));
     return type;
 }
 
@@ -383,7 +455,7 @@ OperType Operation::decodeType(hostUInt32 bin_value)
  * Decode MOVE command from binary form
  * All mask are set as it is described in architecture.
  */
-void Operation::decodeMOVE( hostUInt32 bin_value)
+void Operation::decodeMOVE()
 {
     /* skip type decoding as we already know the type */
 
@@ -399,22 +471,22 @@ void Operation::decodeMOVE( hostUInt32 bin_value)
     hostUInt16 imm16;
 
     /* get OP */
-    opcode0 = ( OperCode) this->getValueByMask( bin_value, op_mask, 26);
+    opcode0 = this->getCodeFromInt32( MOVE, this->getValueByMask( op_mask, 26));
 
     switch ( opcode0)
     {
         case BRM:
-            sd = this->getValueByMask( bin_value, sd_mask, 21);     // get S/D
-            rs1 = this->getValueByMask( bin_value, rs_mask, 5);     // get source
-            rd = this->getValueByMask( bin_value, rd_mask, 0);      // get desitination
+            sd = this->getValueByMask( sd_mask, 21);     // get S/D
+            rs1 = this->getValueByMask( rs_mask, 5);     // get source
+            rd = this->getValueByMask( rd_mask, 0);      // get desitination
             break;
         case BRR:
-            rs1 = this->getValueByMask( bin_value, rs_mask, 5);     // get source
-            rd = this->getValueByMask( bin_value, rd_mask, 0);      // get desitination
+            rs1 = this->getValueByMask( rs_mask, 5);     // get source
+            rd = this->getValueByMask( rd_mask, 0);      // get desitination
             break;
         case LD:
-            imm16 = this->getValueByMask( bin_value, imm16_mask, 5);// get imm16
-            rd = this->getValueByMask( bin_value, sd_mask, 0);      // get desitination
+            imm16 = this->getValueByMask( imm16_mask, 5);// get imm16
+            rd = this->getValueByMask( sd_mask, 0);      // get desitination
             break;
         default:
             cout << "[FATAL] Illegal operation in MOVE \n";
@@ -427,7 +499,7 @@ void Operation::decodeMOVE( hostUInt32 bin_value)
  * Decode ALU command from binary form
  * All mask are set as it is described in architecture.
  */
-void Operation::decodeALU( hostUInt32 bin_value)
+void Operation::decodeALU()
 {
     /* skip type decoding as we already know the type */
 
@@ -443,13 +515,13 @@ void Operation::decodeALU( hostUInt32 bin_value)
     OperCode opcode0, opcode1, opcode2;
     hostUInt8 am, rs1, rs2, rd;
 
-    opcode0 = ( OperCode) this->getValueByMask( bin_value, logic_op_mask, 26);
-    opcode1 = ( OperCode) this->getValueByMask( bin_value, arith_op_mask, 21);
-    opcode2 = ( OperCode) this->getValueByMask( bin_value, shift_op_mask, 18);
-    am = this->getValueByMask( bin_value, am_mask, 15);
-    rs1 = this->getValueByMask( bin_value, rs1_mask, 10);
-    rs2 = this->getValueByMask( bin_value, rs2_mask, 5);
-    rd = this->getValueByMask( bin_value, rd_mask, 0);
+    opcode0 = this->getCodeFromInt32( ALU, this->getValueByMask( logic_op_mask, 26));
+    opcode1 = this->getCodeFromInt32( ALU, this->getValueByMask( arith_op_mask, 21));
+    opcode2 = this->getCodeFromInt32( ALU, this->getValueByMask( shift_op_mask, 18));
+    am = this->getValueByMask( am_mask, 15);
+    rs1 = this->getValueByMask( rs1_mask, 10);
+    rs2 = this->getValueByMask( rs2_mask, 5);
+    rd = this->getValueByMask( rd_mask, 0);
     this->setALU( opcode0, opcode1, opcode2, am, rs1, rs2, rd);
 }
 
@@ -457,10 +529,9 @@ void Operation::decodeALU( hostUInt32 bin_value)
  * Decode P_FLOW command from binary form
  * All mask are set as it is described in architecture.
  */
-void Operation::decodePFLOW( hostUInt32 bin_value)
+void Operation::decodePFLOW()
 {
     /* skip type decoding as we already know the type */
-
     hostUInt32       op_mask = 0x1E000000; // OP mask
     hostUInt32       sd_mask = 0x00C00000; // SD mask
     hostUInt32    imm16_mask = 0x0000FFFF; // imm16 mask
@@ -471,15 +542,16 @@ void Operation::decodePFLOW( hostUInt32 bin_value)
     hostUInt8 sd, rd;
     hostUInt16 imm16;
     
-    opcode0 = (OperCode) this->getValueByMask( bin_value, op_mask, 25);
-    sd = this->getValueByMask( bin_value, sd_mask, 23);
+    opcode0 = this->getCodeFromInt32( P_FLOW, this->getValueByMask( op_mask, 25));
+    sd = this->getValueByMask( sd_mask, 23);
+
     if ( !sd)
     {
-        rd = this->getValueByMask( bin_value, rd_mask, 0);
+        rd = this->getValueByMask( rd_mask, 0);
     }
     else
     {
-        imm16 = this->getValueByMask( bin_value, imm16_mask, 0);
+        imm16 = this->getValueByMask( imm16_mask, 0);
     }
     this->setPFLOW( opcode0, sd, rs1, imm16);
 }

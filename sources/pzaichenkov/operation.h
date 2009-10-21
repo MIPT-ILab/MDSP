@@ -29,13 +29,20 @@ class Operation
     hostUInt16 imm16;
     hostUInt8 rs1:5, rs2:5, rd:5;
 
+    /* this is a word representation of MemVal */
+    hostUInt32 instr_word;
+
     /* get type */
-    OperType decodeType( hostUInt32 bin_value);
+    OperType decodeType();
+
+    /* methods for correlation between Assembler constants and numbers */
+    OperType getTypeFromInt32(hostUInt32 type);
+    OperCode getCodeFromInt32(OperType type, hostUInt32 code);
 
     /* methods used for each type */
-    void decodeMOVE( hostUInt32 bin_value);
-    void decodeALU( hostUInt32 bin_value);
-    void decodePFLOW( hostUInt32 bin_value);
+    void decodeMOVE();
+    void decodeALU();
+    void decodePFLOW();
 
     void setMOVE( OperCode opcode0,
                   hostUInt8 sd,
@@ -61,7 +68,7 @@ class Operation
     
     /* Helper methods */
     hostUInt32 getInstrWord( MemVal* mem_value);
-    hostUInt32 getValueByMask( hostUInt32 bin_value, hostUInt32 mask, int shift);
+    hostUInt32 getValueByMask(hostUInt32 mask, int shift);
 
 
 public:
