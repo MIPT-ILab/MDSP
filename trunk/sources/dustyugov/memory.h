@@ -9,7 +9,12 @@
 #include "types.h"
 #include <cassert>
 
+#define DEFAULT_OUT HEX
+
 using namespace std;
+
+/* Enumeration for Byte & Byteline classes' output*/
+enum output_type { BIN, DEC, HEX};
 
 /**
  * class Byte implements 
@@ -18,9 +23,7 @@ using namespace std;
 class Byte
 {
     hostUInt8 byte_val;
-	static bool bin_out;
-	static bool dec_out;
-	static bool hex_out;
+    static enum output_type output;
     
 public:
     /* Constructors */  
@@ -38,38 +41,38 @@ public:
          this->byte_val = val;
     }
     
-	/* Set methods for output options*/
-	void setBinOut()
-	{
-		this->bin_out = true;
-	}
-    
+    /* Set methods for output options*/
+    void setBinOut()
+    {
+        this->output = BIN;
+    }
 
-	void setDecOut()
-	{
-		this->dec_out = true;
-	}
 
-	void setHexOut()
-	{
-		this->hex_out = true;
-	}
+    void setDecOut()
+    {
+        this->output = DEC;
+    }
+
+    void setHexOut()
+    {
+        this->output = HEX;
+    }
     /* Clear methods for output options*/
-	void clrBinOut()
-	{
-		this->bin_out = false;
-	}
+    void clrBinOut()
+    {
+        this->output = DEFAULT_OUT; // default output is hex
+    }
 
-	void clrDecOut()
-	{
-		this->dec_out = false;
-	}
+    void clrDecOut()
+    {
+        this->output = DEFAULT_OUT;// default output is hex
+    }
 
-	void clrHexOut()
-	{
-		this->hex_out = false;
-	}
-	/* Member overloaded operators */
+    void clrHexOut()
+    {
+        this->output = DEFAULT_OUT;// default output is hex
+    }
+    /* Member overloaded operators */
     bool operator== ( const Byte& byte)
     {
         return this->getByteVal() == byte.getByteVal();
@@ -86,6 +89,7 @@ public:
     friend Byte operator& ( const Byte&, const Byte&);
 };
 
+/*Binary output*/
 inline ostream& operator<< ( ostream& os, const Byte& byte)
 {   
     for ( short i = 7; i >= 0; i--) 
@@ -95,6 +99,10 @@ inline ostream& operator<< ( ostream& os, const Byte& byte)
     return os;
 }
 
+inline ostream& operator<< ( ostream& os, const Byte& byte)
+{
+	
+}
 
 /* Non-member overloaded operators */
 inline Byte operator>> ( const Byte& byte, int count)
@@ -126,12 +134,12 @@ inline Byte operator& ( const Byte& left, const Byte& right)
 class ByteLine
 {
     vector<Byte> *byte_line;
-	    
+        
 public:
     /* Constructors */
     ByteLine( const ByteLine& line);
     ByteLine( const Byte& byte);
-	    
+        
     /* Destructor */
     virtual ~ByteLine()
     { 
@@ -155,7 +163,7 @@ public:
     friend ByteLine operator+ ( const Byte&, const Byte&);
     friend ByteLine operator+ (  const ByteLine&,  const Byte&);
     
- 	
+    
 };
 
 inline Byte ByteLine::operator []( int count)
