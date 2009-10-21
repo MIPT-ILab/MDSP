@@ -11,9 +11,11 @@
 /**
  * Implementation of class ByteLine
  */
+
+
 ByteLine::ByteLine( unsigned int size_of_line)
 {
-	 try
+    try
     {
         byte_line = new vector<Byte>( size_of_line);
     }catch ( std::bad_alloc)
