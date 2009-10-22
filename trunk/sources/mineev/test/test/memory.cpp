@@ -202,107 +202,119 @@ void MemVal::writeByteLine( const ByteLine & line)
 /**
  * Implementation of Memory Model
  */
-/*
-MemoryModel::MemoryModel( unsigned int size_of_segmentation)
+
+MemoryModel::MemoryModel( unsigned int size)
 {
-	mem_model = new map<MemVal,mathAddr>;
-	
-    //(*mem_model).second = getMathAddr();
+	mem_model = new memMap;
+	size_of_segmentation = size;
+
 }
 
 
-MemVal MemoryModel::read(mathAddr read_ptr, unsigned int num_of_bytes)
+ByteLine MemoryModel::read(mathAddr read_ptr, unsigned int num_of_bytes)
 {
 	if( ( *mem_model).empty())
 	{
-		//error
+		cout << "ERROR!\n";
+        assert( 0);
 	}
 	
-	map< MemVal, mathAddr>::iterator pos, start, end;
-	start = find( read_ptr);	
-	//mathAddr temp_adrr = start->second;
-	end = find( read_ptr + start->second);
+	memMap::iterator pos, start, end;
+	start = find( read_ptr);
+	mathAddr temp_addr = start->first;
+	end = find( read_ptr + num_of_bytes - 1);
 	if( start == ( *mem_model).end() || end == ( *mem_model).end())
 	{
-		//erorr
+		cout << "ERROR!\n";
+        assert( 0);
 	}
-	MemVal temp = start->first;
+	MemVal memval = start->second;
 	for ( pos = start; pos != end; ++pos)
 	{
-		if ( countDistance( pos) > 1)
+		if ( countDistance( pos) > 0)
 		{
-			//erorr
+			cout << "ERROR!\n";
+			assert( 0);
 		}
-		mergeMemVal( pos, temp);
-		(*mem_model).erase( pos);
+		mergeMemVal( pos, &memval);
+		
 	}
-	(*mem_model)[ temp] = start->second;
-	return temp;	
+	( *mem_model).erase(start,end);
+	( *mem_model).erase(end);
+	(*mem_model)[temp_addr] = memval;
+	return memval.getByteLine( read_ptr - temp_addr,num_of_bytes);
+	
+	 	
 }
 
 				
-			
-void MemoryModel::mergeMemVal( map<MemVal,mathAddr>::iterator pos, MemVal mem_val)
+		
+void MemoryModel::mergeMemVal( memMap::iterator pos, MemVal *mem_val)
 {
-	if( countDistance(pos) > 1)
+	if( countDistance(pos) > 0)
 	{
-			mem_val.resizeMemVal( (++pos)->second - pos->second - 1 );
+			mem_val->resizeMemVal( (pos + 1)->first - pos->first);
 	} 
-		mem_val = mem_val + (++pos)->first;	
+		(*mem_val) = (*mem_val) + (pos+1)->second;
 }
 
-*/
-/*
-void MemoryModel::write(mathAddr write_ptr, ByteLine line)
-{
-	map< MemVal, mathAddr>::iterator pos,start,end ;
-	start = findOrInit( write_ptr);
-	end = findOrInit( write_ptr + start->second);
 
-	MemVal memval = start->first;
+
+void MemoryModel::write(mathAddr write_ptr, const ByteLine& line)
+{
+	memMap::iterator pos,start,end ;
+	start = findOrInit( write_ptr);
+	mathAddr temp_addr = start->first;
+	end = findOrInit( write_ptr + line.getSizeOfLine() - 1);
+
+	MemVal memval = start->second;
 	for ( pos = start; pos != end; ++pos)
 	{
-		mergeMemVal( pos, memval);
-		( *mem_model).erase( pos);
+		mergeMemVal( pos, &memval );
+		
 	}
-	memval.writeByteLine( line, write_ptr - start->second);
-	(*mem_model)[memval] = start->second;
+	( *mem_model).erase(start,end);
+	( *mem_model).erase(end);
+
+	memval.writeByteLine( line, write_ptr - temp_addr);
+	(*mem_model)[temp_addr] = memval;
 }
-*/
+
 
 
 
 	
-/*
-map< MemVal, mathAddr>::iterator MemoryModel::findOrInit(mathAddr ptr)
+
+memMap::iterator MemoryModel::findOrInit(mathAddr ptr)
 {
-	map< MemVal, mathAddr>::iterator pos;
-	mathAddr adrr;
-	
+	memMap::iterator pos;
 	MemVal temp( size_of_segmentation); 
-	adrr = ptr - (ptr%size_of_segmentation);
+	mathAddr addr = ptr - (ptr%size_of_segmentation);
+	
 	for ( pos = (*mem_model).begin(); pos != (*mem_model).end(); ++pos)
 	{
 		if ( pos == ptr)
 		{
 			return pos;
 		}
-		if ( (pos->second) > ptr)
+		if ( (pos->first) > ptr)
 		{
-			//pair< MemVal, mathAddr> p( temp, adrr);
-			(*mem_model)[temp] = adrr;
-			pos = (*mem_model).find(temp);
+			(*mem_model)[addr] = temp;
+			pos = (*mem_model).find(addr);
 			return pos;
 			
 		}
 	}
-	return pos = (*mem_model).begin();
+	(*mem_model)[addr] = temp;
+	pos = (*mem_model).find(addr);
+	return pos;
+	
 }
-*/
-/*
-map< MemVal, mathAddr>::iterator MemoryModel::find( mathAddr ptr)
+
+
+memMap::iterator MemoryModel::find( mathAddr ptr)
 {
-	map< MemVal, mathAddr>::iterator pos;
+	memMap::iterator pos;
 	mathAddr adrr;
 	adrr = ptr - (ptr%size_of_segmentation);
 	for ( pos = (*mem_model).begin(); pos != (*mem_model).end(); ++pos)
@@ -315,11 +327,11 @@ map< MemVal, mathAddr>::iterator MemoryModel::find( mathAddr ptr)
 	return pos = (*mem_model).end();
 }
 
-unsigned int MemoryModel::countDistance( map< MemVal, mathAddr>::iterator pos)
+unsigned int MemoryModel::countDistance( const memMap::iterator pos)
 {
-	return (++pos)->second - (pos->second + (pos->first).getSizeOfMemVal());
+	return (pos+1)->first - (pos->first + (pos->second).getSizeOfMemVal());
 }
 
 			
-*/
+
 

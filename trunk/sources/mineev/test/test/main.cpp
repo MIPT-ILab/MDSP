@@ -4,6 +4,7 @@
 */
 
 #include "memory.h"
+using namespace std;
 void testByte()
 {
 	Byte a( 7);
@@ -68,7 +69,7 @@ void testMemVal()
     MemVal mem2(mem1);
     MemVal mem3;
     MemVal mem4(5);
-    MemVal mem5 = mem1+mem3;
+    MemVal mem5 = mem1+mem4;
     cout<<"test MemVal class:"<<endl;
     cout<<" MemVal mem1(f): "<<'\t'<<mem1<<endl;
     cout<<" MemVal mem2(mem1): "<<'\t'<<mem2<<endl;
@@ -93,8 +94,32 @@ void testMemVal()
 
 
 }
-void testMemModel();
+void testMemModel()
+{
+	Byte a( 7);
+    Byte b( 205);
+    Byte c( 110);
+	ByteLine f( a + c + b);
+	mathAddr aa =10;
+	mathAddr bb = 6;
 
+
+	
+	
+	MemoryModel model(1);
+	model.write(bb,f);
+	cout<<" model.write(bb,f): \n"<<model<<endl;
+	model.write(aa,a);
+	cout<<" model.write(aa,a): \n"<<model<<endl;
+	model.write(9,b);
+	cout<<" model.write(9,b): \n"<<model<<endl;
+	cout<<" model.read(7,3): \n"<<model.read(7,3)<<endl;
+	cout<<" model: \n"<<model<<endl;;
+	model.write(8,f);
+	cout<<" model.write(8,f): \n"<<model<<endl;
+	
+	
+}
 
 int main()
 {
@@ -102,7 +127,9 @@ int main()
 
     //testByte();
 	//testByteLine();
-	testMemVal();
+	//testMemVal();
+	testMemModel();
+	
 	
 	return 0;
 }
