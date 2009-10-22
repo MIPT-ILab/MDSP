@@ -27,36 +27,51 @@ class Byte
 public:
     /* Constructors */  
     Byte( hostUInt8 val = 0):byte_val( val){} 
+	
+    /* Copy constructors */
     Byte( const Byte& byte):byte_val( byte.getByteVal()){}
 
     /* Get/set methods */
+
+    /* Returns the Byte value in dec form */
     hostUInt8 getByteVal() const
     { 
         return this->byte_val;
     }
     
+    /* Sets the Byte value in dec form */
     void setByteVal( hostUInt8 val) 
     { 
          this->byte_val = val;
     }
-	//int* decToBin();
-
-	/* Member overloaded operators */
+	
+    /* Overloaded. The member operator function
+    returns true only if the Byte is the same */
     bool operator== ( const Byte& byte)
     {
         return this->getByteVal() == byte.getByteVal();
     }
 
+    /* Overloaded. The member operator function returns
+    true only if the Byte differs from the one */
     bool operator!= ( const Byte& byte)
     {
         return this->getByteVal() != byte.getByteVal();
     }
 
+    /* Overloaded. Outputs the value of the 
+    current Byte object in bin form to screen */
     friend ostream& operator<< ( ostream&, const Byte&);
+
+    /* Overloaded. Returns Byte, shifting to the left upon count */
     friend Byte operator>> ( const Byte&, int);
+
+    /* Overloaded. Returns Byte, shifting to the right upon count */
     friend Byte operator<< ( const Byte&, int);
+
+    /* Overloaded. Returns Byte to be a result of bitwise addition */
     friend Byte operator& ( const Byte&, const Byte&);
-	//unsigned int operator[]( unsigned int);
+	
 	
 };
 
@@ -68,9 +83,6 @@ inline ostream& operator<< ( ostream& os, const Byte& byte)
     }
     return os;
 }
-
-
-/* Non-member overloaded operators */
 inline Byte operator>> ( const Byte& byte, int count)
 {	
     Byte temp;
@@ -93,26 +105,6 @@ inline Byte operator& ( const Byte& left, const Byte& right)
 }
 
 
-/*inline unsigned int Byte::operator[]( unsigned int count)
-{
-    if ( count > sizeof( hostUInt8))
-    {
-        cout << "ERROR: Size of byte is less than target bit number!\n";
-        assert( 0);
-    }
-	return ( ( 1 << count) & this->getByteVal() ? 1 : 0); 
-}
-inline int* Byte::decToBin()
-{
-	int *p = new int( 8);
-	for ( short i = 7; i >= 0; i--) 
-    { 
-        p[i] = ( ( 1 << i) & this->getByteVal() ? 1 : 0); 
-    }
-    return p;
-}
-*/
-
 /**
  * class ByteLine implements a logical set of bytes 
  */
@@ -123,10 +115,19 @@ class ByteLine
 	    
 public:
     /* Constructors */
-	ByteLine();
-	ByteLine( unsigned int count);
-    ByteLine( const ByteLine& line);
-    ByteLine( const Byte& byte);
+
+    /* Creates empty object of Byteline class */
+    ByteLine();
+
+    /* Creates object of Byteline class 
+    with count Byte, initializing with null bytes */
+    ByteLine( unsigned int);
+
+    /* Copy constructors */
+    ByteLine( const ByteLine&);
+
+    /* Conversion constructors Byte in ByteLine */
+    ByteLine( const Byte&);
 	    
     /* Destructor */
     virtual ~ByteLine()
@@ -135,24 +136,48 @@ public:
     }
     
     /* Get/set methods */
-    hostUInt8 getByteVal( unsigned int byte_num) const;
-    Byte getByte( unsigned int byte_num) const;
+
+    /* The constant member function. Returns the value of 
+    the Byte at position pos in the ByteLine.If that
+    position is invalid, recalls exception */
+    hostUInt8 getByteVal( unsigned int) const;
+
+    /* The constant member function. Returns the 
+    object of class Byte at position pos in the ByteLine.
+    If that position is invalid, recalls exception */
+    Byte getByte( unsigned int) const;
     
-    void setByteVal( unsigned int byte_num, hostUInt8 byte_val);
-    void setByte( unsigned int byte_num, const Byte& byte);
+    /* Stores the object of class Byte at position pos in 
+    the ByteLine.If that position is invalid, 
+    recalls exception */
+    void setByte( unsigned int, const Byte&);
+	
+    /* Adds object of Byte class to end of ByteLine */
+    void addByte( const Byte&);
 
-    void addByte( const Byte& byte);
-    void resizeByteLine( unsigned int count);
+    /* Resize of ByteLine on count. New member 
+    of ByteLine is null bytes */
+    void resizeByteLine( unsigned int);
 
+    /* The constant member function. Return size of Byteline */
     unsigned int getSizeOfLine() const
     { 
         return ( *byte_line).size();
     }
+
+    /* Overloaded. Assign the current object of ByteLine class to another */
     ByteLine& operator = ( const ByteLine&);
+
+    /* Overloaded. The member function returns an object of 
+    class reference. Returns the Byte at position pos in the ByteLine.
+    If that position is invalid, recalls exception */
     Byte operator[] ( int) const;
+
+    /* Overloaded. Outputs the ByteLine in bin form to screen */
     friend ostream& operator<< ( ostream&, const  ByteLine&);
-    friend ByteLine operator+ ( const Byte&, const Byte&);
-    friend ByteLine operator+ (  const ByteLine&,  const Byte&);
+	
+    /* Overloaded. Returns the ByteLine to be a result of addition two 
+    object of class reference */
     friend ByteLine operator+ (  const ByteLine&,  const ByteLine&);
      	
 };
@@ -195,18 +220,6 @@ inline ostream& operator<< ( ostream& os, const ByteLine& line)
     return os;
 }
 
-inline ByteLine operator+ ( const Byte& a, const Byte& b)
-{	
-    ByteLine temp( a);
-    temp.addByte( b);
-    return temp;	
-}
-inline ByteLine operator+ (  const ByteLine& a,  const Byte& b)
-{
-    ByteLine temp( a);
-    temp.addByte( b);
-    return temp;
-}
 inline ByteLine operator+ (  const ByteLine& a,  const ByteLine& b)
 {
     ByteLine temp( a); 
@@ -230,48 +243,80 @@ public:
 	
     /* Constructors and destructor */
 
+    /* Copy constructors */
     MemVal( const MemVal &mem_val):ByteLine( mem_val.getByteLine()),
-                    size_of_segmentation( mem_val.getSizeOfSegment()){} ;
+                    size_of_segmentation( mem_val.getSizeOfSegment()){};
 
-    MemVal():ByteLine(), size_of_segmentation( 0){};
-    MemVal( unsigned int size):ByteLine( size), size_of_segmentation( size){};
+    /* Creates empty object of MemVal class */
+    MemVal():ByteLine(), size_of_segmentation( 1){};
 
-    MemVal( const ByteLine&, unsigned int);
+    /* Creates object of MemVl class ,
+    ByteLine, initializing with null bytes */
+    MemVal( unsigned int size):ByteLine( size), size_of_segmentation( 1){};
+
+    /* Conversion constructors ByteLine in MemVal */
+    MemVal( const ByteLine& line):ByteLine( line),
+                    size_of_segmentation( 1){} ;;
 		   
     /* Get/set methods */
 	
+    /*If size_of_segmentation different from 1, 
+    adds null bytes to ByteLine 
+    multiple of size_of_segmentation */
     void recountLenght();
+
+    /* Set size_of_segmentation */
     void setSizeOfSegment( unsigned int size)
     {
         size_of_segmentation = size;
+        recountLenght();
     }
 
-		
+    /* Returns ByteLine with specified lenght and first
+    element with index.If that position is invalid, recalls exception */		
   	ByteLine getByteLine( unsigned int, unsigned int) const;
+
+    /* Returns entire ByteLine */
     ByteLine getByteLine() const;
-	
+
+    /* Stores the object of class ByteLine at position pos in 
+    the MemVal.If that position is invalid, 
+    recalls exception */
     void writeByteLine( const ByteLine&, unsigned int);
     void writeByteLine( const ByteLine&);
-    void resizeMemVal( unsigned int);
 
+    /* Resizes of MemVal on count. New member 
+    of ByteLine is null bytes */	
+    void resizeMemVal( unsigned int size)
+    {
+        resizeByteLine( size);
+        recountLenght();
+    }
 
+    /* Returns size of segmentation */
     unsigned int getSizeOfSegment() const
     {
         return size_of_segmentation;
     }
+
+    /* Returns size of MemVal */
     unsigned int getSizeOfMemVal() const
     {
         return getSizeOfLine();
     }
+
+    /* Overloaded. Returns the MemVal to be a result of addition two 
+    object of class reference */
     friend MemVal operator+ ( const MemVal&, const MemVal&);
+
+   /* Overloaded. Assign the current object of MemVal class to another */
     MemVal& operator= ( const MemVal&);
-    MemVal& operator= ( const ByteLine&);
     
 };
 inline MemVal operator+ ( const MemVal& a, const MemVal& b)
 {
     MemVal temp ( a);
-    temp.resizeByteLine( a.getSizeOfMemVal() + b.getSizeOfMemVal());
+    temp.resizeMemVal( a.getSizeOfMemVal() + b.getSizeOfMemVal());
     temp.writeByteLine( b.getByteLine(), a.getSizeOfMemVal());
     return temp;
 }
@@ -280,13 +325,6 @@ inline MemVal& MemVal::operator= ( const MemVal& mem_val)
 	ByteLine temp( mem_val.getByteLine());
 	resizeMemVal( mem_val.getSizeOfMemVal());
 	setSizeOfSegment( mem_val.getSizeOfSegment());
-	this->writeByteLine( temp);
-	return *this;
-}
-inline MemVal& MemVal::operator= ( const ByteLine& line)
-{
-	ByteLine temp( line);
-	resizeMemVal( line.getSizeOfLine());
 	this->writeByteLine( temp);
 	return *this;
 }
