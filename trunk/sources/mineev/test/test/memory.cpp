@@ -23,9 +23,15 @@ ByteLine::ByteLine()
 
 ByteLine::ByteLine( unsigned int count)
 {
-	byte_line = new vector<Byte>;
-	//(*byte_line).reserve( count);
-	(*byte_line).resize( count);
+    byte_line = new vector<Byte>;
+    try
+    {
+        (*byte_line).resize( count);
+    }catch ( std::bad_alloc)
+    {
+        cout << "ERROR: Can not allocate memory!\n";
+        assert( 0);
+    }
 }
 
 ByteLine::ByteLine( const ByteLine& line)
@@ -86,22 +92,6 @@ Byte ByteLine::getByte( unsigned int byte_num) const
     return ( *byte_line).at( byte_num);
 }
 
-
-void ByteLine::setByteVal( unsigned int byte_num, hostUInt8 byte_val)
-{
-    if ( byte_num > this->getSizeOfLine())
-    {
-        cout << "ERROR: Size of byte line is less than target byte number!\n";
-        assert( 0);
-    }
-    if ( ( *byte_line).empty())
-    {
-        cout << "ERROR: Byte line is empty!\n";
-        assert( 0);
-    }      
-    ( *byte_line).at( byte_num).setByteVal( byte_val);
-}
-
 void ByteLine::setByte( unsigned int byte_num, const Byte& byte)
 {
     if ( byte_num > this->getSizeOfLine())
@@ -131,10 +121,10 @@ void ByteLine::addByte( const Byte& byte)
 }
 void ByteLine::resizeByteLine( unsigned int count)
 {
-	try
+    try
     {
-		( *byte_line).resize( count);
-	}catch ( std::bad_alloc)
+        ( *byte_line).resize( count);
+    }catch ( std::bad_alloc)
     {
         cout << "ERROR: Can not allocate memory!\n";
         assert( 0);
@@ -146,28 +136,16 @@ void ByteLine::resizeByteLine( unsigned int count)
  * Implementation of class MemVal
  */
 
-MemVal::MemVal( const ByteLine& line, unsigned int size):ByteLine( line),
-                                                                size_of_segmentation( size)
-{
-    recountLenght();
-}
-
 void MemVal::recountLenght()
 {
     unsigned int temp = getSizeOfMemVal() % size_of_segmentation;
-    if ( temp != 0)
+    if ( temp != 0 && size_of_segmentation != 1)
     {
         temp = size_of_segmentation - temp;
         temp += getSizeOfMemVal();
         resizeByteLine( temp);
     }
 }
-void MemVal::resizeMemVal( unsigned int size)
-{
-    resizeByteLine( size);
-    recountLenght();
-}
-
 
 ByteLine MemVal::getByteLine( unsigned int index, unsigned int count) const
 {
