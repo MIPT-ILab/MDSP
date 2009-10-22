@@ -16,6 +16,7 @@
 
 using namespace std;
 
+
 /**
  * class Byte implements 
  */
@@ -332,17 +333,19 @@ inline MemVal& MemVal::operator= ( const MemVal& mem_val)
 /**
  * class MemoryModel implements memory of simulated architecture and infrastructure to operate with it
  */
-/*
+
+typedef map< mathAddr, MemVal , std::less<mathAddr> > memMap;
 class MemoryModel 
 {
-	//map< MemVal, mathAddr, std::greater<mathAddr> > *mem_model;
-	map< MemVal, mathAddr > *mem_model;
+	
+	memMap *mem_model;
 	unsigned int size_of_segmentation;
+	
     
 public:
 	
     // Constructors and destructor 
-    MemoryModel( unsigned int size_of_segmentation );
+    MemoryModel( unsigned int size);
     ~MemoryModel()
 	{
 		delete mem_model;
@@ -350,27 +353,60 @@ public:
      
     
    
-    MemVal read( mathAddr read_ptr, unsigned int num_of_bytes);
+   // MemVal read( mathAddr read_ptr, unsigned int num_of_bytes);
+	ByteLine read( mathAddr read_ptr, unsigned int num_of_bytes);
 		
-    map< MemVal, mathAddr>::iterator find( mathAddr ptr);
-	map< MemVal, mathAddr>::iterator findOrInit( mathAddr ptr);
-    void mergeMemVal(map< MemVal, mathAddr>::iterator, MemVal);
-	unsigned int countDistance( map< MemVal, mathAddr>::iterator);
+    memMap::iterator find( mathAddr ptr);
+	memMap::iterator findOrInit( mathAddr ptr);
+	memMap::iterator getFirstIter()
+	{
+		memMap::iterator pos;
+		return pos = (*mem_model).begin();
+	}
+	memMap::iterator getLastIter()
+	{
+		memMap::iterator pos;
+		return pos = (*mem_model).end();
+	}
+		
+
+    void mergeMemVal(memMap::iterator, MemVal*);
+	unsigned int countDistance(const memMap::iterator);
      
     // Write Byte to write_ptr address 
-    void write( mathAddr write_ptr, ByteLine line);
+    void write( mathAddr write_ptr, const ByteLine& line);
 	void write( mathAddr write_ptr, MemVal mem_value);
-	friend bool operator ==( map< MemVal, mathAddr>::iterator, mathAddr);
+	friend bool operator ==( memMap::iterator, mathAddr);
+	friend ostream& operator<< ( ostream&,  MemoryModel&);
+	friend memMap::iterator operator+ ( const memMap::iterator,  int);
         
 };
-inline bool operator ==( map< MemVal, mathAddr>::iterator p , mathAddr adrr)
+
+inline bool operator ==( memMap::iterator p , mathAddr adrr)
 {
 
-	if( (adrr> p->second) && (((p->first).getSizeOfMemVal()+ p->second  )>  adrr) )
+	if( (adrr >= p->first ) && (((p->second).getSizeOfMemVal()+ p->first - 1 )>=  adrr) )
 	{
 		return true;
 	}
 	return false;
 }
-*/
+inline ostream& operator<< ( ostream& os,  MemoryModel& model)
+{
+	memMap::iterator pos;
+	for ( pos = model.getFirstIter(); pos != model.getLastIter(); ++pos)
+	{
+		os<<pos->first<<'\t'<<pos->second<<endl;
+	}
+	return os;
+
+}
+inline memMap::iterator operator+ ( const memMap::iterator pos,  int count)
+{
+	memMap::iterator temp = pos;
+	return ++temp;
+}
+
+
+
 #endif /* MEMORY_H */
