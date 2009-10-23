@@ -98,6 +98,7 @@ class ByteLine
 	    
 public:
     /* Constructors */
+    ByteLine() {};
     ByteLine( const ByteLine& line);
     ByteLine( const Byte& byte);
 	    

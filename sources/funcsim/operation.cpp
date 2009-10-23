@@ -1,13 +1,25 @@
 /**
-* operation.cpp - Implementation of Operation class methods
-* Copyright 2009 MDSP team
-*/
+ * operation.cpp - Implementation of Operation class methods
+ * Copyright 2009 MDSP team
+ */
 
 #include "operation.h"
+#include "register_file.h"
+#include "flags.h"
 
 /**
-* Set any operation
-*/
+ * Constructor with pointer to core. Pointer to core 
+ * is needed to access main structures (RF, flags, PC) of simulator.
+ */
+Operation::Operation( Core *core)
+{
+    this->core = core;
+    this->clear();
+}
+
+/**
+ * Set any operation
+ */
 void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
                      hostUInt8 sd, hostUInt8 am, 
                      hostUInt16 imm10, hostUInt16 imm16,
@@ -16,8 +28,8 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
 }
 
 /**
-* Set an operation of MOVE type
-*/
+ * Set an operation of MOVE type
+ */
 void Operation::set( OperType type, OperCode opcode0, 
                      hostUInt8 sd, hostUInt16 imm16, 
                      hostUInt8 rs1, hostUInt8 rd)
@@ -25,8 +37,8 @@ void Operation::set( OperType type, OperCode opcode0,
 }
 
 /**
-* Set an operation of ALU type
-*/
+ * Set an operation of ALU type
+ */
 void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
                      hostUInt8 am, hostUInt16 imm10, 
                      hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd)
@@ -34,8 +46,8 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
 }
 
 /**
-* Set an operation of P_FLOW type
-*/
+ * Set an operation of P_FLOW type
+ */
 void Operation::set( OperType type, OperCode opcode0,
                      hostUInt8 sd, hostUInt16 imm16, 
                      hostUInt8 rd)
@@ -43,8 +55,8 @@ void Operation::set( OperType type, OperCode opcode0,
 }
 
 /**
-* Encode operation in binary form
-*/
+ * Encode operation in binary form
+ */
 MemVal* Operation::encode()
 {
 /*
@@ -56,22 +68,22 @@ MemVal* Operation::encode()
 }
 
 /**
-* Decode an operation from binary form
-*/
+ * Decode an operation from binary form
+ */
 void Operation::decode( MemVal* mem_value)
 {
 }
 
 /*
-* Print an operation to console
-*/
+ * Print an operation to console
+ */
 void Operation::dump()
 {
 }
 
 /*
-* Set instruction word (binary representation) from memory block
-*/
+ * Set instruction word (binary representation) from memory block
+ */
 void Operation::setInstrWord( MemVal* mem_value)
 {
     /*
@@ -80,15 +92,15 @@ void Operation::setInstrWord( MemVal* mem_value)
 }
 
 /*
-* Set memory block from instruction word (binary representation)
-*/
+ * Set memory block from instruction word (binary representation)
+ */
 void Operation::setMemBlock( MemVal* mem_value)
 {
 }
 
 /*
-* Execute the operation
-*/
+ * Execute the operation
+ */
 void Operation::execute()
 {
     switch ( this->type)
@@ -109,15 +121,15 @@ void Operation::execute()
 }
 
 /*
-* Execute the operation of MOVE type
-*/
+ * Execute the operation of MOVE type
+ */
 void Operation::executeMove()
 {
 }
 
 /*
-* Execute the operation of ALU type
-*/
+ * Execute the operation of ALU type
+ */
 void Operation::executeALU()
 {
 
@@ -125,8 +137,8 @@ void Operation::executeALU()
 }
 
 /*
-* Execute the operation of P_FLOW type
-*/
+ * Execute the operation of P_FLOW type
+ */
 void Operation::executePFlow()
 {
     /* Read flag register before execution */

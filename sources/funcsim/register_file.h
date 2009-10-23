@@ -21,6 +21,7 @@ class RegVal: public ByteLine
     ByteLine* byte_line;
     
 public:
+    RegVal() {};
     /* Constructors and destructor */
     RegVal( unsigned int number_of_bytes_in_reg_val)
     {

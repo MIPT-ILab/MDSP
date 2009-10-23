@@ -73,7 +73,7 @@ typedef enum OperType
     MAC,
     DMAC,
     P_FLOW
-} OperationType;
+} OperType;
 
 /* Operation code */
 typedef enum OperCode
@@ -88,5 +88,13 @@ typedef enum OperCode
     JGT
 } OperCode;
 
-#endif /* TYPES_H */
+typedef enum FlagType
+{
+    NO_FLAG,
+    N,  // negative
+    Z,  // zero 
+    C,  // carry out
+    O   // overflow
+} FlagType;
 
+#endif /* TYPES_H */
