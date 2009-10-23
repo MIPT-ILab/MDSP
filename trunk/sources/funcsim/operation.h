@@ -1,8 +1,8 @@
 /**
-* operation.h - Header of Operation class,
-* which defines an instruction fields
-* Copyright 2009 MDSP team
-*/
+ * operation.h - Header of Operation class,
+ * which defines an instruction fields
+ * Copyright 2009 MDSP team
+ */
 
 #ifndef OPERATION_H
 #define OPERATION_H
@@ -10,15 +10,18 @@
 #include <iostream>
 #include <cassert>
 #include "types.h"
+#include "core.h"
 #include "memory.h"
 
 using namespace std;
 
 /**
-* Class of operation description
-*/
+ * Class of operation description
+ */
 class Operation
 {
+    Core* core;
+
     hostUInt32 instr_word;
 
     OperType type;
@@ -35,6 +38,7 @@ class Operation
 
 public:
     Operation() {};
+    Operation( Core* core);
 
     /* Get methods */
     inline OperType getType() { return this->type; }

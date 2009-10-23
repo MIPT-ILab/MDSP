@@ -1,13 +1,18 @@
 /**
-* main.cpp - Entry point of functional simulator (funcsim)
-* Copyright 2009 MDSP team
-*/
+ * main.cpp - Entry point of functional simulator (funcsim)
+ * Copyright 2009 MDSP team
+ */
 
-#include "operation.h"
+#include "core.h"
 
 int main()
 {
+    Core* core = new Core();
 
-    return 0;
+    core->init( 0x0000);
+    core->run();
+
+    getchar();
+
+    return 1;
 }
-
