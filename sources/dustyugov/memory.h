@@ -146,7 +146,7 @@ inline Byte operator& ( const Byte& left, const Byte& right)
 class ByteLine
 {
     vector<Byte> *byte_line;
-	static enum output_type output;
+    static enum output_type output;
         
 public:
     /* Constructors */
@@ -250,19 +250,19 @@ inline ostream& operator<< ( ostream& os,  ByteLine& line)
 {   
     for ( int i = 0; i < line.getSizeOfLine(); i++)
     {
-			switch ( line.getOutputVal())
-	{
+            switch ( line.getOutputVal())
+    {
 case BIN:
-	(line[i]).setBinOut();
+    (line[i]).setBinOut();
         os << line[ i] << " | ";
 case DEC:
-	(line[i]).setDecOut();
-	    os << line[ i] << " | ";
+    (line[i]).setDecOut();
+        os << line[ i] << " | ";
 case HEX:
-	(line[i]).setHexOut();
-	    os << line[ i] << " | ";
+    (line[i]).setHexOut();
+        os << line[ i] << " | ";
     }
-	}
+    }
     return os;
 }
 
