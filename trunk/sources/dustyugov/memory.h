@@ -3,15 +3,16 @@
  * Define classes and methods to operate with memory of simulated architecture
  * Copyright 2009 MDSP team
  */
+
 #ifndef MEMORY_H
-#define MEMORY_H 
+#define MEMORY_H
 
 #include <iostream>
 #include <vector>
 #include "types.h"
 #include <cassert>
 
-#define DEFAULT_OUT HEX
+#define DEFAULT_OUT HEX // default output form
 
 using namespace std;
 
@@ -37,18 +38,17 @@ public:
     { 
         return this->byte_val;
     }
-
+    
     void setByteVal( hostUInt8 val) 
     { 
          this->byte_val = val;
     }
-    
+
     enum output_type getOutputVal() const
     {
         return this->output;
     }
-
-    /* Set methods for output options*/
+/* Set methods for output options*/
     void setBinOut()
     {
         this->output = BIN;
@@ -79,6 +79,7 @@ public:
     {
         this->output = DEFAULT_OUT;// default output is hex
     }
+
     /* Member overloaded operators */
     bool operator== ( const Byte& byte)
     {
@@ -96,7 +97,7 @@ public:
     friend Byte operator& ( const Byte&, const Byte&);
 };
 
-/* Overloaded output operator*/
+/* Output operator due to output val, class Byte*/
 inline ostream& operator<< ( ostream& os, const Byte& byte)
 {   
     switch ( byte.getOutputVal())
@@ -115,6 +116,7 @@ case HEX:
     }
     return os;
 }
+
 
 /* Non-member overloaded operators */
 inline Byte operator>> ( const Byte& byte, int count)
@@ -150,6 +152,7 @@ class ByteLine
         
 public:
     /* Constructors */
+    ByteLine() {};
     ByteLine( const ByteLine& line);
     ByteLine( const Byte& byte);
         
@@ -181,7 +184,6 @@ public:
     {
         this->output = BIN;
     }
-
 
     void setDecOut()
     {
@@ -246,6 +248,7 @@ inline ByteLine& ByteLine::operator = ( ByteLine& line)
     return *this;
 }
 
+/* Output operator due to output val, class Byteline*/
 inline ostream& operator<< ( ostream& os,  ByteLine& line)
 {   
     for ( int i = 0; i < line.getSizeOfLine(); i++)
