@@ -3,7 +3,9 @@
  * Define classes and methods to operate with memory of simulated architecture
  * Copyright 2009 MDSP team
  */
- 
+#ifndef MEMORY_H
+#define MEMORY_H 
+
 #include <iostream>
 #include <vector>
 #include "types.h"
@@ -41,7 +43,7 @@ public:
          this->byte_val = val;
     }
     
-    enum output_type getOutputVal()
+    enum output_type getOutputVal() const
     {
         return this->output;
     }
@@ -144,6 +146,7 @@ inline Byte operator& ( const Byte& left, const Byte& right)
 class ByteLine
 {
     vector<Byte> *byte_line;
+	static enum output_type output;
         
 public:
     /* Constructors */
@@ -167,6 +170,44 @@ public:
     { 
         return ( *byte_line).size();
     }
+
+    enum output_type getOutputVal() const
+    {
+        return this->output;
+    }
+
+    /* Set methods for output options*/
+    void setBinOut()
+    {
+        this->output = BIN;
+    }
+
+
+    void setDecOut()
+    {
+        this->output = DEC;
+    }
+
+    void setHexOut()
+    {
+        this->output = HEX;
+    }
+    /* Clear methods for output options*/
+    void clrBinOut()
+    {
+        this->output = DEFAULT_OUT; // default output is hex
+    }
+
+    void clrDecOut()
+    {
+        this->output = DEFAULT_OUT;// default output is hex
+    }
+
+    void clrHexOut()
+    {
+        this->output = DEFAULT_OUT;// default output is hex
+    }
+
     ByteLine& operator = ( ByteLine&);
     Byte operator[] ( int);
     friend ostream& operator<< ( ostream&,  ByteLine&);
@@ -209,8 +250,19 @@ inline ostream& operator<< ( ostream& os,  ByteLine& line)
 {   
     for ( int i = 0; i < line.getSizeOfLine(); i++)
     {
-        os << line[ i] << " | ";  
+			switch ( line.getOutputVal())
+	{
+case BIN:
+	(line[i]).setBinOut();
+        os << line[ i] << " | ";
+case DEC:
+	(line[i]).setDecOut();
+	    os << line[ i] << " | ";
+case HEX:
+	(line[i]).setHexOut();
+	    os << line[ i] << " | ";
     }
+	}
     return os;
 }
 
@@ -288,3 +340,4 @@ public:
      */
 };
 
+#endif /* MEMORY_H */
