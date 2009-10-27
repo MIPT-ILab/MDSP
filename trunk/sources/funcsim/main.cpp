@@ -4,6 +4,7 @@
  */
 
 #include "core.h"
+#include "test.h"
 
 int main()
 {
@@ -13,6 +14,8 @@ int main()
     core->run();
 
     getchar();
+
+	test();
 
     return 1;
 }
