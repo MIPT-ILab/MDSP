@@ -3,7 +3,7 @@
  * Define classes and method to operate with memory of simulated architecture
  * Copyright 2009 MDSP team
  */
- 
+
 
 #include <iostream>
 #include <cassert>
@@ -73,7 +73,7 @@ hostUInt8 ByteLine::getByteVal( unsigned int byte_num) const
     {
         cout << "ERROR: Byte line is empty!\n";
         assert( 0);
-    }        
+    }
     return ( *byte_line).at( byte_num).getByteVal();
 }
 
@@ -88,7 +88,7 @@ Byte ByteLine::getByte( unsigned int byte_num) const
     {
         cout << "ERROR: Byte line is empty!\n";
         assert( 0);
-    }    
+    }
     return ( *byte_line).at( byte_num);
 }
 
@@ -103,7 +103,7 @@ void ByteLine::setByte( unsigned int byte_num, const Byte& byte)
     {
         cout << "ERROR: Byte line is empty!\n";
         assert( 0);
-    } 
+    }
     ( *byte_line).at( byte_num) = byte;
 }
 
@@ -218,7 +218,7 @@ ByteLine MemoryModel::read(  mathAddr read_ptr, unsigned int num_of_bytes)
 		cout << "ERROR!\n";
         assert( 0);
 	}
-	
+
 	memMap::iterator pos, start, end;
 	start = find( read_ptr);
 	mathAddr temp_addr = start->first;
@@ -237,24 +237,24 @@ ByteLine MemoryModel::read(  mathAddr read_ptr, unsigned int num_of_bytes)
 			assert( 0);
 		}
 		mergeMemVal( pos, &memval);
-		
+
 	}
 	( *mem_model).erase( start, end);
 	( *mem_model).erase( end);
 	( *mem_model)[ temp_addr] = memval;
 	return memval.getByteLine( read_ptr - temp_addr, num_of_bytes);
-	
-	 	
+
+
 }
 
-				
-		
+
+
 void MemoryModel::mergeMemVal( memMap::iterator pos, MemVal *mem_val)
 {
 	if ( countDistance( pos) > 0)
 	{
 			mem_val->resizeMemVal( ( pos + 1)->first - pos->first);
-	} 
+	}
 		( *mem_val) = ( *mem_val) + ( pos + 1)->second;
 }
 
@@ -271,7 +271,7 @@ void MemoryModel::write( mathAddr write_ptr, const ByteLine& line)
 	for ( pos = start; pos != end; ++pos)
 	{
 		mergeMemVal( pos, &memval);
-		
+
 	}
 	( *mem_model).erase( start, end);
 	( *mem_model).erase( end);
@@ -284,9 +284,9 @@ void MemoryModel::write( mathAddr write_ptr, const ByteLine& line)
 memMap::iterator MemoryModel::findOrInit( mathAddr ptr)
 {
 	memMap::iterator pos;
-	MemVal temp( size_of_segmentation); 
+	MemVal temp( size_of_segmentation);
 	mathAddr addr = ptr - ( ptr % size_of_segmentation);
-	
+
 	for ( pos = ( *mem_model).begin(); pos != ( *mem_model).end(); ++pos)
 	{
 		if ( pos == ptr)
@@ -298,13 +298,13 @@ memMap::iterator MemoryModel::findOrInit( mathAddr ptr)
 			( *mem_model)[ addr] = temp;
 			pos = ( *mem_model).find( addr);
 			return pos;
-			
+
 		}
 	}
 	( *mem_model)[ addr] = temp;
 	pos = ( *mem_model).find( addr);
 	return pos;
-	
+
 }
 
 
@@ -327,7 +327,3 @@ unsigned int MemoryModel::countDistance( const memMap::iterator pos)
 {
 	return ( pos + 1)->first - ( pos->first + ( pos->second).getSizeOfMemVal());
 }
-
-			
-
-
