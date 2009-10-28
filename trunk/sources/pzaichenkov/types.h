@@ -3,12 +3,12 @@
  * The types are used in algorithms affected by size of a variable
  * Copyright 2009 MDSP team
  */
- 
+
 #ifndef TYPES_H
 #define TYPES_H
 
 /* compile for Windows */
-/* #define WINDOWS 0 */
+
 
 #ifdef WINDOWS
 
@@ -59,11 +59,12 @@ typedef double hostFloat64;
 #endif /* !WINDOWS */
 
 /* Type for mathematical memory address */
-typedef hostUInt32 mathAddr; 
+typedef hostUInt32 mathAddr;
 
 /* Type for phisical register numeration */
 typedef hostUInt32 physRegNum;
 
+/* Operation type */
 typedef enum OperType
 {
     NO_TYPE,
@@ -72,8 +73,9 @@ typedef enum OperType
     MAC,
     DMAC,
     P_FLOW
-} Operationype;
+} OperType;
 
+/* Operation code */
 typedef enum OperCode
 {
     NOP,
@@ -86,5 +88,13 @@ typedef enum OperCode
     JGT
 } OperCode;
 
-#endif /* TYPES_H */
+typedef enum FlagType
+{
+    NO_FLAG,
+    N,  // negative
+    Z,  // zero
+    C,  // carry out
+    O   // overflow
+} FlagType;
 
+#endif /* TYPES_H */

@@ -10,8 +10,8 @@
 #include <iostream>
 #include <cassert>
 #include "types.h"
+#include "core.h"
 #include "memory.h"
-
 using namespace std;
 
 /**
@@ -19,6 +19,11 @@ using namespace std;
  */
 class Operation
 {
+    Core* core;
+
+    /* this is a word representation of MemVal */
+    hostUInt32 instr_word;
+
     OperType type;
     OperCode opcode0, opcode1, opcode2; // all 3 opcodes are needed for ALU only
 
@@ -28,9 +33,6 @@ class Operation
     hostUInt16 imm10:10;
     hostUInt16 imm16;
     hostUInt8 rs1:5, rs2:5, rd:5;
-
-    /* this is a word representation of MemVal */
-    hostUInt32 instr_word;
 
     /* get type */
     OperType decodeType();
@@ -44,35 +46,18 @@ class Operation
     void decodeALU();
     void decodePFLOW();
 
-    void setMOVE( OperCode opcode0,
-                  hostUInt8 sd,
-                  hostUInt16 imm16,
-                  hostUInt8 rs1,
-                  hostUInt8 rd);
-    void setALU( OperCode opcode0,
-                 OperCode opcode1,
-                 OperCode opcode2,
-                 hostUInt8 am,
-                 hostUInt8 rs1,
-                 hostUInt8 rs2,
-                 hostUInt8 rd);
-
-    void setPFLOW( OperCode opcode0,
-                   hostUInt8 sd,
-                   hostUInt8 rd,
-                   hostUInt16 imm16);
-
     void dumpMOVE();
     void dumpALU();
     void dumpPFLOW();
     
     /* Helper methods */
-    hostUInt32 getInstrWord( MemVal* mem_value);
+    void setInstrWord( MemVal* mem_value);
+    void setMemBlock( MemVal* mem_value);
     hostUInt32 getValueByMask(hostUInt32 mask, int shift);
-
 
 public:
     Operation();
+    Operation( Core* core);
 
     /* Get methods */
     inline OperType getType() { return this->type; }
@@ -136,13 +121,55 @@ public:
         this->rs1 = this->rs2 = this->rd = 0;
     }
 
+    /* Set the operation */
+    /*
+     * general set method ( includes all properties as parameters)
+     */
     void set( OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
               hostUInt8 sd, hostUInt8 am, 
               hostUInt16 imm10, hostUInt16 imm16,
               hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd);
 
+    /*
+     * set method for an operation of MOVE type
+     */
+    void set( OperType type,
+              OperCode opcode0,
+              hostUInt8 sd,
+              hostUInt16 imm16,
+              hostUInt8 rs1,
+              hostUInt8 rd);
+    /*
+     * set method for an operation of ALU type
+     */
+    void set( OperType type,
+              OperCode opcode0,
+              OperCode opcode1,
+              OperCode opcode2,
+              hostUInt8 am,
+              hostUInt8 rs1,
+              hostUInt8 rs2,
+              hostUInt8 rd);
+
+    /*
+     * set method for an operation of P_FLOW type
+     */
+    void set( OperType type,
+              OperCode opcode0,
+              hostUInt8 sd,
+              hostUInt8 rd,
+              hostUInt16 imm16);
+
+
     MemVal* encode();
     void decode( MemVal* mem_value);
+
+    /* Execute the operation */
+    void execute();
+    void executeMove();
+    void executeALU();
+    void executePFlow();
+
     void dump();
 
 };
