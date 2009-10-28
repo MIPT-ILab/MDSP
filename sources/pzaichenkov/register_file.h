@@ -13,14 +13,15 @@
 #include "memory.h"
 
 /**
- * class RegVal implements a object to interaction with RF 
+ * class RegVal implements a object to interaction with RF
  */
 
 class RegVal: public ByteLine
 {
     ByteLine* byte_line;
-    
+
 public:
+    RegVal() {};
     /* Constructors and destructor */
     RegVal( unsigned int number_of_bytes_in_reg_val)
     {
@@ -35,21 +36,21 @@ public:
     {
         delete byte_line;
     }
-    
+
     /* Get/set methods */
     hostUInt8 getByteVal( unsigned int byte_num)
     {
         return byte_line->getByteVal(byte_num);
     }
-    
+
     void setByteVal( unsigned int byte_num, hostUInt8 byte_val)
     {
-        byte_line->setByteVal(byte_num, byte_val);
+        byte_line->setByte(byte_num, byte_val);
     }
-    
-    unsigned int getSizeOfMemVal() 
-    { 
-        return this->byte_line->getSizeOfLine(); 
+
+    unsigned int getSizeOfMemVal()
+    {
+        return this->byte_line->getSizeOfLine();
     }
 };
 
@@ -57,20 +58,20 @@ public:
  * class RegisterFileModel implements RF of simulated architecture and infrastructure to operate with it
  */
 
-class RegisterFileModel 
+class RegisterFileModel
 {
 
 public:
-    /* Constructors and destructor 
+    /* Constructors and destructor
     RegisterFileModel( unsigned int number_of_registers, unsigned int size_of_register_in_bytes);
     ~RegisterFileModel();
      */
-    
-    /* Read a logical set of bytes (RegVal) form physical register with number reg_num 
+
+    /* Read a logical set of bytes (RegVal) form physical register with number reg_num
     RegVal* readReg( physRegNum reg_num);
      */
-    
-    /* Write a logical set of bytes (RegVal) to physical register with number reg_num 
+
+    /* Write a logical set of bytes (RegVal) to physical register with number reg_num
     void writeReg( physRegNum reg_num, RegVal reg_value);
      */
 };
