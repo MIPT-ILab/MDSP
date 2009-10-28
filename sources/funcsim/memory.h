@@ -6,7 +6,7 @@
 
 #ifndef MEMORY_H
 #define MEMORY_H
- 
+
 #include <iostream>
 #include <vector>
 #include <map>
@@ -18,17 +18,17 @@ using namespace std;
 
 
 /**
- * class Byte implements 
+ * class Byte implements
  */
 
 class Byte
 {
     hostUInt8 byte_val;
-    
+
 public:
-    /* Constructors */  
-    Byte( hostUInt8 val = 0):byte_val( val){} 
-	
+    /* Constructors */
+    Byte( hostUInt8 val = 0):byte_val( val){}
+
     /* Copy constructors */
     Byte( const Byte& byte):byte_val( byte.getByteVal()){}
 
@@ -36,16 +36,16 @@ public:
 
     /* The constant member function. Returns the Byte value in dec form */
     hostUInt8 getByteVal() const
-    { 
+    {
         return this->byte_val;
     }
-    
+
     /* Sets the Byte value in dec form */
-    void setByteVal( hostUInt8 val) 
-    { 
+    void setByteVal( hostUInt8 val)
+    {
          this->byte_val = val;
     }
-	
+
     /* Overloaded. The member operator function
     returns true only if the Byte is the same */
     bool operator== ( const Byte& byte)
@@ -60,7 +60,7 @@ public:
         return this->getByteVal() != byte.getByteVal();
     }
 
-    /* Overloaded. Outputs the value of the 
+    /* Overloaded. Outputs the value of the
     current Byte object in bin form to screen */
     friend ostream& operator<< ( ostream&, const Byte&);
 
@@ -72,34 +72,34 @@ public:
 
     /* Overloaded. Returns Byte to be a result of bitwise addition */
     friend Byte operator& ( const Byte&, const Byte&);
-	
-	
+
+
 };
 
 inline ostream& operator<< ( ostream& os, const Byte& byte)
-{   
-    for ( short i = 7; i >= 0; i--) 
-    { 
-        os << ( ( 1 << i) & byte.getByteVal() ? '1' : '0'); 
+{
+    for ( short i = 7; i >= 0; i--)
+    {
+        os << ( ( 1 << i) & byte.getByteVal() ? '1' : '0');
     }
     return os;
 }
 inline Byte operator>> ( const Byte& byte, int count)
-{	
+{
     Byte temp;
     temp.setByteVal( byte.getByteVal() >> count);
     return temp;
 }
 
 inline Byte operator<< ( const Byte& byte, int count)
-{	
+{
     Byte temp;
     temp.setByteVal( byte.getByteVal() << count);
     return temp;
 }
 
 inline Byte operator& ( const Byte& left, const Byte& right)
-{	
+{
     Byte temp;
     temp.setByteVal( left.getByteVal() & right.getByteVal());
     return temp;
@@ -107,20 +107,20 @@ inline Byte operator& ( const Byte& left, const Byte& right)
 
 
 /**
- * class ByteLine implements a logical set of bytes 
+ * class ByteLine implements a logical set of bytes
  */
 
 class ByteLine
 {
     vector<Byte> *byte_line;
-	    
+
 public:
     /* Constructors */
 
     /* Creates empty object of Byteline class */
     ByteLine();
 
-    /* Creates object of Byteline class 
+    /* Creates object of Byteline class
     with count Byte, initializing with null bytes */
     ByteLine( unsigned int);
 
@@ -129,58 +129,58 @@ public:
 
     /* Conversion constructors Byte in ByteLine */
     ByteLine( const Byte&);
-	    
+
     /* Destructor */
     virtual ~ByteLine()
-    { 
+    {
         delete byte_line;
     }
-    
+
     /* Get/set methods */
 
-    /* The constant member function. Returns the value of 
+    /* The constant member function. Returns the value of
     the Byte at position pos in the ByteLine.If that
     position is invalid, recalls exception */
     hostUInt8 getByteVal( unsigned int) const;
 
-    /* The constant member function. Returns the 
+    /* The constant member function. Returns the
     object of class Byte at position pos in the ByteLine.
     If that position is invalid, recalls exception */
     Byte getByte( unsigned int) const;
-    
-    /* Stores the object of class Byte at position pos in 
-    the ByteLine.If that position is invalid, 
+
+    /* Stores the object of class Byte at position pos in
+    the ByteLine.If that position is invalid,
     recalls exception */
     void setByte( unsigned int, const Byte&);
-	
+
     /* Adds object of Byte class to end of ByteLine */
     void addByte( const Byte&);
 
-    /* Resize of ByteLine on count. New member 
+    /* Resize of ByteLine on count. New member
     of ByteLine is null bytes */
     void resizeByteLine( unsigned int);
 
     /* The constant member function. Return size of Byteline */
     unsigned int getSizeOfLine() const
-    { 
+    {
         return ( *byte_line).size();
     }
 
     /* Overloaded. Assign the current object of ByteLine class to another */
     ByteLine& operator = ( const ByteLine&);
 
-    /* Overloaded. The constant member function.The member function returns an object of 
+    /* Overloaded. The constant member function.The member function returns an object of
     class reference. Returns the Byte at position pos in the ByteLine.
     If that position is invalid, recalls exception */
     Byte operator[] ( int) const;
 
     /* Overloaded. Outputs the ByteLine in bin form to screen */
     friend ostream& operator<< ( ostream&, const  ByteLine&);
-	
-    /* Overloaded. Returns the ByteLine to be a result of addition two 
+
+    /* Overloaded. Returns the ByteLine to be a result of addition two
     object of class reference */
     friend ByteLine operator+ (  const ByteLine&,  const ByteLine&);
-     	
+
 };
 
 inline Byte ByteLine::operator []( int count) const
@@ -213,18 +213,18 @@ inline ByteLine& ByteLine::operator = ( const ByteLine& line)
 }
 
 inline ostream& operator<< ( ostream& os, const ByteLine& line)
-{   
+{
     for ( int i = 0; i < line.getSizeOfLine(); i++)
     {
-        os << line[ i] << " | ";  
+        os << line[ i] << " | ";
     }
     return os;
 }
 
 inline ByteLine operator+ (  const ByteLine& a,  const ByteLine& b)
 {
-    ByteLine temp( a); 
-	
+    ByteLine temp( a);
+
     for ( int i = 0 ; i < b.getSizeOfLine(); i++)
     {
         temp.addByte( b.getByte( i));;
@@ -233,15 +233,15 @@ inline ByteLine operator+ (  const ByteLine& a,  const ByteLine& b)
 }
 
 /**
- * class MemVal implements a object to interaction with memory 
+ * class MemVal implements a object to interaction with memory
  */
 
 class MemVal: public ByteLine
 {
     unsigned int size_of_segmentation;
-	    
+
 public:
-	
+
     /* Constructors and destructor */
 
     /* Copy constructors */
@@ -258,11 +258,11 @@ public:
     /* Conversion constructors ByteLine in MemVal */
     MemVal( const ByteLine& line):ByteLine( line),
                          size_of_segmentation( 1){};
-		   
+
     /* Get/set methods */
-	
-    /*If size_of_segmentation different from 1, 
-    adds null bytes to ByteLine 
+
+    /*If size_of_segmentation different from 1,
+    adds null bytes to ByteLine
     multiple of size_of_segmentation */
     void recountLenght();
 
@@ -273,22 +273,22 @@ public:
         recountLenght();
     }
 
-    /* The constant member function. Returns ByteLine with specified 
-	lenght and first element with index.If that position is invalid, 
-	recalls exception */		
+    /* The constant member function. Returns ByteLine with specified
+	lenght and first element with index.If that position is invalid,
+	recalls exception */
   	ByteLine getByteLine( unsigned int, unsigned int) const;
 
     /* The constant member function. Returns entire ByteLine */
     ByteLine getByteLine() const;
 
-    /* Stores the object of class ByteLine at position pos in 
-    the MemVal.If that position is invalid, 
+    /* Stores the object of class ByteLine at position pos in
+    the MemVal.If that position is invalid,
     recalls exception */
     void writeByteLine( const ByteLine&, unsigned int);
     void writeByteLine( const ByteLine&);
 
-    /* Resizes of MemVal on count. New member 
-    of ByteLine is null bytes */	
+    /* Resizes of MemVal on count. New member
+    of ByteLine is null bytes */
     void resizeMemVal( unsigned int size)
     {
         resizeByteLine( size);
@@ -307,13 +307,13 @@ public:
         return getSizeOfLine();
     }
 
-    /* Overloaded. Returns the MemVal to be a result of addition two 
+    /* Overloaded. Returns the MemVal to be a result of addition two
     object of class reference */
     friend MemVal operator+ ( const MemVal&, const MemVal&);
 
    /* Overloaded. Assign the current object of MemVal class to another */
     MemVal& operator= ( const MemVal&);
-    
+
 };
 inline MemVal operator+ ( const MemVal& a, const MemVal& b)
 {
@@ -339,18 +339,18 @@ inline MemVal& MemVal::operator= ( const MemVal& mem_val)
  */
 
 typedef map< mathAddr, MemVal, std::less< mathAddr> > memMap;
-class MemoryModel 
+class MemoryModel
 {
-	
+
     memMap *mem_model;
     unsigned int size_of_segmentation;
 
     /* Closed copy constructors */
     MemoryModel( const MemoryModel&);
-	
-    
+
+
 public:
-	
+
     /* Constructors and destructor */
 
     /* Creates empty object of MemoryModel class
@@ -361,45 +361,45 @@ public:
 	{
 		delete mem_model;
 	}
-     
-    
-    /* Returns ByteLine with specified lenght from specified 
+
+
+    /* Returns ByteLine with specified lenght from specified
     address. If that position is invalid, recalls exception */
 	ByteLine read( mathAddr, unsigned int);
-	
-	/* Rerurns pointer to object of MemVal class if will be 
+
+	/* Rerurns pointer to object of MemVal class if will be
 	found in MemoryModel.If not returns poiter to end of MemoryModel.
 	Used in read member function */
     memMap::iterator find( mathAddr);
 
-    /* Rerurns pointer to object of MemVal class if will be 
-	found in MemoryModel.If not create MemVal with specified 
+    /* Rerurns pointer to object of MemVal class if will be
+	found in MemoryModel.If not create MemVal with specified
     address. Used in write member function */
 	memMap::iterator findOrInit( mathAddr);
 
-    /*The constant member function.Returns pointer to first 
+    /*The constant member function.Returns pointer to first
 	object of MemVal class in MemoryModel */
 	memMap::iterator getFirstIter() const
 	{
 		memMap::iterator pos;
 		return pos = ( *mem_model).begin();
 	}
-	/*The constant member function. Returns pointer to last 
+	/*The constant member function. Returns pointer to last
 	object of MemVal class in MemoryModel */
 	memMap::iterator getLastIter() const
 	{
 		memMap::iterator pos;
 		return pos = ( *mem_model).end();
 	}
-	
+
 
     /* Merges two object of MemVal class in MemoryModel*/
     void mergeMemVal( memMap::iterator, MemVal*);
 
 	/* Counts amount of empty address between two object of MemVal class*/
 	unsigned int countDistance( const memMap::iterator);
-     
-    
+
+
     /* Stores the object of class ByteLine at specified address */
     void write( mathAddr write_ptr, const ByteLine&);
 
@@ -414,7 +414,7 @@ public:
 
     /* Overloaded. Returns pointer to the next object of class MemVal*/
 	friend memMap::iterator operator+ ( const memMap::iterator, int);
-        
+
 };
 
 inline bool operator ==( memMap::iterator p, mathAddr adrr)
