@@ -45,7 +45,7 @@ public:
     
     void setByteVal( unsigned int byte_num, hostUInt8 byte_val)
     {
-        byte_line->setByteVal(byte_num, byte_val);
+        byte_line->setByte(byte_num, byte_val);
     }
     
     unsigned int getSizeOfMemVal() 
