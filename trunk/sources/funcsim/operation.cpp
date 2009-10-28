@@ -4,6 +4,8 @@
  */
 
 #include "operation.h"
+#include "register_file.h"
+#include "flags.h"
 #include <stdio.h>
 
 /**
