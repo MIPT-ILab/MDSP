@@ -3,10 +3,11 @@
  * Copyright 2009 MDSP team
  */
 
+#include <iostream>
+
 #include "operation.h"
 #include "register_file.h"
 #include "flags.h"
-#include <stdio.h>
 
 /**
  * Constructor with pointer to core. Pointer to core
@@ -19,7 +20,7 @@ Operation::Operation( Core *core)
 }
 
 /**
- * Constructor - Fill with zeros
+ * Default constructor
  */
 Operation::Operation()
 {
@@ -39,81 +40,81 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
         case MOVE:
             if ( am)
             {
-                cout << "[WARNING] AM has to be set to 0 in MOVE \n";
+                cout << "AM has to be set to 0 in MOVE\n";
             }
             if ( imm10)
             {
-                cout << "[WARNING] Imm10 has to be set to 0 in MOVE \n";
+                cout << "Imm10 has to be set to 0 in MOVE\n";
             }
             if ( rs2)
             {
-                cout << "[WARNING] Rs2 has to be set to 0 in MOVE \n";
+                cout << "Rs2 has to be set to 0 in MOVE\n";
             }
             if ( opcode1)
             {
-                cout << "[WARNING] OpCode1 has to be set to 0 in MOVE \n";
+                cout << "OpCode1 has to be set to 0 in MOVE\n";
             }
             if ( opcode2)
             {
-                cout << "[WARNING] OpCode2 has to be set to 0 in MOVE \n";
+                cout << "OpCode2 has to be set to 0 in MOVE\n";
             }
             this->set( MOVE, opcode0, sd, imm16, rs1, rd);
             break;
         case ALU:
             if ( sd)
             {
-                cout << "[WARNING] SD has to be set to 0 in ALU \n";
+                cout << "SD has to be set to 0 in ALU\n";
             }
             if ( imm10)
             {
-                cout << "[WARNING] Imm10 has to be set to 0 in ALU \n";
+                cout << "Imm10 has to be set to 0 in ALU\n";
             }
             if ( imm16)
             {
-                cout << "[WARNING] Imm16 has to be set to 0 in ALU \n";
+                cout << "Imm16 has to be set to 0 in ALU\n";
             }
             this->set( ALU, opcode0, opcode1, opcode2, am, rs1, rs2, rd);
             break;
         case P_FLOW:
             if ( am)
             {
-                cout << "[WARNING] AM has to be set to 0 in P_FLOW \n";
+                cout << "AM has to be set to 0 in P_FLOW\n";
             }
             if ( imm10)
             {
-                cout << "[WARNING] Imm10 has to be set to 0 in P_FLOW \n";
+                cout << "Imm10 has to be set to 0 in P_FLOW\n";
             }
             if ( rs1)
             {
-                cout << "[WARNING] Rs1 has to be set to 0 in P_FLOW \n";
+                cout << "Rs1 has to be set to 0 in P_FLOW\n";
             }
             if ( rs2)
             {
-                cout << "[WARNING] Rs2 has to be set to 0 in P_FLOW \n";
+                cout << "Rs2 has to be set to 0 in P_FLOW\n";
             }
             if ( opcode1)
             {
-                cout << "[WARNING] OpCode1 has to be set to 0 in P_FLOW \n";
+                cout << "OpCode1 has to be set to 0 in P_FLOW\n";
             }
             if ( opcode2)
             {
-                cout << "[WARNING] OpCode2 has to be set to 0 in P_FLOW \n";
+                cout << "OpCode2 has to be set to 0 in P_FLOW\n";
             }
             this->set( P_FLOW, opcode0, sd, rd, imm16);
             break;
         default:
-            cout << "[FATAL] Illegal Type in set method \n";
-            assert(0);
+            cout << "Illegal Type in set method\n";
+            assert( 0);
     }
     this->type = type;
 }
 
 /*
- * Helper method that is used to define the correlation between OperType and hostUInt32
+ * Method defines the correlation between OperType and hostUInt32
  */
-OperType Operation::getTypeFromInt32(hostUInt32 type)
+OperType Operation::getTypeFromInt32( hostUInt32 type)
 {
-    switch ( type )
+    switch ( type)
     {
         case 0:
             return NO_TYPE;
@@ -127,18 +128,21 @@ OperType Operation::getTypeFromInt32(hostUInt32 type)
             return DMAC;
         case 5:
             return P_FLOW;
+        default:
+            printf( "Unknown operation type encoded in %x number\n", type);
+            assert( 0);
     }
 }
 
 /*
- * Helper method that is used to define the correlation between OperCode and hostUInt32
+ * Method defines the correlation between OperCode and hostUInt32
  */
-OperCode Operation::getCodeFromInt32(OperType type, hostUInt32 code)
+OperCode Operation::getCodeFromInt32( OperType type, hostUInt32 code)
 {  
-    switch ( type )
+    switch ( type)
     {
         case MOVE:
-            switch ( code )
+            switch ( code)
             {
                 case 0:
                     return NOP;
@@ -149,11 +153,12 @@ OperCode Operation::getCodeFromInt32(OperType type, hostUInt32 code)
                 case 6:
                     return LD;
                 default:
-                    cout << "[FATAL] Illegal operation in MOVE \n";
-                    assert(0);
+                    cout << "Illegal operation in MOVE\n";
+                    assert( 0);
             }
+            break;
         case ALU:
-            switch ( code )
+            switch ( code)
             {
                 case 0:
                     return NOP;
@@ -162,20 +167,25 @@ OperCode Operation::getCodeFromInt32(OperType type, hostUInt32 code)
                 case 2:
                     return SUB;
                 default:
-                    cout << "[FATAL] Illegal operation in MOVE \n";
-                    assert(0);
+                    cout << "Illegal operation in MOVE\n";
+                    assert( 0);
             }
+            break;
         case P_FLOW:
-            switch ( code )
+            switch ( code)
             {
                 case 0:
                     return JMP;
                 case 1:
                     return JGT;
                 default:
-                    cout << "[FATAL] Illegal operation in MOVE \n";
-                    assert(0);
+                    cout << "Illegal operation in MOVE\n";
+                    assert( 0);
             }
+            break;
+        default:
+            cout << "Invalid operation type\n";
+            assert( 0);
     }
 }
 
@@ -203,7 +213,7 @@ void Operation::set( OperType type,
                 this->rd = rd;          // get desitination
                 if ( imm16)
                 {
-                    cout << "[WARNING] Imm16 has to be set to 0 in BRM \n";
+                    cout << "Imm16 has to be set to 0 in BRM\n";
                 }
                 break;
             case BRR:
@@ -211,11 +221,11 @@ void Operation::set( OperType type,
                 this->rd = rd;          // get desitination
                 if ( imm16)
                 {
-                    cout << "[WARNING] Imm16 has to be set to 0 in BRR \n";
+                    cout << "Imm16 has to be set to 0 in BRR\n";
                 }
                 if ( sd)
                 {
-                    cout << "[WARNING] SD has to be set to 0 in BRR \n";
+                    cout << "SD has to be set to 0 in BRR\n";
                 }
                 break;
             case LD:
@@ -223,25 +233,25 @@ void Operation::set( OperType type,
                 this->rd = rd;          // get desitination
                 if ( rs1)
                 {
-                    cout << "[WARNING] Rs1 has to be set to 0 in LD \n";
+                    cout << "Rs1 has to be set to 0 in LD\n";
                 }
                 if ( rs2)
                 {
-                    cout << "[WARNING] Rs2 has to be set to 0 in LD \n";
+                    cout << "Rs2 has to be set to 0 in LD\n";
                 }
                 if ( sd)
                 {
-                    cout << "[WARNING] SD has to be set to 0 in LD \n";
+                    cout << "SD has to be set to 0 in LD\n";
                 }
                 break;
             default:
-                cout << "[FATAL] Illegal operation code in MOVE \n";
-                assert(0);
+                cout << "Illegal operation code in MOVE\n";
+                assert( 0);
         }
     }
     else
     {
-        cout << "[WARNING] Unknown type is set ( need MOVE type)";
+        cout << "Unknown type is set (need MOVE type)\n";
     }
 }
 
@@ -269,17 +279,18 @@ void Operation::set( OperType type,
     }
     else
     {
-        cout << "[WARNING] Unknown type is set ( need ALU type)";
+        cout << "Unknown type is set (need ALU type)\n";
     }
 }
+
 /**
  * Set an operation of PFLOW type
  */
 void Operation::set( OperType type,
-                          OperCode opcode0,
-                          hostUInt8 sd,
-                          hostUInt8 rd,
-                          hostUInt16 imm16)
+                     OperCode opcode0,
+                     hostUInt8 sd,
+                     hostUInt8 rd,
+                     hostUInt16 imm16)
 {
     if ( type == P_FLOW)
     {
@@ -290,7 +301,7 @@ void Operation::set( OperType type,
             this->rd = rd;
             if ( imm16)
             {
-                cout << "[WARNING] Imm16 has to be set to 0 in PFLOW \n";
+                cout << "Imm16 has to be set to 0 in P_FLOW\n";
             }
         }
         else
@@ -298,13 +309,13 @@ void Operation::set( OperType type,
             this->imm16 = imm16;
             if ( rd)
             {
-                cout << "[WARNING] Rd has to be set to 0 in PFLOW \n";
+                cout << "Rd has to be set to 0 in P_FLOW\n";
             }
         }
     }
     else
     {
-        cout << "[WARNING] Unknown type is set ( need MOVE type)";
+        cout << "Unknown type is set (need MOVE type)";
     }
 }
 
@@ -326,7 +337,7 @@ void Operation::dumpMOVE()
             printf( "ld %i, r%i, r%i;\n", this->sd, this->imm16, this->rd);
             break;
         default:
-            cout << "[FATAL] Operation code is invalid in MOVE\n";
+            cout << "Operation code is invalid in MOVE\n";
             assert( 0);
     }
 }
@@ -346,7 +357,7 @@ void Operation::dumpALU()
             printf( "sub %i, r%i, r%i, r%i;\n", this->am, this->rs1, this-> rs2, this->rd);
             break;
         default:
-            cout << "[FATAL] Operation code is invalid in ALU\n";
+            cout << "Operation code is invalid in ALU\n";
             assert(0);
     }
 }
@@ -376,7 +387,7 @@ void Operation::dumpPFLOW()
             printf( "jgt %i, r%i;\n", this->sd, temp);
             break;
         default:
-            cout << "[FATAL] Operation code is invalid in ALU\n";
+            cout << "Operation code is invalid in ALU\n";
             assert(0);
     }
 }
@@ -399,7 +410,7 @@ void Operation::setInstrWord( MemVal* mem_value)
     /* Perform check for MemVal's size. Should be 4 bytes */
     if ( mem_value->getSizeOfMemVal() != 4)
     {
-        cout << "[FATAL] Size of MemVal must be 4 bytes. \n";
+        cout << "Size of MemVal must be 4 bytes\n";
         assert(0);
     }
     
@@ -463,25 +474,24 @@ void Operation::decode( MemVal* mem_value)
     /* we need to decode the type (MOVE, ALU, etc) first to know how to decode further */
     this->type = this->decodeType();
     
-    /** Choose decode type.
-     * It's important to implement it's own decode methode for each command type
-    */
-
-     switch ( this->type)
-     {
+    /* 
+     * Choose decode type. It's important to implement it's 
+     * own decode methode for each command type
+     */
+    switch ( this->type)
+    {
         case MOVE:
             this->decodeMOVE();
             break;
         case ALU:
             this->decodeALU();
-            /* In this place we must update flags */
             break;
         case P_FLOW:
             this->decodePFLOW();
             break;
         default:
-            cout << "[FATAL] Illegal type in decode() \n";
-            assert(0);
+            cout << "Illegal type in decode()\n";
+            assert( 0);
      }
 }
 
@@ -489,7 +499,7 @@ void Operation::decode( MemVal* mem_value)
  * Decode Type value from binary form
  * Here we use
  * mask = 1110000000000000000000000000000 and
- * shift = 29 to get type value (the elderest 3-bits
+ * shift = 29 to get type value (the elderest 3-bits)
  */
 OperType Operation::decodeType()
 {
@@ -537,8 +547,8 @@ void Operation::decodeMOVE()
             rd = this->getValueByMask( sd_mask, 0);      // get desitination
             break;
         default:
-            cout << "[FATAL] Illegal operation in MOVE \n";
-            assert(0);
+            cout << "Illegal operation in MOVE\n";
+            assert( 0);
     }
     this->set( MOVE, opcode0, sd, imm16, rs1, rd);
 }
@@ -580,6 +590,7 @@ void Operation::decodeALU()
 void Operation::decodePFLOW()
 {
     /* skip type decoding as we already know the type */
+
     hostUInt32       op_mask = 0x1E000000; // OP mask
     hostUInt32       sd_mask = 0x00C00000; // SD mask
     hostUInt32    imm16_mask = 0x0000FFFF; // imm16 mask
@@ -621,8 +632,8 @@ void Operation::dump()
             this->dumpPFLOW();
             break;
         default:
-            cout << "[FATAL] Can't print to console, because operation has illegel type\n";
-            assert(0);
+            cout << "Can't print to console, because operation has illegal type\n";
+            assert( 0);
     }
 }
 
