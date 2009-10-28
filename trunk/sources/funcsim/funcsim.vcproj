@@ -221,6 +221,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\test.h"
+				>
+			</File>
+			<File
 				RelativePath=".\types.h"
 				>
 			</File>
