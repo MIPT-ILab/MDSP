@@ -12,10 +12,10 @@ int main()
 
     core->init( 0x0000);
     core->run();
-
+    test();
     getchar();
 
-	test();
+	
 
     return 1;
 }
