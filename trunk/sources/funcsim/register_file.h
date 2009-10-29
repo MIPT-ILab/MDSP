@@ -40,7 +40,7 @@ public:
 
         for ( int i = 0; i < sz_of_ln; i++)
         {
-            this->setByteVal( i, reg_val.getByteVal( i));
+            this->setByte( i, reg_val.getByte( i));
         }
 
         return ( *this);
