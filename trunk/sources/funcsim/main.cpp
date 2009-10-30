@@ -3,10 +3,8 @@
  * Copyright 2009 MDSP team
  */
 
-#include "operation.h"
-#include "test.h"
 #include "core.h"
-#include "register_file.h"
+#include "test.h"
 
 int main()
 {
