@@ -194,6 +194,10 @@
 				RelativePath=".\operation.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\register_file.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
