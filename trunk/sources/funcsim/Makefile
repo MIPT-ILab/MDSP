@@ -1,6 +1,6 @@
 #!/bin/csh
 
-CXX:=g++
+CXX:=g++ -Wall
 
 OBJS_CPP := ${shell ls *.cpp}
 OBJS:=${OBJS_CPP:%.cpp=%}
