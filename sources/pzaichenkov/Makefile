@@ -8,7 +8,7 @@ OBJS_O:=${OBJS_CPP:%.cpp=%.o}
 OBJS_I:=${OBJS:%=%.i}
 
 all: $(OBJS_O)
-	$(CXX) $(OBJS_O) -o funcsim
+	$(CXX) $(OBJS_O) -Wall -o funcsim
 
 %.o:%.cpp
 	$(CXX) $(<) -c -o $(@)

@@ -8,7 +8,7 @@
 #define TYPES_H
 
 /* compile for Windows */
-
+//#define WINDOWS 1
 
 #ifdef WINDOWS
 
