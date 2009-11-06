@@ -86,7 +86,12 @@ std::vector<TokenAn::Token *> TokenAn::run()
             while ( isdigit( *ptr))
                 ptr ++;
         }
-        else if ( *ptr == '\n')
+        else if ( *ptr == '\r' && ptr[1] == '\n') // DOS
+        {
+            res.push_back( TokenAn::Token::createEos());
+            ptr += 2;
+        }
+        else if ( *ptr == '\n' || *ptr == '\r') // Unix, Mac
         {
             res.push_back( TokenAn::Token::createEos());
             ptr ++;
