@@ -116,21 +116,21 @@ OperType Operation::getTypeFromInt32( hostUInt32 type)
 {
     switch ( type)
     {
-        case 0:
-            return NO_TYPE;
-        case 1:
-            return MOVE;
-        case 2:
-            return ALU;
-        case 3:
-            return MAC;
-        case 4:
-            return DMAC;
-        case 5:
-            return P_FLOW;
         default:
             printf( "Unknown operation type encoded in %x number\n", type);
             assert( 0);
+        case 0:
+            return MOVE;
+        case 1:
+            return ALU;
+        case 2:
+            return MAC;
+        case 3:
+            return DMAC;
+        case 4:
+            return SIMD;
+        case 5:
+            return P_FLOW;
     }
 }
 
@@ -155,6 +155,7 @@ OperCode Operation::getCodeFromInt32( OperType type, hostUInt32 code)
                 default:
                     cout << "Illegal operation in MOVE\n";
                     assert( 0);
+                    return NOP;
             }
             break;
         case ALU:
@@ -169,6 +170,7 @@ OperCode Operation::getCodeFromInt32( OperType type, hostUInt32 code)
                 default:
                     cout << "Illegal operation in MOVE\n";
                     assert( 0);
+                    return NOP;
             }
             break;
         case P_FLOW:
@@ -181,11 +183,13 @@ OperCode Operation::getCodeFromInt32( OperType type, hostUInt32 code)
                 default:
                     cout << "Illegal operation in MOVE\n";
                     assert( 0);
+                    return NOP;
             }
             break;
         default:
             cout << "Invalid operation type\n";
             assert( 0);
+            return NOP;
     }
 }
 

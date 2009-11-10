@@ -67,11 +67,11 @@ typedef hostUInt32 physRegNum;
 /* Operation type */
 typedef enum OperType
 {
-    NO_TYPE,
     MOVE,
     ALU,
     MAC,
     DMAC,
+    SIMD,
     P_FLOW
 } OperType;
 

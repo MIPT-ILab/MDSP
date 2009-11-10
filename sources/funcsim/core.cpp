@@ -38,7 +38,8 @@ void Core::run()
         /* Decode the operation */
         // op->decode( mem_value);
 
-        this->pc++;
+        /* Add 4 bytes (32 bits) to access next instruction */
+        this->pc = this->pc + 4;
 
         /* Execute operation */
         // op->execute();
