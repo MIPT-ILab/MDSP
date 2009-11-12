@@ -44,7 +44,7 @@ ByteLine::ByteLine( const ByteLine& line)
         cout << "ERROR: Can not allocate memory!\n";
         assert( 0);
     }
-    for ( int i = 0 ; i < line.getSizeOfLine(); i++)
+    for ( unsigned int i = 0 ; i < line.getSizeOfLine(); i++)
     {
         ( *byte_line).at( i).setByteVal( line.getByteVal( i));
     }

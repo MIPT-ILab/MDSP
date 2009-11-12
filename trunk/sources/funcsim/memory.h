@@ -172,7 +172,7 @@ public:
     /* Overloaded. The constant member function.The member function returns an object of
     class reference. Returns the Byte at position pos in the ByteLine.
     If that position is invalid, recalls exception */
-    Byte operator[] ( int) const;
+    Byte operator[] ( unsigned int) const;
 
     /* Overloaded. Outputs the ByteLine in bin form to screen */
     friend ostream& operator<< ( ostream&, const  ByteLine&);
@@ -183,7 +183,7 @@ public:
 
 };
 
-inline Byte ByteLine::operator []( int count) const
+inline Byte ByteLine::operator []( unsigned int count) const
 {
     if ( ( *byte_line).empty())
     {
@@ -204,7 +204,7 @@ inline ByteLine& ByteLine::operator = ( const ByteLine& line)
     {
         delete byte_line;
         byte_line = new vector<Byte>( line.getSizeOfLine());
-        for ( int i = 0 ;i < line.getSizeOfLine() ; i++)
+        for ( unsigned int i = 0 ;i < line.getSizeOfLine() ; i++)
         {
         ( *byte_line).at( i).setByteVal( line.getByteVal( i));
         }
@@ -214,7 +214,7 @@ inline ByteLine& ByteLine::operator = ( const ByteLine& line)
 
 inline ostream& operator<< ( ostream& os, const ByteLine& line)
 {
-    for ( int i = 0; i < line.getSizeOfLine(); i++)
+    for ( unsigned int i = 0; i < line.getSizeOfLine(); i++)
     {
         os << line[ i] << " | ";
     }
@@ -225,7 +225,7 @@ inline ByteLine operator+ (  const ByteLine& a,  const ByteLine& b)
 {
     ByteLine temp( a);
 
-    for ( int i = 0 ; i < b.getSizeOfLine(); i++)
+    for ( unsigned int i = 0 ; i < b.getSizeOfLine(); i++)
     {
         temp.addByte( b.getByte( i));;
     }
