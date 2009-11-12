@@ -39,14 +39,23 @@ class Operation
     /* Decode type */
     OperType decodeType();
 
+    /* Encode Type */
+    void encodeType();
+
     /* Methods for correlation between assembler constants and numbers */
     OperType getTypeFromInt32( hostUInt32 type);
     OperCode getCodeFromInt32( OperType type, hostUInt32 code);
+    hostUInt32 getInt32FromType( OperType type);
+    hostUInt32 getInt32FromCode( OperType type, OperCode code);
 
     /* Methods used for each type */
     void decodeMOVE();
     void decodeALU();
     void decodePFLOW();
+
+    void encodeMOVE();
+    void encodeALU();
+    void encodePFLOW();
 
     void dumpMOVE();
     void dumpALU();
@@ -55,10 +64,11 @@ class Operation
     void executeMove();
     void executeALU();
     void executePFlow();
-    
+
     void setInstrWord( MemVal* mem_value);
     void setMemBlock( MemVal* mem_value);
     hostUInt32 getValueByMask( hostUInt32 mask, int shift);
+    void setValueByShift( hostUInt32 value, int shift);
 
 public:
     Operation();
@@ -88,7 +98,8 @@ public:
     inline hostUInt8 getSReg1() { return this->rs1; }
     inline hostUInt8 getSReg2() { return this->rs2; }
     inline hostUInt8 getDReg() { return this->rd; }
-    
+    inline hostUInt32 getInstrWord() { return this->instr_word; }
+
     /* Set methods */
     inline void setType( OperType type) { this->type = type; }
     inline void setOpcode( unsigned num, OperCode opcode)
@@ -120,7 +131,6 @@ public:
     inline void clear()
     {
         this->instr_word = 0;
-        this->type = MOVE;
         this->opcode0 = this->opcode1 = this->opcode2 = NOP;
         this->sd = this->am = 0;
         this->imm10 = this->imm16 = 0;
@@ -129,7 +139,7 @@ public:
 
     /* General set method (includes all properties as parameters) */
     void set( OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
-              hostUInt8 sd, hostUInt8 am, 
+              hostUInt8 sd, hostUInt8 am,
               hostUInt16 imm10, hostUInt16 imm16,
               hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd);
 
