@@ -4,7 +4,7 @@
  */
 
 #include <iostream>
-
+#include <stdio.h>
 #include "operation.h"
 #include "register_file.h"
 #include "flags.h"
@@ -31,7 +31,7 @@ Operation::Operation()
  * Set any operation
  */
 void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
-                     hostUInt8 sd, hostUInt8 am, 
+                     hostUInt8 sd, hostUInt8 am,
                      hostUInt16 imm10, hostUInt16 imm16,
                      hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd)
 {
@@ -65,6 +65,7 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
             {
                 cout << "SD has to be set to 0 in ALU\n";
             }
+
             if ( imm10)
             {
                 cout << "Imm10 has to be set to 0 in ALU\n";
@@ -135,10 +136,36 @@ OperType Operation::getTypeFromInt32( hostUInt32 type)
 }
 
 /*
+ * Method defines the correlation between hostUInt32 and OperType
+ */
+hostUInt32 Operation::getInt32FromType( OperType type)
+{
+    switch ( type)
+    {
+        case MOVE:
+            return 0;
+        case ALU:
+            return 1;
+        case MAC:
+            return 2;
+        case DMAC:
+            return 3;
+        case SIMD:
+            return 4;
+        case P_FLOW:
+            return 5;
+        default:
+            printf( "Unknown operation number is encoded in %x type\n", type);
+            assert( 0);
+    }
+}
+
+
+/*
  * Method defines the correlation between OperCode and hostUInt32
  */
 OperCode Operation::getCodeFromInt32( OperType type, hostUInt32 code)
-{  
+{
     switch ( type)
     {
         case MOVE:
@@ -168,7 +195,7 @@ OperCode Operation::getCodeFromInt32( OperType type, hostUInt32 code)
                 case 2:
                     return SUB;
                 default:
-                    cout << "Illegal operation in MOVE\n";
+                    cout << "Illegal operation in ALU\n";
                     assert( 0);
                     return NOP;
             }
@@ -181,7 +208,7 @@ OperCode Operation::getCodeFromInt32( OperType type, hostUInt32 code)
                 case 1:
                     return JGT;
                 default:
-                    cout << "Illegal operation in MOVE\n";
+                    cout << "Illegal operation in P_FLOW\n";
                     assert( 0);
                     return NOP;
             }
@@ -190,6 +217,61 @@ OperCode Operation::getCodeFromInt32( OperType type, hostUInt32 code)
             cout << "Invalid operation type\n";
             assert( 0);
             return NOP;
+    }
+}
+
+/*
+ * Method defines the correlation between OperCode and hostUInt32
+ */
+hostUInt32 Operation::getInt32FromCode( OperType type, OperCode code)
+{
+    switch ( type)
+    {
+        case MOVE:
+            switch ( code)
+            {
+                case NOP:
+                    return 0;
+                case BRM:
+                    return 1;
+                case BRR:
+                    return 3;
+                case LD:
+                    return 6;
+                default:
+                    cout << "Illegal operation in MOVE\n";
+                    assert( 0);
+            }
+            break;
+        case ALU:
+            switch ( code)
+            {
+                case NOP:
+                    return 0;
+                case ADD:
+                    return 1;
+                case SUB:
+                    return 2;
+                default:
+                    cout << "Illegal operation in ALU\n";
+                    assert( 0);
+            }
+            break;
+        case P_FLOW:
+            switch ( code)
+            {
+                case JMP:
+                    return 0;
+                case JGT:
+                    return 1;
+                default:
+                    cout << "Illegal operation in P_FLOW\n";
+                    assert( 0);
+            }
+            break;
+        default:
+            cout << "Invalid operation type\n";
+            assert( 0);
     }
 }
 
@@ -235,6 +317,7 @@ void Operation::set( OperType type,
             case LD:
                 this->imm16 = imm16;    // get source
                 this->rd = rd;          // get desitination
+                this->sd = sd;
                 if ( rs1)
                 {
                     cout << "Rs1 has to be set to 0 in LD\n";
@@ -242,10 +325,6 @@ void Operation::set( OperType type,
                 if ( rs2)
                 {
                     cout << "Rs2 has to be set to 0 in LD\n";
-                }
-                if ( sd)
-                {
-                    cout << "SD has to be set to 0 in LD\n";
                 }
                 break;
             default:
@@ -267,8 +346,8 @@ void Operation::set( OperType type,
                      OperCode opcode1,
                      OperCode opcode2,
                      hostUInt8 am,
-                     hostUInt8 rs1, 
-                     hostUInt8 rs2, 
+                     hostUInt8 rs1,
+                     hostUInt8 rs2,
                      hostUInt8 rd)
 {
     if ( type == ALU)
@@ -311,6 +390,7 @@ void Operation::set( OperType type,
         else
         {
             this->imm16 = imm16;
+            this->rd = rd;
             if ( rd)
             {
                 cout << "Rd has to be set to 0 in P_FLOW\n";
@@ -352,7 +432,7 @@ void Operation::dumpMOVE()
  */
 void Operation::dumpALU()
 {
-    switch ( this->opcode1)
+    switch ( this->opcode0)
     {
         case ADD:
             printf( "add %i, r%i, r%i, r%i;\n", this->am, this->rs1, this-> rs2, this->rd);
@@ -417,14 +497,17 @@ void Operation::setInstrWord( MemVal* mem_value)
         cout << "Size of MemVal must be 4 bytes\n";
         assert(0);
     }
-    
+
     hostUInt32 value = 0;   // returned value
     hostUInt8 temp = 0;     // temporary variable
     for ( int i = 0; i < 4; i++) // we are confident that MemVal's size is 4 bytes
     {
-        temp += mem_value->getByteVal( i);
+        temp = mem_value->getByteVal( i);
         value += temp;
-        value = value << 8; // move byte to the older rank
+        if ( i != 3)
+        {
+            value = value << 8; // move byte to the older rank
+        }
     }
     this->instr_word = value;
 }
@@ -434,6 +517,12 @@ void Operation::setInstrWord( MemVal* mem_value)
  */
 void Operation::setMemBlock( MemVal* mem_value)
 {
+    ByteLine line(4);
+    line.setByte( 0, Byte( getValueByMask( 0xFF000000, 24)));
+    line.setByte( 1, Byte( getValueByMask( 0x00FF0000, 16)));
+    line.setByte( 2, Byte( getValueByMask( 0x0000FF00, 8)));
+    line.setByte( 3, Byte( getValueByMask( 0x000000FF, 0)));
+    mem_value->writeByteLine(line);
 }
 
 /**
@@ -455,19 +544,41 @@ hostUInt32 Operation::getValueByMask( hostUInt32 mask, int shift)
     return temp;
 }
 
+/*
+ * Enables to set some value on a determined position in the instruction word
+ */
+void Operation::setValueByShift( hostUInt32 value, int shift)
+{
+    this->instr_word = instr_word + (value << shift);
+}
+
 /**
  * Encode operation in binary form
  */
 MemVal* Operation::encode()
 {
-/*
     MemVal* mem_value = new MemVal(4); // pointer to 32-bit (4 bytes) instruction word
-
+    this->setInstrWord(mem_value);
+    encodeType();
+    switch ( this->type)
+    {
+        case MOVE:
+	    this->encodeMOVE();
+            break;
+        case ALU:
+            this->encodeALU();
+            break;
+        case P_FLOW:
+            this->encodePFLOW();
+            break;
+        default:
+            cout << "Illegal type in encode()\n";
+            assert( 0);
+    }
+    setMemBlock(mem_value);
     return mem_value;
-*/
-    return NULL; // delete it later
-}
 
+}
 
 /**
  * Decode an operation from binary form
@@ -477,9 +588,9 @@ void Operation::decode( MemVal* mem_value)
     this->setInstrWord( mem_value);
     /* we need to decode the type (MOVE, ALU, etc) first to know how to decode further */
     this->type = this->decodeType();
-    
-    /* 
-     * Choose decode type. It's important to implement it's 
+
+    /*
+     * Choose decode type. It's important to implement it's
      * own decode methode for each command type
      */
     switch ( this->type)
@@ -514,6 +625,14 @@ OperType Operation::decodeType()
 }
 
 /**
+ * Encode Type value from the field this->type
+ */
+void Operation::encodeType()
+{
+    setValueByShift(getInt32FromType(this->type), 29);
+}
+
+/**
  * Decode MOVE command from binary form
  * All mask are set as it is described in architecture.
  */
@@ -528,9 +647,9 @@ void Operation::decodeMOVE()
     hostUInt32 imm16_mask = 0x001FFFE0; // imm16 mask
 
     /* temporary fields */
-    OperCode opcode0;
-    hostUInt8 sd, rs1, rd;
-    hostUInt16 imm16;
+    OperCode opcode0 = NOP;
+    hostUInt8 sd = 0, rs1 = 0, rd = 0;
+    hostUInt16 imm16 = 0;
 
     /* get OP */
     opcode0 = this->getCodeFromInt32( MOVE, this->getValueByMask( op_mask, 26));
@@ -549,6 +668,7 @@ void Operation::decodeMOVE()
         case LD:
             imm16 = this->getValueByMask( imm16_mask, 5);// get imm16
             rd = this->getValueByMask( sd_mask, 0);      // get desitination
+            sd = this->getValueByMask( sd_mask, 21);     // get S/D
             break;
         default:
             cout << "Illegal operation in MOVE\n";
@@ -557,6 +677,36 @@ void Operation::decodeMOVE()
     this->set( MOVE, opcode0, sd, imm16, rs1, rd);
 }
 
+/**
+ * Encode MOVE command to a binary form
+ * Necessary bytes are set in the determined position
+ * All mask are set as it is described in architecture.
+ */
+void Operation::encodeMOVE()
+{
+    setValueByShift( getInt32FromCode( MOVE, this->opcode0), 26);
+    switch ( this->opcode0)
+    {
+        case BRM:
+	    setValueByShift( this->sd, 21);		// set S/D
+	    setValueByShift( this->rs1, 5);		// set source
+	    setValueByShift( this->rd, 0);		// set destination
+            break;
+        case BRR:
+            setValueByShift( this->rs1, 5);		// set source
+            setValueByShift( this->rd, 0);		// set destination
+            break;
+        case LD:
+            setValueByShift( this->imm16, 5);		// set imm16
+            setValueByShift( this->rd, 0);		// set destination
+            setValueByShift( this->sd, 21);		// set S/D
+            break;
+        default:
+            cout << "Illegal operation in MOVE\n";
+            assert( 0);
+    }
+
+}
 /**
  * Decode ALU command from binary form
  * All mask are set as it is described in architecture.
@@ -587,6 +737,22 @@ void Operation::decodeALU()
     this->set( ALU, opcode0, opcode1, opcode2, am, rs1, rs2, rd);
 }
 
+/*
+ * Encode ALU command to a binary form
+ * Necessary bytes are set in the determined position
+ * All mask are set as it is described in architecture.
+ */
+void Operation::encodeALU()
+{
+    setValueByShift( getInt32FromCode( ALU, this->opcode0), 26);
+    setValueByShift( getInt32FromCode( ALU, this->opcode1), 21);
+    setValueByShift( getInt32FromCode( ALU, this->opcode2), 18);
+    setValueByShift( this->am, 15);
+    setValueByShift( this->rs1, 10);
+    setValueByShift( this->rs2, 5);
+    setValueByShift( this->rd, 0);
+}
+
 /**
  * Decode P_FLOW command from binary form
  * All mask are set as it is described in architecture.
@@ -604,8 +770,8 @@ void Operation::decodePFLOW()
     OperCode opcode0;
     hostUInt8 sd, rd;
     hostUInt16 imm16;
-    
-    opcode0 = this->getCodeFromInt32( P_FLOW, this->getValueByMask( op_mask, 25));
+
+    opcode0 = this->getCodeFromInt32( P_FLOW, this->getValueByMask( op_mask, 26));
     sd = this->getValueByMask( sd_mask, 23);
 
     if ( !sd)
@@ -616,7 +782,26 @@ void Operation::decodePFLOW()
     {
         imm16 = this->getValueByMask( imm16_mask, 0);
     }
-    this->set( P_FLOW, opcode0, sd, rs1, imm16);
+    this->set( P_FLOW, opcode0, sd, rd, imm16);
+}
+
+/*
+ * Encode MOVE command to a binary form
+ * Necessary bytes are set in the determined position
+ * All mask are set as it is described in architecture.
+ */
+void Operation::encodePFLOW()
+{
+    setValueByShift( getInt32FromCode( P_FLOW, this->opcode0), 26);
+    setValueByShift( this->sd, 23);
+    if( !this->sd)
+    {
+        setValueByShift( this->rd, 0);
+    }
+    else
+    {
+        setValueByShift( this->imm16, 0);
+    }
 }
 
 /*
