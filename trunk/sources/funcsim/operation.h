@@ -131,6 +131,7 @@ public:
     inline void clear()
     {
         this->instr_word = 0;
+	this->type = MOVE;
         this->opcode0 = this->opcode1 = this->opcode2 = NOP;
         this->sd = this->am = 0;
         this->imm10 = this->imm16 = 0;
