@@ -18,7 +18,8 @@ using namespace std;
 * Class of operation description
 */
 class Operation
-{
+{   
+    hostUInt32 instr_word;
     OperType type;
     OperCode opcode0, opcode1, opcode2; // all three opcodes needed
                                         // for ALU instruction only
@@ -54,7 +55,7 @@ public:
     inline hostUInt8 getSReg1() { return this->rs1; }
     inline hostUInt8 getSReg2() { return this->rs2; }
     inline hostUInt8 getDReg() { return this->rd; }
-
+    inline hostUInt32 getInstructionWord () { return this->instr_word; }
     inline void clear()
     {
         this->type = NO_TYPE;
@@ -77,7 +78,9 @@ public:
     MemVal* encode();
     void decode(MemVal* mem_value);
     void dump();
-
+private:
+    void addFieldToInstructionWord( hostUInt16 field, int shift);
+    
 };
 
 #endif

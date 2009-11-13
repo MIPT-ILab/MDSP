@@ -48,3 +48,14 @@ void Operation::decode(MemVal* mem_value)
 void Operation::dump()
 {
 }
+
+/**
+*
+*/
+
+void Operation::addFieldToInstructionWord( hostUInt16 field, int shift)
+{
+    field <<= shift;
+    this->instr_word += field;                                     
+}
+
