@@ -14,8 +14,16 @@
 
 #define type_shift 29
 #define opcode0_shift 26
+#define opcode1_shift 21
+#define opcode2_shift 18
 #define imm16_shift 5
 #define rs_shift 5
+#define am_shift 15
+#define rs2_shift 5
+#define rs1_shift 10
+#define imm10_shift 5
+#define opcode1_shift 21
+#define opcode2_shift 18
 
 using namespace std;
 
@@ -79,6 +87,10 @@ public:
     void set( OperType type, OperCode opcode0, 
               hostUInt16 imm16, 
               hostUInt8 rs1, hostUInt8 rd);
+    
+    void set( OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
+              hostUInt8 am, hostUInt16 imm10, 
+              hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd);
 
     MemVal* encode();
     void decode(MemVal* mem_value);

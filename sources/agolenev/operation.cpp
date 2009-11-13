@@ -55,8 +55,21 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
     this->rd = rd;
     addFieldToInstructionWord( type, type_shift);
     addFieldToInstructionWord( opcode0, opcode0_shift);
-    addFieldToInstructionWord( imm16, imm16_shift);
-    addFieldToInstructionWord( rs1, rs_shift);
+    addFieldToInstructionWord( opcode1, opcode1_shift);
+    addFieldToInstructionWord( opcode2, opcode2_shift);
+    addFieldToInstructionWord( am, am_shift);
+    switch( this->am)
+    {
+        case 0:
+            addFieldToInstructionWord( rs1, rs1_shift);
+            addFieldToInstructionWord( rs2, rs2_shift);
+            break;
+        case 1:
+            addFieldToInstructionWord( rs1, rs1_shift);
+            break;
+        default:
+            break;
+    }
     instr_word += rd;
 }
 
