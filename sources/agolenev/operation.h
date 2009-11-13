@@ -12,6 +12,11 @@
 #include "types.h"
 #include "memory.h"
 
+#define type_shift 29
+#define opcode0_shift 26
+#define imm16_shift 5
+#define rs_shift 5
+
 using namespace std;
 
 /**
@@ -19,7 +24,7 @@ using namespace std;
 */
 class Operation
 {   
-    hostUInt32 instr_word;
+    hostUInt16 instr_word;
     OperType type;
     OperCode opcode0, opcode1, opcode2; // all three opcodes needed
                                         // for ALU instruction only

@@ -5,6 +5,7 @@
 
 #include "operation.h"
 
+
 /**
 * Set any operation
 */
@@ -22,6 +23,41 @@ void Operation::set( OperType type, OperCode opcode0,
                      hostUInt16 imm16, 
                      hostUInt8 rs1, hostUInt8 rd)
 {
+    this->type = type;
+    this->opcode0 = opcode0;
+    this->imm16 = imm16;
+    this->rs1 = rs1;
+    this->rd = rd;
+    addFieldToInstructionWord( type, type_shift);
+    addFieldToInstructionWord( opcode0, opcode0_shift);
+    addFieldToInstructionWord( imm16, imm16_shift);
+    addFieldToInstructionWord( rs1, rs_shift);
+    instr_word += rd;
+}
+
+/**
+* Set an operation of ALU type
+*/
+
+
+void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
+                     hostUInt8 am, hostUInt16 imm10, 
+                     hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd)
+{
+    this->type = type;
+    this->opcode0 = opcode0;
+    this->opcode1 = opcode1;
+    this->opcode2 = opcode2;
+    this->am = am;
+    this->imm10 = imm10;
+    this->rs1 = rs1;
+    this->rs1 = rs2;
+    this->rd = rd;
+    addFieldToInstructionWord( type, type_shift);
+    addFieldToInstructionWord( opcode0, opcode0_shift);
+    addFieldToInstructionWord( imm16, imm16_shift);
+    addFieldToInstructionWord( rs1, rs_shift);
+    instr_word += rd;
 }
 
 /**
@@ -50,12 +86,11 @@ void Operation::dump()
 }
 
 /**
-*
+* Add field to instruction word
 */
 
 void Operation::addFieldToInstructionWord( hostUInt16 field, int shift)
 {
-    field <<= shift;
-    this->instr_word += field;                                     
+    this->instr_word += ( field << shift);                                     
 }
 
