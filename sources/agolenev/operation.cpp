@@ -4,6 +4,7 @@
 */
 
 #include "operation.h"
+#include "instruction.h"
 
 
 /**
@@ -102,8 +103,32 @@ void Operation::dump()
 * Add field to instruction word
 */
 
-void Operation::addFieldToInstructionWord( hostUInt16 field, int shift)
+void Operation::addFieldToInstructionWord( hostUInt32 field, int shift)
 {
     this->instr_word += ( field << shift);                                     
+}
+
+/**
+* Execute instruction
+*/
+
+void Operation::execute()
+{
+     switch( this->type)
+     {
+         case MOVE:
+             moveOperation[ this->opcode0]();         
+             break;
+
+         case ALU:
+             logicOperation[ this->opcode0]();
+             arithmeticOperation[ this->opcode1]();
+             shiftOperation[ this->opcode2]();
+             break;
+
+         default:
+             cout << "ERROR: Unknown operation type!\n";
+             assert(0);
+     }
 }
 
