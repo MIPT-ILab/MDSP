@@ -63,7 +63,7 @@ std::map<unsigned int, hostUInt8> Assembler::run()
         unsigned int start_addr = op->first * 4; // in bytes
         ByteLine *bytes = op->second;
 
-        for ( int i = 0; i < bytes->getSizeOfLine(); i ++)
+        for ( int i = 0; i < (int)bytes->getSizeOfLine(); i ++)
         {
             if ( addr_byte.find( start_addr + i) != addr_byte.end())
             {

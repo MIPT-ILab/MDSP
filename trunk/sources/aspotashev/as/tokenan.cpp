@@ -28,7 +28,7 @@ void TokenAn::read_file_contents( const char *filename)
     data[filelength] = '\0';
 
     FILE *f = fopen( filename, "r");
-    if ( fread( data, 1, filelength, f) != filelength)
+    if ( fread( data, 1, filelength, f) != (size_t)filelength)
         throw;
     
     fclose( f);
