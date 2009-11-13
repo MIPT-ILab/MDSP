@@ -10,9 +10,18 @@ Assembler::Assembler( std::vector<SemanticAn::Unit *> units)
 
 std::map<unsigned int, hostUInt8> Assembler::run()
 {
+    /* This variable is used to keep track of the current address in
+     * program memory while following the sequence of semantic units */
     unsigned int pc = 0; // which type is better to use here?
+
+    /* map from semantic units in the source code to the current
+     * addresses in program memory */
     std::map<SemanticAn::Unit *, unsigned int> unit_addr;
+
+    /* map from label identifiers to its absolute byte addresses
+     * in program memory */
     std::map<std::string, unsigned int> label_addr;
+
     for ( int i = 0; i < (int)units.size(); i ++)
     {
         unit_addr[units[i]] = pc;
@@ -27,6 +36,8 @@ std::map<unsigned int, hostUInt8> Assembler::run()
         }
     }
 
+    /* map from program memory byte addresses to encoded instructions
+     * starting at those addresses */
     std::map<unsigned int, ByteLine *> op_list;
     for ( int i = 0; i < (int)units.size(); i ++)
     {
@@ -42,7 +53,10 @@ std::map<unsigned int, hostUInt8> Assembler::run()
         }
     }
 
+    /* map from byte addresses in program memory to the values
+     * of those bytes */
     std::map<unsigned int, hostUInt8> addr_byte;
+
     for ( std::map<unsigned int, ByteLine *>::iterator op = op_list.begin();
           op != op_list.end(); op ++)
     {
@@ -66,6 +80,7 @@ std::map<unsigned int, hostUInt8> Assembler::run()
 ByteLine *Assembler::encodeOperation(
     SemanticAn::Unit *operation, unsigned int pc)
 {
+    /* This method is only applicable to assembler commands */
     assert( operation->type == UNIT_OPERATION);
 
     Operation op;
@@ -123,6 +138,7 @@ ByteLine *Assembler::encodeOperation(
             throw; // invalid combination of opcode and operands
         }
 
+        /* LD command always has an imm16 operand */
         int imm = operation->operands[0]->iVal;
         assert( imm >= 0 && imm <= 0xffff);
 
