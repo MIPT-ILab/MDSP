@@ -32,7 +32,7 @@ using namespace std;
 */
 class Operation
 {   
-    hostUInt16 instr_word;
+    hostUInt32 instr_word;
     OperType type;
     OperCode opcode0, opcode1, opcode2; // all three opcodes needed
                                         // for ALU instruction only
@@ -95,9 +95,17 @@ public:
     MemVal* encode();
     void decode(MemVal* mem_value);
     void dump();
-private:
-    void addFieldToInstructionWord( hostUInt16 field, int shift);
+    void execute();
     
+private:
+    void addFieldToInstructionWord( hostUInt32 field, int shift);
+    friend void executeNOP();
+    friend void executeBMM();
+    friend void executeBRM();
+    friend void executeBRR();
+    friend void executeSWP();
+    friend void executeCLA();
+    friend void executeLD();
 };
 
 #endif

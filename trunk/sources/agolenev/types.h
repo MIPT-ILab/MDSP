@@ -86,5 +86,6 @@ typedef enum OperCode
     JGT
 } OperCode;
 
+
 #endif /* TYPES_H */
 
