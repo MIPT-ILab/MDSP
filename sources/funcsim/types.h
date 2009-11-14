@@ -7,10 +7,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-/* compile for Windows */
-#define WINDOWS 1
-
-#ifdef WINDOWS
+#if defined(_WIN32) || defined(_WIN64)
 
 /* Signed 8-bit integer type */
 typedef signed __int8 hostSInt8;
@@ -56,7 +53,7 @@ typedef float hostFloat32;
 /* Double precision 64-bit float type */
 typedef double hostFloat64;
 
-#endif /* !WINDOWS */
+#endif
 
 /* Type for mathematical memory address */
 typedef hostUInt32 mathAddr;
