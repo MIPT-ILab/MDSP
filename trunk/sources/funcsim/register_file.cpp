@@ -88,3 +88,4 @@ void RegisterFileModel::writeReg( physRegNum reg_num, RegVal& reg_value)
         assert( 0);
     }
 }
+
