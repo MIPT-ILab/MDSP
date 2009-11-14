@@ -3,7 +3,7 @@
 using namespace std;
 int main(){
 
-mdspAssert(0);
+mdspAssert(ERROR_ALLOC_MEMORY);
 
 return 0;
 }
