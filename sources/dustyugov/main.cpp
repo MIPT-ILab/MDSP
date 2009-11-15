@@ -4,15 +4,15 @@
  */
 
 #include "core.h"
+#include "test.h"
 
 int main()
 {
     Core* core = new Core();
-
     core->init( 0x0000);
     core->run();
 
-    getchar();
+    //test();
 
-    return 1;
+    return 0;
 }

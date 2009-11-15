@@ -1,5 +1,5 @@
 /**
- * flags.h - Header of Flags class which defines 
+ * flags.h - Header of Flags class which defines
  * fields and methods to operate with flag register
  * Copyright 2009 MDSP team
  */
@@ -12,7 +12,7 @@
 #include "register_file.h"
 
 /**
- * Class of flag register description 
+ * Class of flag register description
  */
 class Flags: public RegVal
 {
