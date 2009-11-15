@@ -9,34 +9,31 @@
 
 TokenAn::TokenAn( const char *filename)
 {
-    read_file_contents( filename);
+    readFileContents( filename);
 }
 
-void TokenAn::init_file_length( const char *filename)
+void TokenAn::initFileLength( const char *filename)
 {
     FILE *f = fopen( filename, "r");
     assert( f);
 
     fseek( f, 0, SEEK_END);
-    filelength = ftell( f);
+    fileLength = ftell( f);
     fclose( f);
 }
 
-void TokenAn::read_file_contents( const char *filename)
+void TokenAn::readFileContents( const char *filename)
 {
-    init_file_length( filename);
+    initFileLength( filename);
 
-    data = new char[filelength + 1];
-    data[filelength] = '\0';
+    data = new char[fileLength + 1];
+    data[fileLength] = '\0';
 
     FILE *f = fopen( filename, "r");
-    if ( fread( data, 1, filelength, f) != (size_t)filelength)
+    if ( fread( data, 1, fileLength, f) != (size_t)fileLength)
         throw;
     
     fclose( f);
-
-//    for ( int i = 0; i < filelength; i ++)
-//        printf( "f[%d] = %d\n", i, (int)data[i]);
 }
 
 std::vector<Token *> TokenAn::run()
@@ -46,7 +43,7 @@ std::vector<Token *> TokenAn::run()
 
     while ( *ptr != '\0')
     {
-        skip_spaces();
+        skipSpaces();
 
         if ( *ptr == '%' || isidstart( *ptr))
         {
@@ -114,7 +111,7 @@ std::vector<Token *> TokenAn::run()
     return res;
 }
 
-void TokenAn::skip_spaces()
+void TokenAn::skipSpaces()
 {
     while ( *ptr != '\0' && isblank( *ptr))
         ptr ++;

@@ -122,13 +122,13 @@ public:
     std::vector<Token *> run();
 
 private:
-    void init_file_length( const char *filename);
-    void read_file_contents( const char *filename);
+    void initFileLength( const char *filename);
+    void readFileContents( const char *filename);
 
-    void skip_spaces();
+    void skipSpaces();
 
 
-    long filelength;
+    long fileLength;
     char *data;
     char *ptr;
 };
