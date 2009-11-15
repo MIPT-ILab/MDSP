@@ -17,7 +17,7 @@ public:
      *
      * @param units The sequence of semantic units to work with.
      */
-    Assembler( std::vector<SemanticAn::Unit *> units);
+    Assembler( std::vector<SemanticUnit *> units);
 
     /**
      * Generates an executable image defined by a list of
@@ -33,7 +33,7 @@ public:
      * @param pc The word address of the instruction in program memory.
      */
     ByteLine *encodeOperation(
-        SemanticAn::Unit *operation, unsigned int pc);
+        SemanticUnit *operation, unsigned int pc);
 
 private:
     /**
@@ -44,6 +44,6 @@ private:
     int getGprNum( std::string id);
 
 private:
-    std::vector<SemanticAn::Unit *> units;
+    std::vector<SemanticUnit *> units;
 };
 

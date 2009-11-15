@@ -37,10 +37,10 @@ void TokenAn::read_file_contents( const char *filename)
 //        printf( "f[%d] = %d\n", i, (int)data[i]);
 }
 
-std::vector<TokenAn::Token *> TokenAn::run()
+std::vector<Token *> TokenAn::run()
 {
     ptr = data;
-    std::vector<TokenAn::Token *> res;
+    std::vector<Token *> res;
 
     while ( *ptr != '\0')
     {
@@ -52,27 +52,27 @@ std::vector<TokenAn::Token *> TokenAn::run()
             while ( isidchar( *ptr))
                 ptr ++;
 
-            res.push_back( TokenAn::Token::createId(
+            res.push_back( Token::createId(
                 std::string( id_start, ptr - id_start)));
         }
         else if ( *ptr == ',')
         {
-            res.push_back( TokenAn::Token::createScalar( TOKEN_COMMA));
+            res.push_back( Token::createScalar( TOKEN_COMMA));
             ptr ++;
         }
         else if ( *ptr == '(')
         {
-            res.push_back( TokenAn::Token::createScalar( TOKEN_LBRACKET));
+            res.push_back( Token::createScalar( TOKEN_LBRACKET));
             ptr ++;
         }
         else if ( *ptr == ')')
         {
-            res.push_back( TokenAn::Token::createScalar( TOKEN_RBRACKET));
+            res.push_back( Token::createScalar( TOKEN_RBRACKET));
             ptr ++;
         }
         else if ( *ptr == ':')
         {
-            res.push_back( TokenAn::Token::createScalar( TOKEN_COLON));
+            res.push_back( Token::createScalar( TOKEN_COLON));
             ptr ++;
         }
         else if ( *ptr == '$' && isdigit( ptr[1]))
@@ -81,25 +81,25 @@ std::vector<TokenAn::Token *> TokenAn::run()
 
             int iVal = 0;
             sscanf( ptr, "%d", &iVal);
-            res.push_back( TokenAn::Token::createConstInt( iVal));
+            res.push_back( Token::createConstInt( iVal));
 
             while ( isdigit( *ptr))
                 ptr ++;
         }
         else if ( *ptr == '\r' && ptr[1] == '\n') // DOS
         {
-            res.push_back( TokenAn::Token::createEos());
+            res.push_back( Token::createEos());
             ptr += 2;
         }
         else if ( *ptr == '\n' || *ptr == '\r') // Unix, Mac
         {
-            res.push_back( TokenAn::Token::createEos());
+            res.push_back( Token::createEos());
             ptr ++;
         }
         else if ( *ptr == '\0')
         {
-            res.push_back( TokenAn::Token::createEos());
-//            res.push_back( TokenAn::Token::createScalar( TOKEN_EOF));
+            res.push_back( Token::createEos());
+//            res.push_back( Token::createScalar( TOKEN_EOF));
         }
         else
         {
@@ -118,38 +118,38 @@ void TokenAn::skip_spaces()
         ptr ++;
 }
 
-TokenAn::Token *TokenAn::Token::createId( const std::string id_string)
+Token *Token::createId( const std::string id_string)
 {
-    TokenAn::Token *res = new TokenAn::Token;
+    Token *res = new Token;
     res->type = TOKEN_ID;
     res->sVal = id_string;
 
     return res;
 }
 
-TokenAn::Token *TokenAn::Token::createConstInt( int iVal)
+Token *Token::createConstInt( int iVal)
 {
-    TokenAn::Token *res = new TokenAn::Token;
+    Token *res = new Token;
     res->type = TOKEN_CONST_INT;
     res->iVal = iVal;
 
     return res;
 }
 
-TokenAn::Token *TokenAn::Token::createScalar( enum TOKEN_TYPE type)
+Token *Token::createScalar( enum TOKEN_TYPE type)
 {
-    TokenAn::Token *res = new TokenAn::Token;
+    Token *res = new Token;
     res->type = type;
 
     return res;
 }
 
-TokenAn::Token *TokenAn::Token::createEos() // end of line
+Token *Token::createEos() // end of line
 {
     return createScalar( TOKEN_EOS);
 }
 
-void TokenAn::Token::dump()
+void Token::dump()
 {
     switch ( type)
     {

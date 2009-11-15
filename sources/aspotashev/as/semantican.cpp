@@ -4,14 +4,14 @@
 #include "semantican.h"
 
 
-SemanticAn::SemanticAn( std::vector<TokenAn::Token *> tokens)
+SemanticAn::SemanticAn( std::vector<Token *> tokens)
 {
     this->tokens = tokens;
 }
 
-std::vector<SemanticAn::Unit *> SemanticAn::run()
+std::vector<SemanticUnit *> SemanticAn::run()
 {
-    std::vector<SemanticAn::Unit *> res;
+    std::vector<SemanticUnit *> res;
 
     for ( tok = tokens.begin(); tok != tokens.end(); )
     {
@@ -22,7 +22,7 @@ std::vector<SemanticAn::Unit *> SemanticAn::run()
         else if ( tok[0]->type == TOKEN_ID &&
                   tok[1]->type == TOKEN_COLON) // label
         {
-            res.push_back( Unit::createLabel( tok[0]->sVal));
+            res.push_back( SemanticUnit::createLabel( tok[0]->sVal));
             tok += 2;
         }
         else if ( tok[0]->type == TOKEN_ID && isOpcode( tok[0]->sVal))
@@ -31,7 +31,7 @@ std::vector<SemanticAn::Unit *> SemanticAn::run()
             tok ++;
 
             std::vector<Operand *> operands = parseOperandList();
-            res.push_back( Unit::createOperation( opcode, operands));
+            res.push_back( SemanticUnit::createOperation( opcode, operands));
         }
         else
         {
@@ -50,7 +50,7 @@ bool SemanticAn::isOpcode( std::string s)
            s == "jmp" || s == "jgt";
 }
 
-std::vector<SemanticAn::Operand *> SemanticAn::parseOperandList()
+std::vector<Operand *> SemanticAn::parseOperandList()
 {
     std::vector<Operand *> res;
     
@@ -72,7 +72,7 @@ std::vector<SemanticAn::Operand *> SemanticAn::parseOperandList()
     return res;
 }
 
-SemanticAn::Operand *SemanticAn::parseOperand()
+Operand *SemanticAn::parseOperand()
 {
     Operand *res = NULL;
 
@@ -102,9 +102,9 @@ SemanticAn::Operand *SemanticAn::parseOperand()
     return res;
 }
 
-SemanticAn::Operand *SemanticAn::Operand::createId( std::string id_string)
+Operand *Operand::createId( std::string id_string)
 {
-    SemanticAn::Operand *res = new SemanticAn::Operand;
+    Operand *res = new Operand;
     if ( id_string[0] == '%')
     {
         res->type = OPERAND_GPR;
@@ -119,48 +119,48 @@ SemanticAn::Operand *SemanticAn::Operand::createId( std::string id_string)
     return res;
 }
 
-SemanticAn::Operand *SemanticAn::Operand::createIdInd(
+Operand *Operand::createIdInd(
     std::string id_string)
 {
-    SemanticAn::Operand *res = createId( id_string);
+    Operand *res = createId( id_string);
     res->indirect = true;
 
     return res;
 }
 
-SemanticAn::Operand *SemanticAn::Operand::createConstInt( int iVal)
+Operand *Operand::createConstInt( int iVal)
 {
-    SemanticAn::Operand *res = new SemanticAn::Operand;
+    Operand *res = new Operand;
     res->type = OPERAND_CONST_INT;
     res->iVal = iVal;
 
     return res;
 }
 
-SemanticAn::Operand::Operand()
+Operand::Operand()
 {
     indirect = false;
 }
 
-bool SemanticAn::Operand::isIndirectGpr()
+bool Operand::isIndirectGpr()
 {
     return indirect && type == OPERAND_GPR;
 }
 
-bool SemanticAn::Operand::isDirectGpr()
+bool Operand::isDirectGpr()
 {
     return !indirect && type == OPERAND_GPR;
 }
 
-bool SemanticAn::Operand::isConstInt()
+bool Operand::isConstInt()
 {
     return type == OPERAND_CONST_INT;
 }
 
-SemanticAn::Unit *SemanticAn::Unit::createOperation(
+SemanticUnit *SemanticUnit::createOperation(
     std::string opcode, std::vector<Operand *> operands)
 {
-    SemanticAn::Unit *res = new SemanticAn::Unit;
+    SemanticUnit *res = new SemanticUnit;
     res->type = UNIT_OPERATION;
     res->sVal = opcode;
     res->operands = operands;
@@ -168,16 +168,16 @@ SemanticAn::Unit *SemanticAn::Unit::createOperation(
     return res;
 }
 
-SemanticAn::Unit *SemanticAn::Unit::createLabel( std::string id)
+SemanticUnit *SemanticUnit::createLabel( std::string id)
 {
-    SemanticAn::Unit *res = new SemanticAn::Unit;
+    SemanticUnit *res = new SemanticUnit;
     res->type = UNIT_LABEL;
     res->sVal = id;
 
     return res;
 }
 
-void SemanticAn::Unit::dump()
+void SemanticUnit::dump()
 {
     switch ( type)
     {
@@ -202,7 +202,7 @@ void SemanticAn::Unit::dump()
     }
 }
 
-void SemanticAn::Operand::dump()
+void Operand::dump()
 {
     if ( indirect)
     {
