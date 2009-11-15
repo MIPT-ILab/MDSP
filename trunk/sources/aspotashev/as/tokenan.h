@@ -62,7 +62,7 @@ public:
     /**
      * Returns the type of the token
      *
-     * Getter for @tokenType
+     * Getter for @p tokenType
      */
     TOKEN_TYPE type() const;
 
@@ -70,7 +70,7 @@ public:
      * Returns the integer value associated with the token when the type
      * of the token is TOKEN_CONST_INT
      *
-     * Getter for @iVal
+     * Getter for @p iVal
      */
     int integer() const;
 
@@ -78,7 +78,7 @@ public:
      * Returns the string value associated with the token when the type
      * of the token is TOKEN_ID
      *
-     * Getter for @sVal
+     * Getter for @p sVal
      */
     std::string str() const;
 

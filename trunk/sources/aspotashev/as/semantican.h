@@ -27,7 +27,7 @@ public:
     /**
      * Default constructor
      *
-     * Sets @indirect to false
+     * Sets @p indirect to false
      */
     Operand();
 
@@ -74,14 +74,14 @@ public:
      * Returns the identifier for operands of types
      * OPERAND_GPR and OPERAND_CUSTOM_ID
      *
-     * Getter for @sVal
+     * Getter for @p sVal
      */
     std::string str() const;
 
     /**
      * Returns the integer value for operand of type OPERAND_CONST_INT
      *
-     * Getter for @iVal
+     * Getter for @p iVal
      */
     int integer() const;
 
@@ -117,7 +117,7 @@ public:
     /**
      * Returns the type of the semantic unit
      *
-     * Getter for @unitType
+     * Getter for @p unitType
      */
     UNIT_TYPE type() const;
 
@@ -126,7 +126,7 @@ public:
      *      1. label identifier when type == UNIT_LABEL,
      *      2. processor instruction name when type == UNIT_OPERATION
      *
-     * Getter for @sVal
+     * Getter for @p sVal
      */
     std::string str() const;
 

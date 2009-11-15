@@ -26,7 +26,7 @@ public:
     std::map<unsigned int, hostUInt8> run();
 
     /**
-     * Encodes a processor instruction located at word address @pc
+     * Encodes a processor instruction located at word address @p pc
      * in program memory
      *
      * @param operation Pointer to the assembler command.
