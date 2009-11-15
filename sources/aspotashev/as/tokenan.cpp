@@ -121,7 +121,7 @@ void TokenAn::skip_spaces()
 Token *Token::createId( const std::string id_string)
 {
     Token *res = new Token;
-    res->type = TOKEN_ID;
+    res->tokenType = TOKEN_ID;
     res->sVal = id_string;
 
     return res;
@@ -130,7 +130,7 @@ Token *Token::createId( const std::string id_string)
 Token *Token::createConstInt( int iVal)
 {
     Token *res = new Token;
-    res->type = TOKEN_CONST_INT;
+    res->tokenType = TOKEN_CONST_INT;
     res->iVal = iVal;
 
     return res;
@@ -139,7 +139,7 @@ Token *Token::createConstInt( int iVal)
 Token *Token::createScalar( enum TOKEN_TYPE type)
 {
     Token *res = new Token;
-    res->type = type;
+    res->tokenType = type;
 
     return res;
 }
@@ -149,9 +149,28 @@ Token *Token::createEos() // end of line
     return createScalar( TOKEN_EOS);
 }
 
+TOKEN_TYPE Token::type() const
+{
+    return tokenType;
+}
+
+int Token::integer() const
+{
+    assert(tokenType == TOKEN_CONST_INT);
+
+    return iVal;
+}
+
+std::string Token::str() const
+{
+    assert(tokenType == TOKEN_ID);
+
+    return sVal;
+}
+
 void Token::dump()
 {
-    switch ( type)
+    switch ( tokenType)
     {
     case TOKEN_ID:        std::cout << sVal; break;
     case TOKEN_EOS:       std::cout << "--------------- (\\n)"; break;
