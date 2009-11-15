@@ -17,6 +17,55 @@ enum TOKEN_TYPE
     TOKEN_COLON,
 };
 
+struct Token
+{
+    TOKEN_TYPE type;
+
+    int iVal;
+    std::string sVal;
+
+    /**
+     * Creates a token representing an idetifier in the source code
+     *
+     * Examples:
+     *      %r0 -- a processor register
+     *      ld -- processor command name
+     *      label -- user-defined identifier
+     *
+     * @param id_string The name of the identifier
+     */
+    static Token *createId( const std::string id_string);
+
+    /**
+     * Creates a token representing an integer constant
+     *
+     * @param iVal The value of the constant.
+     */
+    static Token *createConstInt( int iVal);
+
+    /**
+     * Creates a token that doesn't require any additional information
+     *
+     * @param type The type of the token, one of the following:
+     *        TOKEN_LBRACKET -- left bracket, '('
+     *        TOKEN_RBRACKET -- right bracket, ')'
+     *        TOKEN_COLON -- colon, ':'
+     *        TOKEN_COMMA -- comma, ','
+     *
+     * @see createEos
+     */
+    static Token *createScalar( TOKEN_TYPE type);
+
+    /**
+     * Create an end-of-string token
+     *
+     * This is an equivalent to "createScalar( TOKEN_EOS)"
+     */
+    static Token *createEos();
+
+    void dump();
+};
+
 
 /**
  * This class is used to parse the assembler source code into tokens.
@@ -26,56 +75,6 @@ enum TOKEN_TYPE
  */
 class TokenAn
 {
-public:
-    struct Token
-    {
-        TOKEN_TYPE type;
-
-        int iVal;
-        std::string sVal;
-
-        /**
-         * Creates a token representing an idetifier in the source code
-         *
-         * Examples:
-         *      %r0 -- a processor register
-         *      ld -- processor command name
-         *      label -- user-defined identifier
-         *
-         * @param id_string The name of the identifier
-         */
-        static Token *createId( const std::string id_string);
-
-        /**
-         * Creates a token representing an integer constant
-         *
-         * @param iVal The value of the constant.
-         */
-        static Token *createConstInt( int iVal);
-
-        /**
-         * Creates a token that doesn't require any additional information
-         *
-         * @param type The type of the token, one of the following:
-         *        TOKEN_LBRACKET -- left bracket, '('
-         *        TOKEN_RBRACKET -- right bracket, ')'
-         *        TOKEN_COLON -- colon, ':'
-         *        TOKEN_COMMA -- comma, ','
-         *
-         * @see createEos
-         */
-        static Token *createScalar( TOKEN_TYPE type);
-
-        /**
-         * Create an end-of-string token
-         *
-         * This is an equivalent to "createScalar( TOKEN_EOS)"
-         */
-        static Token *createEos();
-
-        void dump();
-    };
-
 public:
     /**
      * Convenience constructor
@@ -103,7 +102,7 @@ private:
 
     void skip_spaces();
 
-private:
+
     long filelength;
     char *data;
     char *ptr;

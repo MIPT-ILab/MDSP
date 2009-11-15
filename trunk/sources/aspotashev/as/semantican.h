@@ -21,6 +21,90 @@ enum OPERAND_TYPE
 };
 
 
+struct Operand
+{
+    OPERAND_TYPE type;
+    bool indirect;
+    std::string sVal;
+    int iVal;
+
+    /**
+     * Default constructor
+     *
+     * Sets @indirect to false
+     */
+    Operand();
+
+    /**
+     * Creates an operand defined by a single identifier
+     *
+     * @param id_string The identifier in the operand.
+     */
+    static Operand *createId( std::string id_string);
+
+    /**
+     * Creates an indirect operand with the address in memory defined
+     * by an identifier. Example: "(%r0)"
+     *
+     * @param id_string The identifier in the operand.
+     */
+    static Operand *createIdInd( std::string id_string);
+
+    /**
+     * Creates a constant integer operand
+     *
+     * @param iVal The value of the constant.
+     */
+    static Operand *createConstInt( int iVal);
+
+    /**
+     * Returns whether the operand is a memory address in a register
+     * ("(%r0)".."(%r31)")
+     */
+    bool isIndirectGpr();
+
+    /**
+     * Returns whether the operand is a register
+     * ("%r0".."%r31")
+     */
+    bool isDirectGpr();
+
+    /**
+     * Returns whether the operand is a constant integer
+     */
+    bool isConstInt();
+
+    void dump();
+};
+
+
+struct SemanticUnit
+{
+    UNIT_TYPE type;
+
+    std::string sVal;
+    std::vector<Operand *> operands;
+
+    /**
+     * Creates a processor instruction as a semantic unit
+     *
+     * @param opcode The instruction name.
+     * @param operands The list of operands of the instruction.
+     */
+    static SemanticUnit *createOperation(
+        std::string opcode, std::vector<Operand *> operands);
+
+    /**
+     * Creates a label as a semantic unit
+     *
+     * @param id The identifier of the label.
+     */
+    static SemanticUnit *createLabel( std::string id);
+
+    void dump();
+};
+
+
 /**
  * This class is used to generate a sequence of semantic unit from a
  * sequence of tokens
@@ -28,100 +112,17 @@ enum OPERAND_TYPE
 class SemanticAn
 {
 public:
-    struct Operand
-    {
-        OPERAND_TYPE type;
-        bool indirect;
-        std::string sVal;
-        int iVal;
-
-        /**
-         * Default constructor
-         *
-         * Sets @indirect to false
-         */
-        Operand();
-
-        /**
-         * Creates an operand defined by a single identifier
-         *
-         * @param id_string The identifier in the operand.
-         */
-        static Operand *createId( std::string id_string);
-
-        /**
-         * Creates an indirect operand with the address in memory defined
-         * by an identifier. Example: "(%r0)"
-         *
-         * @param id_string The identifier in the operand.
-         */
-        static Operand *createIdInd( std::string id_string);
-
-        /**
-         * Creates a constant integer operand
-         *
-         * @param iVal The value of the constant.
-         */
-        static Operand *createConstInt( int iVal);
-
-        /**
-         * Returns whether the operand is a memory address in a register
-         * ("(%r0)".."(%r31)")
-         */
-        bool isIndirectGpr();
-
-        /**
-         * Returns whether the operand is a register
-         * ("%r0".."%r31")
-         */
-        bool isDirectGpr();
-
-        /**
-         * Returns whether the operand is a constant integer
-         */
-        bool isConstInt();
-
-        void dump();
-    };
-
-    struct Unit
-    {
-        UNIT_TYPE type;
-
-        std::string sVal;
-        std::vector<Operand *> operands;
-
-        /**
-         * Creates a processor instruction as a semantic unit
-         *
-         * @param opcode The instruction name.
-         * @param operands The list of operands of the instruction.
-         */
-        static Unit *createOperation(
-            std::string opcode, std::vector<Operand *> operands);
-
-        /**
-         * Creates a label as a semantic unit
-         *
-         * @param id The identifier of the label.
-         */
-        static Unit *createLabel( std::string id);
-
-        void dump();
-    };
-
-public:
     /**
      * Convenience constructor
      *
      * @param tokens The sequence of tokens to work with.
      */
-    SemanticAn( std::vector<TokenAn::Token *> tokens);
+    SemanticAn( std::vector<Token *> tokens);
 
     /**
      * Generates the sequence of semantic units
      */
-    std::vector<Unit *> run();
+    std::vector<SemanticUnit *> run();
 
 private:
     bool isOpcode( std::string s); // architecture-dependent
@@ -140,16 +141,16 @@ private:
      */
     Operand *parseOperand();
 
-private:
+
     /**
      * The list of tokens on the input
      */
-    std::vector<TokenAn::Token *> tokens;
+    std::vector<Token *> tokens;
 
     /**
      * Iterator pointing to the current token
      */
-    std::vector<TokenAn::Token *>::iterator tok;
+    std::vector<Token *>::iterator tok;
 };
 
 #endif

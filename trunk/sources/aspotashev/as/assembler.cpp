@@ -3,7 +3,7 @@
 #include "operation.h"
 
 
-Assembler::Assembler( std::vector<SemanticAn::Unit *> units)
+Assembler::Assembler( std::vector<SemanticUnit *> units)
 {
     this->units = units;
 }
@@ -16,7 +16,7 @@ std::map<unsigned int, hostUInt8> Assembler::run()
 
     /* map from semantic units in the source code to the current
      * addresses in program memory */
-    std::map<SemanticAn::Unit *, unsigned int> unit_addr;
+    std::map<SemanticUnit *, unsigned int> unit_addr;
 
     /* map from label identifiers to its absolute byte addresses
      * in program memory */
@@ -78,7 +78,7 @@ std::map<unsigned int, hostUInt8> Assembler::run()
 }
 
 ByteLine *Assembler::encodeOperation(
-    SemanticAn::Unit *operation, unsigned int pc)
+    SemanticUnit *operation, unsigned int pc)
 {
     /* This method is only applicable to assembler commands */
     assert( operation->type == UNIT_OPERATION);

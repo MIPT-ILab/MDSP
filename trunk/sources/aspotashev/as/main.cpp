@@ -9,7 +9,7 @@
 int main()
 {
     TokenAn *tokenan = new TokenAn( "1.S");
-    std::vector<TokenAn::Token *> tokens = tokenan->run();
+    std::vector<Token *> tokens = tokenan->run();
 
 /*    for ( int i = 0; i < (int)tokens.size(); i ++)
     {
@@ -19,7 +19,7 @@ int main()
     }*/
 
     SemanticAn *seman = new SemanticAn( tokens);
-    std::vector<SemanticAn::Unit *> units = seman->run();
+    std::vector<SemanticUnit *> units = seman->run();
 
 /*    for ( int i = 0; i < (int)units.size(); i ++)
     {
