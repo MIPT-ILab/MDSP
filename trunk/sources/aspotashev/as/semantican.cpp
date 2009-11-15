@@ -185,29 +185,29 @@ UNIT_TYPE SemanticUnit::type()
 
 std::string SemanticUnit::str() const
 {
-    assert(unitType == UNIT_LABEL || unitType == UNIT_OPERATION);
+    assert( unitType == UNIT_LABEL || unitType == UNIT_OPERATION);
 
     return sVal;
 }
 
 bool SemanticUnit::operator== ( const std::string &str)
 {
-    assert(unitType == UNIT_LABEL || unitType == UNIT_OPERATION);
+    assert( unitType == UNIT_LABEL || unitType == UNIT_OPERATION);
 
     return sVal == str;
 }
 
 int SemanticUnit::nOperands()
 {
-    assert(unitType == UNIT_OPERATION);
+    assert( unitType == UNIT_OPERATION);
 
     return (int)operands.size();
 }
 
 const Operand *SemanticUnit::operator[] ( int index)
 {
-    assert(unitType == UNIT_OPERATION);
-    assert(index >= 0 && index < nOperands());
+    assert( unitType == UNIT_OPERATION);
+    assert( index >= 0 && index < nOperands());
 
     return operands[index];
 }

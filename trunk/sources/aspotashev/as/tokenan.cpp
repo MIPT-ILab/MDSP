@@ -15,6 +15,8 @@ TokenAn::TokenAn( const char *filename)
 void TokenAn::init_file_length( const char *filename)
 {
     FILE *f = fopen( filename, "r");
+    assert( f);
+
     fseek( f, 0, SEEK_END);
     filelength = ftell( f);
     fclose( f);
@@ -105,7 +107,7 @@ std::vector<Token *> TokenAn::run()
         {
             std::cerr << "bad char: " << *ptr <<
                 " (code: " << (int)*ptr << ")" << std::endl;
-            assert(0);
+            assert( 0);
         }
     }
 
@@ -156,14 +158,14 @@ TOKEN_TYPE Token::type() const
 
 int Token::integer() const
 {
-    assert(tokenType == TOKEN_CONST_INT);
+    assert( tokenType == TOKEN_CONST_INT);
 
     return iVal;
 }
 
 std::string Token::str() const
 {
-    assert(tokenType == TOKEN_ID);
+    assert( tokenType == TOKEN_ID);
 
     return sVal;
 }
