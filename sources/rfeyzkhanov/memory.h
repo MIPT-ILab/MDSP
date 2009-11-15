@@ -177,6 +177,54 @@ inline ByteLine operator+ (  const ByteLine& a,  const Byte& b)
     temp.addByte( b);
     return temp;
 }
+inline ByteLine operator<< ( const ByteLine& byteline, int count)
+{   
+    int length = byteline.getSizeOfLine();   // length of byteline
+	int temp_byte_num = count/8;			 // number of shifting byte
+    int right_shift = 8-count%8;			 
+	int left_shift  = count%8;				 
+	hostUInt8 left_part, right_part;		 //left and right part of byte in temp	 
+	ByteLine temp( byteline);						 
+	int i;
+	for ( i = 0; i < length; i++)   // nulling temp
+	{
+		temp.setByteVal( i, 0);
+	}
+
+	temp.setByteVal( temp_byte_num, (byteline.getByteVal( 0) << (count%8))); 
+    for ( i = 1; i < ( length - count/8); i++)
+    { 
+		left_part  = byteline.getByteVal( i - 1) >> ( right_shift);
+		right_part = byteline.getByteVal( i)     << ( left_shift);
+		temp_byte_num = i + count/8;
+        temp.setByteVal( temp_byte_num, left_part | right_part);  
+	}     
+return temp; 
+}
+
+inline ByteLine operator>> ( const ByteLine& byteline, int count)
+{
+    unsigned int length = byteline.getSizeOfLine();   // length of byteline 
+	unsigned int temp_byte_num = length - count/8 - 1;// number of shifting byte
+    unsigned int right_shift = 8-count%8;			  
+	unsigned int left_shift  = count%8;				  
+	hostUInt8 left_part, right_part;				  //left and right part of byte in temp	
+	ByteLine temp( byteline);					  	 
+	int i;
+	for ( i = 0; i < length; i++)
+	{
+		temp.setByteVal( i, 0);
+	}
+	temp.setByteVal( temp_byte_num, (byteline.getByteVal( 0) >> (count%8)));
+	for ( i = 1; i < ( length - count/8); i++)
+    { 
+		left_part  = byteline.getByteVal( length - i) << ( right_shift);
+		right_part = byteline.getByteVal( length - i - 1)  >> ( left_shift);
+		temp_byte_num = length - count/8 - 1 - i;
+        temp.setByteVal( temp_byte_num, left_part | right_part);  
+	}     
+return temp; 
+}
 
 /**
  * class MemVal implements a object to interaction with memory 
