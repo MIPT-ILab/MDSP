@@ -3,14 +3,11 @@
  * The types are used in algorithms affected by size of a variable
  * Copyright 2009 MDSP team
  */
- 
+
 #ifndef TYPES_H
 #define TYPES_H
 
-/* compile for Windows */
-#define WINDOWS 1
-
-#ifdef WINDOWS
+#if defined(_WIN32) || defined(_WIN64)
 
 /* Signed 8-bit integer type */
 typedef signed __int8 hostSInt8;
@@ -56,10 +53,10 @@ typedef float hostFloat32;
 /* Double precision 64-bit float type */
 typedef double hostFloat64;
 
-#endif /* !WINDOWS */
+#endif
 
 /* Type for mathematical memory address */
-typedef hostUInt32 mathAddr; 
+typedef hostUInt32 mathAddr;
 
 /* Type for phisical register numeration */
 typedef hostUInt32 physRegNum;
@@ -67,11 +64,11 @@ typedef hostUInt32 physRegNum;
 /* Operation type */
 typedef enum OperType
 {
-    NO_TYPE,
     MOVE,
     ALU,
     MAC,
     DMAC,
+    SIMD,
     P_FLOW
 } OperType;
 
@@ -92,7 +89,7 @@ typedef enum FlagType
 {
     NO_FLAG,
     N,  // negative
-    Z,  // zero 
+    Z,  // zero
     C,  // carry out
     O   // overflow
 } FlagType;

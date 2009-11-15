@@ -1,5 +1,5 @@
 /**
- * core.h - Header of Core class which defines 
+ * core.h - Header of Core class which defines
  * fields and methods used to run the simulator
  * Copyright 2009 MDSP team
  */
