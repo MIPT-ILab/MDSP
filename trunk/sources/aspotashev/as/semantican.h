@@ -57,33 +57,33 @@ public:
      * Returns whether the operand is a memory address in a register
      * ("(%r0)".."(%r31)")
      */
-    bool isIndirectGpr();
+    bool isIndirectGpr() const;
 
     /**
      * Returns whether the operand is a register
      * ("%r0".."%r31")
      */
-    bool isDirectGpr();
+    bool isDirectGpr() const;
 
     /**
      * Returns whether the operand is a constant integer
      */
-    bool isConstInt();
+    bool isConstInt() const;
 
     /**
      * Returns the identifier for operands of types
      * OPERAND_GPR and OPERAND_CUSTOM_ID
      *
-     * Getter for sVal
+     * Getter for @sVal
      */
-    std::string str();
+    std::string str() const;
 
     /**
      * Returns the integer value for operand of type OPERAND_CONST_INT
      *
-     * Getter for iVal
+     * Getter for @iVal
      */
-    int integer();
+    int integer() const;
 
     void dump();
 
@@ -95,13 +95,9 @@ private:
 };
 
 
-struct SemanticUnit
+class SemanticUnit
 {
-    UNIT_TYPE type;
-
-    std::string sVal;
-    std::vector<Operand *> operands;
-
+public:
     /**
      * Creates a processor instruction as a semantic unit
      *
@@ -118,7 +114,49 @@ struct SemanticUnit
      */
     static SemanticUnit *createLabel( std::string id);
 
+    /**
+     * Returns the type of the semantic unit
+     *
+     * Getter for @unitType
+     */
+    UNIT_TYPE type();
+
+    /**
+     * Returns the string value of the semantic unit, e.g.
+     *      1. label identifier when type == UNIT_LABEL,
+     *      2. processor instruction name when type == UNIT_OPERATION
+     *
+     * Getter for @sVal
+     */
+    std::string str() const;
+
+    /**
+     * Compares the string value of the semantic unit with another string
+     *
+     * @see str
+     */
+    bool operator== ( const std::string &str);
+
+    /**
+     * Returns the number of assembler command operands when the
+     * semantic unit is an assembler command (type == UNIT_OPERATION)
+     */
+    int nOperands();
+
+    /**
+     * Read-access to a specific assembler command operand
+     *
+     * @param index The index in the list of operands.
+     */
+    const Operand *operator[] ( int index);
+
     void dump();
+
+private:
+    UNIT_TYPE unitType;
+
+    std::string sVal;
+    std::vector<Operand *> operands;
 };
 
 

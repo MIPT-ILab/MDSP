@@ -26,11 +26,11 @@ std::map<unsigned int, hostUInt8> Assembler::run()
     {
         unit_addr[units[i]] = pc;
 
-        if ( units[i]->type == UNIT_LABEL)
+        if ( units[i]->type() == UNIT_LABEL)
         {
-            label_addr[units[i]->sVal] = pc;
+            label_addr[units[i]->str()] = pc;
         }
-        else if ( units[i]->type == UNIT_OPERATION)
+        else if ( units[i]->type() == UNIT_OPERATION)
         {
             pc ++; // add operation length in command memory words
         }
@@ -41,7 +41,7 @@ std::map<unsigned int, hostUInt8> Assembler::run()
     std::map<unsigned int, ByteLine *> op_list;
     for ( int i = 0; i < (int)units.size(); i ++)
     {
-        if ( units[i]->type == UNIT_OPERATION)
+        if ( units[i]->type() == UNIT_OPERATION)
         {
             pc = unit_addr[units[i]];
             if ( op_list.find( pc) != op_list.end())
@@ -81,22 +81,22 @@ ByteLine *Assembler::encodeOperation(
     SemanticUnit *operation, unsigned int pc)
 {
     /* This method is only applicable to assembler commands */
-    assert( operation->type == UNIT_OPERATION);
+    assert( operation->type() == UNIT_OPERATION);
 
     Operation op;
 
-    if ( operation->sVal == "brm")
+    if ( *operation == "brm")
     {
-        assert( operation->operands.size() == 2);
+        assert( operation->nOperands() == 2);
 
         hostUInt8 sd = 0;
-        if ( operation->operands[0]->isIndirectGpr() &&
-             operation->operands[1]->isDirectGpr())
+        if ( (*operation)[0]->isIndirectGpr() &&
+             (*operation)[1]->isDirectGpr())
         {
             sd = 1; // m(reg) -> reg
         }
-        else if ( operation->operands[0]->isDirectGpr() &&
-                  operation->operands[1]->isIndirectGpr())
+        else if ( (*operation)[0]->isDirectGpr() &&
+                  (*operation)[1]->isIndirectGpr())
         {
             sd = 0; // reg -> m(reg)
         }
@@ -106,30 +106,30 @@ ByteLine *Assembler::encodeOperation(
         }
 
         op.set( MOVE, BRM, sd, 0,
-            getGprNum( operation->operands[0]->str()),
-            getGprNum( operation->operands[1]->str()));
+            getGprNum( (*operation)[0]->str()),
+            getGprNum( (*operation)[1]->str()));
     }
-    else if ( operation->sVal == "brr")
+    else if ( *operation == "brr")
     {
-        assert( operation->operands.size() == 2);
-        assert( operation->operands[0]->isDirectGpr() &&
-            operation->operands[1]->isDirectGpr());
+        assert( operation->nOperands() == 2);
+        assert( (*operation)[0]->isDirectGpr() &&
+            (*operation)[1]->isDirectGpr());
 
         op.set( MOVE, BRR, 0, 0,
-            getGprNum( operation->operands[0]->str()),
-            getGprNum( operation->operands[1]->str()));
+            getGprNum( (*operation)[0]->str()),
+            getGprNum( (*operation)[1]->str()));
     }
-    else if ( operation->sVal == "ld")
+    else if ( *operation == "ld")
     {
-        assert( operation->operands.size() == 2);
-        assert( operation->operands[0]->isConstInt());
+        assert( operation->nOperands() == 2);
+        assert( (*operation)[0]->isConstInt());
 
         hostUInt8 sd = 0;
-        if ( operation->operands[1]->isDirectGpr())
+        if ( (*operation)[1]->isDirectGpr())
         {
             sd = 0; // <const> -> reg
         }
-        else if ( operation->operands[1]->isIndirectGpr())
+        else if ( (*operation)[1]->isIndirectGpr())
         {
             sd = 1; // <const> -> m(reg)
         }
@@ -139,13 +139,13 @@ ByteLine *Assembler::encodeOperation(
         }
 
         /* LD command always has an imm16 operand */
-        int imm = operation->operands[0]->integer();
+        int imm = (*operation)[0]->integer();
         assert( imm >= 0 && imm <= 0xffff);
 
         hostUInt16 imm16 = (hostUInt16)imm;
 
         op.set( MOVE, LD, sd, imm16, 0,
-            getGprNum( operation->operands[1]->str()));
+            getGprNum( (*operation)[1]->str()));
     }
     else
     {

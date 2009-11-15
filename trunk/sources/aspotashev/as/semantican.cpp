@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <assert.h>
 
 #include "semantican.h"
 
@@ -142,17 +143,17 @@ Operand::Operand()
     indirect = false;
 }
 
-bool Operand::isIndirectGpr()
+bool Operand::isIndirectGpr() const
 {
     return indirect && type == OPERAND_GPR;
 }
 
-bool Operand::isDirectGpr()
+bool Operand::isDirectGpr() const
 {
     return !indirect && type == OPERAND_GPR;
 }
 
-bool Operand::isConstInt()
+bool Operand::isConstInt() const
 {
     return type == OPERAND_CONST_INT;
 }
@@ -161,7 +162,7 @@ SemanticUnit *SemanticUnit::createOperation(
     std::string opcode, std::vector<Operand *> operands)
 {
     SemanticUnit *res = new SemanticUnit;
-    res->type = UNIT_OPERATION;
+    res->unitType = UNIT_OPERATION;
     res->sVal = opcode;
     res->operands = operands;
 
@@ -171,15 +172,49 @@ SemanticUnit *SemanticUnit::createOperation(
 SemanticUnit *SemanticUnit::createLabel( std::string id)
 {
     SemanticUnit *res = new SemanticUnit;
-    res->type = UNIT_LABEL;
+    res->unitType = UNIT_LABEL;
     res->sVal = id;
 
     return res;
 }
 
+UNIT_TYPE SemanticUnit::type()
+{
+    return unitType;
+}
+
+std::string SemanticUnit::str() const
+{
+    assert(unitType == UNIT_LABEL || unitType == UNIT_OPERATION);
+
+    return sVal;
+}
+
+bool SemanticUnit::operator== ( const std::string &str)
+{
+    assert(unitType == UNIT_LABEL || unitType == UNIT_OPERATION);
+
+    return sVal == str;
+}
+
+int SemanticUnit::nOperands()
+{
+    assert(unitType == UNIT_OPERATION);
+
+    return (int)operands.size();
+}
+
+const Operand *SemanticUnit::operator[] ( int index)
+{
+    assert(unitType == UNIT_OPERATION);
+    assert(index >= 0 && index < nOperands());
+
+    return operands[index];
+}
+
 void SemanticUnit::dump()
 {
-    switch ( type)
+    switch ( unitType)
     {
     case UNIT_LABEL:
         std::cout << "(label) " << sVal << ":";
@@ -202,12 +237,12 @@ void SemanticUnit::dump()
     }
 }
 
-std::string Operand::str()
+std::string Operand::str() const
 {
     return sVal;
 }
 
-int Operand::integer()
+int Operand::integer() const
 {
     return iVal;
 }
