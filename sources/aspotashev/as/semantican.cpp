@@ -178,7 +178,7 @@ SemanticUnit *SemanticUnit::createLabel( std::string id)
     return res;
 }
 
-UNIT_TYPE SemanticUnit::type()
+UNIT_TYPE SemanticUnit::type() const
 {
     return unitType;
 }
@@ -190,21 +190,21 @@ std::string SemanticUnit::str() const
     return sVal;
 }
 
-bool SemanticUnit::operator== ( const std::string &str)
+bool SemanticUnit::operator== ( const std::string &str) const
 {
     assert( unitType == UNIT_LABEL || unitType == UNIT_OPERATION);
 
     return sVal == str;
 }
 
-int SemanticUnit::nOperands()
+int SemanticUnit::nOperands() const
 {
     assert( unitType == UNIT_OPERATION);
 
     return (int)operands.size();
 }
 
-const Operand *SemanticUnit::operator[] ( int index)
+const Operand *SemanticUnit::operator[] ( int index) const
 {
     assert( unitType == UNIT_OPERATION);
     assert( index >= 0 && index < nOperands());
@@ -212,7 +212,7 @@ const Operand *SemanticUnit::operator[] ( int index)
     return operands[index];
 }
 
-void SemanticUnit::dump()
+void SemanticUnit::dump() const
 {
     switch ( unitType)
     {
@@ -247,7 +247,7 @@ int Operand::integer() const
     return iVal;
 }
 
-void Operand::dump()
+void Operand::dump() const
 {
     if ( indirect)
     {
