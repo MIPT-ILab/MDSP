@@ -17,13 +17,9 @@ enum TOKEN_TYPE
     TOKEN_COLON,
 };
 
-struct Token
+class Token
 {
-    TOKEN_TYPE type;
-
-    int iVal;
-    std::string sVal;
-
+public:
     /**
      * Creates a token representing an idetifier in the source code
      *
@@ -63,7 +59,36 @@ struct Token
      */
     static Token *createEos();
 
+    /**
+     * Returns the type of the token
+     *
+     * Getter for @tokenType
+     */
+    TOKEN_TYPE type() const;
+
+    /**
+     * Returns the integer value associated with the token when the type
+     * of the token is TOKEN_CONST_INT
+     *
+     * Getter for @iVal
+     */
+    int integer() const;
+
+    /**
+     * Returns the string value associated with the token when the type
+     * of the token is TOKEN_ID
+     *
+     * Getter for @sVal
+     */
+    std::string str() const;
+
     void dump();
+
+private:
+    TOKEN_TYPE tokenType;
+
+    int iVal;
+    std::string sVal;
 };
 
 

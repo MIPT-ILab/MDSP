@@ -16,19 +16,19 @@ std::vector<SemanticUnit *> SemanticAn::run()
 
     for ( tok = tokens.begin(); tok != tokens.end(); )
     {
-        if ( tok[0]->type == TOKEN_EOS)
+        if ( tok[0]->type() == TOKEN_EOS)
         {
             tok ++;
         }
-        else if ( tok[0]->type == TOKEN_ID &&
-                  tok[1]->type == TOKEN_COLON) // label
+        else if ( tok[0]->type() == TOKEN_ID &&
+                  tok[1]->type() == TOKEN_COLON) // label
         {
-            res.push_back( SemanticUnit::createLabel( tok[0]->sVal));
+            res.push_back( SemanticUnit::createLabel( tok[0]->str()));
             tok += 2;
         }
-        else if ( tok[0]->type == TOKEN_ID && isOpcode( tok[0]->sVal))
+        else if ( tok[0]->type() == TOKEN_ID && isOpcode( tok[0]->str()))
         {
-            std::string opcode = tok[0]->sVal;
+            std::string opcode = tok[0]->str();
             tok ++;
 
             std::vector<Operand *> operands = parseOperandList();
@@ -36,7 +36,7 @@ std::vector<SemanticUnit *> SemanticAn::run()
         }
         else
         {
-            std::cerr << "token type = " << tok[0]->type << std::endl;
+            std::cerr << "token type = " << tok[0]->type() << std::endl;
             throw;
         }
     }
@@ -55,17 +55,17 @@ std::vector<Operand *> SemanticAn::parseOperandList()
 {
     std::vector<Operand *> res;
     
-    while ( tok[0]->type != TOKEN_EOS)
+    while ( tok[0]->type() != TOKEN_EOS)
     {
         res.push_back( parseOperand());
 
-        if ( tok[0]->type == TOKEN_COMMA)
+        if ( tok[0]->type() == TOKEN_COMMA)
         {
             tok ++;
         }
-        else if ( tok[0]->type != TOKEN_EOS)
+        else if ( tok[0]->type() != TOKEN_EOS)
         {
-            std::cerr << "token type = " << tok[0]->type << std::endl;
+            std::cerr << "token type = " << tok[0]->type() << std::endl;
             throw;
         }
     }
@@ -77,26 +77,26 @@ Operand *SemanticAn::parseOperand()
 {
     Operand *res = NULL;
 
-    if ( tok[0]->type == TOKEN_ID)
+    if ( tok[0]->type() == TOKEN_ID)
     {
-        res = Operand::createId( tok[0]->sVal);
+        res = Operand::createId( tok[0]->str());
         tok ++;
     }
-    else if ( tok[0]->type == TOKEN_LBRACKET &&
-              tok[1]->type == TOKEN_ID &&
-              tok[2]->type == TOKEN_RBRACKET)
+    else if ( tok[0]->type() == TOKEN_LBRACKET &&
+              tok[1]->type() == TOKEN_ID &&
+              tok[2]->type() == TOKEN_RBRACKET)
     {
-        res = Operand::createIdInd( tok[1]->sVal); // indirect via id
+        res = Operand::createIdInd( tok[1]->str()); // indirect via id
         tok += 3;
     }
-    else if ( tok[0]->type == TOKEN_CONST_INT)
+    else if ( tok[0]->type() == TOKEN_CONST_INT)
     {
-        res = Operand::createConstInt( tok[0]->iVal);
+        res = Operand::createConstInt( tok[0]->integer());
         tok ++;
     }
     else
     {
-        std::cerr << "token type = " << tok[0]->type << std::endl;
+        std::cerr << "token type = " << tok[0]->type() << std::endl;
         throw;
     }
 
