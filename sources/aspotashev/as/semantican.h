@@ -85,7 +85,7 @@ public:
      */
     int integer() const;
 
-    void dump();
+    void dump() const;
 
 private:
     OPERAND_TYPE type;
@@ -119,7 +119,7 @@ public:
      *
      * Getter for @unitType
      */
-    UNIT_TYPE type();
+    UNIT_TYPE type() const;
 
     /**
      * Returns the string value of the semantic unit, e.g.
@@ -135,22 +135,22 @@ public:
      *
      * @see str
      */
-    bool operator== ( const std::string &str);
+    bool operator== ( const std::string &str) const;
 
     /**
      * Returns the number of assembler command operands when the
      * semantic unit is an assembler command (type == UNIT_OPERATION)
      */
-    int nOperands();
+    int nOperands() const;
 
     /**
      * Read-access to a specific assembler command operand
      *
      * @param index The index in the list of operands.
      */
-    const Operand *operator[] ( int index);
+    const Operand *operator[] ( int index) const;
 
-    void dump();
+    void dump() const;
 
 private:
     UNIT_TYPE unitType;

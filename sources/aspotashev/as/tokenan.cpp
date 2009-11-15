@@ -168,7 +168,7 @@ std::string Token::str() const
     return sVal;
 }
 
-void Token::dump()
+void Token::dump() const
 {
     switch ( tokenType)
     {
