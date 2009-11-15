@@ -21,13 +21,9 @@ enum OPERAND_TYPE
 };
 
 
-struct Operand
+class Operand
 {
-    OPERAND_TYPE type;
-    bool indirect;
-    std::string sVal;
-    int iVal;
-
+public:
     /**
      * Default constructor
      *
@@ -74,7 +70,28 @@ struct Operand
      */
     bool isConstInt();
 
+    /**
+     * Returns the identifier for operands of types
+     * OPERAND_GPR and OPERAND_CUSTOM_ID
+     *
+     * Getter for sVal
+     */
+    std::string str();
+
+    /**
+     * Returns the integer value for operand of type OPERAND_CONST_INT
+     *
+     * Getter for iVal
+     */
+    int integer();
+
     void dump();
+
+private:
+    OPERAND_TYPE type;
+    bool indirect;
+    std::string sVal;
+    int iVal;
 };
 
 

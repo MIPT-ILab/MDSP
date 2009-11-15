@@ -202,6 +202,16 @@ void SemanticUnit::dump()
     }
 }
 
+std::string Operand::str()
+{
+    return sVal;
+}
+
+int Operand::integer()
+{
+    return iVal;
+}
+
 void Operand::dump()
 {
     if ( indirect)

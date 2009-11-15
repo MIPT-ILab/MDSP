@@ -106,8 +106,8 @@ ByteLine *Assembler::encodeOperation(
         }
 
         op.set( MOVE, BRM, sd, 0,
-            getGprNum( operation->operands[0]->sVal),
-            getGprNum( operation->operands[1]->sVal));
+            getGprNum( operation->operands[0]->str()),
+            getGprNum( operation->operands[1]->str()));
     }
     else if ( operation->sVal == "brr")
     {
@@ -116,8 +116,8 @@ ByteLine *Assembler::encodeOperation(
             operation->operands[1]->isDirectGpr());
 
         op.set( MOVE, BRR, 0, 0,
-            getGprNum( operation->operands[0]->sVal),
-            getGprNum( operation->operands[1]->sVal));
+            getGprNum( operation->operands[0]->str()),
+            getGprNum( operation->operands[1]->str()));
     }
     else if ( operation->sVal == "ld")
     {
@@ -139,13 +139,13 @@ ByteLine *Assembler::encodeOperation(
         }
 
         /* LD command always has an imm16 operand */
-        int imm = operation->operands[0]->iVal;
+        int imm = operation->operands[0]->integer();
         assert( imm >= 0 && imm <= 0xffff);
 
         hostUInt16 imm16 = (hostUInt16)imm;
 
         op.set( MOVE, LD, sd, imm16, 0,
-            getGprNum( operation->operands[1]->sVal));
+            getGprNum( operation->operands[1]->str()));
     }
     else
     {
