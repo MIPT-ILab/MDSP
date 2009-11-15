@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <stdio.h>
 
 #include "tokenan.h"
 #include "semantican.h"
