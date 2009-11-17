@@ -1,3 +1,7 @@
+/**
+ * mdsp-asm/main.cpp -- Entry point of the MDSP assembler (mdsp-asm)
+ * Copyright 2009 MDSP team
+ */
 
 #include <iostream>
 #include <stdio.h>

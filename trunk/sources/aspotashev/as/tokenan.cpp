@@ -1,3 +1,7 @@
+/**
+ * mdsp-asm/tokenan.cpp -- Implementation of TokenAn class methods
+ * Copyright 2009 MDSP team
+ */
 
 #include <stdio.h>
 #include <ctype.h>

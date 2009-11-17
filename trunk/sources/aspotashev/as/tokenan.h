@@ -1,3 +1,8 @@
+/**
+ * mdsp-asm/tokenan.h -- Definition of TokenAn class,
+ *                       the lexical analyzer
+ * Copyright 2009 MDSP team
+ */
 
 #ifndef __TOKENAN_H__
 #define __TOKENAN_H__

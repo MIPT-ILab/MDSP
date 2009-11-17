@@ -1,3 +1,7 @@
+/**
+ * mdsp-asm/ident.h -- Character classification functions
+ * Copyright 2009 MDSP team
+ */
 
 /**
  * Returns whether a character may be the first character of an identifier
