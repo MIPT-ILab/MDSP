@@ -85,6 +85,9 @@ public:
      */
     int integer() const;
 
+    /**
+     * Dumps the operand into a string
+     */
     std::string dump() const;
 
 private:
@@ -150,6 +153,9 @@ public:
      */
     const Operand *operator[] ( int index) const;
 
+    /**
+     * Dumps the semantic unit into a string
+     */
     std::string dump() const;
 
 private:

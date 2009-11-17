@@ -82,12 +82,32 @@ public:
      */
     std::string str() const;
 
+    /**
+     * Dumps the token into a string
+     */
     std::string dump() const;
 
 private:
+    /**
+     * The type of the token, one of the following:
+     *      TOKEN_ID        -- identifier ("asdfgh", "%r0", ...)
+     *      TOKEN_EOS       -- end of string ('\n' or end of file)
+     *      TOKEN_COMMA     -- ','
+     *      TOKEN_LBRACKET  -- '('
+     *      TOKEN_RBRACKET  -- ')'
+     *      TOKEN_CONST_INT -- integer constant (100, ...)
+     *      TOKEN_COLON     -- ':'
+     */
     TOKEN_TYPE tokenType;
 
+    /**
+     * The value of integer constant (when tokenType is TOKEN_CONST_INT)
+     */
     int iVal;
+
+    /**
+     * The string of identifier (when tokenType is TOKEN_ID)
+     */
     std::string sVal;
 };
 
@@ -122,9 +142,25 @@ public:
     std::vector<Token *> run();
 
 private:
+    /**
+     * Initializes @p fileLength with the length of a file
+     *
+     * @param filename The name of the file.
+     */
     void initFileLength( const char *filename);
+
+    /**
+     * Allocates the buffer @p data and copies the contents of a file
+     * to that buffer
+     *
+     * @param filename The name of the file.
+     */
     void readFileContents( const char *filename);
 
+    /**
+     * Moves the current character pointer @p ptr forward while it points
+     * to a whitespace character
+     */
     void skipSpaces();
 
 
