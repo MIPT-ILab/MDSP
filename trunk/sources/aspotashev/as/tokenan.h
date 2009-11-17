@@ -82,7 +82,7 @@ public:
      */
     std::string str() const;
 
-    void dump() const;
+    std::string dump() const;
 
 private:
     TOKEN_TYPE tokenType;

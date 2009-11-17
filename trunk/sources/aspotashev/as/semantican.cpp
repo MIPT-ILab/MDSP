@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <sstream>
 #include <assert.h>
 
 #include "semantican.h"
@@ -212,29 +213,33 @@ const Operand *SemanticUnit::operator[] ( int index) const
     return operands[index];
 }
 
-void SemanticUnit::dump() const
+std::string SemanticUnit::dump() const
 {
+    std::stringstream res;
+
     switch ( unitType)
     {
     case UNIT_LABEL:
-        std::cout << "(label) " << sVal << ":";
+        res << "(label) " << sVal << ":";
         break;
 
     case UNIT_OPERATION:
-        std::cout << "(op   ) " << sVal << " ";
+        res << "(op   ) " << sVal << " ";
         for ( int i = 0; i < (int)operands.size(); i ++)
         {
             if ( i > 0)
             {
-                std::cout << ", ";
+                res << ", ";
             }
 
-            operands[i]->dump();
+            res << operands[i]->dump();
         }
         break;
 
     default: throw;
     }
+
+    return res.str();
 }
 
 std::string Operand::str() const
@@ -247,24 +252,28 @@ int Operand::integer() const
     return iVal;
 }
 
-void Operand::dump() const
+std::string Operand::dump() const
 {
+    std::stringstream res;
+
     if ( indirect)
     {
-        std::cout << "m(";
+        res << "m(";
     }
 
     switch ( type)
     {
-    case OPERAND_GPR:       std::cout << sVal; break;
-    case OPERAND_CONST_INT: std::cout << "$" << iVal; break;
-    case OPERAND_CUSTOM_ID: std::cout << sVal; break;
+    case OPERAND_GPR:       res << sVal; break;
+    case OPERAND_CONST_INT: res << "$" << iVal; break;
+    case OPERAND_CUSTOM_ID: res << sVal; break;
     default: throw;
     }
 
     if ( indirect)
     {
-        std::cout << ")";
+        res << ")";
     }
+
+    return res.str();
 }
 

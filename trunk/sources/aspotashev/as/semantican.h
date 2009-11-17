@@ -85,7 +85,7 @@ public:
      */
     int integer() const;
 
-    void dump() const;
+    std::string dump() const;
 
 private:
     OPERAND_TYPE type;
@@ -150,7 +150,7 @@ public:
      */
     const Operand *operator[] ( int index) const;
 
-    void dump() const;
+    std::string dump() const;
 
 private:
     UNIT_TYPE unitType;

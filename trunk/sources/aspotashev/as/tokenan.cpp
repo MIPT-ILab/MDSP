@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <assert.h>
 #include <iostream>
+#include <sstream>
 
 #include "tokenan.h"
 #include "ident.h"
@@ -167,18 +168,22 @@ std::string Token::str() const
     return sVal;
 }
 
-void Token::dump() const
+std::string Token::dump() const
 {
+    std::stringstream res;
+
     switch ( tokenType)
     {
-    case TOKEN_ID:        std::cout << sVal; break;
-    case TOKEN_EOS:       std::cout << "--------------- (\\n)"; break;
-    case TOKEN_COMMA:     std::cout << ","; break;
-    case TOKEN_LBRACKET:  std::cout << "("; break;
-    case TOKEN_RBRACKET:  std::cout << ")"; break;
-    case TOKEN_CONST_INT: std::cout << iVal; break;
-    case TOKEN_COLON:     std::cout << ":"; break;
+    case TOKEN_ID:        res << sVal; break;
+    case TOKEN_EOS:       res << "--------------- (\\n)"; break;
+    case TOKEN_COMMA:     res << ","; break;
+    case TOKEN_LBRACKET:  res << "("; break;
+    case TOKEN_RBRACKET:  res << ")"; break;
+    case TOKEN_CONST_INT: res << iVal; break;
+    case TOKEN_COLON:     res << ":"; break;
     default: throw;
     }
+
+    return res.str();
 }
 

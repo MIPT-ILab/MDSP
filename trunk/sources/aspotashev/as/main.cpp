@@ -12,22 +12,24 @@ int main()
     TokenAn *tokenan = new TokenAn( "1.S");
     std::vector<Token *> tokens = tokenan->run();
 
-/*    for ( int i = 0; i < (int)tokens.size(); i ++)
+#ifdef DEBUG_OUTPUT
+    for ( int i = 0; i < (int)tokens.size(); i ++)
     {
-        std::cout << "tokens[" << i << "]: ";
-        tokens[i]->dump();
-        std::cout << std::endl;
-    }*/
+        std::cout << "tokens[" << i << "]: " <<
+            tokens[i]->dump() << std::endl;
+    }
+#endif
 
     SemanticAn *seman = new SemanticAn( tokens);
     std::vector<SemanticUnit *> units = seman->run();
 
-/*    for ( int i = 0; i < (int)units.size(); i ++)
+#ifdef DEBUG_OUTPUT
+    for ( int i = 0; i < (int)units.size(); i ++)
     {
-        std::cout << "units[" << i << "]: ";
-        units[i]->dump();
-        std::cout << std::endl;
-    }*/
+        std::cout << "units[" << i << "]: " <<
+            units[i]->dump() << std::cout << std::endl;
+    }
+#endif
 
     Assembler *as = new Assembler( units);
     std::map<unsigned int, hostUInt8> image = as->run();
