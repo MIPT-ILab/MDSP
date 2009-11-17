@@ -20,6 +20,11 @@ public:
     Assembler( std::vector<SemanticUnit *> units);
 
     /**
+     * dtor
+     */
+    ~Assembler();
+
+    /**
      * Generates an executable image defined by a list of
      * pairs (byte address; byte value)
      */

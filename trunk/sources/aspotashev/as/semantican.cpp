@@ -11,6 +11,10 @@ SemanticAn::SemanticAn( std::vector<Token *> tokens)
     this->tokens = tokens;
 }
 
+SemanticAn::~SemanticAn()
+{
+}
+
 std::vector<SemanticUnit *> SemanticAn::run()
 {
     std::vector<SemanticUnit *> res;

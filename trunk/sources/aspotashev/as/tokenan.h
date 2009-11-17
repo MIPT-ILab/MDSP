@@ -129,6 +129,11 @@ public:
     TokenAn( const char *filename);
 
     /**
+     * dtor
+     */
+    ~TokenAn();
+
+    /**
      * Generates a sequence of tokens from the text loaded from the file
      * given in the constructor
      *
