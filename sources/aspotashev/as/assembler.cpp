@@ -8,6 +8,10 @@ Assembler::Assembler( std::vector<SemanticUnit *> units)
     this->units = units;
 }
 
+Assembler::~Assembler()
+{
+}
+
 std::map<unsigned int, hostUInt8> Assembler::run()
 {
     /* This variable is used to keep track of the current address in

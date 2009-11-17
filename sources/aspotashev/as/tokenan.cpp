@@ -10,7 +10,20 @@
 
 TokenAn::TokenAn( const char *filename)
 {
+    data = NULL;
+    ptr = NULL;
+
     readFileContents( filename);
+}
+
+TokenAn::~TokenAn()
+{
+    if ( data)
+    {
+        delete [] data;
+    }
+
+    data = NULL;
 }
 
 void TokenAn::initFileLength( const char *filename)
@@ -25,6 +38,8 @@ void TokenAn::initFileLength( const char *filename)
 
 void TokenAn::readFileContents( const char *filename)
 {
+    assert( data == NULL); // allow reading a file only once
+
     initFileLength( filename);
 
     data = new char[fileLength + 1];
@@ -39,6 +54,8 @@ void TokenAn::readFileContents( const char *filename)
 
 std::vector<Token *> TokenAn::run()
 {
+    assert( data);
+
     ptr = data;
     std::vector<Token *> res;
 
@@ -114,6 +131,8 @@ std::vector<Token *> TokenAn::run()
 
 void TokenAn::skipSpaces()
 {
+    assert( ptr);
+
     while ( *ptr != '\0' && isblank( *ptr))
         ptr ++;
 }

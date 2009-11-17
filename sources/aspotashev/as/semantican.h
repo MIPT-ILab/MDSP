@@ -181,6 +181,11 @@ public:
     SemanticAn( std::vector<Token *> tokens);
 
     /**
+     * dtor
+     */
+    ~SemanticAn();
+
+    /**
      * Generates the sequence of semantic units
      */
     std::vector<SemanticUnit *> run();
