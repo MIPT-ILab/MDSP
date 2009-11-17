@@ -17,6 +17,11 @@ enum TOKEN_TYPE
     TOKEN_COLON,
 };
 
+/**
+ * A token is a part of source code independent of the formatting:
+ *      "_lkjhg12" (any identifier), end of string, ',', '(', ')', ':',
+ *      100 (any integer constant)
+ */
 class Token
 {
 public:
@@ -169,8 +174,19 @@ private:
     void skipSpaces();
 
 
+    /**
+     * The length of the input file, initializes before reading the file
+     */
     long fileLength;
+
+    /**
+     * The input file contents buffer
+     */
     char *data;
+
+    /**
+     * The pointer to the current character in the buffer
+     */
     char *ptr;
 };
 

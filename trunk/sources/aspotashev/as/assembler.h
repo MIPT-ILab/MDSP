@@ -49,6 +49,9 @@ private:
     int getGprNum( std::string id);
 
 private:
+    /**
+     * The sequence of semantic units given on the input
+     */
     std::vector<SemanticUnit *> units;
 };
 

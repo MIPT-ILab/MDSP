@@ -21,6 +21,9 @@ enum OPERAND_TYPE
 };
 
 
+/**
+ * Objects of this class define operands of assembler commands
+ */
 class Operand
 {
 public:
@@ -91,13 +94,40 @@ public:
     std::string dump() const;
 
 private:
+    /**
+     * The type of the operand, one of the following:
+     *      OPERAND_GPR       -- register ("%r0") or "m(reg)" ("(%r0)")
+     *      OPERAND_CONST_INT -- integer constant
+     *      OPERAND_CUSTOM_ID -- user-defined identifier (e.g. a label)
+     */
     OPERAND_TYPE type;
+
+    /**
+     * Contains whether the operand is an operand in memory with its
+     * address stored in a GPR (general-purpose register)
+     */
     bool indirect;
+
+    /**
+     * The identifier of a register or an user-defined identifier
+     * (when @p type is OPERAND_GPR or OPERAND_CUSTOM_ID)
+     */
     std::string sVal;
+
+    /**
+     * The value of integer constant (when @p type is OPERAND_CONST_INT)
+     */
     int iVal;
 };
 
 
+/**
+ * A semantic unit is a part of source code that defines a complete
+ * instruction for the assembler (like a sentence in natural languages)
+ * Examples:
+ *      - labels
+ *      - assembler commands
+ */
 class SemanticUnit
 {
 public:
@@ -159,9 +189,23 @@ public:
     std::string dump() const;
 
 private:
+    /**
+     * The type of the semantic unit, one of the following:
+     *      UNIT_LABEL     -- a label
+     *      UNIT_OPERATION -- an assembler command
+     */
     UNIT_TYPE unitType;
 
+    /**
+     * The identifier of label (when @p unitType is UNIT_LABEL) or
+     * the name of assembler command (when @p unitType is UNIT_OPERATION)
+     */
     std::string sVal;
+
+    /**
+     * The operands list of the assembler command
+     * (when @p unitType is UNIT_OPERATION)
+     */
     std::vector<Operand *> operands;
 };
 
@@ -191,6 +235,10 @@ public:
     std::vector<SemanticUnit *> run();
 
 private:
+    /**
+     * Returns whether a string is the name of an assembler command
+     * (e.g. "brr", "jmp", ...)
+     */
     bool isOpcode( std::string s); // architecture-dependent
 
     /**
