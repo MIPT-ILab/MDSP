@@ -1,3 +1,7 @@
+/**
+ * mdsp-asm/assembler.cpp -- Implementation of Assembler class methods
+ * Copyright 2009 MDSP team
+ */
 
 #include "assembler.h"
 #include "operation.h"
