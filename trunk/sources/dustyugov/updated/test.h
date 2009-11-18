@@ -14,9 +14,15 @@ void testByte()
     Byte a( 7);
     Byte b( 205);
     Byte c = a&b;
+    a.setBinOut();
+    b.setDecOut();
+    c.setHexOut();
     cout<<"test byte class:"<<endl;
+    cout<<"a:outputVal "<<a.getOutputVal()<<endl;
     cout<<"a: "<<'\t'<<a<<endl;
+    cout<<"b:outputVal "<<b.getOutputVal()<<endl;
     cout<<"b: "<<'\t'<<b<<endl;
+    cout<<"c:outputVal "<<c.getOutputVal()<<endl;
     cout<<"c=a&b: "<<'\t'<<c<<endl;
     cout<<"c>>2: "<<'\t'<<( c>>2)<<endl;
     cout<<"b<<2: "<<'\t'<<( b<<2)<<endl;
