@@ -9,8 +9,10 @@ OBJS_O:=${OBJS_CPP:%.cpp=%.o}
 all: $(OBJS_O)
 	$(CXX) $(OBJS_O) -o funcsim
 
-%.o:%.cpp
-	$(CXX) $(<) -c -o $(@)
+main.o: test.h
+
+%.o: %.cpp %.h types.h
+	$(CXX) -c $(<) -o $(@)
 
 clean:
 	rm -rf funcsim $(OBJS_O)
