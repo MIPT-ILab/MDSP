@@ -10,6 +10,17 @@
 #include "memory.h"
 
 /*
+ * Constructor of the functional simulator core.
+ * Creates architectural structures.
+ */
+Core::Core()
+{
+    this->memory = new MemoryModel( 1024);
+    this->rf = new RegisterFileModel( 32, 2); // 32 16-bit registers
+    this->flags = new Flags();
+}
+
+/*
  * Initialize the functional simulator.
  * Sets up start PC address.
  */
@@ -49,3 +60,4 @@ void Core::run()
     }
 */
 }
+

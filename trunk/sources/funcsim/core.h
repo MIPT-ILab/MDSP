@@ -11,20 +11,26 @@
 #include <cassert>
 #include "types.h"
 
+class MemoryModel;
 class RegisterFileModel;
 class Flags;
 
+/**
+ * Class of simulator's core description
+ */
 class Core
 {
-    hostUInt16 pc; // program counter
+    hostUInt16 pc; // 16-bit program counter
+    MemoryModel* memory;
     RegisterFileModel* rf;
     Flags* flags;
 
 public:
-    Core() {};
+    Core();
 
     /* Get methods */
     hostUInt16 GetPC() { return this->pc; }
+    MemoryModel* GetMemory() { return this->memory; }
     RegisterFileModel* GetRF() { return this->rf; }
     Flags* GetFlags() { return this->flags; }
 
@@ -34,3 +40,4 @@ public:
 };
 
 #endif /* CORE_H */
+
