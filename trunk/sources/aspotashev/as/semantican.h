@@ -1,6 +1,5 @@
-/**
- * mdsp-asm/semantican.h -- Definition of SemanticAn class,
- *                          the semantic analyzer
+/** @file semantican.h
+ * Definition of SemanticAn class, the semantic analyzer
  * Copyright 2009 MDSP team
  */
 

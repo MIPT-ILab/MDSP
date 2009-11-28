@@ -1,6 +1,5 @@
-/**
- * mdsp-asm/assembler.h -- Definition of Assembler class,
- *                         the assembler output generator
+/** @file assembler.h
+ * Definition of Assembler class, the assembler output generator
  * Copyright 2009 MDSP team
  */
 

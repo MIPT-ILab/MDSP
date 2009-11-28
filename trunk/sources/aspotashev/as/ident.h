@@ -1,5 +1,5 @@
-/**
- * mdsp-asm/ident.h -- Character classification functions
+/** @file ident.h
+ * Character classification functions
  * Copyright 2009 MDSP team
  */
 

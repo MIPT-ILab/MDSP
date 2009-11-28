@@ -1,5 +1,5 @@
-/**
- * mdsp-asm/assembler.cpp -- Implementation of SemanticAn class methods
+/** @file assembler.cpp
+ * Implementation of SemanticAn class methods
  * Copyright 2009 MDSP team
  */
 
