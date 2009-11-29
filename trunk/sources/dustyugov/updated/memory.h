@@ -17,8 +17,6 @@
 
 using namespace std;
 
-/* Enumeration for Byte & Byteline classes' output*/
-enum output_type { BIN, DEC, HEX};
 
 /**
  * class Byte implements
@@ -27,7 +25,7 @@ enum output_type { BIN, DEC, HEX};
 class Byte
 {
     hostUInt8 byte_val;
-    enum output_type output;
+    OutputFormat output;// = DEFAULT_OUT;
 
 public:
     /* Constructors */
@@ -50,7 +48,7 @@ public:
          this->byte_val = val;
     }
 
-    enum output_type getOutputVal() const
+    OutputFormat getOutputFormat() const
     {
         return this->output;
     }
@@ -117,7 +115,8 @@ public:
 /* Output operator due to output val, class Byte*/
 inline ostream& operator<< ( ostream& os, const Byte& byte)
 {   
-    switch ( byte.getOutputVal())
+    ostream::fmtflags old_outputFormat = os.flags();
+    switch ( byte.getOutputFormat())
     {
 case BIN:
     for ( short i = 7; i >= 0; i--) 
@@ -125,12 +124,13 @@ case BIN:
         os << ( ( 1 << i) & byte.getByteVal() ? '1' : '0'); 
     }
 case DEC:
-        os << byte.getByteVal();
-case HEX:
-    os.setf( ios::hex);
+    os.setf( ostream::dec);
     os << byte.getByteVal();
-    os.setf( ios::dec);
-    }
+case HEX:
+    os.setf( ostream::hex);
+    os << byte.getByteVal();
+	}
+    os.flags( old_outputFormat);
     return os;
 }
 
@@ -163,7 +163,7 @@ inline Byte operator& ( const Byte& left, const Byte& right)
 class ByteLine
 {
     vector<Byte> *byte_line;
-    enum output_type output;
+    OutputFormat output;// = DEFAULT_OUT;
 
 public:
     /* Constructors */
@@ -217,7 +217,7 @@ public:
         return ( *byte_line).size();
     }
 
-    enum output_type getOutputVal() const
+    OutputFormat getOutputFormat() const
     {
         return this->output;
     }
@@ -304,10 +304,10 @@ inline ostream& operator<< ( ostream& os, const ByteLine& line)
 {   
     for ( int i = 0; i < line.getSizeOfLine(); i++)
     {
-            switch ( line.getOutputVal())
+            switch ( line.getOutputFormat())
     {
 case BIN:
-    (line[i]).setBinOut();
+    (line[ i]).setBinOut();
         os << line[ i] << " | ";
 case DEC:
     (line[i]).setDecOut();
