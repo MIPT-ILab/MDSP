@@ -162,6 +162,11 @@ bool Operand::isDirectGpr() const
     return !indirect && type == OPERAND_GPR;
 }
 
+bool Operand::isDirectOrIndirectGpr() const
+{
+    return type == OPERAND_GPR;
+}
+
 bool Operand::isConstInt() const
 {
     return type == OPERAND_CONST_INT;
