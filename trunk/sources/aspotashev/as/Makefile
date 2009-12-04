@@ -14,8 +14,8 @@ OBJS_CPP = \
 	tokenan.cpp \
 	semantican.cpp \
 	assembler.cpp \
-	../funcsim/operation.cpp \
-	../../pzaichenkov/memory.cpp
+	../../funcsim/operation.cpp \
+	../../funcsim/memory.cpp
 
 OBJS_O = ${OBJS_CPP:%.cpp=%.o}
 
