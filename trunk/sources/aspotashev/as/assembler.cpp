@@ -156,6 +156,47 @@ ByteLine *Assembler::encodeOperation(
         op.set( MOVE, LD, sd, imm16, 0,
                 getGprNum( (*operation)[1]->str()));
     }
+    else if ( *operation == "add")
+    {
+        hostUInt8 am = 0;
+        hostUInt8 rs1 = 0;
+        hostUInt8 rs2 = 0;
+        hostUInt8 rd = 0;
+
+        if ( operation->nOperands() == 3)
+        {
+            assert( (*operation)[0]->isDirectOrIndirectGpr());
+            assert( (*operation)[1]->isDirectOrIndirectGpr());
+            assert( (*operation)[2]->isDirectOrIndirectGpr());
+
+            rs1 = getGprNum( (*operation)[0]->str());
+            rs2 = getGprNum( (*operation)[1]->str());
+            rd = getGprNum( (*operation)[2]->str());
+
+            if ( (*operation)[0]->isDirectGpr() &&
+                 (*operation)[1]->isDirectGpr() &&
+                 (*operation)[2]->isDirectGpr())
+            {
+                am = 0; // register direct (all operands are registers)
+            }
+            else if ( (*operation)[0]->isIndirectGpr() &&
+                      (*operation)[1]->isIndirectGpr() &&
+                      (*operation)[2]->isIndirectGpr())
+            {
+                am = 2; // register indirect (all operands are in memory)
+            }
+            else
+            {
+                throw; // wrong operand types for 'add'
+            }
+        }
+        else
+        {
+            throw; // wrong numbers of operands for 'add'
+        }
+
+        op.set( ALU, NOP, ADD, NOP, am, rs1, rs2, rd);
+    }
     else
     {
         throw;
