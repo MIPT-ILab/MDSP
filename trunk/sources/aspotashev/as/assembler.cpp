@@ -114,18 +114,18 @@ ByteLine *Assembler::encodeOperation(
         }
 
         op.set( MOVE, BRM, sd, 0,
-            getGprNum( (*operation)[0]->str()),
-            getGprNum( (*operation)[1]->str()));
+                getGprNum( (*operation)[0]->str()),
+                getGprNum( (*operation)[1]->str()));
     }
     else if ( *operation == "brr")
     {
         assert( operation->nOperands() == 2);
         assert( (*operation)[0]->isDirectGpr() &&
-            (*operation)[1]->isDirectGpr());
+                (*operation)[1]->isDirectGpr());
 
         op.set( MOVE, BRR, 0, 0,
-            getGprNum( (*operation)[0]->str()),
-            getGprNum( (*operation)[1]->str()));
+                getGprNum( (*operation)[0]->str()),
+                getGprNum( (*operation)[1]->str()));
     }
     else if ( *operation == "ld")
     {
@@ -153,7 +153,7 @@ ByteLine *Assembler::encodeOperation(
         hostUInt16 imm16 = (hostUInt16)imm;
 
         op.set( MOVE, LD, sd, imm16, 0,
-            getGprNum( (*operation)[1]->str()));
+                getGprNum( (*operation)[1]->str()));
     }
     else
     {
