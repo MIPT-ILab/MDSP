@@ -73,6 +73,12 @@ public:
     bool isDirectGpr() const;
 
     /**
+     * Returns whether the operand is a register or a memory address
+     * in a register. Equivalent of (@p isDirectGpr() | @p isIndirectGpr()).
+     */
+    bool isDirectOrIndirectGpr() const;
+
+    /**
      * Returns whether the operand is a constant integer
      */
     bool isConstInt() const;
