@@ -1,6 +1,13 @@
 #!/bin/sh
 
+#
+#   With -DDEBUG_OUTPUT gcc defines the DEBUG_OUTPUT preprocessor variable
+#
+#   Use the first line to disable DEBUG_OUTPUT
+#   Use the second line to enable DEBUG_OUTPUT
+#
 CXX = g++ -Wall -g
+#CXX = g++ -Wall -g -DDEBUG_OUTPUT
 
 OBJS_CPP = \
 	main.cpp \
