@@ -61,6 +61,7 @@ std::map<unsigned int, hostUInt8> Assembler::run()
         }
     }
 
+    /* TODO: use class MemoryModel (when it will come usable) */
     /* map from byte addresses in program memory to the values
      * of those bytes */
     std::map<unsigned int, hostUInt8> addr_byte;
