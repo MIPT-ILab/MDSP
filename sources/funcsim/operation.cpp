@@ -74,7 +74,7 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
             {
                 cout << "Imm16 has to be set to 0 in ALU\n";
             }
-            this->set( ALU, opcode0, opcode1, opcode2, am, rs1, rs2, rd);
+            this->set( ALU, opcode0, opcode1, opcode2, am, imm10, rs1, rs2, rd);
             break;
         case P_FLOW:
             if ( am)
@@ -346,6 +346,7 @@ void Operation::set( OperType type,
                      OperCode opcode1,
                      OperCode opcode2,
                      hostUInt8 am,
+                     hostUInt16 imm10,
                      hostUInt8 rs1,
                      hostUInt8 rs2,
                      hostUInt8 rd)
@@ -356,6 +357,7 @@ void Operation::set( OperType type,
         this->opcode1 = opcode1;
         this->opcode2 = opcode2;
         this->am      = am;
+        this->imm10   = imm10;
         this->rs1     = rs1;
         this->rs2     = rs2;
         this->rd      = rd;
@@ -399,7 +401,7 @@ void Operation::set( OperType type,
     }
     else
     {
-        cout << "Unknown type is set (need MOVE type)";
+        cout << "Unknown type is set (need P_FLOW type)";
     }
 }
 
@@ -471,7 +473,7 @@ void Operation::dumpPFLOW()
             printf( "jgt %i, r%i;\n", this->sd, temp);
             break;
         default:
-            cout << "Operation code is invalid in ALU\n";
+            cout << "Operation code is invalid in P_FLOW\n";
             assert(0);
     }
 }
@@ -667,7 +669,7 @@ void Operation::decodeMOVE()
             break;
         case LD:
             imm16 = this->getValueByMask( imm16_mask, 5);// get imm16
-            rd = this->getValueByMask( sd_mask, 0);      // get desitination
+            rd = this->getValueByMask( rd_mask, 0);      // get desitination
             sd = this->getValueByMask( sd_mask, 21);     // get S/D
             break;
         default:
@@ -719,6 +721,7 @@ void Operation::decodeALU()
     hostUInt32    arith_op_mask = 0x03E00000; // Arithmetic OP mask
     hostUInt32    shift_op_mask = 0x001C0000; // Shift OP mask
     hostUInt32          am_mask = 0x00038000; // AM mask
+    hostUInt32       imm10_mask = 0x00007FE0; // Imm10 mask
     hostUInt32         rs1_mask = 0x00007C00; // RS1 mask
     hostUInt32         rs2_mask = 0x000003E0; // RS2 mask
     hostUInt32          rd_mask = 0x0000001F; // RD mask
@@ -731,10 +734,11 @@ void Operation::decodeALU()
     opcode1 = this->getCodeFromInt32( ALU, this->getValueByMask( arith_op_mask, 21));
     opcode2 = this->getCodeFromInt32( ALU, this->getValueByMask( shift_op_mask, 18));
     am = this->getValueByMask( am_mask, 15);
+    imm10 = this->getValueByMask( imm10_mask, 5);
     rs1 = this->getValueByMask( rs1_mask, 10);
     rs2 = this->getValueByMask( rs2_mask, 5);
     rd = this->getValueByMask( rd_mask, 0);
-    this->set( ALU, opcode0, opcode1, opcode2, am, rs1, rs2, rd);
+    this->set( ALU, opcode0, opcode1, opcode2, am, imm10, rs1, rs2, rd);
 }
 
 /*
