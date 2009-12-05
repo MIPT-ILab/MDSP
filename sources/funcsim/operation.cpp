@@ -37,6 +37,8 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
 {
     switch ( type)
     {
+        this->clear();
+        this->type = type;
         case MOVE:
             if ( am)
             {
@@ -58,23 +60,18 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
             {
                 cout << "OpCode2 has to be set to 0 in MOVE\n";
             }
-            this->set( MOVE, opcode0, sd, imm16, rs1, rd);
+            this->setMOVE( opcode0, sd, imm16, rs1, rd);
             break;
         case ALU:
             if ( sd)
             {
                 cout << "SD has to be set to 0 in ALU\n";
             }
-
-            if ( imm10)
-            {
-                cout << "Imm10 has to be set to 0 in ALU\n";
-            }
             if ( imm16)
             {
                 cout << "Imm16 has to be set to 0 in ALU\n";
             }
-            this->set( ALU, opcode0, opcode1, opcode2, am, imm10, rs1, rs2, rd);
+            this->setALU( opcode0, opcode1, opcode2, am, imm10, rs1, rs2, rd);
             break;
         case P_FLOW:
             if ( am)
@@ -101,19 +98,18 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
             {
                 cout << "OpCode2 has to be set to 0 in P_FLOW\n";
             }
-            this->set( P_FLOW, opcode0, sd, rd, imm16);
+            this->setPFLOW( opcode0, sd, rd, imm16);
             break;
         default:
             cout << "Illegal Type in set method\n";
             assert( 0);
     }
-    this->type = type;
 }
 
 /*
  * Method defines the correlation between OperType and hostUInt32
  */
-OperType Operation::getTypeFromInt32( hostUInt32 type)
+OperType Operation::getType( hostUInt32 type)
 {
     switch ( type)
     {
@@ -164,7 +160,7 @@ hostUInt32 Operation::getInt32FromType( OperType type)
 /*
  * Method defines the correlation between OperCode and hostUInt32
  */
-OperCode Operation::getCodeFromInt32( OperType type, hostUInt32 code)
+OperCode Operation::getCode( OperType type, hostUInt32 code)
 {
     switch ( type)
     {
@@ -279,129 +275,153 @@ hostUInt32 Operation::getInt32FromCode( OperType type, OperCode code)
 /**
  * Set an operation of MOVE type
  */
-void Operation::set( OperType type,
-                     OperCode opcode0,
-                     hostUInt8 sd,
-                     hostUInt16 imm16,
-                     hostUInt8 rs1,
-                     hostUInt8 rd)
+void Operation::setMOVE( OperCode opcode0,
+                         hostUInt8 sd,
+                         hostUInt16 imm16,
+                         hostUInt8 rs1,
+                         hostUInt8 rd)
 {
-    if ( type == MOVE)
+    this->clear();
+    this->type = MOVE;
+    /* get OP */
+    this->opcode0 = opcode0;
+    switch ( opcode0)
     {
-        /* get OP */
-        this->opcode0 = opcode0;
-
-        switch ( opcode0)
-        {
-            case BRM:
-                this->sd = sd;          // get S/D
-                this->rs1 = rs1;        // get source
-                this->rd = rd;          // get desitination
-                if ( imm16)
-                {
-                    cout << "Imm16 has to be set to 0 in BRM\n";
-                }
-                break;
-            case BRR:
-                this->rs1 = rs1;        // get source
-                this->rd = rd;          // get desitination
-                if ( imm16)
-                {
-                    cout << "Imm16 has to be set to 0 in BRR\n";
-                }
-                if ( sd)
-                {
-                    cout << "SD has to be set to 0 in BRR\n";
-                }
-                break;
-            case LD:
-                this->imm16 = imm16;    // get source
-                this->rd = rd;          // get desitination
-                this->sd = sd;
-                if ( rs1)
-                {
-                    cout << "Rs1 has to be set to 0 in LD\n";
-                }
-                if ( rs2)
-                {
-                    cout << "Rs2 has to be set to 0 in LD\n";
-                }
-                break;
-            default:
-                cout << "Illegal operation code in MOVE\n";
-                assert( 0);
-        }
-    }
-    else
-    {
-        cout << "Unknown type is set (need MOVE type)\n";
+        case BRM:
+            this->sd = sd;          // get S/D
+            this->rs1 = rs1;        // get source
+            this->rd = rd;          // get desitination
+            if ( imm16)
+            {
+                cout << "Imm16 has to be set to 0 in BRM\n";
+            }
+            break;
+        case BRR:
+            this->rs1 = rs1;        // get source
+            this->rd = rd;          // get desitination
+            if ( imm16)
+            {
+                cout << "Imm16 has to be set to 0 in BRR\n";
+            }
+            if ( sd)
+            {
+                cout << "SD has to be set to 0 in BRR\n";
+            }
+            break;
+        case LD:
+            this->imm16 = imm16;    // get source
+            this->rd = rd;          // get desitination
+            this->sd = sd;
+            if ( rs1)
+            {
+                cout << "Rs1 has to be set to 0 in LD\n";
+            }
+            if ( rs2)
+            {
+                cout << "Rs2 has to be set to 0 in LD\n";
+            }
+            break;
+        default:
+            cout << "Illegal operation code in MOVE\n";
+            assert( 0);
     }
 }
 
 /**
  * Set an operation of ALU type
  */
-void Operation::set( OperType type,
-                     OperCode opcode0,
-                     OperCode opcode1,
-                     OperCode opcode2,
-                     hostUInt8 am,
-                     hostUInt16 imm10,
-                     hostUInt8 rs1,
-                     hostUInt8 rs2,
-                     hostUInt8 rd)
+void Operation::setALU( OperCode opcode0,
+                        OperCode opcode1,
+                        OperCode opcode2,
+                        hostUInt8 am,
+                        hostUInt16 imm10,
+                        hostUInt8 rs1,
+                        hostUInt8 rs2,
+                        hostUInt8 rd)
 {
-    if ( type == ALU)
+    this->clear();
+    this->type = ALU;
+    this->opcode0 = opcode0;
+    this->opcode1 = opcode1;
+    this->opcode2 = opcode2;
+    this->rd      = rd;
+    this->am      = am;
+    switch ( am )
     {
-        this->opcode0 = opcode0;
-        this->opcode1 = opcode1;
-        this->opcode2 = opcode2;
-        this->am      = am;
-        this->imm10   = imm10;
-        this->rs1     = rs1;
-        this->rs2     = rs2;
-        this->rd      = rd;
-    }
-    else
-    {
-        cout << "Unknown type is set (need ALU type)\n";
+        case 0:
+            this->rs1 = rs1;
+            this->rs2 = rs2;
+            if ( imm10)
+            {
+                cout << "Imm10 has to be set to 0 in ALU with flag AM = 0\n";
+            }
+            break;
+        case 1:
+            this->imm10 = imm10;
+            if ( rs1)
+            {
+                cout << "Rs1 has to be set to 0 in ALU with flag AM = 1\n";
+            }
+            if ( rs2)
+            {
+                cout << "Rs2 has to be set to 0 in ALU with flag AM = 1\n";
+            }
+            break;
+        case 2:
+            this->rs1 = rs1;
+            this->rs2 = rs2;
+            if ( imm10)
+            {
+                cout << "Imm10 has to be set to 0 in ALU with flag AM = 2\n";
+            }
+            break;
+        case 3:
+            this->imm10 = imm10;
+            if ( rs1)
+            {
+                cout << "Rs1 has to be set to 0 in ALU with flag AM = 3\n";
+            }
+            if ( rs2)
+            {
+                cout << "Rs2 has to be set to 0 in ALU with flag AM = 3\n";
+            }
+            break;
+            default:
+            {
+                cout << "Invalid value of AM in ALU\n";
+                assert(0);
+            }
     }
 }
 
 /**
  * Set an operation of PFLOW type
  */
-void Operation::set( OperType type,
-                     OperCode opcode0,
-                     hostUInt8 sd,
-                     hostUInt8 rd,
-                     hostUInt16 imm16)
+void Operation::setPFLOW( OperCode opcode0,
+                          hostUInt8 sd,
+                          hostUInt8 rd,
+                          hostUInt16 imm16)
 {
-    if ( type == P_FLOW)
+    this->clear();
+    this->type = P_FLOW;
+    this->opcode0 = opcode0;
+    this->sd = sd;
+    if ( !sd)
     {
-        this->opcode0 = opcode0;
-        this->sd = sd;
-        if ( !sd)
+        this->rd = rd;
+        if ( imm16)
         {
-            this->rd = rd;
-            if ( imm16)
-            {
-                cout << "Imm16 has to be set to 0 in P_FLOW\n";
-            }
-        }
-        else
-        {
-            this->imm16 = imm16;
-            this->rd = rd;
-            if ( rd)
-            {
-                cout << "Rd has to be set to 0 in P_FLOW\n";
-            }
+            cout << "Imm16 has to be set to 0 in P_FLOW\n";
         }
     }
     else
     {
-        cout << "Unknown type is set (need P_FLOW type)";
+        this->imm16 = imm16;
+        this->rd = rd;
+        if ( rd)
+        {
+            cout << "Rd has to be set to 0 in P_FLOW\n";
+        }
     }
 }
 
@@ -622,7 +642,7 @@ OperType Operation::decodeType()
 {
     /* get value using the mask */
     hostUInt32 type_mask = 0xE0000000; // 11100000 bin, 224 dec
-    OperType type = this->getTypeFromInt32( this->getValueByMask( type_mask, 29));
+    OperType type = this->getType( this->getValueByMask( type_mask, 29));
     return type;
 }
 
@@ -654,7 +674,7 @@ void Operation::decodeMOVE()
     hostUInt16 imm16 = 0;
 
     /* get OP */
-    opcode0 = this->getCodeFromInt32( MOVE, this->getValueByMask( op_mask, 26));
+    opcode0 = this->getCode( MOVE, this->getValueByMask( op_mask, 26));
 
     switch ( opcode0)
     {
@@ -676,7 +696,7 @@ void Operation::decodeMOVE()
             cout << "Illegal operation in MOVE\n";
             assert( 0);
     }
-    this->set( MOVE, opcode0, sd, imm16, rs1, rd);
+    this->setMOVE( opcode0, sd, imm16, rs1, rd);
 }
 
 /**
@@ -730,15 +750,28 @@ void Operation::decodeALU()
     OperCode opcode0, opcode1, opcode2;
     hostUInt8 am, rs1, rs2, rd;
 
-    opcode0 = this->getCodeFromInt32( ALU, this->getValueByMask( logic_op_mask, 26));
-    opcode1 = this->getCodeFromInt32( ALU, this->getValueByMask( arith_op_mask, 21));
-    opcode2 = this->getCodeFromInt32( ALU, this->getValueByMask( shift_op_mask, 18));
-    am = this->getValueByMask( am_mask, 15);
+    opcode0 = this->getCode( ALU, this->getValueByMask( logic_op_mask, 26));
+    opcode1 = this->getCode( ALU, this->getValueByMask( arith_op_mask, 21));
+    opcode2 = this->getCode( ALU, this->getValueByMask( shift_op_mask, 18));
     imm10 = this->getValueByMask( imm10_mask, 5);
     rs1 = this->getValueByMask( rs1_mask, 10);
     rs2 = this->getValueByMask( rs2_mask, 5);
     rd = this->getValueByMask( rd_mask, 0);
-    this->set( ALU, opcode0, opcode1, opcode2, am, imm10, rs1, rs2, rd);
+    am = this->getValueByMask( am_mask, 15);
+    /* imm10, rs1, rs2 values depend on the am flag.
+     * To set values correctly it is necessary to null some of these values
+     * in order to avoid warnings
+     */
+    if ((am == 0) || (am == 2))
+    {
+        imm10 = 0;
+    }
+    else if ((am == 1) || (am == 3))
+    {
+        rs1 = 0;
+        rs2 = 0;
+    }
+    this->setALU( opcode0, opcode1, opcode2, am, imm10, rs1, rs2, rd);
 }
 
 /*
@@ -775,7 +808,7 @@ void Operation::decodePFLOW()
     hostUInt8 sd, rd;
     hostUInt16 imm16;
 
-    opcode0 = this->getCodeFromInt32( P_FLOW, this->getValueByMask( op_mask, 26));
+    opcode0 = this->getCode( P_FLOW, this->getValueByMask( op_mask, 26));
     sd = this->getValueByMask( sd_mask, 23);
 
     if ( !sd)
@@ -786,7 +819,7 @@ void Operation::decodePFLOW()
     {
         imm16 = this->getValueByMask( imm16_mask, 0);
     }
-    this->set( P_FLOW, opcode0, sd, rd, imm16);
+    this->setPFLOW( opcode0, sd, rd, imm16);
 }
 
 /*

@@ -134,7 +134,7 @@ void testOperation()
     op1->decode(op1->encode());
     cout << "Decode / encode output: ";
     op1->dump();
-    op1->set(ALU, ADD, NOP, NOP, 0, 1, 0, 0, 1, 3, 2);
+    op1->set(ALU, ADD, NOP, NOP, 0, 0, 0, 0, 1, 3, 2);
     op1->dump();
     op1->decode(op1->encode());
     cout << "Decode / encode output: ";
