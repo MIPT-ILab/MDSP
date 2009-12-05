@@ -158,6 +158,7 @@ public:
               OperCode opcode1,
               OperCode opcode2,
               hostUInt8 am,
+              hostUInt16 imm10,
               hostUInt8 rs1,
               hostUInt8 rs2,
               hostUInt8 rd);
