@@ -114,7 +114,7 @@ ByteLine *Assembler::encodeOperation(
             throw; // invalid combination of opcode and operands
         }
 
-        op.set( MOVE, BRM, sd, 0,
+        op.setMOVE( BRM, sd, 0,
                 getGprNum( (*operation)[0]->str()),
                 getGprNum( (*operation)[1]->str()));
     }
@@ -124,7 +124,7 @@ ByteLine *Assembler::encodeOperation(
         assert( (*operation)[0]->isDirectGpr() &&
                 (*operation)[1]->isDirectGpr());
 
-        op.set( MOVE, BRR, 0, 0,
+        op.setMOVE( BRR, 0, 0,
                 getGprNum( (*operation)[0]->str()),
                 getGprNum( (*operation)[1]->str()));
     }
@@ -153,7 +153,7 @@ ByteLine *Assembler::encodeOperation(
 
         hostUInt16 imm16 = (hostUInt16)imm;
 
-        op.set( MOVE, LD, sd, imm16, 0,
+        op.setMOVE( LD, sd, imm16, 0,
                 getGprNum( (*operation)[1]->str()));
     }
     else if ( *operation == "add")
@@ -162,6 +162,7 @@ ByteLine *Assembler::encodeOperation(
         hostUInt8 rs1 = 0;
         hostUInt8 rs2 = 0;
         hostUInt8 rd = 0;
+        hostUInt16 imm10 = 0;
 
         if ( operation->nOperands() == 3)
         {
@@ -195,7 +196,7 @@ ByteLine *Assembler::encodeOperation(
             throw; // wrong numbers of operands for 'add'
         }
 
-        op.set( ALU, NOP, ADD, NOP, am, rs1, rs2, rd);
+        op.setALU( NOP, ADD, NOP, am, imm10, rs1, rs2, rd);
     }
     else
     {
