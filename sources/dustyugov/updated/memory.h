@@ -123,12 +123,14 @@ case BIN:
     { 
         os << ( ( 1 << i) & byte.getByteVal() ? '1' : '0'); 
     }
+    break;
 case DEC:
-    os.setf( ostream::dec);
-    os << byte.getByteVal();
+    os << dec << ( int ( byte.getByteVal()));
+    break;
 case HEX:
-    os.setf( ostream::hex);
-    os << byte.getByteVal();
+    os.setf( ostream::showbase);
+    os << hex << ( int ( byte.getByteVal()));
+    break;
 	}
     os.flags( old_outputFormat);
     return os;
@@ -308,13 +310,16 @@ inline ostream& operator<< ( ostream& os, const ByteLine& line)
     {
 case BIN:
     (line[ i]).setBinOut();
-        os << line[ i] << " | ";
+    os << line[ i] << " | ";
+	break;
 case DEC:
     (line[i]).setDecOut();
-        os << line[ i] << " | ";
+    os << line[ i] << " | ";
+	break;
 case HEX:
     (line[i]).setHexOut();
-        os << line[ i] << " | ";
+    os << line[ i] << " | ";
+	break;
     }
     }
     return os;

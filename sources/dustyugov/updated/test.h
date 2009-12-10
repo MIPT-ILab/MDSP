@@ -12,11 +12,11 @@
 void testByte()
 {
     Byte a( 7);
-    Byte b( 205);
+    Byte b( 7);
     Byte c = a&b;
     b.setBinOut();
-    a.setDecOut();
-    c.setHexOut();
+    a.setBinOut();
+    c.setBinOut();
     cout<<"test byte class:"<<endl;
     cout<<"a:outputFormat "<<a.getOutputFormat()<<endl;
     cout<<"a: "<<'\t'<<a<<endl;
@@ -24,7 +24,8 @@ void testByte()
     cout<<"b: "<<'\t'<<b<<endl;
     cout<<"c:outputFormat "<<c.getOutputFormat()<<endl;
     cout<<"c=a&b: "<<'\t'<<c<<endl;
-    cout<<"c>>2: "<<'\t'<<( c>>2)<<endl;
+	c<<2;
+    cout<<"c>>2: "<<'\t'<< c <<endl;
     cout<<"b<<2: "<<'\t'<<( b<<2)<<endl;
     cout<<"c==a: "<<'\t'<<( c == a)<<endl;
     cout<<"c!=b: "<<'\t'<<( c != b)<<endl;
@@ -207,8 +208,10 @@ void testRegisterFileModel()
 void test()
 {
 	testByte();
-/*	testByteLine();
-	testMemVal();
+	//testByteLine();
+	int an;
+	cin >> an;
+/*	testMemVal();
 	testMemModel();
     testOperation();
     testRegisterFileModel();
