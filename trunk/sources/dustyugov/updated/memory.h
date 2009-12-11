@@ -25,14 +25,14 @@ using namespace std;
 class Byte
 {
     hostUInt8 byte_val;
-    OutputFormat output;// = DEFAULT_OUT;
+    OutputFormat output;
 
 public:
     /* Constructors */
-    Byte( hostUInt8 val = 0):byte_val( val){}
+    Byte( hostUInt8 val = 0):byte_val( val), output( DEFAULT_OUT){}
 
     /* Copy constructors */
-    Byte( const Byte& byte):byte_val( byte.getByteVal()){}
+    Byte( const Byte& byte):byte_val( byte.getByteVal()), output( DEFAULT_OUT){}
 
     /* Get/set methods */
 
@@ -165,7 +165,7 @@ inline Byte operator& ( const Byte& left, const Byte& right)
 class ByteLine
 {
     vector<Byte> *byte_line;
-    OutputFormat output;// = DEFAULT_OUT;
+    OutputFormat output;
 
 public:
     /* Constructors */
