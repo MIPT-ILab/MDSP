@@ -12,7 +12,7 @@ int main()
     core->init( 0x0000);
     core->run();
 
-    //test();
+    test();
 
     return 0;
 }

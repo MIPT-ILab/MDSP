@@ -94,4 +94,12 @@ typedef enum FlagType
     O   // overflow
 } FlagType;
 
+/* Enumeration for Byte & Byteline classes' output */
+typedef enum OutputFormat
+{
+    BIN, 
+    DEC, 
+    HEX
+} OutputFormat;
+
 #endif /* TYPES_H */
