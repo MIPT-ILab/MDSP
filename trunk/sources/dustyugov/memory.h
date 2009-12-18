@@ -17,8 +17,6 @@
 
 using namespace std;
 
-/* Enumeration for Byte & Byteline classes' output*/
-enum output_type { BIN, DEC, HEX};
 
 /**
  * class Byte implements
@@ -27,14 +25,14 @@ enum output_type { BIN, DEC, HEX};
 class Byte
 {
     hostUInt8 byte_val;
-    static enum output_type output;
+    OutputFormat output;
 
 public:
     /* Constructors */
-    Byte( hostUInt8 val = 0):byte_val( val){}
+    Byte( hostUInt8 val = 0):byte_val( val), output( DEFAULT_OUT){}
 
     /* Copy constructors */
-    Byte( const Byte& byte):byte_val( byte.getByteVal()){}
+    Byte( const Byte& byte):byte_val( byte.getByteVal()), output( DEFAULT_OUT){}
 
     /* Get/set methods */
 
@@ -50,7 +48,7 @@ public:
          this->byte_val = val;
     }
 
-    enum output_type getOutputVal() const
+    OutputFormat getOutputFormat() const
     {
         return this->output;
     }
@@ -117,20 +115,24 @@ public:
 /* Output operator due to output val, class Byte*/
 inline ostream& operator<< ( ostream& os, const Byte& byte)
 {   
-    switch ( byte.getOutputVal())
+    ostream::fmtflags old_outputFormat = os.flags();
+    switch ( byte.getOutputFormat())
     {
 case BIN:
     for ( short i = 7; i >= 0; i--) 
     { 
         os << ( ( 1 << i) & byte.getByteVal() ? '1' : '0'); 
     }
+    break;
 case DEC:
-        os << byte.getByteVal();
+    os << dec << ( int ( byte.getByteVal()));
+    break;
 case HEX:
-    os.setf( ios::hex);
-    os << byte.getByteVal();
-    os.setf( ios::dec);
-    }
+    os.setf( ostream::showbase);
+    os << hex << ( int ( byte.getByteVal()));
+    break;
+	}
+    os.flags( old_outputFormat);
     return os;
 }
 
@@ -163,7 +165,7 @@ inline Byte operator& ( const Byte& left, const Byte& right)
 class ByteLine
 {
     vector<Byte> *byte_line;
-    static enum output_type output;
+    OutputFormat output;
 
 public:
     /* Constructors */
@@ -217,7 +219,7 @@ public:
         return ( *byte_line).size();
     }
 
-    enum output_type getOutputVal() const
+    OutputFormat getOutputFormat() const
     {
         return this->output;
     }
@@ -300,21 +302,24 @@ inline ByteLine& ByteLine::operator = ( const ByteLine& line)
 }
 
 /* Output operator due to output val, class Byteline*/
-inline ostream& operator<< ( ostream& os,  ByteLine& line)
+inline ostream& operator<< ( ostream& os, const ByteLine& line)
 {   
     for ( int i = 0; i < line.getSizeOfLine(); i++)
     {
-            switch ( line.getOutputVal())
+            switch ( line.getOutputFormat())
     {
 case BIN:
-    (line[i]).setBinOut();
-        os << line[ i] << " | ";
+    (line[ i]).setBinOut();
+    os << line[ i] << " | ";
+	break;
 case DEC:
     (line[i]).setDecOut();
-        os << line[ i] << " | ";
+    os << line[ i] << " | ";
+	break;
 case HEX:
     (line[i]).setHexOut();
-        os << line[ i] << " | ";
+    os << line[ i] << " | ";
+	break;
     }
     }
     return os;
@@ -329,6 +334,54 @@ inline ByteLine operator+ (  const ByteLine& a,  const ByteLine& b)
         temp.addByte( b.getByte( i));;
     }
     return temp;
+}
+inline ByteLine operator<< ( const ByteLine& byteline, int count)
+{   
+    int length = byteline.getSizeOfLine();   // length of byteline
+    int temp_byte_num = count/8;			 // number of shifting byte
+    int right_shift = 8-count%8;			 
+    int left_shift  = count%8;				 
+    hostUInt8 left_part, right_part;		 //left and right part of byte in temp	 
+    ByteLine temp( byteline);						 
+    int i;
+    for ( i = 0; i < length; i++)   // nulling temp
+    {
+        temp.setByte( i, 0);
+    }
+
+    temp.setByte( temp_byte_num, (byteline.getByteVal( 0) << (count%8))); 
+    for ( i = 1; i < ( length - count/8); i++)
+    { 
+        left_part  = byteline.getByteVal( i - 1) >> ( right_shift);
+        right_part = byteline.getByteVal( i)     << ( left_shift);
+        temp_byte_num = i + count/8;
+        temp.setByte( temp_byte_num, left_part | right_part);  
+    }     
+return temp; 
+}
+
+inline ByteLine operator>> ( const ByteLine& byteline, int count)
+{
+    int length = byteline.getSizeOfLine();   // length of byteline 
+    int temp_byte_num = length - count/8 - 1;// number of shifting byte
+    int right_shift = 8-count%8;			  
+    int left_shift  = count%8;				  
+    hostUInt8 left_part, right_part;				  //left and right part of byte in temp	
+    ByteLine temp( byteline);					  	 
+    int i;
+    for ( i = 0; i < length; i++)
+    {
+        temp.setByte( i, 0);
+    }
+    temp.setByte( temp_byte_num, (byteline.getByteVal( length-1) >> (count%8)));
+    for ( i = 1; i < ( length - count/8); i++)
+    { 
+        left_part  = byteline.getByteVal( length - i) << ( right_shift);
+        right_part = byteline.getByteVal( length - i - 1)  >> ( left_shift);
+        temp_byte_num = length - count/8 - 1 - i;
+        temp.setByte( temp_byte_num, left_part | right_part);  
+    }     
+return temp; 
 }
 
 /**
@@ -373,9 +426,9 @@ public:
     }
 
     /* The constant member function. Returns ByteLine with specified
-	lenght and first element with index.If that position is invalid,
-	recalls exception */
-  	ByteLine getByteLine( unsigned int, unsigned int) const;
+    lenght and first element with index.If that position is invalid,
+    recalls exception */
+    ByteLine getByteLine( unsigned int, unsigned int) const;
 
     /* The constant member function. Returns entire ByteLine */
     ByteLine getByteLine() const;
@@ -423,14 +476,14 @@ inline MemVal operator+ ( const MemVal& a, const MemVal& b)
 }
 inline MemVal& MemVal::operator= ( const MemVal& mem_val)
 {
-	if ( this != &mem_val)
+    if ( this != &mem_val)
     {
-	    ByteLine temp( mem_val.getByteLine());
-	    resizeMemVal( mem_val.getSizeOfMemVal());
-	    setSizeOfSegment( mem_val.getSizeOfSegment());
-	    this->writeByteLine( temp);
-	}
-	return *this;
+        ByteLine temp( mem_val.getByteLine());
+        resizeMemVal( mem_val.getSizeOfMemVal());
+        setSizeOfSegment( mem_val.getSizeOfSegment());
+        this->writeByteLine( temp);
+    }
+    return *this;
 }
 
 /**
@@ -453,92 +506,92 @@ public:
     /* Constructors and destructor */
 
     /* Creates empty object of MemoryModel class
-	with specified size of segmentation */
+    with specified size of segmentation */
     MemoryModel( unsigned int size);
 
     virtual ~MemoryModel()
-	{
-		delete mem_model;
-	}
+    {
+        delete mem_model;
+    }
 
 
     /* Returns ByteLine with specified lenght from specified
     address. If that position is invalid, recalls exception */
-	ByteLine read( mathAddr, unsigned int);
+    ByteLine read( mathAddr, unsigned int);
 
-	/* Rerurns pointer to object of MemVal class if will be
-	found in MemoryModel.If not returns poiter to end of MemoryModel.
-	Used in read member function */
+    /* Rerurns pointer to object of MemVal class if will be
+    found in MemoryModel.If not returns poiter to end of MemoryModel.
+    Used in read member function */
     memMap::iterator find( mathAddr);
 
     /* Rerurns pointer to object of MemVal class if will be
-	found in MemoryModel.If not create MemVal with specified
+    found in MemoryModel.If not create MemVal with specified
     address. Used in write member function */
-	memMap::iterator findOrInit( mathAddr);
+    memMap::iterator findOrInit( mathAddr);
 
     /*The constant member function.Returns pointer to first
-	object of MemVal class in MemoryModel */
-	memMap::iterator getFirstIter() const
-	{
-		memMap::iterator pos;
-		return pos = ( *mem_model).begin();
-	}
-	/*The constant member function. Returns pointer to last
-	object of MemVal class in MemoryModel */
-	memMap::iterator getLastIter() const
-	{
-		memMap::iterator pos;
-		return pos = ( *mem_model).end();
-	}
+    object of MemVal class in MemoryModel */
+    memMap::iterator getFirstIter() const
+    {
+        memMap::iterator pos;
+        return pos = ( *mem_model).begin();
+    }
+    /*The constant member function. Returns pointer to last
+    object of MemVal class in MemoryModel */
+    memMap::iterator getLastIter() const
+    {
+        memMap::iterator pos;
+        return pos = ( *mem_model).end();
+    }
 
 
     /* Merges two object of MemVal class in MemoryModel*/
     void mergeMemVal( memMap::iterator, MemVal*);
 
-	/* Counts amount of empty address between two object of MemVal class*/
-	unsigned int countDistance( const memMap::iterator);
+    /* Counts amount of empty address between two object of MemVal class*/
+    unsigned int countDistance( const memMap::iterator);
 
 
     /* Stores the object of class ByteLine at specified address */
     void write( mathAddr write_ptr, const ByteLine&);
 
     /* Stores the object of class MemVal at specified address */
-	void write( mathAddr write_ptr, MemVal mem_value);
+    void write( mathAddr write_ptr, MemVal mem_value);
 
      /* Overloaded. Checks of belonging specified address to object of class MemVal*/
-	friend bool operator== ( memMap::iterator, mathAddr);
+    friend bool operator== ( memMap::iterator, mathAddr);
 
-	/* Overloaded. Outputs the contents of MemoryModel to screen */
-	friend ostream& operator<< ( ostream&,  MemoryModel&);
+    /* Overloaded. Outputs the contents of MemoryModel to screen */
+    friend ostream& operator<< ( ostream&,  MemoryModel&);
 
     /* Overloaded. Returns pointer to the next object of class MemVal*/
-	friend memMap::iterator operator+ ( const memMap::iterator, int);
+    friend memMap::iterator operator+ ( const memMap::iterator, int);
 
 };
 
 inline bool operator ==( memMap::iterator p, mathAddr adrr)
 {
 
-	if ( ( adrr >= p->first ) && ( ( ( p->second).getSizeOfMemVal()+ p->first - 1) >=  adrr))
-	{
-		return true;
-	}
-	return false;
+    if ( ( adrr >= p->first ) && ( ( ( p->second).getSizeOfMemVal()+ p->first - 1) >=  adrr))
+    {
+        return true;
+    }
+    return false;
 }
 inline ostream& operator<< ( ostream& os,  MemoryModel& model)
 {
-	memMap::iterator pos;
-	for ( pos = model.getFirstIter(); pos != model.getLastIter(); ++pos)
-	{
-		os<<"address: "<< pos->first<<'\t'<< pos->second<<endl;
-	}
-	return os;
+    memMap::iterator pos;
+    for ( pos = model.getFirstIter(); pos != model.getLastIter(); ++pos)
+    {
+        os<<"address: "<< pos->first<<'\t'<< pos->second<<endl;
+    }
+    return os;
 
 }
 inline memMap::iterator operator+ ( const memMap::iterator pos,  int count)
 {
-	memMap::iterator temp = pos;
-	return ++temp;
+    memMap::iterator temp = pos;
+    return ++temp;
 }
 
 
