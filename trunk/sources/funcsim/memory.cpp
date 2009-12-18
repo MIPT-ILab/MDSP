@@ -18,12 +18,14 @@
  */
 ByteLine::ByteLine()
 {
-	byte_line = new vector<Byte>;
+    byte_line = new vector<Byte>;
+    output = DEFAULT_OUT;
 }
 
 ByteLine::ByteLine( unsigned int count)
 {
     byte_line = new vector<Byte>;
+    output = DEFAULT_OUT;
     try
     {
         (*byte_line).resize( count);
@@ -36,6 +38,7 @@ ByteLine::ByteLine( unsigned int count)
 
 ByteLine::ByteLine( const ByteLine& line)
 {
+    output = DEFAULT_OUT;
     try
     {
         byte_line = new vector<Byte>( line.getSizeOfLine());
@@ -51,6 +54,7 @@ ByteLine::ByteLine( const ByteLine& line)
 }
 ByteLine::ByteLine( const Byte& byte)
 {
+    output = DEFAULT_OUT;
     try
     {
         byte_line = new vector<Byte>;

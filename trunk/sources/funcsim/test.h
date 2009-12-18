@@ -12,13 +12,19 @@
 void testByte()
 {
     Byte a( 7);
-    Byte b( 205);
+    Byte b( 7);
     Byte c = a&b;
+    b.setBinOut();
+    a.setDecOut();
+    c.setHexOut();
     cout<<"test byte class:"<<endl;
+    cout<<"a:outputFormat "<<a.getOutputFormat()<<endl;
     cout<<"a: "<<'\t'<<a<<endl;
+    cout<<"b:outputFormat "<<b.getOutputFormat()<<endl;
     cout<<"b: "<<'\t'<<b<<endl;
+    cout<<"c:outputFormat "<<c.getOutputFormat()<<endl;
     cout<<"c=a&b: "<<'\t'<<c<<endl;
-    cout<<"c>>2: "<<'\t'<<( c>>2)<<endl;
+    cout<<"c>>2: "<<'\t'<< ( c>>2) <<endl;
     cout<<"b<<2: "<<'\t'<<( b<<2)<<endl;
     cout<<"c==a: "<<'\t'<<( c == a)<<endl;
     cout<<"c!=b: "<<'\t'<<( c != b)<<endl;
@@ -134,7 +140,7 @@ void testOperation()
     op1->decode(op1->encode());
     cout << "Decode / encode output: ";
     op1->dump();
-    op1->set(ALU, ADD, NOP, NOP, 0, 0, 0, 0, 1, 3, 2);
+    op1->set(ALU, ADD, NOP, NOP, 0, 1, 0, 0, 1, 3, 2);
     op1->dump();
     op1->decode(op1->encode());
     cout << "Decode / encode output: ";
