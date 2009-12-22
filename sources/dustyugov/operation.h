@@ -43,8 +43,8 @@ class Operation
     void encodeType();
 
     /* Methods for correlation between assembler constants and numbers */
-    OperType getTypeFromInt32( hostUInt32 type);
-    OperCode getCodeFromInt32( OperType type, hostUInt32 code);
+    OperType getType( hostUInt32 type);
+    OperCode getCode( OperType type, hostUInt32 code);
     hostUInt32 getInt32FromType( OperType type);
     hostUInt32 getInt32FromCode( OperType type, OperCode code);
 
@@ -131,7 +131,7 @@ public:
     inline void clear()
     {
         this->instr_word = 0;
-	this->type = MOVE;
+        this->type = MOVE;
         this->opcode0 = this->opcode1 = this->opcode2 = NOP;
         this->sd = this->am = 0;
         this->imm10 = this->imm16 = 0;
@@ -145,29 +145,27 @@ public:
               hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd);
 
     /* Set method for an operation of MOVE type */
-    void set( OperType type,
-              OperCode opcode0,
-              hostUInt8 sd,
-              hostUInt16 imm16,
-              hostUInt8 rs1,
-              hostUInt8 rd);
+    void setMOVE( OperCode opcode0,
+                  hostUInt8 sd,
+                  hostUInt16 imm16,
+                  hostUInt8 rs1,
+                  hostUInt8 rd);
 
     /* Set method for an operation of ALU type */
-    void set( OperType type,
-              OperCode opcode0,
-              OperCode opcode1,
-              OperCode opcode2,
-              hostUInt8 am,
-              hostUInt8 rs1,
-              hostUInt8 rs2,
-              hostUInt8 rd);
+    void setALU( OperCode opcode0,
+                 OperCode opcode1,
+                 OperCode opcode2,
+                 hostUInt8 am,
+                 hostUInt16 imm10,
+                 hostUInt8 rs1,
+                 hostUInt8 rs2,
+                 hostUInt8 rd);
 
     /* Set method for an operation of P_FLOW type */
-    void set( OperType type,
-              OperCode opcode0,
-              hostUInt8 sd,
-              hostUInt8 rd,
-              hostUInt16 imm16);
+    void setPFLOW( OperCode opcode0,
+                   hostUInt8 sd,
+                   hostUInt8 rd,
+                   hostUInt16 imm16);
 
 
     /* Encode the operation */
