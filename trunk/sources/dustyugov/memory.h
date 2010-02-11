@@ -183,6 +183,16 @@ public:
     /* Conversion constructors Byte in ByteLine */
     ByteLine( const Byte&);
 
+    /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 into ByteLine */
+    ByteLine( const hostUInt8);
+    ByteLine( const hostUInt16);
+    //ByteLine( const hostUInt32);
+
+    /* Conversion functions ByteLine into hostUInt8, hostUInt16, hostUInt32 */
+    hostUInt8 getHostUInt8( const ByteLine&);
+    hostUInt16 getHostUInt16( const ByteLine&);
+    hostUInt32 getHostUInt32( const ByteLine&);
+
     /* Destructor */
     virtual ~ByteLine()
     {
