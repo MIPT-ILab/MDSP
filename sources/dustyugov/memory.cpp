@@ -66,6 +66,84 @@ ByteLine::ByteLine( const Byte& byte)
     }
 }
 
+    /* Conversion functions ByteLine into hostUInt8, hostUInt16, hostUInt32 */
+hostUInt8 ByteLine::getHostUInt8( const ByteLine& line)
+{
+    return line.getByteVal( 0);
+}
+
+hostUInt16 ByteLine::getHostUInt16( const ByteLine& line)
+{
+    hostUInt8 temphigh = line.getByteVal( 1);
+    hostUInt8 templow = line.getByteVal( 0);
+    hostUInt16 var = 0;
+    var += temphigh;
+    var << 8;
+    var += templow;
+    return var;
+}
+
+hostUInt32 ByteLine::getHostUInt32(const ByteLine& line)
+{
+    hostUInt8 temphigh = line.getByteVal( 2);
+    hostUInt8 tempmid = line.getByteVal( 1);
+    hostUInt8 templow = line.getByteVal( 0);
+    hostUInt32 var = 0;
+    var += temphigh;
+    var << 8;
+    var += tempmid;
+    var << 8;
+    var += templow;
+    return var;
+}
+
+    /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 in Byteline */
+ByteLine::ByteLine( const hostUInt8 var)
+{
+    output = DEFAULT_OUT;
+    Byte byte( var);
+    try
+    {
+        byte_line = new vector<Byte>;
+        ( *byte_line).push_back( byte);
+    }catch ( std::bad_alloc)
+    {
+        cout << "ERROR: Can not allocate memory!\n";
+        assert( 0);
+    }
+}
+
+ByteLine::ByteLine( const hostUInt16 var)
+{
+    output = DEFAULT_OUT;
+    hostUInt8 temp1 = 0;
+    hostUInt8 temp2 = 0;
+    hostUInt16 var1 = var;
+    for ( int i = 0; i < 8; i++)
+    {
+        if ( var1 & 1)
+            temp1 += ( 1 << i);
+        var1 >> 1;
+    }
+    for ( int i = 0; i < 8; i++)
+    {
+        if ( var1 & 1)
+            temp2 += ( 1 << i);
+        var1 >> 1;
+    }
+    Byte a( temp1);
+    Byte b( temp2);
+    try
+    {
+        byte_line = new vector<Byte>;
+        ( *byte_line).push_back( b);
+        ( *byte_line).push_back( a);
+    }catch ( std::bad_alloc)
+    {
+        cout << "ERROR: Can not allocate memory!\n";
+        assert( 0);
+    }
+}
 hostUInt8 ByteLine::getByteVal( unsigned int byte_num) const
 {
     if ( byte_num > this->getSizeOfLine())
