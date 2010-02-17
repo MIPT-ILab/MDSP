@@ -102,4 +102,17 @@ typedef enum OutputFormat
     HEX
 } OutputFormat;
 
+/* Enumeration for conversion hostUInt8, 16, 32 into Byteline */
+typedef enum OrderType
+{
+    LOW_FIRST,
+    HIGH_FIRST
+} OrderType;
+typedef enum ConversionType
+{
+    HUINT8,
+    HUINT16,
+    HUINT32
+} ConversionType;
+
 #endif /* TYPES_H */

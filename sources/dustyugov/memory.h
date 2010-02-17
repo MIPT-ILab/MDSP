@@ -183,10 +183,13 @@ public:
     /* Conversion constructors Byte in ByteLine */
     ByteLine( const Byte&);
 
-    /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 into ByteLine */
-    ByteLine( const hostUInt8);
-    ByteLine( const hostUInt16);
-    //ByteLine( const hostUInt32);
+    /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 variables into ByteLine */
+    ByteLine( const hostUInt8, OrderType);
+    ByteLine( const hostUInt16, OrderType);
+    ByteLine( const hostUInt32, OrderType);
+    
+    /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 constants (HUINT8, HUINT16, HUINT32) into ByteLine using constructors above */
+    ByteLine( unsigned int, ConversionType);
 
     /* Conversion functions ByteLine into hostUInt8, hostUInt16, hostUInt32 */
     hostUInt8 getHostUInt8( const ByteLine&);
