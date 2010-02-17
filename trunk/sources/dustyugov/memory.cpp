@@ -98,7 +98,7 @@ hostUInt32 ByteLine::getHostUInt32(const ByteLine& line)
 }
 
     /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 in Byteline */
-ByteLine::ByteLine( const hostUInt8 var)
+ByteLine::ByteLine( const hostUInt8 var, ConversionType)
 {
     output = DEFAULT_OUT;
     Byte byte( var);
@@ -113,7 +113,7 @@ ByteLine::ByteLine( const hostUInt8 var)
     }
 }
 
-ByteLine::ByteLine( const hostUInt16 var)
+ByteLine::ByteLine( const hostUInt16 var, ConversionType)
 {
     output = DEFAULT_OUT;
     hostUInt8 temp1 = 0;
