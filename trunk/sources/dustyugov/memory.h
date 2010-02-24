@@ -166,6 +166,10 @@ class ByteLine
 {
     vector<Byte> *byte_line;
     OutputFormat output;
+    /* Functions converting hostUInt8,16,32 into vector<Byte> *byte_line */
+    void convert8( vector<Byte> *, hostUInt8);
+    void convert16( vector<Byte> *, hostUInt16, OrderType);
+    void convert32( vector<Byte> *, hostUInt32, OrderType);
 
 public:
     /* Constructors */
@@ -184,12 +188,12 @@ public:
     ByteLine( const Byte&);
 
     /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 variables into ByteLine */
-    ByteLine( const hostUInt8, OrderType);
-    ByteLine( const hostUInt16, OrderType);
-    ByteLine( const hostUInt32, OrderType);
+    ByteLine( hostUInt8, OrderType);
+    ByteLine( hostUInt16, OrderType);
+    ByteLine( hostUInt32, OrderType);
     
-    /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 constants (HUINT8, HUINT16, HUINT32) into ByteLine using constructors above */
-    ByteLine( unsigned int, ConversionType);
+    /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 constants (HUINT8, HUINT16, HUINT32) into ByteLine */
+    ByteLine( unsigned int, ConversionType, OrderType);
 
     /* Conversion functions ByteLine into hostUInt8, hostUInt16, hostUInt32 */
     hostUInt8 getHostUInt8( const ByteLine&);
