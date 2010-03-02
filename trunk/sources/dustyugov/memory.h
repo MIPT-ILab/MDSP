@@ -321,21 +321,25 @@ inline ByteLine& ByteLine::operator = ( const ByteLine& line)
 /* Output operator due to output val, class Byteline*/
 inline ostream& operator<< ( ostream& os, const ByteLine& line)
 {   
+    Byte a( 0);
     for ( int i = 0; i < line.getSizeOfLine(); i++)
     {
             switch ( line.getOutputFormat())
     {
 case BIN:
-    (line[ i]).setBinOut();
-    os << line[ i] << " | ";
+    a = ( line[ i]);
+    a.setBinOut();
+    os << a << " | ";
 	break;
 case DEC:
-    (line[i]).setDecOut();
-    os << ( line[ i]) << " | ";
+    a = ( line[ i]);
+    a.setDecOut();
+    os << a << " | ";
 	break;
 case HEX:
-    (line[i]).setHexOut();
-    os << line[ i] << " | ";
+    a = ( line[ i]);
+    a.setHexOut();
+    os << a << " | ";
 	break;
     }
     }
