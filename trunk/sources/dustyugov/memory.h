@@ -196,9 +196,9 @@ public:
     ByteLine( unsigned int, ConversionType, OrderType);
 
     /* Conversion functions ByteLine into hostUInt8, hostUInt16, hostUInt32 */
-    hostUInt8 getHostUInt8( const ByteLine&);
-    hostUInt16 getHostUInt16( const ByteLine&);
-    hostUInt32 getHostUInt32( const ByteLine&);
+    hostUInt8 getHostUInt8();
+    hostUInt16 getHostUInt16();
+    hostUInt32 getHostUInt32();
 
     /* Destructor */
     virtual ~ByteLine()
@@ -331,7 +331,7 @@ case BIN:
 	break;
 case DEC:
     (line[i]).setDecOut();
-    os << line[ i] << " | ";
+    os << ( line[ i]) << " | ";
 	break;
 case HEX:
     (line[i]).setHexOut();
