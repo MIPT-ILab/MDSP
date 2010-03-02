@@ -67,35 +67,35 @@ ByteLine::ByteLine( const Byte& byte)
 }
 
     /* Conversion functions ByteLine into hostUInt8, hostUInt16, hostUInt32 */
-hostUInt8 ByteLine::getHostUInt8( const ByteLine& line)
+hostUInt8 ByteLine::getHostUInt8()
 {
-    return line.getByteVal( 0);
+    return this->getByteVal( 0);
 }
 
-hostUInt16 ByteLine::getHostUInt16( const ByteLine& line)
+hostUInt16 ByteLine::getHostUInt16()
 {
-    hostUInt8 temphigh = line.getByteVal( 1);
-    hostUInt8 templow = line.getByteVal( 0);
+    hostUInt8 temphigh = this->getByteVal( 1);
+    hostUInt8 templow = this->getByteVal( 0);
     hostUInt16 var = 0;
     var += temphigh;
-    var << 8;
+    var = ( var << 8);
     var += templow;
     return var;
 }
 
-hostUInt32 ByteLine::getHostUInt32(const ByteLine& line)
+hostUInt32 ByteLine::getHostUInt32()
 {
-    hostUInt8 temp3 = line.getByteVal( 3);
-    hostUInt8 temp2 = line.getByteVal( 2);
-    hostUInt8 temp1 = line.getByteVal( 1);
-    hostUInt8 temp0 = line.getByteVal( 0);
+    hostUInt8 temp3 = this->getByteVal( 3);
+    hostUInt8 temp2 = this->getByteVal( 2);
+    hostUInt8 temp1 = this->getByteVal( 1);
+    hostUInt8 temp0 = this->getByteVal( 0);
     hostUInt32 var = 0;
     var += temp3;
-    var << 8;
+    var = ( var << 8);
     var += temp2;
-    var << 8;
+    var = ( var << 8);
     var += temp1;
-    var << 8;
+    var = ( var << 8);
     var += temp0;
     return var;
 }
@@ -115,17 +115,17 @@ void ByteLine::convert16( vector<Byte> *byte_line, hostUInt16 var, OrderType typ
     {
         if ( var & 1)
             temp1 += ( 1 << i);
-        var >> 1;
+        var  = (var >> 1);
     }
     for ( int i = 0; i < 8; i++)
     {
         if ( var & 1)
             temp2 += ( 1 << i);
-        var >> 1;
+        var = ( var >> 1);
     }
     Byte a( temp1);
     Byte b( temp2);
-    if ( type == LOW_FIRST)
+    if ( type == HIGH_FIRST)
     {
         ( *byte_line).push_back( a);
         ( *byte_line).push_back( b);
@@ -146,32 +146,32 @@ void ByteLine::convert32( vector<Byte> *byte_line, hostUInt32 var, OrderType typ
     {
         if ( var & 1)
             temp1 += ( 1 << i);
-        var >> 1;
+        var  = (var >> 1);
     }
     for ( int i = 0; i < 8; i++)
     {
         if ( var & 1)
             temp2 += ( 1 << i);
-        var >> 1;
+        var  = (var >> 1);
     }
     for ( int i = 0; i < 8; i++)
     {
         if ( var & 1)
             temp3 += ( 1 << i);
-        var >> 1;
+        var  = (var >> 1);
     }
     for ( int i = 0; i < 8; i++)
     {
         if ( var & 1)
             temp4 += ( 1 << i);
-        var >> 1;
+        var  = (var >> 1);
     }
     Byte a( temp1);
     Byte b( temp2);
     Byte c( temp3);
     Byte d( temp4);
 
-    if ( type == LOW_FIRST)
+    if ( type == HIGH_FIRST)
     {
         ( *byte_line).push_back( a);
         ( *byte_line).push_back( b);
@@ -220,7 +220,7 @@ ByteLine::ByteLine( hostUInt32 var, OrderType type)
     try
     {
         byte_line = new vector<Byte>;
-        convert32( byte_line, var, OrderType);
+        convert32( byte_line, var, type);
     }catch ( std::bad_alloc)
     {
         cout << "ERROR: Can not allocate memory!\n";
@@ -248,7 +248,7 @@ ByteLine::ByteLine(unsigned int var, ConversionType ctype, OrderType type)
         try
         {
             byte_line = new vector<Byte>;
-            convert16( byte_line, var, type)
+            convert16( byte_line, var, type);
         }catch ( std::bad_alloc)
         {
             cout << "ERROR: Can not allocate memory!\n";

@@ -31,16 +31,50 @@ void testByte()
 }
 void testByteLine()
 {
-    Byte a( 7);
-    Byte b( 205);
-    Byte c( 110);
+    //Byte a( 7);
+    //Byte b( 205);
+    //Byte c( 110);
+	hostUInt8 q;
+	hostUInt16 w;
+	hostUInt32 e;
+	q=10;
+	w=0x34c6;
+    e=12;
     cout<<"test byteline class:"<<endl;
-    cout<<"a: "<<'\t'<<a<<endl;
-    cout<<"b: "<<'\t'<<b<<endl;
-    cout<<"c: "<<'\t'<<c<<endl;
-    ByteLine f( a + c + b);
-    ByteLine d = f;
-    cout<<"f( a + c + b): "<<'\t'<<f<<endl;
+ //   cout<<"a: "<<'\t'<<a<<endl;
+ //   cout<<"b: "<<'\t'<<b<<endl;
+ //   cout<<"c: "<<'\t'<<c<<endl;
+	//ByteLine f( a + c + b);
+ //   ByteLine d = f;
+	ByteLine r( q, LOW_FIRST);
+    ByteLine t( w, LOW_FIRST);
+    //t.setBinOut();
+    
+    ByteLine y( e, LOW_FIRST);
+	ByteLine u( q, HIGH_FIRST);
+    ByteLine i( w, LOW_FIRST);
+    ByteLine o( e, HIGH_FIRST);
+    u.setDecOut();
+	cout<<"q :"<<q<<endl;
+	cout<<"w :"<<w<<endl;
+	cout<<"e :"<<e<<endl;
+	cout<<"r :"<<r<<endl;
+	cout<<"t :"<<t<<endl;
+	cout<<"y :"<<y<<endl;
+	cout<<"u :"<<u<<endl;
+	cout<<"i :"<<i<<endl;
+	cout<<"o :"<<o<<endl;
+	q = u.getHostUInt8();
+	w = i.getHostUInt16();
+	e = o.getHostUInt32();
+    int m = 0;
+    m += q;
+    cout<<"q -ret:"<< hex <<m<<endl;
+	cout<<"w -ret:"<<hex<<w<<endl;
+	cout<<"e -ret:"<<hex<<e<<endl;
+
+
+    /*cout<<"f( a + c + b): "<<'\t'<<f<<endl;
     cout<<"d = f: "<<'\t'<<d<<endl;
     f.addByte( a&b);
     cout<<"f.addByte( a&b) : "<<'\t'<<f<<endl;
@@ -53,7 +87,11 @@ void testByteLine()
     cout<<"f.getSizeOfLine() : "<<'\t'<<f.getSizeOfLine()<<endl;
     f.resizeByteLine( 5);
     cout<<"f.resizeByteLine( 5) : "<<'\t'<<f<<endl;
-    cout<<"f.getSizeOfLine() : "<<'\t'<<f.getSizeOfLine()<<endl;
+    cout<<"f.getSizeOfLine() : "<<'\t'<<f.getSizeOfLine()<<endl;*/
+
+
+
+
 }
 void testMemVal()
 {
@@ -206,12 +244,12 @@ void testRegisterFileModel()
 
 void test()
 {
-	testByte();
+	//testByte();
 	testByteLine();
-	testMemVal();
-	testMemModel();
-    testOperation();
-    testRegisterFileModel();
+	//testMemVal();
+	//testMemModel();
+    //testOperation();
+    //testRegisterFileModel();
 }
 
 #endif /* TEST_H */
