@@ -66,7 +66,7 @@ ByteLine::ByteLine( const Byte& byte)
     }
 }
 
-    /* Conversion functions ByteLine into hostUInt8, hostUInt16, hostUInt32 */
+/* Conversion functions ByteLine into hostUInt8, hostUInt16, hostUInt32 */
 hostUInt8 ByteLine::getHostUInt8()
 {
     return this->getByteVal( 0);
@@ -186,7 +186,7 @@ void ByteLine::convert32( vector<Byte> *byte_line, hostUInt32 var, OrderType typ
     }
 }
 
-    /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 in Byteline */
+/* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 in Byteline */
 ByteLine::ByteLine( hostUInt8 var, OrderType type)
 {
     output = DEFAULT_OUT;
