@@ -34,6 +34,12 @@ void testByteLine()
     Byte a( 7);
     Byte b( 205);
     Byte c( 110);
+    hostUInt8 q;
+    hostUInt16 w;
+    hostUInt32 e;
+    q=10;
+    w=0x34c6;
+    e=12;
     cout<<"test byteline class:"<<endl;
     cout<<"a: "<<'\t'<<a<<endl;
     cout<<"b: "<<'\t'<<b<<endl;
@@ -54,6 +60,32 @@ void testByteLine()
     f.resizeByteLine( 5);
     cout<<"f.resizeByteLine( 5) : "<<'\t'<<f<<endl;
     cout<<"f.getSizeOfLine() : "<<'\t'<<f.getSizeOfLine()<<endl;
+    ByteLine r( q, LOW_FIRST);
+    ByteLine t( w, LOW_FIRST);
+    ByteLine y( e, LOW_FIRST);
+    ByteLine u( q, HIGH_FIRST);
+    ByteLine i( w, LOW_FIRST);
+    ByteLine o( e, HIGH_FIRST);
+    u.setBinOut();
+    i.setDecOut();
+    o.setHexOut();
+    cout<<"q :"<<q<<endl;
+    cout<<"w :"<<w<<endl;
+    cout<<"e :"<<e<<endl;
+    cout<<"r :"<<r<<endl;
+    cout<<"t :"<<t<<endl;
+    cout<<"y :"<<y<<endl;
+    cout<<"u :"<<u<<endl;
+    cout<<"i :"<<i<<endl;
+    cout<<"o :"<<o<<endl;
+    q = u.getHostUInt8();
+    w = i.getHostUInt16();
+    e = o.getHostUInt32();
+    int m = 0;
+    m += q;
+    cout<<"q -ret:"<<hex<<m<<endl;
+    cout<<"w -ret:"<<hex<<w<<endl;
+    cout<<"e -ret:"<<hex<<e<<endl;
 }
 void testMemVal()
 {

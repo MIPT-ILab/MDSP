@@ -48,8 +48,6 @@ void testByteLine()
  //   ByteLine d = f;
     ByteLine r( q, LOW_FIRST);
     ByteLine t( w, LOW_FIRST);
-    //t.setBinOut();
-    
     ByteLine y( e, LOW_FIRST);
     ByteLine u( q, HIGH_FIRST);
     ByteLine i( w, LOW_FIRST);
