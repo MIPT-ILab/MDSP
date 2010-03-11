@@ -166,10 +166,6 @@ class ByteLine
 {
     vector<Byte> *byte_line;
     OutputFormat output;
-    /* Functions converting hostUInt8,16,32 into vector<Byte> *byte_line */
-    void convert8( vector<Byte> *, hostUInt8);
-    void convert16( vector<Byte> *, hostUInt16, OrderType);
-    void convert32( vector<Byte> *, hostUInt32, OrderType);
 
 public:
     /* Constructors */
@@ -186,23 +182,6 @@ public:
 
     /* Conversion constructors Byte in ByteLine */
     ByteLine( const Byte&);
-
-    /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 variables into ByteLine
-     * OrderType variable manages how the bytes should be located in the ByteLine
-     */
-    ByteLine( hostUInt8, OrderType);
-    ByteLine( hostUInt16, OrderType);
-    ByteLine( hostUInt32, OrderType);
-    
-    /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 constants (HUINT8, HUINT16, HUINT32) into ByteLine 
-     * OrderType variable manages how the bytes should be located in the ByteLine
-     */
-    ByteLine( unsigned int, ConversionType, OrderType);
-
-    /* Conversion functions ByteLine into hostUInt8, hostUInt16, hostUInt32 */
-    hostUInt8 getHostUInt8();
-    hostUInt16 getHostUInt16();
-    hostUInt32 getHostUInt32();
 
     /* Destructor */
     virtual ~ByteLine()
@@ -325,25 +304,21 @@ inline ByteLine& ByteLine::operator = ( const ByteLine& line)
 /* Output operator due to output val, class Byteline*/
 inline ostream& operator<< ( ostream& os, const ByteLine& line)
 {   
-    Byte a( 0);
     for ( int i = 0; i < line.getSizeOfLine(); i++)
     {
             switch ( line.getOutputFormat())
     {
 case BIN:
-    a = ( line[ i]);
-    a.setBinOut();
-    os << a << " | ";
+    (line[ i]).setBinOut();
+    os << line[ i] << " | ";
 	break;
 case DEC:
-    a = ( line[ i]);
-    a.setDecOut();
-    os << a << " | ";
+    (line[i]).setDecOut();
+    os << line[ i] << " | ";
 	break;
 case HEX:
-    a = ( line[ i]);
-    a.setHexOut();
-    os << a << " | ";
+    (line[i]).setHexOut();
+    os << line[ i] << " | ";
 	break;
     }
     }
