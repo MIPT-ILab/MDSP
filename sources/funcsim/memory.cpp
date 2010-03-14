@@ -66,6 +66,248 @@ ByteLine::ByteLine( const Byte& byte)
     }
 }
 
+    /* Conversion functions ByteLine into hostUInt8, hostUInt16, hostUInt32 */
+hostUInt8 ByteLine::getHostUInt8()
+{
+    return this->getByteVal( 0);
+}
+
+hostUInt16 ByteLine::getHostUInt16()
+{
+    hostUInt8 temp[] = { this->getByteVal( 1), this->getByteVal( 0)};
+    hostUInt16 var = 0;
+    var += temp[ 0];
+    var = ( var << 8);
+    var += temp[ 1];
+    return var;
+}
+
+hostUInt32 ByteLine::getHostUInt32()
+{
+    hostUInt8 temp[] = { this->getByteVal( 3), this->getByteVal( 2), 
+        this->getByteVal( 1), this->getByteVal( 0)};
+    hostUInt32 var = 0;
+    for ( int i = 0; i < 3; i++)
+    {
+        var += temp[ i];
+        var = ( var << 8);
+    }
+    var += temp[3];
+    return var;
+}
+
+    /* Private functions converting hostUInt8,16,32 into vector<Byte> *byte_line */
+void ByteLine::convert8( vector<Byte> *byte_line, hostUInt8 var)
+{
+    Byte byte( var);
+    ( *byte_line).push_back( byte);
+}
+
+void ByteLine::convert16( vector<Byte> *byte_line, hostUInt16 var, OrderType type)
+{
+/*    hostUInt8 temp1 = 0;
+    hostUInt8 temp2 = 0;
+    for ( int i = 0; i < 8; i++)
+    {
+        if ( var & 1)
+            temp1 += ( 1 << i);
+        var  = (var >> 1);
+    }
+    for ( int i = 0; i < 8; i++)
+    {
+        if ( var & 1)
+            temp2 += ( 1 << i);
+        var = ( var >> 1);
+    }
+    Byte a( temp1);
+    Byte b( temp2);
+    if ( type == HIGH_FIRST)
+    {
+        ( *byte_line).push_back( a);
+        ( *byte_line).push_back( b);
+    } else
+    {
+        ( *byte_line).push_back( b);
+        ( *byte_line).push_back( a);
+    }
+*/
+    hostUInt8 temp[2] = { 0, 0};
+    for ( int i = 0; i < 2; i++)
+    {
+        for( int k = 0; k < 8; k++)
+        {
+            if ( var & 1)
+                temp[ i] += ( 1 << k);
+            var = ( var >> 1);
+        }
+    }
+    Byte byte[] = { temp[ 0], temp[ 1]};
+    if ( type == HIGH_FIRST)
+    {
+        for ( int i = 0; i < 2; i++)
+            ( *byte_line).push_back( byte[ i]);
+    } else
+    {
+        for ( int i = 2; i > 0; i--)
+            ( *byte_line).push_back( byte[ i-1]);
+    }
+}
+
+void ByteLine::convert32( vector<Byte> *byte_line, hostUInt32 var, OrderType type)
+{
+/*
+    hostUInt8 temp1 = 0;
+    hostUInt8 temp2 = 0;
+    hostUInt8 temp3 = 0;
+    hostUInt8 temp4 = 0;
+    for ( int i = 0; i < 8; i++)
+    {
+        if ( var & 1)
+            temp1 += ( 1 << i);
+        var  = (var >> 1);
+    }
+    for ( int i = 0; i < 8; i++)
+    {
+        if ( var & 1)
+            temp2 += ( 1 << i);
+        var  = (var >> 1);
+    }
+    for ( int i = 0; i < 8; i++)
+    {
+        if ( var & 1)
+            temp3 += ( 1 << i);
+        var  = (var >> 1);
+    }
+    for ( int i = 0; i < 8; i++)
+    {
+        if ( var & 1)
+            temp4 += ( 1 << i);
+        var  = (var >> 1);
+    }
+    Byte a( temp1);
+    Byte b( temp2);
+    Byte c( temp3);
+    Byte d( temp4);
+
+    if ( type == HIGH_FIRST)
+    {
+        ( *byte_line).push_back( a);
+        ( *byte_line).push_back( b);
+        ( *byte_line).push_back( c);
+        ( *byte_line).push_back( d);
+    } else
+    {
+        ( *byte_line).push_back( d);
+        ( *byte_line).push_back( c);
+        ( *byte_line).push_back( b);
+        ( *byte_line).push_back( a);
+    }
+*/
+    hostUInt8 temp[4] = { 0, 0, 0, 0};
+    for ( int i = 0; i < 4; i++)
+    {
+        for( int k = 0; k < 8; k++)
+        {
+            if ( var & 1)
+                temp[ i] += ( 1 << k);
+            var = ( var >> 1);
+        }
+    }
+    Byte byte[] = { temp[ 0], temp[ 1], temp[ 2], temp[ 3]};
+    if ( type == HIGH_FIRST)
+    {
+        for ( int i = 0; i < 4; i++)
+            ( *byte_line).push_back( byte[ i]);
+    } else
+    {
+        for ( int i = 4; i > 0; i--)
+            ( *byte_line).push_back( byte[ i-1]);
+    }
+}
+
+    /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 in Byteline */
+ByteLine::ByteLine( hostUInt8 var, OrderType type)
+{
+    output = DEFAULT_OUT;
+    try
+    {
+        byte_line = new vector<Byte>;
+        convert8( byte_line, var);
+    }catch ( std::bad_alloc)
+    {
+        cout << "ERROR: Can not allocate memory!\n";
+        assert( 0);
+    }
+}
+
+ByteLine::ByteLine( hostUInt16 var, OrderType type)
+{
+    output = DEFAULT_OUT;
+    try
+    {
+        byte_line = new vector<Byte>;
+        convert16( byte_line, var, type);
+    }catch ( std::bad_alloc)
+    {
+        cout << "ERROR: Can not allocate memory!\n";
+        assert( 0);
+    }
+}
+ByteLine::ByteLine( hostUInt32 var, OrderType type)
+{
+    output = DEFAULT_OUT;
+    try
+    {
+        byte_line = new vector<Byte>;
+        convert32( byte_line, var, type);
+    }catch ( std::bad_alloc)
+    {
+        cout << "ERROR: Can not allocate memory!\n";
+        assert( 0);
+    }
+}
+
+ByteLine::ByteLine(unsigned int var, ConversionType ctype, OrderType type)
+{
+    output = DEFAULT_OUT;
+    switch( ctype)
+    {
+    case HUINT8:
+        try
+        {
+           byte_line = new vector<Byte>;
+           convert8( byte_line, var);
+        }catch ( std::bad_alloc)
+        {
+            cout << "ERROR: Can not allocate memory!\n";
+            assert( 0);
+        }
+        break;
+    case HUINT16:
+        try
+        {
+            byte_line = new vector<Byte>;
+            convert16( byte_line, var, type);
+        }catch ( std::bad_alloc)
+        {
+            cout << "ERROR: Can not allocate memory!\n";
+            assert( 0);
+        }
+        break;
+    case HUINT32:
+        try
+        {
+            byte_line = new vector<Byte>;
+            convert32( byte_line, var, type);
+        }catch ( std::bad_alloc)
+        {
+            cout << "ERROR: Can not allocate memory!\n";
+            assert( 0);
+        }
+        break;
+    }
+}
+        
 hostUInt8 ByteLine::getByteVal( unsigned int byte_num) const
 {
     if ( byte_num > this->getSizeOfLine())

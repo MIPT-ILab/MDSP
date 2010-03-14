@@ -34,12 +34,50 @@ void testByteLine()
     Byte a( 7);
     Byte b( 205);
     Byte c( 110);
+    hostUInt8 q;
+    hostUInt16 w;
+    hostUInt32 e;
+    q=044;//oct
+    w=0x34c6;
+    e=45678;
     cout<<"test byteline class:"<<endl;
     cout<<"a: "<<'\t'<<a<<endl;
     cout<<"b: "<<'\t'<<b<<endl;
     cout<<"c: "<<'\t'<<c<<endl;
     ByteLine f( a + c + b);
     ByteLine d = f;
+    ByteLine r( q, LOW_FIRST);
+    ByteLine t( w, LOW_FIRST);
+    
+    ByteLine y( e, LOW_FIRST);
+    ByteLine u( q, HIGH_FIRST);
+    ByteLine i( w, HIGH_FIRST);
+    ByteLine o( e, HIGH_FIRST);
+    r.setBinOut();
+    t.setBinOut();
+    y.setBinOut();
+    u.setBinOut();
+    i.setBinOut();
+    o.setBinOut();
+    cout<<"q :"<<q<<endl;
+    cout<<"w :"<<w<<endl;
+    cout<<"e :"<<e<<endl;
+    cout<<"r :"<<r<<endl;
+    cout<<"t :"<<t<<endl;
+    cout<<"y :"<<y<<endl;
+    cout<<"u :"<<u<<endl;
+    cout<<"i :"<<i<<endl;
+    cout<<"o :"<<o<<endl;
+    q = u.getHostUInt8();
+    w = i.getHostUInt16();
+    e = o.getHostUInt32();
+    int m = 0;
+    m += q;
+    cout<<"q -ret:"<< oct <<m<<endl;
+    cout<<"w -ret:"<<dec<<w<<endl;
+    cout<<"e -ret:"<<dec<<e<<endl;
+
+
     cout<<"f( a + c + b): "<<'\t'<<f<<endl;
     cout<<"d = f: "<<'\t'<<d<<endl;
     f.addByte( a&b);
@@ -54,6 +92,10 @@ void testByteLine()
     f.resizeByteLine( 5);
     cout<<"f.resizeByteLine( 5) : "<<'\t'<<f<<endl;
     cout<<"f.getSizeOfLine() : "<<'\t'<<f.getSizeOfLine()<<endl;
+
+
+
+
 }
 void testMemVal()
 {
@@ -179,9 +221,9 @@ void testOperation()
     op1->dump();
     op1->set(P_FLOW, JMP, NOP, NOP, 0, 0, 0, 0, 1, 1, 2);
     op1->dump();
-    //cout << endl << "Big bada boom X_X ..." << endl;
-    //op1->set(MOVE, NOP, NOP, NOP, 0, 0, 0, 0, 1, 1, 2);
-    //op1->dump();
+    cout << endl << "Big bada boom X_X ..." << endl;
+    op1->set(MOVE, NOP, NOP, NOP, 0, 0, 0, 0, 1, 1, 2);
+    op1->dump();
 }
 
 void testRegisterFileModel()
@@ -206,12 +248,12 @@ void testRegisterFileModel()
 
 void test()
 {
-	testByte();
+	//testByte();
 	testByteLine();
-	testMemVal();
-	testMemModel();
-    testOperation();
-    testRegisterFileModel();
+	//testMemVal();
+	//testMemModel();
+    //testOperation();
+    //testRegisterFileModel();
 }
 
 #endif /* TEST_H */
