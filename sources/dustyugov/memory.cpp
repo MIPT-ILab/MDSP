@@ -105,32 +105,6 @@ void ByteLine::convert8( vector<Byte> *byte_line, hostUInt8 var)
 
 void ByteLine::convert16( vector<Byte> *byte_line, hostUInt16 var, OrderType type)
 {
-/*    hostUInt8 temp1 = 0;
-    hostUInt8 temp2 = 0;
-    for ( int i = 0; i < 8; i++)
-    {
-        if ( var & 1)
-            temp1 += ( 1 << i);
-        var  = (var >> 1);
-    }
-    for ( int i = 0; i < 8; i++)
-    {
-        if ( var & 1)
-            temp2 += ( 1 << i);
-        var = ( var >> 1);
-    }
-    Byte a( temp1);
-    Byte b( temp2);
-    if ( type == HIGH_FIRST)
-    {
-        ( *byte_line).push_back( a);
-        ( *byte_line).push_back( b);
-    } else
-    {
-        ( *byte_line).push_back( b);
-        ( *byte_line).push_back( a);
-    }
-*/
     hostUInt8 temp[2] = { 0, 0};
     for ( int i = 0; i < 2; i++)
     {
@@ -155,54 +129,6 @@ void ByteLine::convert16( vector<Byte> *byte_line, hostUInt16 var, OrderType typ
 
 void ByteLine::convert32( vector<Byte> *byte_line, hostUInt32 var, OrderType type)
 {
-/*
-    hostUInt8 temp1 = 0;
-    hostUInt8 temp2 = 0;
-    hostUInt8 temp3 = 0;
-    hostUInt8 temp4 = 0;
-    for ( int i = 0; i < 8; i++)
-    {
-        if ( var & 1)
-            temp1 += ( 1 << i);
-        var  = (var >> 1);
-    }
-    for ( int i = 0; i < 8; i++)
-    {
-        if ( var & 1)
-            temp2 += ( 1 << i);
-        var  = (var >> 1);
-    }
-    for ( int i = 0; i < 8; i++)
-    {
-        if ( var & 1)
-            temp3 += ( 1 << i);
-        var  = (var >> 1);
-    }
-    for ( int i = 0; i < 8; i++)
-    {
-        if ( var & 1)
-            temp4 += ( 1 << i);
-        var  = (var >> 1);
-    }
-    Byte a( temp1);
-    Byte b( temp2);
-    Byte c( temp3);
-    Byte d( temp4);
-
-    if ( type == HIGH_FIRST)
-    {
-        ( *byte_line).push_back( a);
-        ( *byte_line).push_back( b);
-        ( *byte_line).push_back( c);
-        ( *byte_line).push_back( d);
-    } else
-    {
-        ( *byte_line).push_back( d);
-        ( *byte_line).push_back( c);
-        ( *byte_line).push_back( b);
-        ( *byte_line).push_back( a);
-    }
-*/
     hostUInt8 temp[4] = { 0, 0, 0, 0};
     for ( int i = 0; i < 4; i++)
     {
