@@ -114,7 +114,7 @@ OperType Operation::getType( hostUInt32 type)
     switch ( type)
     {
         default:
-            printf( "Unknown operation type encoded in %x number\n", type);
+            cout << "Unknown operation type encoded in "<< (int) type << " number" << endl;
             assert( 0);
         case 0:
             return MOVE;
@@ -151,7 +151,7 @@ hostUInt32 Operation::getInt32FromType( OperType type)
         case P_FLOW:
             return 5;
         default:
-            printf( "Unknown operation number is encoded in %x type\n", type);
+            cout << "Unknown operation type encoded in "<< (int) type << " type" << endl;
             assert( 0);
     }
 }
@@ -427,20 +427,19 @@ void Operation::setPFLOW( OperCode opcode0,
 
 /*
  * Print MOVE operation to the console
- * NOTE: printf is used here, because "cout <<" doesn't work properly with some types
  */
 void Operation::dumpMOVE()
 {
     switch ( this->opcode0)
     {
         case BRM:
-            printf( "brm %i, r%i, r%i;\n", this->sd, this->rs1, this->rd);
+            cout << "brm " << (int) this->sd << ", r" << (int) this->rs1 << ", r" << (int) this->rd << ";" << endl;
             break;
         case BRR:
-            printf( "brr r%i, r%i;\n", this->rs1, this->rd);
+            cout << "brr " << (int) this->rs1 << ", r" << (int) this->rd << ";" << endl;
             break;
         case LD:
-            printf( "ld %i, r%i, r%i;\n", this->sd, this->imm16, this->rd);
+            cout << "ld " << (int) this->sd << ", r" << (int) this->imm16 << ", r" << (int) this->rd << ";" << endl;
             break;
         default:
             cout << "Operation code is invalid in MOVE\n";
@@ -450,17 +449,30 @@ void Operation::dumpMOVE()
 
 /*
  * Print ALU operation to the console
- * NOTE: printf is used here, because "cout <<" doesn't work properly with some types
  */
 void Operation::dumpALU()
 {
-    switch ( this->opcode0)
+    switch ( this->opcode1)
     {
         case ADD:
-            printf( "add %i, r%i, r%i, r%i;\n", this->am, this->rs1, this-> rs2, this->rd);
+            if ((am == 1) || ( am == 3))
+            {
+                cout << "add " << (int) this->am << ", " << (int) this->imm10 << ", r" << (int) this->rd << ";" << endl;
+            }
+            else
+            {
+                cout << "add " << (int) this->am << ", r" << (int) this->rs1 << ", r" << (int) this->rs2 << ", r" << (int) this->rd << ";" << endl;
+            }
             break;
         case SUB:
-            printf( "sub %i, r%i, r%i, r%i;\n", this->am, this->rs1, this-> rs2, this->rd);
+            if ((am == 1) || ( am == 3))
+            {
+                cout << "sub " << (int) this->am << ", " << (int) this->imm10 << ", r" << (int) this->rd << ";" << endl;
+            }
+            else
+            {
+                cout << "sub " << (int) this->am << ", r" << (int) this->rs1 << ", r" << (int) this->rs2 << ", r" << (int) this->rd << ";" << endl;
+            }
             break;
         default:
             cout << "Operation code is invalid in ALU\n";
@@ -470,7 +482,6 @@ void Operation::dumpALU()
 
 /*
  * Print P_FLOW operation to the console
- * NOTE: printf is used here, because "cout <<" doesn't work properly with some types
  */
 void Operation::dumpPFLOW()
 {
@@ -487,10 +498,10 @@ void Operation::dumpPFLOW()
     switch ( this->opcode0)
     {
         case JMP:
-            printf( "jmp %i, r%i;\n", this->sd, temp);
+            cout << "jmp " << (int) this->sd << ", r" << (int) temp << ";" << endl;
             break;
         case JGT:
-            printf( "jgt %i, r%i;\n", this->sd, temp);
+            cout << "jmp " << (int) this->sd << ", r" << (int) temp << ";" << endl;
             break;
         default:
             cout << "Operation code is invalid in P_FLOW\n";
@@ -785,8 +796,15 @@ void Operation::encodeALU()
     setValueByShift( getInt32FromCode( ALU, this->opcode1), 21);
     setValueByShift( getInt32FromCode( ALU, this->opcode2), 18);
     setValueByShift( this->am, 15);
-    setValueByShift( this->rs1, 10);
-    setValueByShift( this->rs2, 5);
+    if ((this->am == 1) || (this->am == 3))
+    {
+    	setValueByShift( this->imm10, 5);
+    }
+    else
+    {
+    	setValueByShift( this->rs1, 10);
+        setValueByShift( this->rs2, 5);
+    }
     setValueByShift( this->rd, 0);
 }
 
