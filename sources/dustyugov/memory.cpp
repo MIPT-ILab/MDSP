@@ -74,29 +74,25 @@ hostUInt8 ByteLine::getHostUInt8()
 
 hostUInt16 ByteLine::getHostUInt16()
 {
-    hostUInt8 temphigh = this->getByteVal( 1);
-    hostUInt8 templow = this->getByteVal( 0);
+    hostUInt8 temp[] = { this->getByteVal( 1), this->getByteVal( 0)};
     hostUInt16 var = 0;
-    var += temphigh;
+    var += temp[ 0];
     var = ( var << 8);
-    var += templow;
+    var += temp[ 1];
     return var;
 }
 
 hostUInt32 ByteLine::getHostUInt32()
 {
-    hostUInt8 temp3 = this->getByteVal( 3);
-    hostUInt8 temp2 = this->getByteVal( 2);
-    hostUInt8 temp1 = this->getByteVal( 1);
-    hostUInt8 temp0 = this->getByteVal( 0);
+    hostUInt8 temp[] = { this->getByteVal( 3), this->getByteVal( 2), 
+        this->getByteVal( 1), this->getByteVal( 0)};
     hostUInt32 var = 0;
-    var += temp3;
-    var = ( var << 8);
-    var += temp2;
-    var = ( var << 8);
-    var += temp1;
-    var = ( var << 8);
-    var += temp0;
+    for ( int i = 0; i < 3; i++)
+    {
+        var += temp[ i];
+        var = ( var << 8);
+    }
+    var += temp[3];
     return var;
 }
 
@@ -109,7 +105,7 @@ void ByteLine::convert8( vector<Byte> *byte_line, hostUInt8 var)
 
 void ByteLine::convert16( vector<Byte> *byte_line, hostUInt16 var, OrderType type)
 {
-    hostUInt8 temp1 = 0;
+/*    hostUInt8 temp1 = 0;
     hostUInt8 temp2 = 0;
     for ( int i = 0; i < 8; i++)
     {
@@ -134,10 +130,32 @@ void ByteLine::convert16( vector<Byte> *byte_line, hostUInt16 var, OrderType typ
         ( *byte_line).push_back( b);
         ( *byte_line).push_back( a);
     }
+*/
+    hostUInt8 temp[2] = { 0, 0};
+    for ( int i = 0; i < 2; i++)
+    {
+        for( int k = 0; k < 8; k++)
+        {
+            if ( var & 1)
+                temp[ i] += ( 1 << k);
+            var = ( var >> 1);
+        }
+    }
+    Byte byte[] = { temp[ 0], temp[ 1]};
+    if ( type == HIGH_FIRST)
+    {
+        for ( int i = 0; i < 2; i++)
+            ( *byte_line).push_back( byte[ i]);
+    } else
+    {
+        for ( int i = 2; i > 0; i--)
+            ( *byte_line).push_back( byte[ i-1]);
+    }
 }
 
 void ByteLine::convert32( vector<Byte> *byte_line, hostUInt32 var, OrderType type)
 {
+/*
     hostUInt8 temp1 = 0;
     hostUInt8 temp2 = 0;
     hostUInt8 temp3 = 0;
@@ -183,6 +201,27 @@ void ByteLine::convert32( vector<Byte> *byte_line, hostUInt32 var, OrderType typ
         ( *byte_line).push_back( c);
         ( *byte_line).push_back( b);
         ( *byte_line).push_back( a);
+    }
+*/
+    hostUInt8 temp[4] = { 0, 0, 0, 0};
+    for ( int i = 0; i < 4; i++)
+    {
+        for( int k = 0; k < 8; k++)
+        {
+            if ( var & 1)
+                temp[ i] += ( 1 << k);
+            var = ( var >> 1);
+        }
+    }
+    Byte byte[] = { temp[ 0], temp[ 1], temp[ 2], temp[ 3]};
+    if ( type == HIGH_FIRST)
+    {
+        for ( int i = 0; i < 4; i++)
+            ( *byte_line).push_back( byte[ i]);
+    } else
+    {
+        for ( int i = 4; i > 0; i--)
+            ( *byte_line).push_back( byte[ i-1]);
     }
 }
 

@@ -187,15 +187,17 @@ public:
     /* Conversion constructors Byte in ByteLine */
     ByteLine( const Byte&);
 
-    /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 variables into ByteLine
-     * OrderType variable manages how the bytes should be located in the ByteLine
+    /**
+     * Conversion constructors hostUInt8, hostUInt16 and hostUInt32 variables into ByteLine
+     * OrderType variable manages how the bytes should be located in the ByteLine. OrderType = HIGH_FIRST recommended.
      */
     ByteLine( hostUInt8, OrderType);
     ByteLine( hostUInt16, OrderType);
     ByteLine( hostUInt32, OrderType);
     
-    /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 constants (HUINT8, HUINT16, HUINT32) into ByteLine 
-     * OrderType variable manages how the bytes should be located in the ByteLine
+    /**
+     * Conversion constructors hostUInt8, hostUInt16 and hostUInt32 constants (HUINT8, HUINT16, HUINT32) into ByteLine 
+     * OrderType variable manages how the bytes should be located in the ByteLine. OrderType = HIGH_FIRST recommended.
      */
     ByteLine( unsigned int, ConversionType, OrderType);
 
