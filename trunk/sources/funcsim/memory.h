@@ -542,11 +542,16 @@ public:
     }
 
 
-    /* Returns ByteLine with specified lenght from specified
+    /* Returns ByteLine with specified length from specified
     address. If that position is invalid, recalls exception */
     ByteLine read( mathAddr, unsigned int);
 
-    /* Rerurns pointer to object of MemVal class if will be
+    /* Returns hostUInt8, 16, 32. If that position is invalid, recalls exceptions */
+    hostUInt8 read8( mathAddr);
+    hostUInt16 read16( mathAddr);
+    hostUInt32 read32( mathAddr);
+
+    /* Returns pointer to object of MemVal class if will be
     found in MemoryModel.If not returns poiter to end of MemoryModel.
     Used in read member function */
     memMap::iterator find( mathAddr);
@@ -584,6 +589,11 @@ public:
 
     /* Stores the object of class MemVal at specified address */
     void write( mathAddr write_ptr, MemVal mem_value);
+
+    /* Funcs storing the hostUInt8, 16, 32 at specified address */
+    void write8( mathAddr write_ptr, const hostUInt8 val);
+    void write16( mathAddr write_ptr, const hostUInt16 val);
+    void write32( mathAddr write_ptr, const hostUInt32 val);
 
      /* Overloaded. Checks of belonging specified address to object of class MemVal*/
     friend bool operator== ( memMap::iterator, mathAddr);
