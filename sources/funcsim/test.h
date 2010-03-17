@@ -160,6 +160,28 @@ void testMemModel()
     cout<<" model: \n"<<model<<endl;;
     model.write(8,f);
     cout<<" model.write(8,f): \n"<<model<<endl;
+    //
+    cout << "hostUInt test: \n\n" << endl;
+    hostUInt8 ha = 7;
+    hostUInt16 hb = 205;
+    hostUInt32 hc = 110;
+
+    MemoryModel model1( 3), model2( 3), model3( 3);
+    model1.write8( aa, ha);
+    cout<<" model.write(aa,ha): \n"<<model1<<endl;
+    model2.write16( 9,hb);
+    cout<<" model.write(9,hb): \n"<<model1<<endl;
+    model3.write32( 9,hc);
+    cout<<" model.write(9,hc): \n"<<model1<<endl;
+
+    ha = model1.read8(aa);
+    hb = model2.read16(9);
+    hc = model3.read32(9);
+    unsigned int dd = ( unsigned int) ha;
+    cout<<"model1.read8(aa);"<<dd<<endl;
+    cout<<"model2.read16(9);"<<hb<<endl;
+    cout<<"model3.read32(9);"<<hc<<endl;
+
 }
 
 void testOperation()
@@ -237,11 +259,11 @@ void testRegisterFileModel()
 void test()
 {
 	//testByte();
-	testByteLine();
+	//testByteLine();
 	//testMemVal();
-	//testMemModel();
+	testMemModel();
     //testOperation();
-    //testRegisterFileModel();
+    testRegisterFileModel();
 }
 
 #endif /* TEST_H */
