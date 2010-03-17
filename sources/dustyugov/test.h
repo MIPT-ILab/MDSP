@@ -31,30 +31,34 @@ void testByte()
 }
 void testByteLine()
 {
-    //Byte a( 7);
-    //Byte b( 205);
-    //Byte c( 110);
+    Byte a( 7);
+    Byte b( 205);
+    Byte c( 110);
     hostUInt8 q;
     hostUInt16 w;
     hostUInt32 e;
-    q=10;
+    q=044;//oct
     w=0x34c6;
-    e=12;
+    e=45678;
     cout<<"test byteline class:"<<endl;
- //   cout<<"a: "<<'\t'<<a<<endl;
- //   cout<<"b: "<<'\t'<<b<<endl;
- //   cout<<"c: "<<'\t'<<c<<endl;
-    //ByteLine f( a + c + b);
- //   ByteLine d = f;
+    cout<<"a: "<<'\t'<<a<<endl;
+    cout<<"b: "<<'\t'<<b<<endl;
+    cout<<"c: "<<'\t'<<c<<endl;
+    ByteLine f( a + c + b);
+    ByteLine d = f;
     ByteLine r( q, LOW_FIRST);
     ByteLine t( w, LOW_FIRST);
+    
     ByteLine y( e, LOW_FIRST);
     ByteLine u( q, HIGH_FIRST);
-    ByteLine i( w, LOW_FIRST);
+    ByteLine i( w, HIGH_FIRST);
     ByteLine o( e, HIGH_FIRST);
+    r.setBinOut();
+    t.setBinOut();
+    y.setBinOut();
     u.setBinOut();
-    i.setDecOut();
-    o.setHexOut();
+    i.setBinOut();
+    o.setBinOut();
     cout<<"q :"<<q<<endl;
     cout<<"w :"<<w<<endl;
     cout<<"e :"<<e<<endl;
@@ -69,12 +73,12 @@ void testByteLine()
     e = o.getHostUInt32();
     int m = 0;
     m += q;
-    cout<<"q -ret:"<< hex <<m<<endl;
-    cout<<"w -ret:"<<hex<<w<<endl;
-    cout<<"e -ret:"<<hex<<e<<endl;
+    cout<<"q -ret:"<< oct <<m<<endl;
+    cout<<"w -ret:"<<dec<<w<<endl;
+    cout<<"e -ret:"<<dec<<e<<endl;
 
 
-    /*cout<<"f( a + c + b): "<<'\t'<<f<<endl;
+    cout<<"f( a + c + b): "<<'\t'<<f<<endl;
     cout<<"d = f: "<<'\t'<<d<<endl;
     f.addByte( a&b);
     cout<<"f.addByte( a&b) : "<<'\t'<<f<<endl;
@@ -87,7 +91,7 @@ void testByteLine()
     cout<<"f.getSizeOfLine() : "<<'\t'<<f.getSizeOfLine()<<endl;
     f.resizeByteLine( 5);
     cout<<"f.resizeByteLine( 5) : "<<'\t'<<f<<endl;
-    cout<<"f.getSizeOfLine() : "<<'\t'<<f.getSizeOfLine()<<endl;*/
+    cout<<"f.getSizeOfLine() : "<<'\t'<<f.getSizeOfLine()<<endl;
 
 
 
@@ -156,6 +160,28 @@ void testMemModel()
     cout<<" model: \n"<<model<<endl;;
     model.write(8,f);
     cout<<" model.write(8,f): \n"<<model<<endl;
+    //
+    cout << "hostUInt test: \n\n" << endl;
+    hostUInt8 ha = 7;
+    hostUInt16 hb = 205;
+    hostUInt32 hc = 110;
+
+    MemoryModel model1( 3), model2( 3), model3( 3);
+    model1.write8( aa, ha);
+    cout<<" model.write(aa,ha): \n"<<model1<<endl;
+    model2.write16( 9,hb);
+    cout<<" model.write(9,hb): \n"<<model1<<endl;
+    model3.write32( 9,hc);
+    cout<<" model.write(9,hc): \n"<<model1<<endl;
+
+    ha = model1.read8(aa);
+    hb = model2.read16(9);
+    hc = model3.read32(9);
+    unsigned int dd = ( unsigned int) ha;
+    cout<<"model1.read8(aa);"<<dd<<endl;
+    cout<<"model2.read16(9);"<<hb<<endl;
+    cout<<"model3.read32(9);"<<hc<<endl;
+
 }
 
 void testOperation()
@@ -178,12 +204,12 @@ void testOperation()
     op1->decode(op1->encode());
     cout << "Decode / encode output: ";
     op1->dump();
-    op1->set(ALU, ADD, NOP, NOP, 0, 1, 0, 0, 1, 3, 2);
+    op1->set(ALU, NOP, ADD, NOP, 0, 1, 6, 0, 0, 0, 2);
     op1->dump();
     op1->decode(op1->encode());
     cout << "Decode / encode output: ";
     op1->dump();
-    op1->set(ALU, SUB, NOP, NOP, 0, 0, 0, 0, 1, 3, 2);
+    op1->set(ALU, NOP, SUB, NOP, 0, 0, 0, 0, 1, 3, 2);
     op1->dump();
     op1->decode(op1->encode());
     cout << "Decode / encode output: ";
@@ -207,18 +233,6 @@ void testOperation()
     op1->dump();
     op1->decode(op1->encode());
     cout << "Decode / encode output: ";
-    op1->dump();
-    cout << endl << "Incorrect operations: " << endl;
-    op1->set(MOVE, BRR, NOP, NOP, 1, 1, 1, 1, 1, 1, 5);
-    op1->dump();
-    op1->set(MOVE, BRM, NOP, NOP, 1, 1, 1, 1, 1, 1, 2);
-    op1->dump();
-    op1->set(P_FLOW, JMP, NOP, NOP, 1, 0, 0, 0, 0, 0, 5);
-    op1->dump();
-    op1->set(P_FLOW, JMP, NOP, NOP, 0, 0, 0, 0, 1, 1, 2);
-    op1->dump();
-    cout << endl << "Big bada boom X_X ..." << endl;
-    op1->set(MOVE, NOP, NOP, NOP, 0, 0, 0, 0, 1, 1, 2);
     op1->dump();
 }
 
@@ -245,11 +259,11 @@ void testRegisterFileModel()
 void test()
 {
 	//testByte();
-	testByteLine();
+	//testByteLine();
 	//testMemVal();
-	//testMemModel();
+	testMemModel();
     //testOperation();
-    //testRegisterFileModel();
+    testRegisterFileModel();
 }
 
 #endif /* TEST_H */

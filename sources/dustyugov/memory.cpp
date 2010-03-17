@@ -415,11 +415,26 @@ ByteLine MemoryModel::read(  mathAddr read_ptr, unsigned int num_of_bytes)
 	( *mem_model).erase( end);
 	( *mem_model)[ temp_addr] = memval;
 	return memval.getByteLine( read_ptr - temp_addr, num_of_bytes);
-
-
 }
 
+    /* Reading funcs returning hostUInt8, 16, 32 */
+hostUInt8 MemoryModel::read8( mathAddr addr)
+{
+    ByteLine bl = read( addr, 1);
+    return bl.getHostUInt8();
+}
 
+hostUInt16 MemoryModel::read16( mathAddr addr)
+{
+    ByteLine bl = read( addr, 2);
+    return bl.getHostUInt16();
+}
+
+hostUInt32 MemoryModel::read32( mathAddr addr)
+{
+    ByteLine bl = read( addr, 4);
+    return bl.getHostUInt32();
+}
 
 void MemoryModel::mergeMemVal( memMap::iterator pos, MemVal *mem_val)
 {
@@ -452,6 +467,24 @@ void MemoryModel::write( mathAddr write_ptr, const ByteLine& line)
 	( *mem_model)[ temp_addr] = memval;
 }
 
+    /* Writing hostUInt8, 16, 32 funcs */
+void MemoryModel::write8( mathAddr write_ptr, const hostUInt8 val)
+{
+    ByteLine bl( val, HIGH_FIRST);
+    write( write_ptr, bl);
+}
+
+void MemoryModel::write16( mathAddr write_ptr, const hostUInt16 val)
+{
+    ByteLine bl( val, HIGH_FIRST);
+    write( write_ptr, bl);
+}
+
+void MemoryModel::write32( mathAddr write_ptr, const hostUInt32 val)
+{
+    ByteLine bl( val, HIGH_FIRST);
+    write( write_ptr, bl);
+}
 
 memMap::iterator MemoryModel::findOrInit( mathAddr ptr)
 {
