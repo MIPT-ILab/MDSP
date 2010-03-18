@@ -89,3 +89,43 @@ void RegisterFileModel::writeReg( physRegNum reg_num, RegVal& reg_value)
     }
 }
 
+    /**
+     * Reading funcs returning hostUInt8, 16, 32
+     * Use read functions according only to register's 8, 16, 32 width
+     */
+hostUInt8 RegisterFileModel::read8( physRegNum reg_num)
+{
+    RegVal* rv = readReg( reg_num);
+    return rv->getHostUInt8();
+}
+
+hostUInt16 RegisterFileModel::read16( physRegNum reg_num)
+{
+    RegVal* rv = readReg( reg_num);
+    return rv->getHostUInt16();
+}
+
+hostUInt32 RegisterFileModel::read32( physRegNum reg_num)
+{
+    RegVal* rv = readReg( reg_num);
+    return rv->getHostUInt32();
+}
+
+    /* Writing hostUInt8, 16, 32 funcs */
+void RegisterFileModel::write8( physRegNum reg_num, const hostUInt8 val)
+{
+    RegVal rv( val, HIGH_FIRST);
+    writeReg( reg_num, rv);
+}
+
+void RegisterFileModel::write16( physRegNum reg_num, const hostUInt16 val)
+{
+    RegVal rv( val, HIGH_FIRST);
+    writeReg( reg_num, rv);
+}
+
+void RegisterFileModel::write32( physRegNum reg_num, const hostUInt32 val)
+{
+    RegVal rv( val, HIGH_FIRST);
+    writeReg( reg_num, rv);
+}
