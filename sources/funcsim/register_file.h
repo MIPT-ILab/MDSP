@@ -21,13 +21,13 @@ class RegVal: public ByteLine
   
 public:
     /* Constructors and destructor */
-    RegVal( unsigned int size_in_bytes): ByteLine( size_in_bytes)
-    {
-    }
+    RegVal( unsigned int size_in_bytes): ByteLine( size_in_bytes){}
 
-    ~RegVal()
-    {
-    }
+    RegVal( hostUInt8 hval8, OrderType type): ByteLine( hval8, type){}
+    RegVal( hostUInt16 hval16, OrderType type): ByteLine( hval16, type){}
+    RegVal( hostUInt32 hval32, OrderType type): ByteLine( hval32, type){}
+
+    ~RegVal(){}
 
     RegVal& operator =( RegVal& reg_val)
     {
@@ -64,9 +64,19 @@ public:
      
     /* Read a logical set of bytes (RegVal) form physical register with number reg_num */
     RegVal* readReg( physRegNum reg_num);
+
+    /* Returns hostUInt8, 16, 32. If that position is invalid, recalls exceptions */
+    hostUInt8 read8( physRegNum reg_num);
+    hostUInt16 read16( physRegNum reg_num);
+    hostUInt32 read32( physRegNum reg_num);
      
     /* Write a logical set of bytes (RegVal) to physical register with number reg_num */
     void writeReg( physRegNum reg_num, RegVal& reg_value);
+
+    /* Funcs storing the hostUInt8, 16, 32 at specified address */
+    void write8( physRegNum reg_num, const hostUInt8 val);
+    void write16( physRegNum reg_num, const hostUInt16 val);
+    void write32( physRegNum reg_num, const hostUInt32 val);
 };
 
 #endif /* REGISTER_FILE_H */
