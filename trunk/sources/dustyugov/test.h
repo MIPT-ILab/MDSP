@@ -254,6 +254,28 @@ void testRegisterFileModel()
     delete b2;
     delete rv;
     delete rfm;
+    
+    //
+    cout << "Testing write/read8,16,32" << endl;
+    RegisterFileModel* rfm1 = new RegisterFileModel( 2, 1);
+    RegisterFileModel* rfm2 = new RegisterFileModel( 2, 2);
+    RegisterFileModel* rfm3 = new RegisterFileModel( 2, 4);
+    hostUInt8 ha = 8, haa = 88;
+    hostUInt16 hb = 1666, hbb = 6111;
+    hostUInt32 hc = 32222, hcc = 23333;
+    rfm1->write8( 1, ha);
+    rfm1->write8( 0, haa);
+    rfm2->write16( 1, hb);
+    rfm2->write16( 0, hbb);
+    rfm3->write32( 1, hc);
+    rfm3->write32( 0, hcc);
+    
+    cout << ( int)rfm1->read8( 1) << " " <<
+            ( int)rfm1->read8( 0) << "\n";
+    cout << ( int)rfm2->read16( 1) << " " <<
+            ( int)rfm2->read16( 0) << "\n";
+    cout << ( int)rfm3->read32( 1) << " " <<
+            ( int)rfm3->read32( 0) << "\n";
 }
 
 void test()
