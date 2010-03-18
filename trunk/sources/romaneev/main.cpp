@@ -1,9 +1,7 @@
 #include "massert.h"
-#include <iostream>
-using namespace std;
+
 int main(){
-
-mdspAssert(ERROR_ALLOC_MEMORY);
-
+mdspAssert(1>2,ERROR_LESS_MEM_VAL);
+std::cout <<"dfs";
 return 0;
 }
