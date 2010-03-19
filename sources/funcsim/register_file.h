@@ -1,6 +1,7 @@
 /**
  * register_file.h - Specification of register file (RF) model
  * Define classes and methods to operate with RF of simulated architecture
+ * @author Dmitry Korobov, Dmitry Ustyugov
  * Copyright 2009 MDSP team
  */
 

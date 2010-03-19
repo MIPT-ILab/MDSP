@@ -1,6 +1,7 @@
 /**
  * memory.cpp - Implementation of memory model
  * Define classes and method to operate with memory of simulated architecture
+ * @author Dmitry Ustyugov
  * Copyright 2009 MDSP team
  */
 

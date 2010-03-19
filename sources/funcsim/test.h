@@ -1,5 +1,6 @@
 /**
  * test.h - Header of set of testing function
+ * @author Dmitry Ustyugov
  * Copyright 2009 MDSP team
  */
 

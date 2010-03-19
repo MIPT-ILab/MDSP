@@ -1,6 +1,7 @@
 /**
  * types.h - Implementation of types that are independent of host system
  * The types are used in algorithms affected by size of a variable
+ * @author Dmitry Ustyugov
  * Copyright 2009 MDSP team
  */
 
