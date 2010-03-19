@@ -1,6 +1,7 @@
 /**
  * memory.h - Specification of memory model
  * Define classes and methods to operate with memory of simulated architecture
+ * @author Dmitry Ustyugov
  * Copyright 2009 MDSP team
  */
 
@@ -328,26 +329,26 @@ inline ByteLine& ByteLine::operator = ( const ByteLine& line)
 inline ostream& operator<< ( ostream& os, const ByteLine& line)
 {   
     Byte a( 0);
-    for ( int i = 0; i < line.getSizeOfLine(); i++)
+    for ( unsigned int i = 0; i < line.getSizeOfLine(); i++)
     {
-            switch ( line.getOutputFormat())
-    {
-case BIN:
-    a = ( line[ i]);
-    a.setBinOut();
-    os << a << " | ";
-	break;
-case DEC:
-    a = ( line[ i]);
-    a.setDecOut();
-    os << a << " | ";
-	break;
-case HEX:
-    a = ( line[ i]);
-    a.setHexOut();
-    os << a << " | ";
-	break;
-    }
+        switch ( line.getOutputFormat())
+        {
+    case BIN:
+        a = ( line[ i]);
+        a.setBinOut();
+        os << a << " | ";
+	    break;
+    case DEC:
+        a = ( line[ i]);
+        a.setDecOut();
+        os << a << " | ";
+	    break;
+    case HEX:
+        a = ( line[ i]);
+        a.setHexOut();
+        os << a << " | ";
+	    break;
+        }
     }
     return os;
 }

@@ -1,8 +1,8 @@
 /**
  * register_file.cpp - Implementation of register file (RF) model
  * Define classes and methods to operate with RF of simulated architecture
+ * @author Dmitry Korobov, Dmitry Ustyugov
  * Copyright 2009 MDSP team
- * Designed by Dmitry Korobov
  */
 
 #include "register_file.h"
