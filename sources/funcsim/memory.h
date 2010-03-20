@@ -545,7 +545,11 @@ public:
 
     /* Returns ByteLine with specified length from specified
     address. If that position is invalid, recalls exception */
-    ByteLine read( mathAddr, unsigned int);
+    ByteLine readBL(  mathAddr, unsigned int);
+    
+    /* Returns MemVal with specified length from specified
+    address. If that position is invalid, recalls exception */
+    MemVal read( mathAddr, unsigned int);
 
     /* Returns hostUInt8, 16, 32. If that position is invalid, recalls exceptions */
     hostUInt8 read8( mathAddr);

@@ -183,6 +183,8 @@ void testMemModel()
     cout<<"model2.read16(9);"<<hb<<endl;
     cout<<"model3.read32(9);"<<hc<<endl;
 
+    MemVal mv = model2.read( 9, 2);
+    cout << mv.getByteLine().getHostUInt16() << endl;
 }
 
 void testOperation()

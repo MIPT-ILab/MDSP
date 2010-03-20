@@ -384,7 +384,7 @@ MemoryModel::MemoryModel( unsigned int size)
 }
 
 
-ByteLine MemoryModel::read(  mathAddr read_ptr, unsigned int num_of_bytes)
+ByteLine MemoryModel::readBL(  mathAddr read_ptr, unsigned int num_of_bytes)
 {
 	if ( ( *mem_model).empty())
 	{
@@ -418,22 +418,28 @@ ByteLine MemoryModel::read(  mathAddr read_ptr, unsigned int num_of_bytes)
 	return memval.getByteLine( read_ptr - temp_addr, num_of_bytes);
 }
 
+MemVal MemoryModel::read(  mathAddr read_ptr, unsigned int num_of_bytes)
+{
+    MemVal mv( readBL( read_ptr, num_of_bytes));
+    return mv;
+}
+
     /* Reading funcs returning hostUInt8, 16, 32 */
 hostUInt8 MemoryModel::read8( mathAddr addr)
 {
-    ByteLine bl = read( addr, 1);
+    ByteLine bl = readBL( addr, 1);
     return bl.getHostUInt8();
 }
 
 hostUInt16 MemoryModel::read16( mathAddr addr)
 {
-    ByteLine bl = read( addr, 2);
+    ByteLine bl = readBL( addr, 2);
     return bl.getHostUInt16();
 }
 
 hostUInt32 MemoryModel::read32( mathAddr addr)
 {
-    ByteLine bl = read( addr, 4);
+    ByteLine bl = readBL( addr, 4);
     return bl.getHostUInt32();
 }
 
