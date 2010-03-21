@@ -6,6 +6,7 @@
 extern std::ostream *cout_handler;
 
 #define cout (*cout_handler)
+#define printf printfHandler
 
 /**
  * Switches "cout" to work with stdout
@@ -22,6 +23,13 @@ void setTestingCoutHandler();
  * call to setTestingCoutHandler()
  */
 std::string getTestingCoutBuffer();
+
+/**
+ * A wrapper for printf that can optionally redirect the output to an
+ * internal buffer. The buffer is shared with the 'cout' wrapper, so
+ * you can use both 'cout' and 'printf' interchangeably.
+ */
+int printfHandler(const char *format, ...);
 
 #endif
 
