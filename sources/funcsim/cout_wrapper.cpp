@@ -1,3 +1,9 @@
+/**
+ * cout_wrapper.cpp - Implementation of stdout wrapper
+ * @author Alexander Potashev
+ * Copyright 2010 MDSP team
+ */
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <iostream>
