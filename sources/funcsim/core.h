@@ -7,9 +7,9 @@
 #ifndef CORE_H
 #define CORE_H
 
-#include <iostream>
 #include <cassert>
 #include "types.h"
+#include "cout_wrapper.h"
 
 class MemoryModel;
 class RegisterFileModel;

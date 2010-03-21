@@ -1,5 +1,6 @@
 #include <cstdlib>
-#include <iostream>
+#include "cout_wrapper.h"
+
 enum ERRORS {
 ERROR_NO_TYPE =100,
 ERROR_UNKNOWN_OPERATION,

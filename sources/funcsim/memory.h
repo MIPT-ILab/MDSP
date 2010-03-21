@@ -8,11 +8,11 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 
-#include <iostream>
 #include <vector>
 #include <map>
-#include "types.h"
 #include <cassert>
+#include "types.h"
+#include "cout_wrapper.h"
 
 #define DEFAULT_OUT HEX // default output form
 

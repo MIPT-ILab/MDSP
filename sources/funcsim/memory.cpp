@@ -6,9 +6,9 @@
  */
 
 
-#include <iostream>
 #include <cassert>
 #include <math.h>
+#include "cout_wrapper.h"
 #ifndef MEMORY_HEADER
 #define MEMORY_HEADER
 #include "memory.h"
