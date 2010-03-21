@@ -7,12 +7,12 @@
 #ifndef OPERATION_H
 #define OPERATION_H
 
-#include <iostream>
 #include <cassert>
 
 #include "types.h"
 #include "core.h"
 #include "memory.h"
+#include "cout_wrapper.h"
 
 using namespace std;
 
