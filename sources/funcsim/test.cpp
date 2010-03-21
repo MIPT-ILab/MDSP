@@ -1,11 +1,9 @@
 /**
- * test.h - Header of set of testing function
+ * test.cpp - Unit tests
  * @author Dmitry Ustyugov
  * Copyright 2009 MDSP team
  */
 
-#ifndef TEST_H
-#define TEST_H
 #include "memory.h"
 #include "operation.h"
 #include "register_file.h"
@@ -281,7 +279,7 @@ void testRegisterFileModel()
             ( int)rfm3->read32( 0) << "\n";
 }
 
-void test()
+int main()
 {
 	//testByte();
 	//testByteLine();
@@ -289,6 +287,7 @@ void test()
 	testMemModel();
     //testOperation();
     testRegisterFileModel();
+
+    return 0;
 }
 
-#endif /* TEST_H */
