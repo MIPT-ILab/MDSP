@@ -1,3 +1,9 @@
+/**
+ * cout_wrapper.h - Header file for stdout wrapper
+ * @author Alexander Potashev
+ * Copyright 2010 MDSP team
+ */
+
 #ifndef COUT_WRAPPER_H
 #define COUT_WRAPPER_H
 
