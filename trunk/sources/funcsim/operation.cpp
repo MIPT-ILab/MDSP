@@ -8,7 +8,6 @@
 #include "operation.h"
 #include "register_file.h"
 #include "flags.h"
-#include "cout_wrapper.h"
 
 /**
  * Constructor with pointer to core. Pointer to core

@@ -1,5 +1,4 @@
 #include <cstdlib>
-#include "cout_wrapper.h"
 
 enum ERRORS {
 ERROR_NO_TYPE =100,
