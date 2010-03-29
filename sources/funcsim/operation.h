@@ -1,6 +1,7 @@
 /**
  * operation.h - Header of Operation class,
  * which defines an instruction fields
+ * @author Pavel Zaichenkov
  * Copyright 2009 MDSP team
  */
 
@@ -179,6 +180,9 @@ public:
 
     /* Dump the operation to console */
     void dump();
+
+    /* Fetch an operation */
+    MemVal* fetch();
 
 };
 
