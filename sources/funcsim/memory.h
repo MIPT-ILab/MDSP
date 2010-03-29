@@ -11,8 +11,8 @@
 #include <vector>
 #include <map>
 #include <cassert>
+#include <iostream>
 #include "types.h"
-#include "cout_wrapper.h"
 
 #define DEFAULT_OUT HEX // default output form
 

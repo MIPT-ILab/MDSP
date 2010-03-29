@@ -11,7 +11,6 @@
 #include <cassert>
 #include "types.h"
 #include "memory.h"
-#include "cout_wrapper.h"
 
 /**
  * class RegVal implements a object to interaction with RF 

@@ -9,7 +9,6 @@
 
 #include <cassert>
 #include "register_file.h"
-#include "cout_wrapper.h"
 
 /**
  * Class of flag register description

@@ -11,7 +11,6 @@
 #include <cassert>
 #include <fstream>
 #include "types.h"
-#include "cout_wrapper.h"
 
 class MemoryModel;
 class RegisterFileModel;

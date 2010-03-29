@@ -13,7 +13,6 @@
 #include "types.h"
 #include "core.h"
 #include "memory.h"
-#include "cout_wrapper.h"
 
 using namespace std;
 
