@@ -4,12 +4,29 @@
  */
 
 #include "core.h"
+#include "types.h"
+#include "arg_parser.h"
+#include <fstream>
+#include <iostream>
+using namespace std;
 
-int main()
+int main(int argc, char** argv)
 {
-    Core* core = new Core();
-    core->init( 0x0000);
-    core->run();
+	/* Check argument number */
+	if ( checkArguments( argc))
+	{
+		/* ifstream is used to handle binary input file */
+		ifstream in_bin;
 
+		if ( openBinaryInputFile ( in_bin, argv[1]))
+		{
+			Core* core = new Core();
+			core->init( 0x0000);
+			core->loadBinary( in_bin);
+			closeBinaryInputFile ( in_bin, argv[1]);
+			core->run();
+
+		}
+	}
     return 0;
 }

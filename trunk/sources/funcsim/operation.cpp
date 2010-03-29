@@ -1,5 +1,6 @@
 /**
  * operation.cpp - Implementation of Operation class methods
+ * @author Pavel Zaichenkov
  * Copyright 2009 MDSP team
  */
 
@@ -823,8 +824,8 @@ void Operation::decodePFLOW()
 
     /* temporary fields */
     OperCode opcode0;
-    hostUInt8 sd, rd;
-    hostUInt16 imm16;
+    hostUInt8 sd = 0, rd = 0;
+    hostUInt16 imm16 = 0;
 
     opcode0 = this->getCode( P_FLOW, this->getValueByMask( op_mask, 26));
     sd = this->getValueByMask( sd_mask, 23);

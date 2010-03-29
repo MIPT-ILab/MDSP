@@ -8,6 +8,7 @@
 #define COUT_WRAPPER_H
 
 #include <iostream>
+#include <stdio.h>
 
 extern std::ostream *cout_handler;
 
