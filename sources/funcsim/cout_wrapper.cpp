@@ -4,62 +4,36 @@
  * Copyright 2010 MDSP team
  */
 
-#include <stdarg.h>
-#include <stdio.h>
 #include <iostream>
 #include <sstream>
 
-std::ostream *cout_handler = &std::cout;
-std::stringstream *cout_buffer = NULL;
-bool cout_standard_wrapper = true;
+using namespace std;
+
+ostringstream coutBuffer;
+streambuf *coutStreambuf;
+bool isWrapperUsed = true;
 
 void setStandardCoutHandler()
 {
-    if (!cout_standard_wrapper)
+    if ( isWrapperUsed)
     {
-        cout_handler = &std::cout;
-        cout_standard_wrapper = true;
+        coutStreambuf = cout.rdbuf( coutBuffer.rdbuf());
+        isWrapperUsed = false;
     }
 }
 
 void setTestingCoutHandler()
 {
-    if (cout_standard_wrapper)
+    if ( !isWrapperUsed)
     {
-        setStandardCoutHandler();
-
-        if (cout_buffer != NULL)
-            delete cout_buffer;
-        cout_handler = cout_buffer = new std::stringstream(std::ostringstream::out);
-
-        cout_standard_wrapper = false;
+        coutBuffer.clear();
+        cout.rdbuf( coutStreambuf);
+        isWrapperUsed = true;
     }
 }
 
-std::string getTestingCoutBuffer()
+string getTestingCoutBuffer()
 {
-    return cout_buffer->str();
-}
-
-int printfHandler(const char *format, ...)
-{
-    va_list params;
-    int ret;
-    static char buffer[1024];
-
-    va_start(params, format);
-
-    if (cout_standard_wrapper)
-    {
-        ret = vprintf(format, params);
-    }
-    else
-    {
-        ret = vsnprintf(buffer, sizeof(buffer), format, params);
-        (*cout_handler) << buffer;
-    }
-
-    va_end(params);
-    return ret;
+    return coutBuffer.str();
 }
 
