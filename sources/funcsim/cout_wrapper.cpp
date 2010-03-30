@@ -11,24 +11,25 @@ using namespace std;
 
 ostringstream coutBuffer;
 streambuf *coutStreambuf;
-bool isWrapperUsed = true;
-
-void setStandardCoutHandler()
-{
-    if ( isWrapperUsed)
-    {
-        coutStreambuf = cout.rdbuf( coutBuffer.rdbuf());
-        isWrapperUsed = false;
-    }
-}
+bool isWrapperUsed = false;
 
 void setTestingCoutHandler()
 {
     if ( !isWrapperUsed)
     {
         coutBuffer.clear();
-        cout.rdbuf( coutStreambuf);
+        coutStreambuf = cout.rdbuf( coutBuffer.rdbuf());
         isWrapperUsed = true;
+
+    }
+}
+
+void setStandardCoutHandler()
+{
+    if ( isWrapperUsed)
+    {
+        cout.rdbuf( coutStreambuf);
+        isWrapperUsed = false;
     }
 }
 
