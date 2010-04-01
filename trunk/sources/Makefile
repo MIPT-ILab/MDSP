@@ -4,7 +4,6 @@ CXX:=g++ -Wall
 
 COMMON_OBJS_CPP := \
 	funcsim/core.cpp \
-	funcsim/cout_wrapper.cpp \
 	funcsim/flags.cpp \
 	funcsim/memory.cpp \
 	funcsim/operation.cpp \
@@ -12,6 +11,7 @@ COMMON_OBJS_CPP := \
 MAIN_OBJS_CPP := ${COMMON_OBJS_CPP} \
 	funcsim/main.cpp
 TEST_OBJS_CPP := ${COMMON_OBJS_CPP} \
+	funcsim/cout_wrapper.cpp \
 	funcsim/test.cpp
 ASM_OBJS_CPP := \
 	asm/main.cpp \
@@ -19,8 +19,7 @@ ASM_OBJS_CPP := \
 	asm/semantican.cpp \
 	asm/assembler.cpp \
 	funcsim/memory.cpp \
-	funcsim/operation.cpp \
-	funcsim/cout_wrapper.cpp
+	funcsim/operation.cpp
 
 MAIN_OBJS_O:=${MAIN_OBJS_CPP:%.cpp=%.o}
 TEST_OBJS_O:=${TEST_OBJS_CPP:%.cpp=%.o}
