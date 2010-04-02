@@ -1,5 +1,5 @@
 /**
- * arg_parser.cpp - Functions used for checking arguments of the program
+ * main_functions.cpp - Functions used to be called from the main
  * @author Pavel Zaichenkov
  * Copyright 2009 MDSP team
  */
@@ -17,7 +17,7 @@ int checkArguments(int argc)
 	if (argc != param_number)
 	{
 		cout << "There should be " << param_number - 1 << " argument(s)" << endl;
-		return 0;
+		assert(0);
 	}
 	return 1;
 }
