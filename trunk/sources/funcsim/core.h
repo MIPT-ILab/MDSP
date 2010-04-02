@@ -34,7 +34,6 @@ public:
     inline MemoryModel* GetMemory() { return this->memory; }
     inline RegisterFileModel* GetRF() { return this->rf; }
     inline Flags* GetFlags() { return this->flags; }
-    inline hostUInt32 GetIP() { return 0x0000000A + this->pc; }
 
     void init( hostUInt16 start_pc);
     int loadBinary ( ifstream& input);

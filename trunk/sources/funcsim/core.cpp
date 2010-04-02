@@ -48,7 +48,7 @@ void Core::run()
 	    Operation* op;
 
 		/* Read instruction */
-		MemVal* mem_value ( (MemVal*) new ByteLine( memory->read32(this->GetIP()), HIGH_FIRST));
+		MemVal* mem_value ( (MemVal*) new ByteLine( memory->read32(this->GetPC()), HIGH_FIRST));
 
 		/* check for "zero" instruction */
 		if (!mem_value->getHostUInt32())
@@ -58,7 +58,7 @@ void Core::run()
 
 		op = new Operation( this);
 
-		//cout << memory->read32(this->GetIP()) << endl;
+		//cout << memory->read32(this->GetPC()) << endl;
 
 		/* Decode the operation */
 	    op->decode( mem_value);
