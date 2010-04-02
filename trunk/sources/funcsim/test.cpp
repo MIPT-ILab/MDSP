@@ -17,17 +17,108 @@ void testByte()
     b.setBinOut();
     a.setDecOut();
     c.setHexOut();
-    cout<<"test byte class:"<<endl;
+
+    //testing output format for a
+    setTestingCoutHandler();
     cout<<"a:outputFormat "<<a.getOutputFormat()<<endl;
-    cout<<"a: "<<'\t'<<a<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer() != string( "a:outputFormat 1\n"))
+    {
+    	cout<<"ERROR: wrong output format"<<endl;
+    	assert(0);
+    }
+
+    //testing output format for b
+    setTestingCoutHandler();
     cout<<"b:outputFormat "<<b.getOutputFormat()<<endl;
-    cout<<"b: "<<'\t'<<b<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer() != string( "b:outputFormat 0\n"))
+    {
+    	cout<<"ERROR: wrong output format"<<endl;
+    	assert(0);
+    }
+
+    //testing output format for c
+    setTestingCoutHandler();
     cout<<"c:outputFormat "<<c.getOutputFormat()<<endl;
-    cout<<"c=a&b: "<<'\t'<<c<<endl;
-    cout<<"c>>2: "<<'\t'<< ( c>>2) <<endl;
-    cout<<"b<<2: "<<'\t'<<( b<<2)<<endl;
-    cout<<"c==a: "<<'\t'<<( c == a)<<endl;
-    cout<<"c!=b: "<<'\t'<<( c != b)<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer() != string( "c:outputFormat 2\n"))
+    {
+    	cout<<"ERROR: wrong output format"<<endl;
+    	assert(0);
+    }
+
+    //testing byte value for a
+    setTestingCoutHandler();
+    cout<<"a: "<<a<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer() != string( "a: 7\n"))
+    {
+    	cout<<"ERROR: wrong byte value"<<endl;
+    	assert(0);
+    }
+
+    //testing byte value for b
+    setTestingCoutHandler();
+    cout<<"b: "<<b<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer() != string( "b: 00000111\n"))
+    {
+    	cout<<"ERROR: wrong byte value"<<endl;
+    	assert(0);
+    }
+
+    //testing bitwise addition
+    setTestingCoutHandler();
+    cout<<"c=a&b: "<<c<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer() != string( "c=a&b: 0x7\n"))
+    {
+    	cout<<"ERROR: bitwise addition"<<endl;
+    	assert(0);
+    }
+    
+    //testing shifting to the left
+    setTestingCoutHandler();
+    cout<<"c>>2: "<< ( c>>2) <<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer() != string( "c>>2: 0x1\n"))
+    {
+    	cout<<"ERROR: shifting to the left"<<endl;
+    	assert(0);
+    }
+
+    //testing shifting to the right
+    setTestingCoutHandler();
+    cout<<"b<<2: "<< ( b<<2) <<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer() != string( "b<<2: 0x1c\n"))
+    {
+    	cout<<"ERROR: shifting to the right"<<endl;
+    	assert(0);
+    }
+
+    //testing equal comparing
+    setTestingCoutHandler();
+    cout<<"c==a: "<<( c == a)<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer() != string( "c==a: 1\n"))
+    {
+    	cout<<"ERROR: equal comparing"<<endl;
+    	assert(0);
+    }
+
+    //testing not equal comparing
+    setTestingCoutHandler();
+    cout<<"c!=b: "<<( c != b)<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer() != string( "c!=b: 0\n"))
+    {
+    	cout<<"ERROR: not equal comparing"<<endl;
+    	assert(0);
+    }
+
+    cout<<"test byte class: ok"<<endl;
 }
 void testByteLine()
 {
