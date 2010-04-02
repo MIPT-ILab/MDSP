@@ -101,16 +101,16 @@ public:
      * Overloaded. Outputs the value of the
      * current Byte object in bin form to screen 
      */
-    friend ostream& operator<< ( ostream&, const Byte&);
+    friend ostream& operator<< ( ostream& os, const Byte& byte);
 
     /* Overloaded. Returns Byte, shifting to the left upon count */
-    friend Byte operator>> ( const Byte&, int);
+    friend Byte operator>> ( const Byte& byte, int count);
 
     /* Overloaded. Returns Byte, shifting to the right upon count */
-    friend Byte operator<< ( const Byte&, int);
+    friend Byte operator<< ( const Byte& byte, int count);
 
     /* Overloaded. Returns Byte to be a result of bitwise addition */
-    friend Byte operator& ( const Byte&, const Byte&);
+    friend Byte operator& ( const Byte& byte, const Byte&);
 
 
 };
@@ -170,9 +170,9 @@ class ByteLine
     vector<Byte> *byte_line;
     OutputFormat output;
     /* Functions converting hostUInt8,16,32 into vector<Byte> *byte_line */
-    void convert8( vector<Byte> *, hostUInt8);
-    void convert16( vector<Byte> *, hostUInt16, OrderType);
-    void convert32( vector<Byte> *, hostUInt32, OrderType);
+    void convert8( vector<Byte> * vc, hostUInt8 hu8);
+    void convert16( vector<Byte> * vc, hostUInt16 hu16, OrderType type);
+    void convert32( vector<Byte> * vc, hostUInt32 hu32, OrderType type);
 
 public:
     /* Constructors */
@@ -182,13 +182,13 @@ public:
 
     /* Creates object of Byteline class
     with count Byte, initializing with null bytes */
-    ByteLine( unsigned int);
+    ByteLine( unsigned int count);
 
     /* Copy constructors */
-    ByteLine( const ByteLine&);
+    ByteLine( const ByteLine& bl);
 
     /* Conversion constructors Byte in ByteLine */
-    ByteLine( const Byte&);
+    ByteLine( const Byte& byte);
 
     /*
      * Conversion constructors hostUInt8, hostUInt16 and hostUInt32 
@@ -196,9 +196,9 @@ public:
      * OrderType variable manages how the bytes should be located in the ByteLine. 
      * OrderType = HIGH_FIRST recommended.
      */
-    ByteLine( hostUInt8, OrderType);
-    ByteLine( hostUInt16, OrderType);
-    ByteLine( hostUInt32, OrderType);
+    ByteLine( hostUInt8 hu8, OrderType type);
+    ByteLine( hostUInt16 hu16, OrderType type);
+    ByteLine( hostUInt32 hu32, OrderType type);
     
     /*
      * Conversion constructors hostUInt8, hostUInt16 and hostUInt32 
@@ -206,7 +206,7 @@ public:
      * OrderType variable manages how the bytes should be located 
      * in the ByteLine. OrderType = HIGH_FIRST recommended.
      */
-    ByteLine( unsigned int, ConversionType, OrderType);
+    ByteLine( unsigned int num, ConversionType ctype, OrderType otype);
 
     /* Conversion functions ByteLine into hostUInt8, hostUInt16, hostUInt32 */
     hostUInt8 getHostUInt8();
@@ -226,30 +226,30 @@ public:
      * the Byte at position pos in the ByteLine.If that
      * position is invalid, recalls exception 
      */
-    hostUInt8 getByteVal( unsigned int) const;
+    hostUInt8 getByteVal( unsigned int num) const;
 
     /* 
      * The constant member function. Returns the
      * object of class Byte at position pos in the ByteLine.
      * If that position is invalid, recalls exception
      */
-    Byte getByte( unsigned int) const;
+    Byte getByte( unsigned int num) const;
 
     /* 
      * Stores the object of class Byte at position pos in
      * the ByteLine.If that position is invalid,
      * recalls exception 
      */
-    void setByte( unsigned int, const Byte&);
+    void setByte( unsigned int num, const Byte& byte);
 
     /* Adds object of Byte class to end of ByteLine */
-    void addByte( const Byte&);
+    void addByte( const Byte& byte);
 
     /* 
      * Resize of ByteLine on count. New member
      * of ByteLine is null bytes 
      */
-    void resizeByteLine( unsigned int);
+    void resizeByteLine( unsigned int count);
 
     /* The constant member function. Return size of Byteline */
     unsigned int getSizeOfLine() const
@@ -294,23 +294,23 @@ public:
     }
 
     /* Overloaded. Assign the current object of ByteLine class to another */
-    ByteLine& operator = ( const ByteLine&);
+    ByteLine& operator = ( const ByteLine& bl);
 
     /* 
      * Overloaded. The constant member function.The member function returns an object of
      * class reference. Returns the Byte at position pos in the ByteLine.
      * If that position is invalid, recalls exception 
      */
-    Byte operator[] ( unsigned int) const;
+    Byte operator[] ( unsigned int num) const;
 
     /* Overloaded. Outputs the ByteLine in bin form to screen */
-    friend ostream& operator<< ( ostream&, const  ByteLine&);
+    friend ostream& operator<< ( ostream& os, const  ByteLine& bl);
 
     /* 
      * Overloaded. Returns the ByteLine to be a result of addition two
      * object of class reference 
      */
-    friend ByteLine operator+ (  const ByteLine&,  const ByteLine&);
+    friend ByteLine operator+ (  const ByteLine& bl1,  const ByteLine& bl2);
 
 };
 
@@ -475,10 +475,10 @@ public:
 
     /* 
      * The constant member function. Returns ByteLine with specified
-     * lenght and first element with index.If that position is invalid,
+     * length and first element with index.If that position is invalid,
      * recalls exception 
      */
-    ByteLine getByteLine( unsigned int, unsigned int) const;
+    ByteLine getByteLine( unsigned int len, unsigned int index) const;
 
     /* The constant member function. Returns entire ByteLine */
     ByteLine getByteLine() const;
@@ -488,8 +488,8 @@ public:
      * the MemVal.If that position is invalid,
      * recalls exception 
      */
-    void writeByteLine( const ByteLine&, unsigned int);
-    void writeByteLine( const ByteLine&);
+    void writeByteLine( const ByteLine& bl, unsigned int pos);
+    void writeByteLine( const ByteLine& pos);
 
     /* 
      * Resizes of MemVal on count. New member
@@ -517,10 +517,10 @@ public:
      * Overloaded. Returns the MemVal to be a result of addition two
      * object of class reference 
      */
-    friend MemVal operator+ ( const MemVal&, const MemVal&);
+    friend MemVal operator+ ( const MemVal& mv1, const MemVal& mv2);
 
    /* Overloaded. Assign the current object of MemVal class to another */
-    MemVal& operator= ( const MemVal&);
+    MemVal& operator= ( const MemVal& mv);
 
 };
 inline MemVal operator+ ( const MemVal& a, const MemVal& b)
@@ -554,7 +554,7 @@ class MemoryModel
     unsigned int size_of_segmentation;
 
     /* Closed copy constructors */
-    MemoryModel( const MemoryModel&);
+    MemoryModel( const MemoryModel& mm);
 
 
 public:
@@ -577,32 +577,32 @@ public:
      * Returns ByteLine with specified length from specified
      * address. If that position is invalid, recalls exception 
      */
-    ByteLine readBL(  mathAddr, unsigned int);
+    ByteLine readBL(  mathAddr addr, unsigned int len);
     
     /* 
      * Returns MemVal with specified length from specified
      * address. If that position is invalid, recalls exception 
      */
-    MemVal read( mathAddr, unsigned int);
+    MemVal read( mathAddr addr, unsigned int len);
 
     /* Returns hostUInt8, 16, 32. If that position is invalid, recalls exceptions */
-    hostUInt8 read8( mathAddr);
-    hostUInt16 read16( mathAddr);
-    hostUInt32 read32( mathAddr);
+    hostUInt8 read8( mathAddr addr);
+    hostUInt16 read16( mathAddr addr);
+    hostUInt32 read32( mathAddr addr);
 
     /* 
      * Returns pointer to object of MemVal class if will be
      * found in MemoryModel.If not returns poiter to end of MemoryModel.
      * Used in read member function 
      */
-    memMap::iterator find( mathAddr);
+    memMap::iterator find( mathAddr addr);
 
     /* 
      * Returns pointer to object of MemVal class if will be
      * found in MemoryModel.If not create MemVal with specified
      * address. Used in write member function 
      */
-    memMap::iterator findOrInit( mathAddr);
+    memMap::iterator findOrInit( mathAddr addr);
 
     /*
      * The constant member function.Returns pointer to first
@@ -625,14 +625,14 @@ public:
 
 
     /* Merges two object of MemVal class in MemoryModel*/
-    void mergeMemVal( memMap::iterator, MemVal*);
+    void mergeMemVal( memMap::iterator pos, MemVal* mv);
 
     /* Counts amount of empty address between two object of MemVal class*/
-    unsigned int countDistance( const memMap::iterator);
+    unsigned int countDistance( const memMap::iterator pos);
 
 
     /* Stores the object of class ByteLine at specified address */
-    void write( mathAddr write_ptr, const ByteLine&);
+    void write( mathAddr write_ptr, const ByteLine& bl);
 
     /* Stores the object of class MemVal at specified address */
     void write( mathAddr write_ptr, MemVal mem_value);
@@ -643,13 +643,13 @@ public:
     void write32( mathAddr write_ptr, const hostUInt32 val);
 
      /* Overloaded. Checks of belonging specified address to object of class MemVal*/
-    friend bool operator== ( memMap::iterator, mathAddr);
+    friend bool operator== ( memMap::iterator pos, mathAddr addr);
 
     /* Overloaded. Outputs the contents of MemoryModel to screen */
-    friend ostream& operator<< ( ostream&,  MemoryModel&);
+    friend ostream& operator<< ( ostream& os,  MemoryModel& mm);
 
     /* Overloaded. Returns pointer to the next object of class MemVal*/
-    friend memMap::iterator operator+ ( const memMap::iterator, int);
+    friend memMap::iterator operator+ ( const memMap::iterator pos, int count);
 
 };
 
