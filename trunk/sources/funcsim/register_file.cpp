@@ -7,6 +7,10 @@
 
 #include "register_file.h"
 
+/**
+ * Implementation of class RegisterFileModel
+ */
+
 /* Constructor */
 RegisterFileModel::RegisterFileModel( unsigned int number_of_registers,
 									  unsigned int size_of_register_in_bytes)
@@ -89,10 +93,10 @@ void RegisterFileModel::writeReg( physRegNum reg_num, RegVal& reg_value)
     }
 }
 
-    /**
-     * Reading funcs returning hostUInt8, 16, 32
-     * Use read functions according only to register's 8, 16, 32 width
-     */
+/*
+ * Reading funcs returning hostUInt8, 16, 32
+ * Use read functions according only to register's 8, 16, 32 width
+ */
 hostUInt8 RegisterFileModel::read8( physRegNum reg_num)
 {
     RegVal* rv = readReg( reg_num);
@@ -111,7 +115,7 @@ hostUInt32 RegisterFileModel::read32( physRegNum reg_num)
     return rv->getHostUInt32();
 }
 
-    /* Writing hostUInt8, 16, 32 funcs */
+/* Writing hostUInt8, 16, 32 funcs */
 void RegisterFileModel::write8( physRegNum reg_num, const hostUInt8 val)
 {
     RegVal rv( val, HIGH_FIRST);

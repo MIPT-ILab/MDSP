@@ -53,7 +53,7 @@ public:
     {
         return this->output;
     }
-/* Set methods for output options*/
+    /* Set methods for output options*/
     void setBinOut()
     {
         this->output = BIN;
@@ -97,8 +97,10 @@ public:
         return this->getByteVal() != byte.getByteVal();
     }
 
-    /* Overloaded. Outputs the value of the
-    current Byte object in bin form to screen */
+    /* 
+     * Overloaded. Outputs the value of the
+     * current Byte object in bin form to screen 
+     */
     friend ostream& operator<< ( ostream&, const Byte&);
 
     /* Overloaded. Returns Byte, shifting to the left upon count */
@@ -188,17 +190,21 @@ public:
     /* Conversion constructors Byte in ByteLine */
     ByteLine( const Byte&);
 
-    /**
-     * Conversion constructors hostUInt8, hostUInt16 and hostUInt32 variables into ByteLine
-     * OrderType variable manages how the bytes should be located in the ByteLine. OrderType = HIGH_FIRST recommended.
+    /*
+     * Conversion constructors hostUInt8, hostUInt16 and hostUInt32 
+     * variables into ByteLine
+     * OrderType variable manages how the bytes should be located in the ByteLine. 
+     * OrderType = HIGH_FIRST recommended.
      */
     ByteLine( hostUInt8, OrderType);
     ByteLine( hostUInt16, OrderType);
     ByteLine( hostUInt32, OrderType);
     
-    /**
-     * Conversion constructors hostUInt8, hostUInt16 and hostUInt32 constants (HUINT8, HUINT16, HUINT32) into ByteLine 
-     * OrderType variable manages how the bytes should be located in the ByteLine. OrderType = HIGH_FIRST recommended.
+    /*
+     * Conversion constructors hostUInt8, hostUInt16 and hostUInt32 
+     * constants (HUINT8, HUINT16, HUINT32) into ByteLine 
+     * OrderType variable manages how the bytes should be located 
+     * in the ByteLine. OrderType = HIGH_FIRST recommended.
      */
     ByteLine( unsigned int, ConversionType, OrderType);
 
@@ -215,26 +221,34 @@ public:
 
     /* Get/set methods */
 
-    /* The constant member function. Returns the value of
-    the Byte at position pos in the ByteLine.If that
-    position is invalid, recalls exception */
+    /* 
+     * The constant member function. Returns the value of
+     * the Byte at position pos in the ByteLine.If that
+     * position is invalid, recalls exception 
+     */
     hostUInt8 getByteVal( unsigned int) const;
 
-    /* The constant member function. Returns the
-    object of class Byte at position pos in the ByteLine.
-    If that position is invalid, recalls exception */
+    /* 
+     * The constant member function. Returns the
+     * object of class Byte at position pos in the ByteLine.
+     * If that position is invalid, recalls exception
+     */
     Byte getByte( unsigned int) const;
 
-    /* Stores the object of class Byte at position pos in
-    the ByteLine.If that position is invalid,
-    recalls exception */
+    /* 
+     * Stores the object of class Byte at position pos in
+     * the ByteLine.If that position is invalid,
+     * recalls exception 
+     */
     void setByte( unsigned int, const Byte&);
 
     /* Adds object of Byte class to end of ByteLine */
     void addByte( const Byte&);
 
-    /* Resize of ByteLine on count. New member
-    of ByteLine is null bytes */
+    /* 
+     * Resize of ByteLine on count. New member
+     * of ByteLine is null bytes 
+     */
     void resizeByteLine( unsigned int);
 
     /* The constant member function. Return size of Byteline */
@@ -282,16 +296,20 @@ public:
     /* Overloaded. Assign the current object of ByteLine class to another */
     ByteLine& operator = ( const ByteLine&);
 
-    /* Overloaded. The constant member function.The member function returns an object of
-    class reference. Returns the Byte at position pos in the ByteLine.
-    If that position is invalid, recalls exception */
+    /* 
+     * Overloaded. The constant member function.The member function returns an object of
+     * class reference. Returns the Byte at position pos in the ByteLine.
+     * If that position is invalid, recalls exception 
+     */
     Byte operator[] ( unsigned int) const;
 
     /* Overloaded. Outputs the ByteLine in bin form to screen */
     friend ostream& operator<< ( ostream&, const  ByteLine&);
 
-    /* Overloaded. Returns the ByteLine to be a result of addition two
-    object of class reference */
+    /* 
+     * Overloaded. Returns the ByteLine to be a result of addition two
+     * object of class reference 
+     */
     friend ByteLine operator+ (  const ByteLine&,  const ByteLine&);
 
 };
@@ -441,9 +459,11 @@ public:
 
     /* Get/set methods */
 
-    /*If size_of_segmentation different from 1,
-    adds null bytes to ByteLine
-    multiple of size_of_segmentation */
+    /*
+     * If size_of_segmentation different from 1,
+     * adds null bytes to ByteLine
+     * multiple of size_of_segmentation 
+     */
     void recountLenght();
 
     /* Set size_of_segmentation */
@@ -453,22 +473,28 @@ public:
         recountLenght();
     }
 
-    /* The constant member function. Returns ByteLine with specified
-    lenght and first element with index.If that position is invalid,
-    recalls exception */
+    /* 
+     * The constant member function. Returns ByteLine with specified
+     * lenght and first element with index.If that position is invalid,
+     * recalls exception 
+     */
     ByteLine getByteLine( unsigned int, unsigned int) const;
 
     /* The constant member function. Returns entire ByteLine */
     ByteLine getByteLine() const;
 
-    /* Stores the object of class ByteLine at position pos in
-    the MemVal.If that position is invalid,
-    recalls exception */
+    /* 
+     * Stores the object of class ByteLine at position pos in
+     * the MemVal.If that position is invalid,
+     * recalls exception 
+     */
     void writeByteLine( const ByteLine&, unsigned int);
     void writeByteLine( const ByteLine&);
 
-    /* Resizes of MemVal on count. New member
-    of ByteLine is null bytes */
+    /* 
+     * Resizes of MemVal on count. New member
+     * of ByteLine is null bytes 
+     */
     void resizeMemVal( unsigned int size)
     {
         resizeByteLine( size);
@@ -487,8 +513,10 @@ public:
         return getSizeOfLine();
     }
 
-    /* Overloaded. Returns the MemVal to be a result of addition two
-    object of class reference */
+    /* 
+     * Overloaded. Returns the MemVal to be a result of addition two
+     * object of class reference 
+     */
     friend MemVal operator+ ( const MemVal&, const MemVal&);
 
    /* Overloaded. Assign the current object of MemVal class to another */
@@ -533,8 +561,10 @@ public:
 
     /* Constructors and destructor */
 
-    /* Creates empty object of MemoryModel class
-    with specified size of segmentation */
+    /* 
+     * Creates empty object of MemoryModel class
+     * with specified size of segmentation 
+     */
     MemoryModel( unsigned int size);
 
     virtual ~MemoryModel()
@@ -543,12 +573,16 @@ public:
     }
 
 
-    /* Returns ByteLine with specified length from specified
-    address. If that position is invalid, recalls exception */
+    /* 
+     * Returns ByteLine with specified length from specified
+     * address. If that position is invalid, recalls exception 
+     */
     ByteLine readBL(  mathAddr, unsigned int);
     
-    /* Returns MemVal with specified length from specified
-    address. If that position is invalid, recalls exception */
+    /* 
+     * Returns MemVal with specified length from specified
+     * address. If that position is invalid, recalls exception 
+     */
     MemVal read( mathAddr, unsigned int);
 
     /* Returns hostUInt8, 16, 32. If that position is invalid, recalls exceptions */
@@ -556,25 +590,33 @@ public:
     hostUInt16 read16( mathAddr);
     hostUInt32 read32( mathAddr);
 
-    /* Returns pointer to object of MemVal class if will be
-    found in MemoryModel.If not returns poiter to end of MemoryModel.
-    Used in read member function */
+    /* 
+     * Returns pointer to object of MemVal class if will be
+     * found in MemoryModel.If not returns poiter to end of MemoryModel.
+     * Used in read member function 
+     */
     memMap::iterator find( mathAddr);
 
-    /* Rerurns pointer to object of MemVal class if will be
-    found in MemoryModel.If not create MemVal with specified
-    address. Used in write member function */
+    /* 
+     * Returns pointer to object of MemVal class if will be
+     * found in MemoryModel.If not create MemVal with specified
+     * address. Used in write member function 
+     */
     memMap::iterator findOrInit( mathAddr);
 
-    /*The constant member function.Returns pointer to first
-    object of MemVal class in MemoryModel */
+    /*
+     * The constant member function.Returns pointer to first
+     * object of MemVal class in MemoryModel 
+     */
     memMap::iterator getFirstIter() const
     {
         memMap::iterator pos;
         return pos = ( *mem_model).begin();
     }
-    /*The constant member function. Returns pointer to last
-    object of MemVal class in MemoryModel */
+    /* 
+     * The constant member function. Returns pointer to last
+     * object of MemVal class in MemoryModel 
+     */
     memMap::iterator getLastIter() const
     {
         memMap::iterator pos;
