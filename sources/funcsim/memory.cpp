@@ -66,7 +66,7 @@ ByteLine::ByteLine( const Byte& byte)
     }
 }
 
-    /* Conversion functions ByteLine into hostUInt8, hostUInt16, hostUInt32 */
+/* Conversion functions ByteLine into hostUInt8, hostUInt16, hostUInt32 */
 hostUInt8 ByteLine::getHostUInt8()
 {
     return this->getByteVal( 0);
@@ -96,7 +96,7 @@ hostUInt32 ByteLine::getHostUInt32()
     return var;
 }
 
-    /* Private functions converting hostUInt8,16,32 into vector<Byte> *byte_line */
+/* Private functions converting hostUInt8,16,32 into vector<Byte> *byte_line */
 void ByteLine::convert8( vector<Byte> *byte_line, hostUInt8 var)
 {
     Byte byte( var);
@@ -151,7 +151,7 @@ void ByteLine::convert32( vector<Byte> *byte_line, hostUInt32 var, OrderType typ
     }
 }
 
-    /* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 in Byteline */
+/* Conversion constructors hostUInt8, hostUInt16 and hostUInt32 in Byteline */
 ByteLine::ByteLine( hostUInt8 var, OrderType type)
 {
     output = DEFAULT_OUT;
@@ -423,7 +423,7 @@ MemVal MemoryModel::read(  mathAddr read_ptr, unsigned int num_of_bytes)
     return mv;
 }
 
-    /* Reading funcs returning hostUInt8, 16, 32 */
+/* Reading funcs returning hostUInt8, 16, 32 */
 hostUInt8 MemoryModel::read8( mathAddr addr)
 {
     ByteLine bl = readBL( addr, 1);
@@ -473,7 +473,7 @@ void MemoryModel::write( mathAddr write_ptr, const ByteLine& line)
 	( *mem_model)[ temp_addr] = memval;
 }
 
-    /* Writing hostUInt8, 16, 32 funcs */
+/* Writing hostUInt8, 16, 32 funcs */
 void MemoryModel::write8( mathAddr write_ptr, const hostUInt8 val)
 {
     ByteLine bl( val, HIGH_FIRST);
