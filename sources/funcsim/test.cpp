@@ -277,111 +277,43 @@ void testMemModel()
     cout << mv.getByteLine().getHostUInt16() << endl;
 }
 
-void testOperation()
+void testOperationSetDump(
+    OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
+    hostUInt8 sd, hostUInt8 am,
+    hostUInt16 imm10, hostUInt16 imm16,
+    hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd,
+    const char *expected)
 {
     Operation *op = new Operation();
 
     setTestingCoutHandler();
-    op->set(MOVE, BRR, NOP, NOP, 0, 0, 0, 0, 1, 0, 2);
+    op->set( type, opcode0, opcode1, opcode2,
+             sd, am, imm10, imm16, rs1, rs2, rd);
     op->dump();
     setStandardCoutHandler();
-    if (getTestingCoutBuffer() != string("brr 1, r2;\n"))
+    if (getTestingCoutBuffer() != string(expected))
     {
-        cout << "fail!" << endl;
-        assert(0);
-    }
-
-    setTestingCoutHandler();
-    op->set(MOVE, BRM, NOP, NOP, 1, 0, 0, 0, 1, 0, 2);
-    op->dump();
-    setStandardCoutHandler();
-    if (getTestingCoutBuffer() != string("brm 1, r1, r2;\n"))
-    {
-        cout << "fail!" << endl;
-        assert(0);
-    }
-
-    setTestingCoutHandler();
-    op->set(MOVE, LD, NOP, NOP, 0, 0, 0, 1, 0, 0, 2);
-    op->dump();
-    setStandardCoutHandler();
-    if (getTestingCoutBuffer() != string("ld 0, r1, r2;\n"))
-    {
-        cout << "fail!" << endl;
-        assert(0);
-    }
-
-    setTestingCoutHandler();
-    op->set(ALU, NOP, ADD, NOP, 0, 1, 6, 0, 0, 0, 2);
-    op->dump();
-    setStandardCoutHandler();
-    if (getTestingCoutBuffer() != string("add 1, 6, r2;\n"))
-    {
-        cout << "fail!" << endl;
-        assert(0);
-    }
-
-    setTestingCoutHandler();
-    op->set(ALU, NOP, SUB, NOP, 0, 0, 0, 0, 1, 3, 2);
-    op->dump();
-    setStandardCoutHandler();
-    if (getTestingCoutBuffer() != string("sub 0, r1, r3, r2;\n"))
-    {
-        cout << "fail!" << endl;
-        assert(0);
-    }
-
-    setTestingCoutHandler();
-    op->set(P_FLOW, JMP, NOP, NOP, 1, 0, 0, 5, 0, 0, 0);
-    op->dump();
-    setStandardCoutHandler();
-    if (getTestingCoutBuffer() != string("jmp 1, r5;\n"))
-    {
-        cout << "fail!" << endl;
-        assert(0);
-    }
-
-    setTestingCoutHandler();
-    op->set(P_FLOW, JGT, NOP, NOP, 1, 0, 0, 10, 0, 0, 0);
-    op->dump();
-    setStandardCoutHandler();
-    if (getTestingCoutBuffer() != string("jmp 1, r10;\n"))
-    {
-        cout << "fail!" << endl;
-        assert(0);
-    }
-
-    setTestingCoutHandler();
-    op->set(P_FLOW, JMP, NOP, NOP, 0, 0, 0, 0, 0, 0, 2);
-    op->dump();
-    setStandardCoutHandler();
-    if (getTestingCoutBuffer() != string("jmp 0, r2;\n"))
-    {
-        cout << "fail!" << endl;
-        assert(0);
-    }
-
-    setTestingCoutHandler();
-    op->set(P_FLOW, JGT, NOP, NOP, 0, 0, 0, 0, 0, 0, 5);
-    op->dump();
-    setStandardCoutHandler();
-    if (getTestingCoutBuffer() != string("jmp 0, r5;\n"))
-    {
-        cout  << "fail!" << endl;
-        assert(0);
-    }
-
-    setTestingCoutHandler();
-    op->set(P_FLOW, JGT, NOP, NOP, 0, 0, 0, 0, 0, 0, 5);
-    op->dump();
-    setStandardCoutHandler();
-    if (getTestingCoutBuffer() != string("jmp 0, r5;\n"))
-    {
-        cout << "fail!" << endl;
+        cout <<
+            "testOperationSetDump failed, expected: " << expected <<
+            ", got: " << getTestingCoutBuffer() << endl;
         assert(0);
     }
 
     delete op;
+}
+
+void testOperation()
+{
+    testOperationSetDump(   MOVE, BRR, NOP, NOP, 0, 0, 0,  0, 1, 0, 2, "brr 1, r2;\n");
+    testOperationSetDump(   MOVE, BRM, NOP, NOP, 1, 0, 0,  0, 1, 0, 2, "brm 1, r1, r2;\n");
+    testOperationSetDump(   MOVE,  LD, NOP, NOP, 0, 0, 0,  1, 0, 0, 2, "ld 0, r1, r2;\n");
+    testOperationSetDump(    ALU, NOP, ADD, NOP, 0, 1, 6,  0, 0, 0, 2, "add 1, 6, r2;\n");
+    testOperationSetDump(    ALU, NOP, SUB, NOP, 0, 0, 0,  0, 1, 3, 2, "sub 0, r1, r3, r2;\n");
+    testOperationSetDump( P_FLOW, JMP, NOP, NOP, 1, 0, 0,  5, 0, 0, 0, "jmp 1, r5;\n");
+    testOperationSetDump( P_FLOW, JGT, NOP, NOP, 1, 0, 0, 10, 0, 0, 0, "jmp 1,  r10;\n");
+    testOperationSetDump( P_FLOW, JMP, NOP, NOP, 0, 0, 0,  0, 0, 0, 2, "jmp 0, r2;\n");
+    testOperationSetDump( P_FLOW, JGT, NOP, NOP, 0, 0, 0,  0, 0, 0, 5, "jmp 0, r5;\n");
+    testOperationSetDump( P_FLOW, JGT, NOP, NOP, 0, 0, 0,  0, 0, 0, 5, "jmp 0, r5;\n");
 }
 
 void testRegisterFileModel()
