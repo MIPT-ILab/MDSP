@@ -24,7 +24,7 @@ void setTestingCoutHandler();
  * Returns a string with the text collected in the buffer since the last
  * call to setTestingCoutHandler()
  */
-std::string getTestingCoutBuffer();
+string getTestingCoutBuffer();
 
 #endif
 
