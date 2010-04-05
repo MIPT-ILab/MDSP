@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <cstdlib>
 
 using std::cout;
 using std::cin;
@@ -37,7 +38,7 @@ bool check_symbols( const char* file_name);
 */
 int handleArgs( int argc, char** argv, char* test_file, char* log_file)
 {
-	char* version_number = "0.1";
+	const char* version_number = "0.1";
 
 	try
 	{
@@ -171,3 +172,4 @@ bool check_symbols( const char* file_name)
 	}
 	return 0;
 }
+
