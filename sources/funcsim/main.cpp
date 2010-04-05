@@ -19,10 +19,8 @@ int main(int argc, char** argv)
 	*/
 	char test_file[file_name_size] = "\0";
 	char log_file[file_name_size] = "\0";
-	if(handleArgs( argc, argv, test_file, log_file) != 0)
-	{
-		return 0;
-	}
+	handleArgs( argc, argv, test_file, log_file);
+	
 	/* Check arguments number */
 	checkArguments( argc);
 
