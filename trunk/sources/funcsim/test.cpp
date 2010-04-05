@@ -8,7 +8,9 @@
 #include "operation.h"
 #include "register_file.h"
 #include "cout_wrapper.h"
+#include <string>
 
+using namespace std;
 void testByte()
 {
     Byte a( 7);
@@ -22,7 +24,7 @@ void testByte()
     setTestingCoutHandler();
     cout<<"a:outputFormat "<<a.getOutputFormat()<<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer() != string( "a:outputFormat 1\n"))
+    if ( getTestingCoutBuffer().compare( "a:outputFormat 1\n"))
     {
     	cout<<"ERROR: wrong output format"<<endl;
     	assert(0);
@@ -32,7 +34,7 @@ void testByte()
     setTestingCoutHandler();
     cout<<"b:outputFormat "<<b.getOutputFormat()<<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer() != string( "b:outputFormat 0\n"))
+    if ( getTestingCoutBuffer().compare( "b:outputFormat 0\n"))
     {
     	cout<<"ERROR: wrong output format"<<endl;
     	assert(0);
@@ -42,7 +44,7 @@ void testByte()
     setTestingCoutHandler();
     cout<<"c:outputFormat "<<c.getOutputFormat()<<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer() != string( "c:outputFormat 2\n"))
+    if ( getTestingCoutBuffer().compare( "c:outputFormat 2\n"))
     {
     	cout<<"ERROR: wrong output format"<<endl;
     	assert(0);
@@ -52,7 +54,7 @@ void testByte()
     setTestingCoutHandler();
     cout<<"a: "<<a<<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer() != string( "a: 7\n"))
+    if ( getTestingCoutBuffer().compare( "a: 7\n"))
     {
     	cout<<"ERROR: wrong byte value"<<endl;
     	assert(0);
@@ -62,7 +64,7 @@ void testByte()
     setTestingCoutHandler();
     cout<<"b: "<<b<<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer() != string( "b: 00000111\n"))
+    if ( getTestingCoutBuffer().compare( "b: 00000111\n"))
     {
     	cout<<"ERROR: wrong byte value"<<endl;
     	assert(0);
@@ -72,7 +74,7 @@ void testByte()
     setTestingCoutHandler();
     cout<<"c=a&b: "<<c<<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer() != string( "c=a&b: 0x7\n"))
+    if ( getTestingCoutBuffer().compare( "c=a&b: 0x7\n"))
     {
     	cout<<"ERROR: bitwise addition"<<endl;
     	assert(0);
@@ -82,7 +84,7 @@ void testByte()
     setTestingCoutHandler();
     cout<<"c>>2: "<< ( c>>2) <<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer() != string( "c>>2: 0x1\n"))
+    if ( getTestingCoutBuffer().compare( "c>>2: 0x1\n"))
     {
     	cout<<"ERROR: shifting to the left"<<endl;
     	assert(0);
@@ -92,7 +94,7 @@ void testByte()
     setTestingCoutHandler();
     cout<<"b<<2: "<< ( b<<2) <<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer() != string( "b<<2: 0x1c\n"))
+    if ( getTestingCoutBuffer().compare( "b<<2: 0x1c\n"))
     {
     	cout<<"ERROR: shifting to the right"<<endl;
     	assert(0);
@@ -102,7 +104,7 @@ void testByte()
     setTestingCoutHandler();
     cout<<"c==a: "<<( c == a)<<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer() != string( "c==a: 1\n"))
+    if ( getTestingCoutBuffer().compare( "c==a: 1\n"))
     {
     	cout<<"ERROR: equal comparing"<<endl;
     	assert(0);
@@ -112,7 +114,7 @@ void testByte()
     setTestingCoutHandler();
     cout<<"c!=b: "<<( c != b)<<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer() != string( "c!=b: 0\n"))
+    if ( getTestingCoutBuffer().compare( "c!=b: 0\n"))
     {
     	cout<<"ERROR: not equal comparing"<<endl;
     	assert(0);
@@ -189,7 +191,8 @@ void testByteLine()
 
 }
 void testMemVal()
-{
+{   
+
     Byte a( 7);
     Byte b( 205);
     Byte c( 110);
@@ -197,40 +200,140 @@ void testMemVal()
     ByteLine f( a + c + b);
     ByteLine d( a+( c&b));
     ByteLine dd = e + e;
-    cout<<"a: "<<'\t'<<a<<endl;
-    cout<<"b: "<<'\t'<<b<<endl;
-    cout<<"c: "<<'\t'<<c<<endl;
-    cout<<"e: "<<'\t'<<e<<endl;
-    cout<<"f( a + c + b): "<<'\t'<<f<<endl;
-    cout<<"d( a+(c&b)): "<<'\t'<<d<<endl;
-    cout<<"dd = e + e: "<<'\t'<<dd<<endl;
     MemVal mem1(f);
     MemVal mem2(mem1);
     MemVal mem3;
     MemVal mem4(5);
     MemVal mem5 = mem1+mem4;
-    cout<<"test MemVal class:"<<endl;
+
+    //testing MemVal output
+    setTestingCoutHandler();
     cout<<" MemVal mem1(f): "<<'\t'<<mem1<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( " MemVal mem1(f): 	0x7 | 0x6e | 0xcd | \n"))
+    {
+    	cout<<"ERROR: wrong output"<<endl;
+    	assert(0);
+    }
+
+    setTestingCoutHandler();
     cout<<" MemVal mem2(mem1): "<<'\t'<<mem2<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( " MemVal mem2(mem1): 	0x7 | 0x6e | 0xcd | \n"))
+    {
+    	cout<<"ERROR: wrong output"<<endl;
+    	assert(0);
+    }
+
+    setTestingCoutHandler();
     cout<<" MemVal mem3: "<<'\t'<<mem3<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( " MemVal mem3: 	\n"))
+    {
+    	cout<<"ERROR: wrong output"<<endl;
+    	assert(0);
+    }
+    
+    setTestingCoutHandler();
     cout<<" MemVal mem4(5): "<<'\t'<<mem4<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( " MemVal mem4(5): 	0 | 0 | 0 | 0 | 0 | \n"))
+    {
+    	cout<<"ERROR: wrong output"<<endl;
+    	assert(0);
+    }
+
+    setTestingCoutHandler();
     cout<<" MemVal mem5 = mem1+mem3: "<<'\t'<<mem5<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( " MemVal mem5 = mem1+mem3: 	0x7 | 0x6e | 0xcd | 0 | 0 | 0 | 0 | 0 | \n"))
+    {
+    	cout<<"ERROR: wrong output"<<endl;
+    	assert(0);
+    }
+
+    //testing MemVal operator '='
     mem3 = dd;
+    setTestingCoutHandler();
     cout<<" mem3 = dd: "<<'\t'<<mem3<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( 
+        " mem3 = dd: 	0xff | 0xff | \n"))
+    {
+    	cout<<"ERROR: operator '='"<<endl;
+    	assert(0);
+    }
+
+    //testing methods
     mem3.setSizeOfSegment(5);
+    setTestingCoutHandler();
     cout<<" mem3.setSizeOfSegment(5): "<<'\t'<<mem3<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare(
+        " mem3.setSizeOfSegment(5): 	0xff | 0xff | 0 | 0 | 0 | \n"))
+    {
+    	cout<<"ERROR: setSizeOfSegment( unsigned int size)"<<endl;
+    	assert(0);
+    }
+
+    setTestingCoutHandler();
     cout<<" mem1.getByteLine(): "<<'\t'<<mem1.getByteLine()<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( 
+        " mem1.getByteLine(): 	0x7 | 0x6e | 0xcd | \n"))
+    {
+    	cout<<"ERROR: getByteLine()"<<endl;
+    	assert(0);
+    }
+
+    setTestingCoutHandler();
     cout<<" mem3.getByteLine(0,3): "<<'\t'<<mem3.getByteLine(0,3)<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( 
+        " mem3.getByteLine(0,3): 	0xff | 0xff | 0 | \n"))
+    {
+    	cout<<"ERROR: getByteLine()"<<endl;
+    	assert(0);
+    }
+
     mem3.writeByteLine(d,3);
+    setTestingCoutHandler();
     cout<<" mem1.writeByteLine(d,3): "<<'\t'<<mem3<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( 
+        " mem1.writeByteLine(d,3): 	0xff | 0xff | 0 | 0x7 | 0x4c | \n"))
+    {
+    	cout<<"ERROR: writeByteLine( "
+            "const ByteLine& line, unsigned int index)"<<endl;
+    	assert(0);
+    }
+
     mem3.writeByteLine(d);
+    setTestingCoutHandler();
     cout<<" mem1.writeByteLine(d): "<<'\t'<<mem3<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( 
+        " mem1.writeByteLine(d): 	0x7 | 0x4c | 0 | 0x7 | 0x4c | \n"))
+    {
+    	cout<<"ERROR: writeByteLine( const ByteLine & line)"<<endl;
+    	assert(0);
+    }
+
     mem3.resizeMemVal(6);
-    cout<<" mem3.resizeMemVal(6): "<<'\t'<<mem3<<endl;
-    cout<<" mem3.getSizeOfMemVal(): "<<'\t'<<mem3.getSizeOfMemVal()<<endl;
-    cout<<" mem3.getSizeOfSegment(): "<<'\t'<<mem3.getSizeOfSegment()<<endl;
-
-
+    setTestingCoutHandler();
+    cout<<" mem3.resizeMemVal(6): "<<'\t'<<mem3
+        <<" mem3.getSizeOfMemVal(): "<<'\t'<<mem3.getSizeOfMemVal()
+        <<" mem3.getSizeOfSegment(): "<<'\t'<<mem3.getSizeOfSegment()<<endl;
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( 
+        " mem3.resizeMemVal(6): 	"
+        "0x7 | 0x4c | 0 | 0x7 | 0x4c | 0 | 0 | 0 | 0 | 0 | "
+        " mem3.getSizeOfMemVal(): 	10 mem3.getSizeOfSegment(): 	5\n"))
+    {
+    	cout<<"ERROR: resizeMemVal( unsigned int size),"
+            " getSizeOfMemVal(), getSizeOfSegment()"<<endl;
+    	assert(0);
+    }
 }
 void testMemModel()
 {
@@ -291,11 +394,9 @@ void testOperationSetDump(
              sd, am, imm10, imm16, rs1, rs2, rd);
     op->dump();
     setStandardCoutHandler();
-    if (getTestingCoutBuffer() != string(expected))
+    if (getTestingCoutBuffer().compare(expected))
     {
-        cout <<
-            "testOperationSetDump failed, expected: " << expected <<
-            ", got: " << getTestingCoutBuffer() << endl;
+        cout << "testOperationSetDump failed, expected: " << expected << ", got: " << getTestingCoutBuffer() << endl;
         assert(0);
     }
 
@@ -310,7 +411,7 @@ void testOperation()
     testOperationSetDump(    ALU, NOP, ADD, NOP, 0, 1, 6,  0, 0, 0, 2, "add 1, 6, r2;\n");
     testOperationSetDump(    ALU, NOP, SUB, NOP, 0, 0, 0,  0, 1, 3, 2, "sub 0, r1, r3, r2;\n");
     testOperationSetDump( P_FLOW, JMP, NOP, NOP, 1, 0, 0,  5, 0, 0, 0, "jmp 1, r5;\n");
-    testOperationSetDump( P_FLOW, JGT, NOP, NOP, 1, 0, 0, 10, 0, 0, 0, "jmp 1,  r10;\n");
+    testOperationSetDump( P_FLOW, JGT, NOP, NOP, 1, 0, 0, 10, 0, 0, 0, "jmp 1, r10;\n");
     testOperationSetDump( P_FLOW, JMP, NOP, NOP, 0, 0, 0,  0, 0, 0, 2, "jmp 0, r2;\n");
     testOperationSetDump( P_FLOW, JGT, NOP, NOP, 0, 0, 0,  0, 0, 0, 5, "jmp 0, r5;\n");
     testOperationSetDump( P_FLOW, JGT, NOP, NOP, 0, 0, 0,  0, 0, 0, 5, "jmp 0, r5;\n");
@@ -360,9 +461,9 @@ void testRegisterFileModel()
 
 int main()
 {
-	//testByte();
+	testByte();
 	//testByteLine();
-	//testMemVal();
+	testMemVal();
 	//testMemModel();
     testOperation();
     //testRegisterFileModel();
