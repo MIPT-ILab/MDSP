@@ -6,12 +6,23 @@
 #include "core.h"
 #include "types.h"
 #include "main_functions.h"
+#include "handle_args.h"
 #include <fstream>
 #include <iostream>
 using namespace std;
 
 int main(int argc, char** argv)
 {
+	/*
+	* Analysing and handling of inserted arguments
+	* see description in "handle_args.h
+	*/
+	char test_file[file_name_size] = "\0";
+	char log_file[file_name_size] = "\0";
+	if(handleArgs( argc, argv, test_file, log_file) != 0)
+	{
+		return 0;
+	}
 	/* Check arguments number */
 	checkArguments( argc);
 
