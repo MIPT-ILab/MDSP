@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <string>
+#include <cstring>
 
 using std::cout;
 using std::cin;
@@ -69,7 +69,7 @@ int handleArgs(int argc, char** argv, char* test_file, char* log_file)
 				cout << "Unable to open \"" << argv[1] << "\"" << endl;
 				return 2;    // Stop programm
 			}
-			strcpy_s(test_file, file_name_size, argv[1]);
+			strncpy(test_file, argv[1], file_name_size);
 			return 0; // continue main
 		}
 		/* case: funcsim <testname> -l <log> */
@@ -85,7 +85,7 @@ int handleArgs(int argc, char** argv, char* test_file, char* log_file)
 				cout << "Unable to open \"" << argv[1] << "\"" << endl;
 				return 2;    // Stop programm
 			}
-			strcpy_s(test_file, file_name_size, argv[1]);
+			strncpy(test_file, argv[1], file_name_size);
 			if(check_symbols(argv[3]) != 0)
 			{
 				cout << "There is permitted symbol in log_file name." << endl;
@@ -104,7 +104,7 @@ int handleArgs(int argc, char** argv, char* test_file, char* log_file)
 					cin >> answer;
 					if(answer[0] == 'y' && answer[1] == '\0')
 					{
-						strcpy_s(log_file, file_name_size, argv[3]);
+						strncpy(log_file, argv[3], file_name_size);
 						flag = 0;
 					}
 					else if(answer[0] == 'n' && answer[1] == '\0')
@@ -119,7 +119,7 @@ int handleArgs(int argc, char** argv, char* test_file, char* log_file)
 			}
 			else
 			{
-				strcpy_s(log_file, file_name_size, argv[3]);
+				strncpy(log_file, argv[3], file_name_size);
 			}
 			return 0; // continue main
 		}
