@@ -31,9 +31,9 @@ bool check_symbols( const char* file_name);
 *	If <testname> doesn't exist,
 *	function will report about error and stop programm.
 * Function checks inputed <log> for acceptability of its symbols.
-*	Now allowed symbols are {a-z, A-Z, 0-9, _, .}.
+*	Now allowed symbols are {a-z, A-Z, 0-9, _, ., \, /}.
 * If <log> already exist, function will ask user for replacing.
-* Any programmist can test if <log> was called.
+* Any programmist can check if <log> was called.
 *	He should only check if variable log_name != "\0".
 */
 int handleArgs( int argc, char** argv, char* test_file, char* log_file)
@@ -136,7 +136,7 @@ int handleArgs( int argc, char** argv, char* test_file, char* log_file)
 		exit(-1);    // Stop programm
 	}
 	cout << "Something going wrong! (handle_args.h)" << endl;
-	return 0;
+	exit(-1);
 }
 
 bool check_file_existing( const char* file_name)
@@ -152,7 +152,7 @@ bool check_file_existing( const char* file_name)
 
 /*
 * Check acceptability of file name symbols
-* {a-z, A-Z, 0-9, _, .}.
+* {a-z, A-Z, 0-9, _, ., \, /}.
 */
 bool check_symbols( const char* file_name)
 {
@@ -162,7 +162,8 @@ bool check_symbols( const char* file_name)
 		if(( file_name[i] >= 'a' && file_name[i] <= 'z') 
 			|| ( file_name[i] >= 'A' && file_name[i] <= 'Z') 
 			|| ( file_name[i] >= '0' && file_name[i] <= '9')
-			|| file_name[i] == '_' || file_name[i] == '.')
+			|| file_name[i] == '_' || file_name[i] == '.'
+			|| file_name[i] == '\\'|| file_name[i] == '/')
 		{
 		}
 		else
