@@ -18,6 +18,7 @@
  */
 ByteLine::ByteLine()
 {
+	
     byte_line = new vector<Byte>;
     output = DEFAULT_OUT;
 }
@@ -329,6 +330,11 @@ ByteLine MemVal::getByteLine( unsigned int index, unsigned int count) const
     ByteLine temp( count);
     for ( unsigned int i = 0; i < count ; i++)
     {
+		if ( temp.getByte( i).getFlagEnable() != DEFAULT_ENABLE)
+		{
+			cout << "ERROR: Out of Memory!\n";
+			assert( 0);
+		}
         temp.setByte( i, getByte( i + index));
     }
     return temp;
@@ -338,6 +344,11 @@ ByteLine MemVal::getByteLine() const
     ByteLine temp( getSizeOfMemVal());
     for ( unsigned int i = 0; i < getSizeOfMemVal(); i++)
     {
+		if ( temp.getByte( i).getFlagEnable() != DEFAULT_ENABLE)
+		{
+			cout << "ERROR: Out of Memory!\n";
+			assert( 0);
+		}
         temp.setByte( i, getByte( i));
     }
     return temp;
@@ -353,6 +364,7 @@ void MemVal::writeByteLine( const ByteLine& line, unsigned int index)
     for ( unsigned int i = 0; i < line.getSizeOfLine(); i++)
     {
         setByte( i + index, line.getByte( i));
+		getByte( i + index).setFlagEnable( DEFAULT_ENABLE);
     }
 }
 void MemVal::writeByteLine( const ByteLine & line)
@@ -365,6 +377,7 @@ void MemVal::writeByteLine( const ByteLine & line)
     for ( unsigned int i = 0; i < line.getSizeOfLine(); i++)
     {
         setByte( i, line.getByte( i));
+		getByte( i).setFlagEnable( DEFAULT_ENABLE);
     }
 }
 
@@ -377,6 +390,7 @@ void MemVal::writeByteLine( const ByteLine & line)
 
 MemoryModel::MemoryModel( unsigned int size)
 {
+	
 	mem_model = new memMap;
 	size_of_segmentation = size;
 
@@ -408,7 +422,8 @@ ByteLine MemoryModel::readBL(  mathAddr read_ptr, unsigned int num_of_bytes)
 			cout << "ERROR!\n";
 			assert( 0);
 		}
-		mergeMemVal( pos, &memval);
+		//mergeMemVal( pos, &memval);
+		memval = mergeMemVal( pos);
 
 	}
 	( *mem_model).erase( start, end);
@@ -442,15 +457,16 @@ hostUInt32 MemoryModel::read32( mathAddr addr)
     return bl.getHostUInt32();
 }
 
-void MemoryModel::mergeMemVal( memMap::iterator pos, MemVal *mem_val)
+MemVal MemoryModel::mergeMemVal( memMap::iterator pos)
 {
+	MemVal mem_val = pos->second;
 	if ( countDistance( pos) > 0)
 	{
-			mem_val->resizeMemVal( ( pos + 1)->first - pos->first);
+		mem_val.resizeMemVal( ( pos + 1)->first - pos->first);
 	}
-		( *mem_val) = ( *mem_val) + ( pos + 1)->second;
+	mem_val = mem_val + ( pos + 1)->second;
+	return mem_val;
 }
-
 
 
 void MemoryModel::write( mathAddr write_ptr, const ByteLine& line)
@@ -463,8 +479,7 @@ void MemoryModel::write( mathAddr write_ptr, const ByteLine& line)
 	MemVal memval = start->second;
 	for ( pos = start; pos != end; ++pos)
 	{
-		mergeMemVal( pos, &memval);
-
+		memval = mergeMemVal( pos);
 	}
 	( *mem_model).erase( start, end);
 	( *mem_model).erase( end);
@@ -538,3 +553,4 @@ unsigned int MemoryModel::countDistance( const memMap::iterator pos)
 {
 	return ( pos + 1)->first - ( pos->first + ( pos->second).getSizeOfMemVal());
 }
+

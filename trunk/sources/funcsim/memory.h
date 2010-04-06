@@ -14,7 +14,10 @@
 #include <iostream>
 #include "types.h"
 
+
 #define DEFAULT_OUT HEX // default output form
+#define DEFAULT_FLAG 0
+#define DEFAULT_ENABLE 1
 
 using namespace std;
 
@@ -25,17 +28,29 @@ using namespace std;
 
 class Byte
 {
+
     hostUInt8 byte_val;
     OutputFormat output;
+	unsigned int flag;
 
 public:
     /* Constructors */
-    Byte( hostUInt8 val = 0):byte_val( val), output( DEFAULT_OUT){}
+    Byte( hostUInt8 val = 0):byte_val( val), output( DEFAULT_OUT), flag( DEFAULT_FLAG){}
 
     /* Copy constructors */
-    Byte( const Byte& byte):byte_val( byte.getByteVal()), output( DEFAULT_OUT){}
+    Byte( const Byte& byte):byte_val( byte.getByteVal()), output( DEFAULT_OUT), flag( DEFAULT_FLAG){}
 
     /* Get/set methods */
+
+	unsigned int getFlagEnable() const
+	{
+		return this->flag;
+	}
+	void setFlagEnable ( unsigned int temp)
+	{
+		this->flag = temp;
+	}
+
 
     /* The constant member function. Returns the Byte value in dec form */
     hostUInt8 getByteVal() const
@@ -164,6 +179,7 @@ inline Byte operator& ( const Byte& left, const Byte& right)
 /**
  * class ByteLine implements a logical set of bytes
  */
+
 
 class ByteLine
 {
@@ -430,6 +446,7 @@ inline ByteLine operator>> ( const ByteLine& byteline, int count)
 return temp; 
 }
 
+
 /**
  * class MemVal implements a object to interaction with memory
  */
@@ -625,7 +642,10 @@ public:
 
 
     /* Merges two object of MemVal class in MemoryModel*/
-    void mergeMemVal( memMap::iterator pos, MemVal* mv);
+
+    //void mergeMemVal( memMap::iterator, MemVal*);
+	MemVal MemoryModel::mergeMemVal( memMap::iterator);
+
 
     /* Counts amount of empty address between two object of MemVal class*/
     unsigned int countDistance( const memMap::iterator pos);
@@ -675,7 +695,11 @@ inline ostream& operator<< ( ostream& os,  MemoryModel& model)
 inline memMap::iterator operator+ ( const memMap::iterator pos,  int count)
 {
     memMap::iterator temp = pos;
-    return ++temp;
+  	for ( unsigned int i = 0; i < count; i++)
+	{
+		++temp;
+	}
+	return temp;
 }
 
 
