@@ -1,5 +1,6 @@
 /** @file ident.h
  * Character classification functions
+ * @author Alexander Potashev
  * Copyright 2009 MDSP team
  */
 

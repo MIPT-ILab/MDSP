@@ -1,5 +1,6 @@
 /** @file main.cpp
  * Entry point of the MDSP assembler (mdsp-asm)
+ * @author Alexander Potashev
  * Copyright 2009 MDSP team
  */
 

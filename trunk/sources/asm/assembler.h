@@ -1,5 +1,6 @@
 /** @file assembler.h
  * Definition of Assembler class, the assembler output generator
+ * @author Alexander Potashev
  * Copyright 2009 MDSP team
  */
 

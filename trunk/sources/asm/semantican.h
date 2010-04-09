@@ -1,5 +1,6 @@
 /** @file semantican.h
  * Definition of SemanticAn class, the semantic analyzer
+ * @author Alexander Potashev
  * Copyright 2009 MDSP team
  */
 
