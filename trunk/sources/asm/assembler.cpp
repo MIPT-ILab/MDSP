@@ -55,6 +55,7 @@ std::map<unsigned int, hostUInt8> Assembler::run()
             pc = unit_addr[units[i]];
             if ( op_list.find( pc) != op_list.end())
             {
+                assert(0);
                 throw; // 2 operations at the same address
             }
 
@@ -77,6 +78,7 @@ std::map<unsigned int, hostUInt8> Assembler::run()
         {
             if ( addr_byte.find( start_addr + i) != addr_byte.end())
             {
+                assert(0);
                 throw; // there already is a byte at this address
             }
 
@@ -112,6 +114,7 @@ ByteLine *Assembler::encodeOperation(
         }
         else
         {
+            assert(0);
             throw; // invalid combination of opcode and operands
         }
 
@@ -145,6 +148,7 @@ ByteLine *Assembler::encodeOperation(
         }
         else
         {
+            assert(0);
             throw; // invalid combination of opcode and operands
         }
 
@@ -189,18 +193,31 @@ ByteLine *Assembler::encodeOperation(
             }
             else
             {
+                assert(0);
                 throw; // wrong operand types for 'add'
             }
         }
         else
         {
+            assert(0);
             throw; // wrong numbers of operands for 'add'
         }
 
         op.setALU( NOP, ADD, NOP, am, imm10, rs1, rs2, rd);
     }
+    else if ( *operation == "nop")
+    {
+        if ( operation->nOperands() != 0)
+        {
+            assert(0);
+            throw;
+        }
+
+        op.setALU( NOP, NOP, NOP, 0, 0, 0, 0, 0);
+    }
     else
     {
+        cout << "Unknown operation: " << operation->str() << endl;
         throw;
     }
 
