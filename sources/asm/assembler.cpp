@@ -1,5 +1,6 @@
 /** @file assembler.cpp
  * Implementation of Assembler class methods
+ * @author Alexander Potashev
  * Copyright 2009 MDSP team
  */
 

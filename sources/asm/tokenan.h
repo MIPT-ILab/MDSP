@@ -1,5 +1,6 @@
 /** @file tokenan.h
  * Definition of TokenAn class, the lexical analyzer
+ * @author Alexander Potashev
  * Copyright 2009 MDSP team
  */
 

@@ -1,5 +1,6 @@
 /** @file tokenan.cpp
  * Implementation of TokenAn class methods
+ * @author Alexander Potashev
  * Copyright 2009 MDSP team
  */
 
