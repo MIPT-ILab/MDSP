@@ -11,9 +11,15 @@
 #include "assembler.h"
 
 
-int main()
+int main( int argc, char *argv[])
 {
-    TokenAn *tokenan = new TokenAn( "1.S");
+    const char *inputFile = "1.S";
+    if (argc == 2)
+    {
+        inputFile = argv[1];
+    }
+
+    TokenAn *tokenan = new TokenAn( inputFile);
     std::vector<Token *> tokens = tokenan->run();
 
 #ifdef DEBUG_OUTPUT
