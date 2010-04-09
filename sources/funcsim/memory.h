@@ -642,9 +642,7 @@ public:
 
 
     /* Merges two object of MemVal class in MemoryModel*/
-
-    //void mergeMemVal( memMap::iterator, MemVal*);
-	MemVal MemoryModel::mergeMemVal( memMap::iterator);
+    MemVal mergeMemVal( memMap::iterator);
 
 
     /* Counts amount of empty address between two object of MemVal class*/
@@ -695,7 +693,7 @@ inline ostream& operator<< ( ostream& os,  MemoryModel& model)
 inline memMap::iterator operator+ ( const memMap::iterator pos,  int count)
 {
     memMap::iterator temp = pos;
-  	for ( unsigned int i = 0; i < count; i++)
+  	for ( int i = 0; i < count; i++)
 	{
 		++temp;
 	}
