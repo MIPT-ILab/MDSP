@@ -1,6 +1,6 @@
 /**
  * test.cpp - Unit tests
- * @author Dmitry Ustyugov, Pavel Zaichenkov
+ * @author Dmitry Ustyugov, Pavel Zaichenkov, Alexander Potashev
  * Copyright 2009 MDSP team
  */
 
@@ -780,12 +780,12 @@ void testMemModel()
     cout << mv.getByteLine().getHostUInt16() << endl;
 }
 
-void testOperationSetDump(
+void testOperationSetDumpEncode(
     OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
     hostUInt8 sd, hostUInt8 am,
     hostUInt16 imm10, hostUInt16 imm16,
     hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd,
-    const char *expected)
+    const char *expected, hostUInt32 expected_word)
 {
     Operation *op = new Operation();
 
@@ -796,7 +796,16 @@ void testOperationSetDump(
     setStandardCoutHandler();
     if (getTestingCoutBuffer().compare(expected))
     {
-        cout << "testOperationSetDump failed, expected: " << expected << ", got: " << getTestingCoutBuffer() << endl;
+        cout << "testOperation/Dump failed, expected: " << expected << ", got: " << getTestingCoutBuffer() << endl;
+        assert(0);
+    }
+
+    hostUInt32 encoded = op->encode()->getHostUInt32();
+    if (encoded != expected_word)
+    {
+        cout << "testOperation/Encode failed," << endl <<
+            "encoded: " << hex << encoded << endl <<
+            "expected: " << expected_word << dec << endl;
         assert(0);
     }
 
@@ -805,16 +814,24 @@ void testOperationSetDump(
 
 void testOperation()
 {
-    testOperationSetDump(   MOVE, BRR, NOP, NOP, 0, 0, 0,  0, 1, 0, 2, "brr 1, r2;\n");
-    testOperationSetDump(   MOVE, BRM, NOP, NOP, 1, 0, 0,  0, 1, 0, 2, "brm 1, r1, r2;\n");
-    testOperationSetDump(   MOVE,  LD, NOP, NOP, 0, 0, 0,  1, 0, 0, 2, "ld 0, r1, r2;\n");
-    testOperationSetDump(    ALU, NOP, ADD, NOP, 0, 1, 6,  0, 0, 0, 2, "add 1, 6, r2;\n");
-    testOperationSetDump(    ALU, NOP, SUB, NOP, 0, 0, 0,  0, 1, 3, 2, "sub 0, r1, r3, r2;\n");
-    testOperationSetDump( P_FLOW, JMP, NOP, NOP, 1, 0, 0,  5, 0, 0, 0, "jmp 1, r5;\n");
-    testOperationSetDump( P_FLOW, JGT, NOP, NOP, 1, 0, 0, 10, 0, 0, 0, "jmp 1, r10;\n");
-    testOperationSetDump( P_FLOW, JMP, NOP, NOP, 0, 0, 0,  0, 0, 0, 2, "jmp 0, r2;\n");
-    testOperationSetDump( P_FLOW, JGT, NOP, NOP, 0, 0, 0,  0, 0, 0, 5, "jmp 0, r5;\n");
-    testOperationSetDump( P_FLOW, JGT, NOP, NOP, 0, 0, 0,  0, 0, 0, 5, "jmp 0, r5;\n");
+    testOperationSetDumpEncode(   MOVE, BRR, NOP, NOP, 0, 0, 0,  0, 1, 0, 2, "brr 1, r2;\n",
+        0x2200000c); // 000 011 --- -- ----------- 00001 00010
+    testOperationSetDumpEncode(   MOVE, BRM, NOP, NOP, 1, 0, 0,  0, 1, 0, 2, "brm 1, r1, r2;\n",
+        0x22002004); // 000 001 --- 01
+    testOperationSetDumpEncode(   MOVE,  LD, NOP, NOP, 0, 0, 0,  1, 0, 0, 2, "ld 0, r1, r2;\n",
+        0x22000018); // 000 110 --- 00
+    testOperationSetDumpEncode(    ALU, NOP, ADD, NOP, 0, 1, 6,  0, 0, 0, 2, "add 1, 6, r2;\n",
+        0xc2802020);
+    testOperationSetDumpEncode(    ALU, NOP, SUB, NOP, 0, 0, 0,  0, 1, 3, 2, "sub 0, r1, r3, r2;\n",
+        0x62044020);
+    testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 1, 0, 0,  5, 0, 0, 0, "jmp 1, r5;\n",
+        0x050080a0);
+    testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 1, 0, 0, 10, 0, 0, 0, "jmp 1, r10;\n",
+        0x0a0080a4);
+    testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 0, 0, 0,  0, 0, 0, 2, "jmp 0, r2;\n",
+        0x020000a0);
+    testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 0, 0, 0,  0, 0, 0, 5, "jmp 0, r5;\n",
+        0x050000a4);
 }
 
 void testRegisterFileModel()
@@ -865,7 +882,7 @@ int main()
 	testByteLine();
 	//testMemVal();
 	//testMemModel();
-    //testOperation();
+    testOperation();
     //testRegisterFileModel();
 
     return 0;
