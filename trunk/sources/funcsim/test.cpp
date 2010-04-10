@@ -1,6 +1,6 @@
 /**
  * test.cpp - Unit tests
- * @author Dmitry Ustyugov, Pavel Zaichenkov, Alexander Potashev
+ * @author Dmitry Ustyugov, Pavel Zaichenkov, Alexander Potashev, Yura Savchenko
  * Copyright 2009 MDSP team
  */
 
@@ -846,15 +846,24 @@ void testRegisterFileModel()
     rfm->writeReg( 1, *rv);
     rfm->writeReg( 0, rv1);
 
+	//Testing read reg
+    setTestingCoutHandler();
     cout << ( int)rfm->readReg( 0)->getByte( 0).getByteVal() << " " <<
             ( int)rfm->readReg( 1)->getByte( 0).getByteVal() << "\n";
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( 
+        "2 5\n"))
+    {
+    	cout<<"ERROR: readReg()"<<endl;
+    	assert(0);
+    }
+
     delete b1;
     delete b2;
     delete rv;
     delete rfm;
     
-    //
-    cout << "Testing write/read8,16,32" << endl;
+    //Testing write/read8,16,32
     RegisterFileModel* rfm1 = new RegisterFileModel( 2, 1);
     RegisterFileModel* rfm2 = new RegisterFileModel( 2, 2);
     RegisterFileModel* rfm3 = new RegisterFileModel( 2, 4);
@@ -867,13 +876,43 @@ void testRegisterFileModel()
     rfm2->write16( 0, hbb);
     rfm3->write32( 1, hc);
     rfm3->write32( 0, hcc);
-    
+
+    //testing read8
+    setTestingCoutHandler();
     cout << ( int)rfm1->read8( 1) << " " <<
             ( int)rfm1->read8( 0) << "\n";
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( 
+        "8 88\n"))
+    {
+    	cout<<"ERROR: read8()"<<endl;
+    	assert(0);
+    }
+
+    //testing read16
+    setTestingCoutHandler();
     cout << ( int)rfm2->read16( 1) << " " <<
             ( int)rfm2->read16( 0) << "\n";
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( 
+        "1666 6111\n"))
+    {
+    	cout<<"ERROR: read16()"<<endl;
+    	assert(0);
+    }
+
+    //testing read32
+    setTestingCoutHandler();
     cout << ( int)rfm3->read32( 1) << " " <<
             ( int)rfm3->read32( 0) << "\n";
+    setStandardCoutHandler();
+    if ( getTestingCoutBuffer().compare( 
+        "32222 23333\n"))
+    {
+    	cout<<"ERROR: read32()"<<endl;
+    	assert(0);
+    }
+
 }
 
 int main()
@@ -883,8 +922,7 @@ int main()
 	//testMemVal();
 	//testMemModel();
     testOperation();
-    //testRegisterFileModel();
-
+    testRegisterFileModel();
     return 0;
 }
 
