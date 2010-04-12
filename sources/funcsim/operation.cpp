@@ -596,7 +596,7 @@ MemVal* Operation::encode()
     switch ( this->type)
     {
         case MOVE:
-	    this->encodeMOVE();
+        this->encodeMOVE();
             break;
         case ALU:
             this->encodeALU();
@@ -721,25 +721,25 @@ void Operation::encodeMOVE()
     switch ( this->opcode0)
     {
         case BRM:
-	    setValueByShift( this->sd, 21);		// set S/D
-	    setValueByShift( this->rs1, 5);		// set source
-	    setValueByShift( this->rd, 0);		// set destination
+            setValueByShift( this->sd, 21);     // set S/D
+            setValueByShift( this->rs1, 5);     // set source
+            setValueByShift( this->rd, 0);      // set destination
             break;
         case BRR:
-            setValueByShift( this->rs1, 5);		// set source
-            setValueByShift( this->rd, 0);		// set destination
+            setValueByShift( this->rs1, 5);     // set source
+            setValueByShift( this->rd, 0);      // set destination
             break;
         case LD:
-            setValueByShift( this->imm16, 5);		// set imm16
-            setValueByShift( this->rd, 0);		// set destination
-            setValueByShift( this->sd, 21);		// set S/D
+            setValueByShift( this->imm16, 5);   // set imm16
+            setValueByShift( this->rd, 0);      // set destination
+            setValueByShift( this->sd, 21);     // set S/D
             break;
         default:
             cout << "Illegal operation in MOVE\n";
             assert( 0);
     }
-
 }
+
 /**
  * Decode ALU command from binary form
  * All mask are set as it is described in architecture.
@@ -798,11 +798,11 @@ void Operation::encodeALU()
     setValueByShift( this->am, 15);
     if ((this->am == 1) || (this->am == 3))
     {
-    	setValueByShift( this->imm10, 5);
+        setValueByShift( this->imm10, 5);
     }
     else
     {
-    	setValueByShift( this->rs1, 10);
+        setValueByShift( this->rs1, 10);
         setValueByShift( this->rs2, 5);
     }
     setValueByShift( this->rd, 0);
@@ -923,7 +923,7 @@ void Operation::executeMove()
                     break;
                 default:
                     assert( 0);
-            }	
+            }   
             break;
         case BRR:
             core->GetRF()->write16( ( physRegNum)rd, 

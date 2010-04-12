@@ -17,7 +17,7 @@ void setTestingCoutHandler()
 {
     if ( !isWrapperUsed)
     {
-    	// coutBuffer.clear() doesn't reset buffer!!!
+        // coutBuffer.clear() doesn't reset buffer!!!
         coutBuffer.str("");
         coutStreambuf = cout.rdbuf( coutBuffer.rdbuf());
         isWrapperUsed = true;
