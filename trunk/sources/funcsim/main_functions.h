@@ -13,13 +13,13 @@ using namespace std;
  */
 int checkArguments(int argc)
 {
-	int param_number = 2;
-	if (argc != param_number)
-	{
-		cout << "There should be " << param_number - 1 << " argument(s)" << endl;
-		assert(0);
-	}
-	return 1;
+    int param_number = 2;
+    if (argc != param_number)
+    {
+        cout << "There should be " << param_number - 1 << " argument(s)" << endl;
+        assert(0);
+    }
+    return 1;
 }
 
 /*
@@ -29,14 +29,14 @@ int checkArguments(int argc)
  */
 int openBinaryInputFile(ifstream& input, char* filename)
 {
-	input.open (filename, ifstream::binary);
-	if(input.fail())
-	{
-		cout << "Error opening " << filename << endl;
-		input.close();
-		return 0;
-	}
-	return 1;
+    input.open (filename, ifstream::binary);
+    if(input.fail())
+    {
+        cout << "Error opening " << filename << endl;
+        input.close();
+        return 0;
+    }
+    return 1;
 }
 
 /*
@@ -46,9 +46,9 @@ int openBinaryInputFile(ifstream& input, char* filename)
  */
 int closeBinaryInputFile(ifstream& input, char* filename)
 {
-	if (input.is_open())
-	{
-		input.close();
-	}
-	return 1;
+    if (input.is_open())
+    {
+        input.close();
+    }
+    return 1;
 }

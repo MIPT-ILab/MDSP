@@ -26,8 +26,8 @@ void testByte()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "a:outputFormat 1\n"))
     {
-    	cout<<"ERROR: wrong output format"<<endl;
-    	assert(0);
+        cout<<"ERROR: wrong output format"<<endl;
+        assert(0);
     }
 
     //testing output format for b
@@ -36,8 +36,8 @@ void testByte()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "b:outputFormat 0\n"))
     {
-    	cout<<"ERROR: wrong output format"<<endl;
-    	assert(0);
+        cout<<"ERROR: wrong output format"<<endl;
+        assert(0);
     }
 
     //testing output format for c
@@ -46,8 +46,8 @@ void testByte()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "c:outputFormat 2\n"))
     {
-    	cout<<"ERROR: wrong output format"<<endl;
-    	assert(0);
+        cout<<"ERROR: wrong output format"<<endl;
+        assert(0);
     }
 
     //testing byte value for a
@@ -56,8 +56,8 @@ void testByte()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "a: 7\n"))
     {
-    	cout<<"ERROR: wrong byte value"<<endl;
-    	assert(0);
+        cout<<"ERROR: wrong byte value"<<endl;
+        assert(0);
     }
 
     //testing byte value for b
@@ -66,8 +66,8 @@ void testByte()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "b: 00000111\n"))
     {
-    	cout<<"ERROR: wrong byte value"<<endl;
-    	assert(0);
+        cout<<"ERROR: wrong byte value"<<endl;
+        assert(0);
     }
 
     //testing bitwise addition
@@ -76,8 +76,8 @@ void testByte()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "c=a&b: 0x7\n"))
     {
-    	cout<<"ERROR: bitwise addition"<<endl;
-    	assert(0);
+        cout<<"ERROR: bitwise addition"<<endl;
+        assert(0);
     }
     
     //testing shifting to the left
@@ -86,8 +86,8 @@ void testByte()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "c>>2: 0x1\n"))
     {
-    	cout<<"ERROR: shifting to the left"<<endl;
-    	assert(0);
+        cout<<"ERROR: shifting to the left"<<endl;
+        assert(0);
     }
 
     //testing shifting to the right
@@ -96,8 +96,8 @@ void testByte()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "b<<2: 0x1c\n"))
     {
-    	cout<<"ERROR: shifting to the right"<<endl;
-    	assert(0);
+        cout<<"ERROR: shifting to the right"<<endl;
+        assert(0);
     }
 
     //testing equal comparing
@@ -106,8 +106,8 @@ void testByte()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "c==a: 1\n"))
     {
-    	cout<<"ERROR: equal comparing"<<endl;
-    	assert(0);
+        cout<<"ERROR: equal comparing"<<endl;
+        assert(0);
     }
 
     //testing not equal comparing
@@ -116,8 +116,8 @@ void testByte()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "c!=b: 0\n"))
     {
-    	cout<<"ERROR: not equal comparing"<<endl;
-    	assert(0);
+        cout<<"ERROR: not equal comparing"<<endl;
+        assert(0);
     }
 
     cout<<"test byte class: ok"<<endl;
@@ -195,8 +195,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructor1: 0 | 0 | 0 | \n"))
     {
-    	cout<<"ERROR: byteline constructor with unsigned int parmeter"<<endl;
-    	assert(0);
+        cout<<"ERROR: byteline constructor with unsigned int parmeter"<<endl;
+        assert(0);
     }
     
     //testing byteline constructor copy
@@ -205,8 +205,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorCopy: 0 | 0 | 0 | \n"))
     {
-    	cout<<"ERROR: byteline constructor copy"<<endl;
-    	assert(0);
+        cout<<"ERROR: byteline constructor copy"<<endl;
+        assert(0);
     }
 
     //testing byteline constructor byte
@@ -215,8 +215,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorByte: 0x7 | 0x6e | 0xcd | \n"))
     {
-    	cout<<"ERROR: constructor byte"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor byte"<<endl;
+        assert(0);
     }
 
     //testing byteline constructor byte
@@ -225,8 +225,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorByte: 0x7 | 0x6e | 0xcd | \n"))
     {
-    	cout<<"ERROR: constructor byte"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor byte"<<endl;
+        assert(0);
     }
 
     //testing byteline constructor byte
@@ -235,8 +235,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorByte: 0x7 | 0x6e | 0xcd | \n"))
     {
-    	cout<<"ERROR: constructor byte"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor byte"<<endl;
+        assert(0);
     }
 
 
@@ -246,8 +246,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorUInt8L: 00100100 | \n"))
     {
-    	cout<<"ERROR: constructor hostUInt8 low first"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor hostUInt8 low first"<<endl;
+        assert(0);
     }
 
     //testing byteline constructor hostUInt16 low first
@@ -256,8 +256,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorUInt16L: 00110100 | 11000110 | \n"))
     {
-    	cout<<"ERROR: constructor hostUInt16 low first"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor hostUInt16 low first"<<endl;
+        assert(0);
     }
 
     //testing byteline constructor hostUInt32 low first
@@ -266,8 +266,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorUInt32L: 00000000 | 00000000 | 10110010 | 01101110 | \n"))
     {
-    	cout<<"ERROR: constructor hostUInt32 low first"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor hostUInt32 low first"<<endl;
+        assert(0);
     }
 
     //testing byteline constructor hostUInt8 high first
@@ -276,8 +276,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorUInt8H: 00100100 | \n"))
     {
-    	cout<<"ERROR: constructor hostUInt8 high first"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor hostUInt8 high first"<<endl;
+        assert(0);
     }
 
     //testing byteline constructor hostUInt16 high first
@@ -286,8 +286,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorUInt16H: 11000110 | 00110100 | \n"))
     {
-    	cout<<"ERROR: constructor hostUInt16 high first"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor hostUInt16 high first"<<endl;
+        assert(0);
     }
 
     //testing byteline constructor hostUInt32 high first
@@ -296,8 +296,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorUInt32H: 01101110 | 10110010 | 00000000 | 00000000 | \n"))
     {
-    	cout<<"ERROR: constructor hostUInt32 high first"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor hostUInt32 high first"<<endl;
+        assert(0);
     }
 
 
@@ -307,8 +307,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testUInt8: $\n"))
     {
-    	cout<<"ERROR: getHostUInt8"<<endl;
-    	assert(0);
+        cout<<"ERROR: getHostUInt8"<<endl;
+        assert(0);
     }
 
 
@@ -318,8 +318,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testUInt16: 13510\n"))
     {
-    	cout<<"ERROR: getHostUInt16"<<endl;
-    	assert(0);
+        cout<<"ERROR: getHostUInt16"<<endl;
+        assert(0);
     }
 
 
@@ -329,8 +329,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testUInt32: 45678\n"))
     {
-    	cout<<"ERROR: getHostUInt32"<<endl;
-    	assert(0);
+        cout<<"ERROR: getHostUInt32"<<endl;
+        assert(0);
     }
 
 
@@ -340,8 +340,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testByteVal: 205\n"))
     {
-    	cout<<"ERROR: getByteVal"<<endl;
-    	assert(0);
+        cout<<"ERROR: getByteVal"<<endl;
+        assert(0);
     }
 
 
@@ -351,8 +351,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "test1: 0xcd\n"))
     {
-    	cout<<"ERROR: getByte"<<endl;
-    	assert(0);
+        cout<<"ERROR: getByte"<<endl;
+        assert(0);
     }
 
 
@@ -362,8 +362,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testSetByte: 0x7 | 0x6e | 0xcd | \n"))
     {
-    	cout<<"ERROR: setByte"<<endl;
-    	assert(0);
+        cout<<"ERROR: setByte"<<endl;
+        assert(0);
     }
 
     //testing addByte
@@ -372,8 +372,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testAddByte: 0x7 | 0x6e | 0xcd | 0xcd | \n"))
     {
-    	cout<<"ERROR: addByte"<<endl;
-    	assert(0);
+        cout<<"ERROR: addByte"<<endl;
+        assert(0);
     }
 
 
@@ -383,8 +383,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testResizeByteLine: 0x7 | 0x6e | \n"))
     {
-    	cout<<"ERROR: ResizeByteLine"<<endl;
-    	assert(0);
+        cout<<"ERROR: ResizeByteLine"<<endl;
+        assert(0);
     }
 
 
@@ -394,8 +394,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructor: 3\n"))
     {
-    	cout<<"ERROR: getSizeOfLine"<<endl;
-    	assert(0);
+        cout<<"ERROR: getSizeOfLine"<<endl;
+        assert(0);
     }
 
 
@@ -405,8 +405,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testOutputFormatBIN: 0\n"))
     {
-    	cout<<"ERROR: OutputFormatBIN"<<endl;
-    	assert(0);
+        cout<<"ERROR: OutputFormatBIN"<<endl;
+        assert(0);
     }
 
 
@@ -416,8 +416,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testOutputFormatDEC: 1\n"))
     {
-    	cout<<"ERROR: OutputFormatDEC"<<endl;
-    	assert(0);
+        cout<<"ERROR: OutputFormatDEC"<<endl;
+        assert(0);
     }
 
 
@@ -427,8 +427,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testOutputFormatHEX: 2\n"))
     {
-    	cout<<"ERROR: OutputFormatHEX"<<endl;
-    	assert(0);
+        cout<<"ERROR: OutputFormatHEX"<<endl;
+        assert(0);
     }
 
     testOutputFormatBIN.clrBinOut();
@@ -441,8 +441,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testOutputFormatBINclrBinOut: 2\n"))
     {
-    	cout<<"ERROR: OutputFormatBIN"<<endl;
-    	assert(0);
+        cout<<"ERROR: OutputFormatBIN"<<endl;
+        assert(0);
     }
 
 
@@ -452,8 +452,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testOutputFormatDECclrDecOut: 2\n"))
     {
-    	cout<<"ERROR: OutputFormatDEC"<<endl;
-    	assert(0);
+        cout<<"ERROR: OutputFormatDEC"<<endl;
+        assert(0);
     }
 
 
@@ -463,8 +463,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testOutputFormatHEXclrHexOut: 2\n"))
     {
-    	cout<<"ERROR: OutputFormatHEX"<<endl;
-    	assert(0);
+        cout<<"ERROR: OutputFormatHEX"<<endl;
+        assert(0);
     }
 
 
@@ -474,8 +474,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testEquality: 0x7 | 0x6e | 0xcd | \n"))
     {
-    	cout<<"ERROR: Equality"<<endl;
-    	assert(0);
+        cout<<"ERROR: Equality"<<endl;
+        assert(0);
     }
 
 
@@ -485,8 +485,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testOutput: 0xcd\n"))
     {
-    	cout<<"ERROR: Output"<<endl;
-    	assert(0);
+        cout<<"ERROR: Output"<<endl;
+        assert(0);
     }
 
 
@@ -497,8 +497,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testShiftLeft: 0 | 0x7 | 0x6e | \n"))
     {
-    	cout<<"ERROR: testShiftLeft"<<endl;
-    	assert(0);
+        cout<<"ERROR: testShiftLeft"<<endl;
+        assert(0);
     }
 
 
@@ -508,8 +508,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testShiftRight: 0x6e | 0xcd | 0 | \n"))
     {
-    	cout<<"ERROR: testShiftRight"<<endl;
-    	assert(0);
+        cout<<"ERROR: testShiftRight"<<endl;
+        assert(0);
     }
 
 
@@ -519,8 +519,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testSum: 0x7 | 0x6e | 0xcd | 0x7 | 0x6e | 0xcd | \n"))
     {
-    	cout<<"ERROR: Sum"<<endl;
-    	assert(0);
+        cout<<"ERROR: Sum"<<endl;
+        assert(0);
     }
 
 
@@ -530,8 +530,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorUInt8L1: 0xa | \n"))
     {
-    	cout<<"ERROR: constructor hostUInt8 low first"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor hostUInt8 low first"<<endl;
+        assert(0);
     }
 
 
@@ -541,8 +541,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorUInt16L1: 0 | 0x7b | \n"))
     {
-    	cout<<"ERROR: constructor hostUInt16 low first"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor hostUInt16 low first"<<endl;
+        assert(0);
     }
 
 
@@ -552,8 +552,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorUInt32L1: 0 | 0 | 0xb2 | 0x6e | \n"))
     {
-    	cout<<"ERROR: constructor hostUInt32 low first"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor hostUInt32 low first"<<endl;
+        assert(0);
     }
 
 
@@ -563,8 +563,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorUInt8H1: 0xa | \n"))
     {
-    	cout<<"ERROR: constructor hostUInt8 high first"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor hostUInt8 high first"<<endl;
+        assert(0);
     }
 
 
@@ -574,8 +574,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorUInt16H1: 0x7b | 0 | \n"))
     {
-    	cout<<"ERROR: constructor hostUInt16 high first"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor hostUInt16 high first"<<endl;
+        assert(0);
     }
 
 
@@ -585,8 +585,8 @@ void testByteLine()
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( "testConstructorUInt32H1: 0x6e | 0xb2 | 0 | 0 | \n"))
     {
-    	cout<<"ERROR: constructor hostUInt32 high first"<<endl;
-    	assert(0);
+        cout<<"ERROR: constructor hostUInt32 high first"<<endl;
+        assert(0);
     }
 
 }
@@ -610,46 +610,46 @@ void testMemVal()
     setTestingCoutHandler();
     cout<<" MemVal mem1(f): "<<'\t'<<mem1<<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer().compare( " MemVal mem1(f): 	0x7 | 0x6e | 0xcd | \n"))
+    if ( getTestingCoutBuffer().compare( " MemVal mem1(f):  0x7 | 0x6e | 0xcd | \n"))
     {
-    	cout<<"ERROR: wrong output"<<endl;
-    	assert(0);
+        cout<<"ERROR: wrong output"<<endl;
+        assert(0);
     }
 
     setTestingCoutHandler();
     cout<<" MemVal mem2(mem1): "<<'\t'<<mem2<<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer().compare( " MemVal mem2(mem1): 	0x7 | 0x6e | 0xcd | \n"))
+    if ( getTestingCoutBuffer().compare( " MemVal mem2(mem1):   0x7 | 0x6e | 0xcd | \n"))
     {
-    	cout<<"ERROR: wrong output"<<endl;
-    	assert(0);
+        cout<<"ERROR: wrong output"<<endl;
+        assert(0);
     }
 
     setTestingCoutHandler();
     cout<<" MemVal mem3: "<<'\t'<<mem3<<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer().compare( " MemVal mem3: 	\n"))
+    if ( getTestingCoutBuffer().compare( " MemVal mem3:     \n"))
     {
-    	cout<<"ERROR: wrong output"<<endl;
-    	assert(0);
+        cout<<"ERROR: wrong output"<<endl;
+        assert(0);
     }
     
     setTestingCoutHandler();
     cout<<" MemVal mem4(5): "<<'\t'<<mem4<<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer().compare( " MemVal mem4(5): 	0 | 0 | 0 | 0 | 0 | \n"))
+    if ( getTestingCoutBuffer().compare( " MemVal mem4(5):  0 | 0 | 0 | 0 | 0 | \n"))
     {
-    	cout<<"ERROR: wrong output"<<endl;
-    	assert(0);
+        cout<<"ERROR: wrong output"<<endl;
+        assert(0);
     }
 
     setTestingCoutHandler();
     cout<<" MemVal mem5 = mem1+mem3: "<<'\t'<<mem5<<endl;
     setStandardCoutHandler();
-    if ( getTestingCoutBuffer().compare( " MemVal mem5 = mem1+mem3: 	0x7 | 0x6e | 0xcd | 0 | 0 | 0 | 0 | 0 | \n"))
+    if ( getTestingCoutBuffer().compare( " MemVal mem5 = mem1+mem3:     0x7 | 0x6e | 0xcd | 0 | 0 | 0 | 0 | 0 | \n"))
     {
-    	cout<<"ERROR: wrong output"<<endl;
-    	assert(0);
+        cout<<"ERROR: wrong output"<<endl;
+        assert(0);
     }
 
     //testing MemVal operator '='
@@ -658,10 +658,10 @@ void testMemVal()
     cout<<" mem3 = dd: "<<'\t'<<mem3<<endl;
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( 
-        " mem3 = dd: 	0xff | 0xff | \n"))
+        " mem3 = dd:    0xff | 0xff | \n"))
     {
-    	cout<<"ERROR: operator '='"<<endl;
-    	assert(0);
+        cout<<"ERROR: operator '='"<<endl;
+        assert(0);
     }
 
     //testing methods
@@ -670,30 +670,30 @@ void testMemVal()
     cout<<" mem3.setSizeOfSegment(5): "<<'\t'<<mem3<<endl;
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare(
-        " mem3.setSizeOfSegment(5): 	0xff | 0xff | 0 | 0 | 0 | \n"))
+        " mem3.setSizeOfSegment(5):     0xff | 0xff | 0 | 0 | 0 | \n"))
     {
-    	cout<<"ERROR: setSizeOfSegment( unsigned int size)"<<endl;
-    	assert(0);
+        cout<<"ERROR: setSizeOfSegment( unsigned int size)"<<endl;
+        assert(0);
     }
 
     setTestingCoutHandler();
     cout<<" mem1.getByteLine(): "<<'\t'<<mem1.getByteLine()<<endl;
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( 
-        " mem1.getByteLine(): 	0x7 | 0x6e | 0xcd | \n"))
+        " mem1.getByteLine():   0x7 | 0x6e | 0xcd | \n"))
     {
-    	cout<<"ERROR: getByteLine()"<<endl;
-    	assert(0);
+        cout<<"ERROR: getByteLine()"<<endl;
+        assert(0);
     }
 
     setTestingCoutHandler();
     cout<<" mem3.getByteLine(0,3): "<<'\t'<<mem3.getByteLine(0,3)<<endl;
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( 
-        " mem3.getByteLine(0,3): 	0xff | 0xff | 0 | \n"))
+        " mem3.getByteLine(0,3):    0xff | 0xff | 0 | \n"))
     {
-    	cout<<"ERROR: getByteLine()"<<endl;
-    	assert(0);
+        cout<<"ERROR: getByteLine()"<<endl;
+        assert(0);
     }
 
     mem3.writeByteLine(d,3);
@@ -701,11 +701,11 @@ void testMemVal()
     cout<<" mem1.writeByteLine(d,3): "<<'\t'<<mem3<<endl;
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( 
-        " mem1.writeByteLine(d,3): 	0xff | 0xff | 0 | 0x7 | 0x4c | \n"))
+        " mem1.writeByteLine(d,3):  0xff | 0xff | 0 | 0x7 | 0x4c | \n"))
     {
-    	cout<<"ERROR: writeByteLine( "
+        cout<<"ERROR: writeByteLine( "
             "const ByteLine& line, unsigned int index)"<<endl;
-    	assert(0);
+        assert(0);
     }
 
     mem3.writeByteLine(d);
@@ -713,10 +713,10 @@ void testMemVal()
     cout<<" mem1.writeByteLine(d): "<<'\t'<<mem3<<endl;
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( 
-        " mem1.writeByteLine(d): 	0x7 | 0x4c | 0 | 0x7 | 0x4c | \n"))
+        " mem1.writeByteLine(d):    0x7 | 0x4c | 0 | 0x7 | 0x4c | \n"))
     {
-    	cout<<"ERROR: writeByteLine( const ByteLine & line)"<<endl;
-    	assert(0);
+        cout<<"ERROR: writeByteLine( const ByteLine & line)"<<endl;
+        assert(0);
     }
 
     mem3.resizeMemVal(6);
@@ -726,13 +726,13 @@ void testMemVal()
         <<" mem3.getSizeOfSegment(): "<<'\t'<<mem3.getSizeOfSegment()<<endl;
     setStandardCoutHandler();
     if ( getTestingCoutBuffer().compare( 
-        " mem3.resizeMemVal(6): 	"
+        " mem3.resizeMemVal(6):     "
         "0x7 | 0x4c | 0 | 0x7 | 0x4c | 0 | 0 | 0 | 0 | 0 | "
-        " mem3.getSizeOfMemVal(): 	10 mem3.getSizeOfSegment(): 	5\n"))
+        " mem3.getSizeOfMemVal():   10 mem3.getSizeOfSegment():     5\n"))
     {
-    	cout<<"ERROR: resizeMemVal( unsigned int size),"
+        cout<<"ERROR: resizeMemVal( unsigned int size),"
             " getSizeOfMemVal(), getSizeOfSegment()"<<endl;
-    	assert(0);
+        assert(0);
     }
 }
 void testMemModel()
@@ -846,7 +846,7 @@ void testRegisterFileModel()
     rfm->writeReg( 1, *rv);
     rfm->writeReg( 0, rv1);
 
-	//Testing read reg
+    //Testing read reg
     setTestingCoutHandler();
     cout << ( int)rfm->readReg( 0)->getByte( 0).getByteVal() << " " <<
             ( int)rfm->readReg( 1)->getByte( 0).getByteVal() << "\n";
@@ -854,8 +854,8 @@ void testRegisterFileModel()
     if ( getTestingCoutBuffer().compare( 
         "2 5\n"))
     {
-    	cout<<"ERROR: readReg()"<<endl;
-    	assert(0);
+        cout<<"ERROR: readReg()"<<endl;
+        assert(0);
     }
 
     delete b1;
@@ -885,8 +885,8 @@ void testRegisterFileModel()
     if ( getTestingCoutBuffer().compare( 
         "8 88\n"))
     {
-    	cout<<"ERROR: read8()"<<endl;
-    	assert(0);
+        cout<<"ERROR: read8()"<<endl;
+        assert(0);
     }
 
     //testing read16
@@ -897,8 +897,8 @@ void testRegisterFileModel()
     if ( getTestingCoutBuffer().compare( 
         "1666 6111\n"))
     {
-    	cout<<"ERROR: read16()"<<endl;
-    	assert(0);
+        cout<<"ERROR: read16()"<<endl;
+        assert(0);
     }
 
     //testing read32
@@ -909,18 +909,18 @@ void testRegisterFileModel()
     if ( getTestingCoutBuffer().compare( 
         "32222 23333\n"))
     {
-    	cout<<"ERROR: read32()"<<endl;
-    	assert(0);
+        cout<<"ERROR: read32()"<<endl;
+        assert(0);
     }
 
 }
 
 int main()
 {
-	testByte();
-	testByteLine();
-	//testMemVal();
-	//testMemModel();
+    testByte();
+    testByteLine();
+    //testMemVal();
+    //testMemModel();
     testOperation();
     testRegisterFileModel();
     return 0;

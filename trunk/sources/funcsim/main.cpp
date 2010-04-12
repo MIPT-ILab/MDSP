@@ -13,28 +13,28 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	/*
-	* Analysing and handling of inserted arguments
-	* see description in "handle_args.h
-	*/
-	char test_file[file_name_size] = "\0";
-	char log_file[file_name_size] = "\0";
-	handleArgs( argc, argv, test_file, log_file);
-	
-	/* Check arguments number */
-	checkArguments( argc);
+    /*
+    * Analysing and handling of inserted arguments
+    * see description in "handle_args.h
+    */
+    char test_file[file_name_size] = "\0";
+    char log_file[file_name_size] = "\0";
+    handleArgs( argc, argv, test_file, log_file);
+    
+    /* Check arguments number */
+    checkArguments( argc);
 
-	/* ifstream is used to handle binary input file */
-	ifstream in_bin;
-	openBinaryInputFile ( in_bin, argv[1]);
+    /* ifstream is used to handle binary input file */
+    ifstream in_bin;
+    openBinaryInputFile ( in_bin, argv[1]);
 
     Core* core = new Core();
     core->init( 0x0000000A);
     core->loadBinary( in_bin);
 
-	closeBinaryInputFile ( in_bin, argv[1]);
+    closeBinaryInputFile ( in_bin, argv[1]);
 
-	core->run();
+    core->run();
 
-	return 0;
+    return 0;
 }

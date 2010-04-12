@@ -31,7 +31,7 @@ class Byte
 
     hostUInt8 byte_val;
     OutputFormat output;
-	unsigned int flag;
+    unsigned int flag;
 
 public:
     /* Constructors */
@@ -42,14 +42,14 @@ public:
 
     /* Get/set methods */
 
-	unsigned int getFlagEnable() const
-	{
-		return this->flag;
-	}
-	void setFlagEnable ( unsigned int temp)
-	{
-		this->flag = temp;
-	}
+    unsigned int getFlagEnable() const
+    {
+        return this->flag;
+    }
+    void setFlagEnable ( unsigned int temp)
+    {
+        this->flag = temp;
+    }
 
 
     /* The constant member function. Returns the Byte value in dec form */
@@ -149,7 +149,7 @@ case HEX:
     os.setf( ostream::showbase);
     os << hex << ( int ( byte.getByteVal()));
     break;
-	}
+    }
     os.flags( old_outputFormat);
     return os;
 }
@@ -371,17 +371,17 @@ inline ostream& operator<< ( ostream& os, const ByteLine& line)
         a = ( line[ i]);
         a.setBinOut();
         os << a << " | ";
-	    break;
+        break;
     case DEC:
         a = ( line[ i]);
         a.setDecOut();
         os << a << " | ";
-	    break;
+        break;
     case HEX:
         a = ( line[ i]);
         a.setHexOut();
         os << a << " | ";
-	    break;
+        break;
         }
     }
     return os;
@@ -400,11 +400,11 @@ inline ByteLine operator+ (  const ByteLine& a,  const ByteLine& b)
 inline ByteLine operator<< ( const ByteLine& byteline, int count)
 {   
     int length = byteline.getSizeOfLine();   // length of byteline
-    int temp_byte_num = count/8;			 // number of shifting byte
-    int right_shift = 8-count%8;			 
-    int left_shift  = count%8;				 
-    hostUInt8 left_part, right_part;		 //left and right part of byte in temp	 
-    ByteLine temp( byteline);						 
+    int temp_byte_num = count/8;             // number of shifting byte
+    int right_shift = 8-count%8;             
+    int left_shift  = count%8;               
+    hostUInt8 left_part, right_part;         //left and right part of byte in temp   
+    ByteLine temp( byteline);                        
     int i;
     for ( i = 0; i < length; i++)   // nulling temp
     {
@@ -426,10 +426,10 @@ inline ByteLine operator>> ( const ByteLine& byteline, int count)
 {
     int length = byteline.getSizeOfLine();   // length of byteline 
     int temp_byte_num = length - count/8 - 1;// number of shifting byte
-    int right_shift = 8-count%8;			  
-    int left_shift  = count%8;				  
-    hostUInt8 left_part, right_part;				  //left and right part of byte in temp	
-    ByteLine temp( byteline);					  	 
+    int right_shift = 8-count%8;              
+    int left_shift  = count%8;                
+    hostUInt8 left_part, right_part;                  //left and right part of byte in temp 
+    ByteLine temp( byteline);                        
     int i;
     for ( i = 0; i < length; i++)
     {
@@ -693,11 +693,11 @@ inline ostream& operator<< ( ostream& os,  MemoryModel& model)
 inline memMap::iterator operator+ ( const memMap::iterator pos,  int count)
 {
     memMap::iterator temp = pos;
-  	for ( int i = 0; i < count; i++)
-	{
-		++temp;
-	}
-	return temp;
+    for ( int i = 0; i < count; i++)
+    {
+        ++temp;
+    }
+    return temp;
 }
 
 

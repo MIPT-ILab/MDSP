@@ -43,34 +43,34 @@ void Core::run()
      * As there isn't any "return" instruction in the assembler at the moment,
      * check for "zero" instruction will be held.
      */
-	while (1)
-	{
-	    Operation* op;
+    while (1)
+    {
+        Operation* op;
 
-		/* Read instruction */
-		MemVal* mem_value ( (MemVal*) new ByteLine( memory->read32(this->GetPC()), HIGH_FIRST));
+        /* Read instruction */
+        MemVal* mem_value ( (MemVal*) new ByteLine( memory->read32(this->GetPC()), HIGH_FIRST));
 
-		/* check for "zero" instruction */
-		if (!mem_value->getHostUInt32())
-		{
-			break;
-		}
+        /* check for "zero" instruction */
+        if (!mem_value->getHostUInt32())
+        {
+            break;
+        }
 
-		op = new Operation( this);
+        op = new Operation( this);
 
-		//cout << memory->read32(this->GetPC()) << endl;
+        //cout << memory->read32(this->GetPC()) << endl;
 
-		/* Decode the operation */
-	    op->decode( mem_value);
+        /* Decode the operation */
+        op->decode( mem_value);
 
-	    //cout << op->encode()->getHostUInt32() << endl;
-	    //op->dump();
+        //cout << op->encode()->getHostUInt32() << endl;
+        //op->dump();
 
-	    /* Add 4 bytes (32 bits) to access next instruction */
-	    this->pc = this->pc + 4;
+        /* Add 4 bytes (32 bits) to access next instruction */
+        this->pc = this->pc + 4;
 
-	    /* Execute operation */
-	    // op->execute();
+        /* Execute operation */
+        // op->execute();
         delete( op);
     }
 
@@ -81,15 +81,15 @@ void Core::run()
  */
 int Core::loadBinary( ifstream& input)
 {
-	hostUInt32 buffer;
-	for ( mathAddr addr = 0x0000000A; !input.eof(); addr += 4)
-	{
-		buffer = 0;
-		input.read( (char*) &buffer, 4);
-		if (buffer)
-		{
-			this->memory->write32(addr, buffer );
-		}
-	}
-	return 1;
+    hostUInt32 buffer;
+    for ( mathAddr addr = 0x0000000A; !input.eof(); addr += 4)
+    {
+        buffer = 0;
+        input.read( (char*) &buffer, 4);
+        if (buffer)
+        {
+            this->memory->write32(addr, buffer );
+        }
+    }
+    return 1;
 }
