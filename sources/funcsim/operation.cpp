@@ -1,6 +1,5 @@
 /**
  * operation.cpp - Implementation of Operation class methods
- * @author Pavel Zaichenkov
  * Copyright 2009 MDSP team
  */
 
@@ -8,6 +7,8 @@
 #include "operation.h"
 #include "register_file.h"
 #include "flags.h"
+#include "cout_wrapper.h"
+#include "massert.h"
 
 /**
  * Constructor with pointer to core. Pointer to core
@@ -823,8 +824,8 @@ void Operation::decodePFLOW()
 
     /* temporary fields */
     OperCode opcode0;
-    hostUInt8 sd = 0, rd = 0;
-    hostUInt16 imm16 = 0;
+    hostUInt8 sd, rd;
+    hostUInt16 imm16;
 
     opcode0 = this->getCode( P_FLOW, this->getValueByMask( op_mask, 26));
     sd = this->getValueByMask( sd_mask, 23);
@@ -908,6 +909,43 @@ void Operation::execute()
  */
 void Operation::executeMove()
 {
+	switch ( opcode0)
+	{
+        case BRM:
+			switch ( sd)
+			{
+				case 0:
+					core->GetMemory()->write16( ( mathAddr)rd, 
+													core->GetRF()->read16( ( physRegNum)rs1));
+					break;
+				case 1:
+					core->GetRF()->write16( ( physRegNum)rd, 
+												core->GetMemory()->read16( (  mathAddr)rs1));
+					break;
+				default:
+					assert( 0);
+			}	
+            break;
+        case BRR:
+            core->GetRF()->write16( ( physRegNum)rd, 
+										core->GetRF()->read16( ( physRegNum)rs1));
+            break;
+        case LD:
+			switch ( sd)
+			{
+				case 0:
+					core->GetRF()->write16( ( physRegNum)rd, imm16);
+					break;
+				case 1:
+					core->GetMemory()->write16(  ( mathAddr)rd, imm16);
+					break;
+				default:
+					assert( 0);
+			}
+            break;
+        default:
+           assert( 0);
+    }
 }
 
 /*
