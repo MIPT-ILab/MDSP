@@ -475,7 +475,7 @@ public:
                          size_of_segmentation( 1){};
 
     /* Conversion constructor RegVal into MemVal */
-    MemVal( const RegVal& reg_val);
+    MemVal( const RegVal& reg_val, unsigned int size_of_segm);
 
     /* Get/set methods */
 
