@@ -29,6 +29,15 @@ public:
 
     ~RegVal(){}
 
+    /* The constant member function. Returns size of MemVal */
+    unsigned int getSizeOfRegVal() const
+    {
+        return getSizeOfLine();
+    }
+
+    /* The constant member function. Returns entire ByteLine */
+    ByteLine getByteLine() const;
+
     RegVal& operator =( RegVal& reg_val)
     {
         if ( this->getSizeOfLine() != reg_val.getSizeOfLine())
