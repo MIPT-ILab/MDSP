@@ -11,6 +11,7 @@
 #ifndef MEMORY_HEADER
 #define MEMORY_HEADER
 #include "memory.h"
+#include "register_file.h"
 #endif /* MEMORY_HEADER*/
 
 /**
@@ -308,6 +309,11 @@ void ByteLine::resizeByteLine( unsigned int count)
  * Implementation of class MemVal
  */
 
+MemVal::MemVal( const RegVal& rv)
+{
+    ByteLine( rv.getByteLine());
+    size_of_segmentation = 1;
+}
 void MemVal::recountLenght()
 {
     unsigned int temp = getSizeOfMemVal() % size_of_segmentation;

@@ -602,7 +602,8 @@ void testMemVal()
     ByteLine dd = e + e;
     MemVal mem1(f);
     MemVal mem2(mem1);
-    MemVal mem3;
+    RegVal rv( 1);
+    MemVal mem3( rv);
     MemVal mem4(5);
     MemVal mem5 = mem1+mem4;
 

@@ -21,7 +21,7 @@
 
 using namespace std;
 
-
+class RegVal;
 /**
  * class Byte implements
  */
@@ -470,9 +470,12 @@ public:
     ByteLine, initializing with null bytes */
     MemVal( unsigned int size):ByteLine( size), size_of_segmentation( 1){};
 
-    /* Conversion constructors ByteLine in MemVal */
+    /* Conversion constructor ByteLine into MemVal */
     MemVal( const ByteLine& line):ByteLine( line),
                          size_of_segmentation( 1){};
+
+    /* Conversion constructor RegVal into MemVal */
+    MemVal( const RegVal& reg_val);
 
     /* Get/set methods */
 
