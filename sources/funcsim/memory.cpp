@@ -309,10 +309,10 @@ void ByteLine::resizeByteLine( unsigned int count)
  * Implementation of class MemVal
  */
 
-MemVal::MemVal( const RegVal& rv)
+MemVal::MemVal( const RegVal& rv, unsigned int size_of_segm)
 {
     ByteLine( rv.getByteLine());
-    size_of_segmentation = 1;
+    size_of_segmentation = size_of_segm;
 }
 void MemVal::recountLenght()
 {

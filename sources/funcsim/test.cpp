@@ -603,7 +603,7 @@ void testMemVal()
     MemVal mem1(f);
     MemVal mem2(mem1);
     RegVal rv( 1);
-    MemVal mem3( rv);
+    MemVal mem3( rv, 1);
     MemVal mem4(5);
     MemVal mem5 = mem1+mem4;
 
