@@ -12,8 +12,8 @@
 #include <map>
 #include <cassert>
 #include <iostream>
-#include "types.h"
 
+#include "types.h"
 
 #define DEFAULT_OUT HEX // default output form
 #define DEFAULT_FLAG 0
@@ -22,10 +22,10 @@
 using namespace std;
 
 class RegVal;
+
 /**
  * class Byte implements
  */
-
 class Byte
 {
 
@@ -177,10 +177,8 @@ inline Byte operator& ( const Byte& left, const Byte& right)
 
 
 /**
- * class ByteLine implements a logical set of bytes
+ * Class ByteLine implements a logical set of bytes
  */
-
-
 class ByteLine
 {
     vector<Byte> *byte_line;

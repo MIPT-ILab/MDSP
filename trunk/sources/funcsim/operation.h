@@ -9,10 +9,12 @@
 #define OPERATION_H
 
 #include <cassert>
+#include <iostream>
 
 #include "types.h"
 #include "core.h"
-#include "memory.h"
+
+class MemVal;
 
 using namespace std;
 

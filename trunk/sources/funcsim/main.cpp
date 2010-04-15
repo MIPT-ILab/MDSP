@@ -3,13 +3,15 @@
  * Copyright 2009 MDSP team
  */
 
+#include <fstream>
+#include <iostream>
+
 #include "core.h"
 #include "types.h"
 #include "main_functions.h"
 #include "handle_args.h"
 #include "defines.h"
-#include <fstream>
-#include <iostream>
+
 using namespace std;
 
 int main(int argc, char** argv)

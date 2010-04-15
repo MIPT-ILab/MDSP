@@ -8,7 +8,8 @@
 #include "register_file.h"
 
 /**
- * Implementation of class RegVal */
+ * Implementation of class RegVal
+ */
 ByteLine RegVal::getByteLine() const
 {
     ByteLine temp( getSizeOfRegVal());

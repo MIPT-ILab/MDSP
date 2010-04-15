@@ -4,10 +4,9 @@
  * Copyright 2009 MDSP team
  */
 
-#include <stdio.h>
 #include "operation.h"
+#include "memory.h"
 #include "register_file.h"
-#include "flags.h"
 
 /**
  * Constructor with pointer to core. Pointer to core
