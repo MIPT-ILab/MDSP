@@ -10,6 +10,7 @@
 
 #include <cassert>
 #include <fstream>
+
 #include "types.h"
 
 class MemoryModel;
@@ -17,6 +18,7 @@ class RegisterFileModel;
 class Flags;
 
 using namespace std;
+
 /**
  * Class of simulator's core description
  */
@@ -26,6 +28,7 @@ class Core
     MemoryModel* memory;
     RegisterFileModel* rf;
     Flags* flags;
+
 public:
     Core();
 

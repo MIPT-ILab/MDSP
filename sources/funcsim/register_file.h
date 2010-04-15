@@ -9,13 +9,13 @@
 #define REGISTER_FILE_H
 
 #include <cassert>
+
 #include "types.h"
 #include "memory.h"
 
 /**
- * class RegVal implements a object to interaction with RF 
+ * Class RegVal implements a object to interaction with RF 
  */
-
 class RegVal: public ByteLine
 {
   
@@ -89,3 +89,4 @@ public:
 };
 
 #endif /* REGISTER_FILE_H */
+

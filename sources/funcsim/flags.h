@@ -8,6 +8,7 @@
 #define FLAGS_H
 
 #include <cassert>
+
 #include "register_file.h"
 
 /**
@@ -28,3 +29,4 @@ public:
 };
 
 #endif /* FLAGS_H */
+

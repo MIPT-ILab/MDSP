@@ -5,14 +5,11 @@
  * Copyright 2009 MDSP team
  */
 
-
 #include <cassert>
-#include <math.h>
-#ifndef MEMORY_HEADER
-#define MEMORY_HEADER
+#include <cmath>
+
 #include "memory.h"
 #include "register_file.h"
-#endif /* MEMORY_HEADER*/
 
 /**
  * Implementation of class ByteLine
@@ -53,6 +50,7 @@ ByteLine::ByteLine( const ByteLine& line)
         ( *byte_line).at( i).setByteVal( line.getByteVal( i));
     }
 }
+
 ByteLine::ByteLine( const Byte& byte)
 {
     output = DEFAULT_OUT;
@@ -180,6 +178,7 @@ ByteLine::ByteLine( hostUInt16 var, OrderType type)
         assert( 0);
     }
 }
+
 ByteLine::ByteLine( hostUInt32 var, OrderType type)
 {
     output = DEFAULT_OUT;
@@ -292,6 +291,7 @@ void ByteLine::addByte( const Byte& byte)
         assert( 0);
     }
 }
+
 void ByteLine::resizeByteLine( unsigned int count)
 {
     try
@@ -314,6 +314,7 @@ MemVal::MemVal( const RegVal& rv, unsigned int size_of_segm)
     ByteLine( rv.getByteLine());
     size_of_segmentation = size_of_segm;
 }
+
 void MemVal::recountLenght()
 {
     unsigned int temp = getSizeOfMemVal() % size_of_segmentation;
@@ -344,6 +345,7 @@ ByteLine MemVal::getByteLine( unsigned int index, unsigned int count) const
     }
     return temp;
 }
+
 ByteLine MemVal::getByteLine() const
 {
     ByteLine temp( getSizeOfMemVal());
@@ -372,6 +374,7 @@ void MemVal::writeByteLine( const ByteLine& line, unsigned int index)
         getByte( i + index).setFlagEnable( DEFAULT_ENABLE);
     }
 }
+
 void MemVal::writeByteLine( const ByteLine & line)
 {
     if ( getSizeOfMemVal() < line.getSizeOfLine())
@@ -386,9 +389,6 @@ void MemVal::writeByteLine( const ByteLine & line)
     }
 }
 
-
-
-
 /**
  * Implementation of Memory Model
  */
@@ -400,7 +400,6 @@ MemoryModel::MemoryModel( unsigned int size)
     size_of_segmentation = size;
 
 }
-
 
 ByteLine MemoryModel::readBL(  mathAddr read_ptr, unsigned int num_of_bytes)
 {
@@ -473,7 +472,6 @@ MemVal MemoryModel::mergeMemVal( memMap::iterator pos)
     return mem_val;
 }
 
-
 void MemoryModel::write( mathAddr write_ptr, const ByteLine& line)
 {
     memMap::iterator pos, start, end ;
@@ -537,7 +535,6 @@ memMap::iterator MemoryModel::findOrInit( mathAddr ptr)
     return pos;
 
 }
-
 
 memMap::iterator MemoryModel::find( mathAddr ptr)
 {

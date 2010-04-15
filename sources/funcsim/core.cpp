@@ -9,9 +9,11 @@
 #include "flags.h"
 #include "register_file.h"
 #include "memory.h"
+
 #include <fstream>
 
 using namespace std;
+
 /*
  * Constructor of the functional simulator core.
  * Creates architectural structures.

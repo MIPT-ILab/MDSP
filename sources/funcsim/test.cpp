@@ -4,13 +4,15 @@
  * Copyright 2009 MDSP team
  */
 
+#include <string>
+
 #include "memory.h"
 #include "operation.h"
 #include "register_file.h"
 #include "cout_wrapper.h"
-#include <string>
 
 using namespace std;
+
 void testByte()
 {
     Byte a( 7);
@@ -122,6 +124,7 @@ void testByte()
 
     cout<<"test byte class: ok"<<endl;
 }
+
 void testByteLine()
 {
     unsigned int testConstructor = 3;
@@ -163,8 +166,6 @@ void testByteLine()
     ByteLine testSum;
     ByteLine testShiftLeft;
     ByteLine testShifrRight;
-
-
     
     testConstructorUInt8L.setBinOut();
     testConstructorUInt16L.setBinOut();
@@ -187,7 +188,6 @@ void testByteLine()
     testOutputFormatDEC.setDecOut();
     testEquality = testConstructorByte;
     testSum = (testEquality + testConstructorByte);
-
         
     //testing byteline constructor with unsigned int parmeter
     setTestingCoutHandler();
@@ -238,7 +238,6 @@ void testByteLine()
         cout<<"ERROR: constructor byte"<<endl;
         assert(0);
     }
-
 
     //testing byteline constructor hostUInt8 low first
     setTestingCoutHandler();
@@ -300,7 +299,6 @@ void testByteLine()
         assert(0);
     }
 
-
     //testing getHostUInt8
     setTestingCoutHandler();
     cout<<"testUInt8: "<< testUInt8 <<endl;
@@ -310,7 +308,6 @@ void testByteLine()
         cout<<"ERROR: getHostUInt8"<<endl;
         assert(0);
     }
-
 
     //testing getHostUInt16
     setTestingCoutHandler();
@@ -322,7 +319,6 @@ void testByteLine()
         assert(0);
     }
 
-
     //testing getHostUInt32
     setTestingCoutHandler();
     cout<<"testUInt32: "<< testUInt32 <<endl;
@@ -332,7 +328,6 @@ void testByteLine()
         cout<<"ERROR: getHostUInt32"<<endl;
         assert(0);
     }
-
 
     //testing getByteVal
     setTestingCoutHandler();
@@ -344,7 +339,6 @@ void testByteLine()
         assert(0);
     }
 
-
     //testing getByte
     setTestingCoutHandler();
     cout<<"test1: "<< test1 <<endl;
@@ -354,7 +348,6 @@ void testByteLine()
         cout<<"ERROR: getByte"<<endl;
         assert(0);
     }
-
 
     //testing setByte
     setTestingCoutHandler();
@@ -376,7 +369,6 @@ void testByteLine()
         assert(0);
     }
 
-
     //testing ResizeByteLine
     setTestingCoutHandler();
     cout<<"testResizeByteLine: "<< testResizeByteLine <<endl;
@@ -386,7 +378,6 @@ void testByteLine()
         cout<<"ERROR: ResizeByteLine"<<endl;
         assert(0);
     }
-
 
     //testing getSizeOfLine
     setTestingCoutHandler();
@@ -398,7 +389,6 @@ void testByteLine()
         assert(0);
     }
 
-
     //testing OutputFormatBIN
     setTestingCoutHandler();
     cout<<"testOutputFormatBIN: "<< testOutputFormatBIN.getOutputFormat() <<endl;
@@ -409,7 +399,6 @@ void testByteLine()
         assert(0);
     }
 
-
     //testing OutputFormatDEC
     setTestingCoutHandler();
     cout<<"testOutputFormatDEC: "<< testOutputFormatDEC.getOutputFormat() <<endl;
@@ -419,7 +408,6 @@ void testByteLine()
         cout<<"ERROR: OutputFormatDEC"<<endl;
         assert(0);
     }
-
 
     //testing OutputFormatHEX
     setTestingCoutHandler();
@@ -445,7 +433,6 @@ void testByteLine()
         assert(0);
     }
 
-
     //testing OutputFormatDEC clrDecOut
     setTestingCoutHandler();
     cout<<"testOutputFormatDECclrDecOut: "<< testOutputFormatDEC.getOutputFormat() <<endl;
@@ -455,7 +442,6 @@ void testByteLine()
         cout<<"ERROR: OutputFormatDEC"<<endl;
         assert(0);
     }
-
 
     //testing OutputFormatHEX clrHexOut
     setTestingCoutHandler();
@@ -467,7 +453,6 @@ void testByteLine()
         assert(0);
     }
 
-
     //testing Equality
     setTestingCoutHandler();
     cout<<"testEquality: "<< testEquality <<endl;
@@ -477,7 +462,6 @@ void testByteLine()
         cout<<"ERROR: Equality"<<endl;
         assert(0);
     }
-
 
     //testing Output
     setTestingCoutHandler();
@@ -489,8 +473,6 @@ void testByteLine()
         assert(0);
     }
 
-
-
     //testing testShiftLeft
     setTestingCoutHandler();
     cout<<"testShiftLeft: "<< (testConstructorByte<<8) <<endl;
@@ -500,7 +482,6 @@ void testByteLine()
         cout<<"ERROR: testShiftLeft"<<endl;
         assert(0);
     }
-
 
     //testing testShiftRight
     setTestingCoutHandler();
@@ -512,7 +493,6 @@ void testByteLine()
         assert(0);
     }
 
-
     //testing Sum
     setTestingCoutHandler();
     cout<<"testSum: "<< testSum <<endl;
@@ -522,7 +502,6 @@ void testByteLine()
         cout<<"ERROR: Sum"<<endl;
         assert(0);
     }
-
 
     //testing byteline constructor hostUInt8 low first 1
     setTestingCoutHandler();
@@ -534,7 +513,6 @@ void testByteLine()
         assert(0);
     }
 
-
     //testing byteline constructor hostUInt16 low first 1
     setTestingCoutHandler();
     cout<<"testConstructorUInt16L1: "<< testConstructorUInt16L1 <<endl;
@@ -544,7 +522,6 @@ void testByteLine()
         cout<<"ERROR: constructor hostUInt16 low first"<<endl;
         assert(0);
     }
-
 
     //testing byteline constructor hostUInt32 low first 1
     setTestingCoutHandler();
@@ -556,7 +533,6 @@ void testByteLine()
         assert(0);
     }
 
-
     //testing byteline constructor hostUInt8 high first 1
     setTestingCoutHandler();
     cout<<"testConstructorUInt8H1: "<< testConstructorUInt8H1 <<endl;
@@ -567,7 +543,6 @@ void testByteLine()
         assert(0);
     }
 
-
     //testing byteline constructor hostUInt16 high first 1
     setTestingCoutHandler();
     cout<<"testConstructorUInt16H1: "<< testConstructorUInt16H1 <<endl;
@@ -577,7 +552,6 @@ void testByteLine()
         cout<<"ERROR: constructor hostUInt16 high first"<<endl;
         assert(0);
     }
-
 
     //testing byteline constructor hostUInt32 high first 1
     setTestingCoutHandler();
@@ -590,9 +564,9 @@ void testByteLine()
     }
 
 }
+
 void testMemVal()
 {   
-
     Byte a( 7);
     Byte b( 205);
     Byte c( 110);
@@ -736,6 +710,7 @@ void testMemVal()
         assert(0);
     }
 }
+
 void testMemModel()
 {
     Byte a( 7);
