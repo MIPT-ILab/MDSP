@@ -34,7 +34,10 @@ TokenAn::~TokenAn()
 void TokenAn::initFileLength( const char *filename)
 {
     FILE *f = fopen( filename, "r");
-    assert( f);
+    if ( f == NULL)
+    {
+        throw 0;
+    }
 
     fseek( f, 0, SEEK_END);
     fileLength = ftell( f);

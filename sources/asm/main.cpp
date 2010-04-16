@@ -20,7 +20,17 @@ int main( int argc, char *argv[])
         inputFile = argv[1];
     }
 
-    TokenAn *tokenan = new TokenAn( inputFile);
+    TokenAn *tokenan;
+    try
+    {
+        tokenan = new TokenAn( inputFile);
+    }
+    catch(...)
+    {
+        cout << "Input file not found: " << inputFile << endl;
+        return 1;
+    }
+
     std::vector<Token *> tokens = tokenan->run();
 
 #ifdef DEBUG_OUTPUT
