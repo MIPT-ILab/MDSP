@@ -345,6 +345,8 @@ void Operation::setALU( OperCode opcode0,
     this->opcode2 = opcode2;
     this->rd      = rd;
     this->am      = am;
+
+    assert( imm10 <= 0x3ff);
     switch ( am )
     {
         case 0:
