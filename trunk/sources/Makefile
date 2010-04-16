@@ -33,12 +33,15 @@ bin:
 
 funcsim: $(MAIN_OBJS_O) bin
 	$(CXX) $(MAIN_OBJS_O) -o bin/funcsim
+	@echo "--- funcsim created ---"
 
 test: $(TEST_OBJS_O) bin
 	$(CXX) $(TEST_OBJS_O) -o bin/test
+	@echo "--- test created ---"
 
 asm: $(ASM_OBJS_O) bin
 	$(CXX) $(ASM_OBJS_O) -o bin/asm
+	@echo "--- asm created ---"
 
 clean:
 	rm -f bin/funcsim bin/test bin/asm $(MAIN_OBJS_O) $(TEST_OBJS_O) $(ASM_OBJS_O)

@@ -3,11 +3,12 @@
  * @author Dmitry Lukiyanchuk
  * Copyright 2009 MDSP team
  */
-#include "defines.h"
 #include <iostream>
 #include <fstream>
 #include <cstring>
 #include <cstdlib>
+
+#include "defines.h"
 
 using namespace std;
 

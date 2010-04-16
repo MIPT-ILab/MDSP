@@ -29,6 +29,7 @@ int checkArguments(int argc)
  */
 int openBinaryInputFile(ifstream& input, char* filename)
 {
+    cout << "Input file: " << filename << endl;
     input.open (filename, ifstream::binary);
     if(input.fail())
     {
