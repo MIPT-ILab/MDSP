@@ -197,9 +197,37 @@ ByteLine *Assembler::encodeOperation(
                 throw; // wrong operand types for 'add'
             }
         }
+        else if ( operation->nOperands() == 2)
+        {
+            if ( (*operation)[0]->isConstInt() &&
+                 (*operation)[1]->isDirectOrIndirectGpr())
+            {
+                imm10 = (*operation)[0]->integer();
+                rd = getGprNum( (*operation)[1]->str());
+
+                if ( (*operation)[1]->isDirectGpr())
+                {
+                    am = 1; // register direct with immediate data
+                            // (implied addressing: sources are imm10
+                            // and rD, destination is rD)
+                }
+                else // isIndirectGpr
+                {
+                    am = 3; // register indirect with immediate data
+                            // (implied addressing: sources are imm10
+                            // and memory, destination is memory
+                            // (rD keeps memory address))
+                }
+            }
+            else
+            {
+                throw;
+            }
+        }
         else
         {
-            assert(0);
+            cout << "Wrong number of operand for 'add': " <<
+                operation->nOperands() << endl;
             throw; // wrong numbers of operands for 'add'
         }
 
