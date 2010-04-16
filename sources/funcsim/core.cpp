@@ -32,6 +32,7 @@ Core::Core()
 void Core::init( hostUInt16 start_pc)
 {
     this->pc = start_pc;
+    cout << "Init. Start PC: 0x" << hex << start_pc << endl;
 }
 
 /*
@@ -39,6 +40,8 @@ void Core::init( hostUInt16 start_pc)
  */
 void Core::run()
 {
+    cout << "Simulation started." << endl;
+
     /*
      * Infinite loop ("while (1)") should be here.
      * To avoid assert interruption ("break") should be realized in the assembler.
@@ -76,6 +79,7 @@ void Core::run()
         delete( op);
     }
 
+    cout << "Simulation finished." << endl;
 }
 
 /*
@@ -84,7 +88,7 @@ void Core::run()
 int Core::loadBinary( ifstream& input)
 {
     hostUInt32 buffer;
-    for ( mathAddr addr = 0x0000000A; !input.eof(); addr += 4)
+    for ( mathAddr addr = this->pc; !input.eof(); addr += 4)
     {
         buffer = 0;
         input.read( (char*) &buffer, 4);
@@ -95,3 +99,4 @@ int Core::loadBinary( ifstream& input)
     }
     return 1;
 }
+

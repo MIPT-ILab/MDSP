@@ -32,7 +32,7 @@ int main(int argc, char** argv)
     openBinaryInputFile ( in_bin, argv[1]);
 
     Core* core = new Core();
-    core->init( 0x0000000A);
+    core->init( 0x0000);
     core->loadBinary( in_bin);
 
     closeBinaryInputFile ( in_bin, argv[1]);
