@@ -242,7 +242,7 @@ ByteLine *Assembler::encodeOperation(
 
         op.setALU( NOP, NOP, NOP, 0, 0, 0, 0, 0);
     }
-    else if ( *operation == "jmp")
+    else if ( *operation == "jmp" || *operation == "jgt")
     {
         hostUInt8 sd = 0;
         hostUInt8 rd = 0;
@@ -268,7 +268,7 @@ ByteLine *Assembler::encodeOperation(
             assert( 0);
         }
 
-        op.setPFLOW( JMP, sd, rd, imm16);
+        op.setPFLOW( *operation == "jmp" ? JMP : JGT, sd, rd, imm16);
     }
     else
     {
