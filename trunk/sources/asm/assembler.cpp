@@ -27,9 +27,7 @@ std::map<unsigned int, hostUInt8> Assembler::run()
      * addresses in program memory */
     std::map<SemanticUnit *, unsigned int> unit_addr;
 
-    /* map from label identifiers to its absolute byte addresses
-     * in program memory */
-    std::map<std::string, unsigned int> label_addr;
+    label_addr.clear();
 
     for ( int i = 0; i < (int)units.size(); i ++)
     {
@@ -41,7 +39,7 @@ std::map<unsigned int, hostUInt8> Assembler::run()
         }
         else if ( units[i]->type() == UNIT_OPERATION)
         {
-            pc ++; // add operation length in command memory words
+            pc += 4; // add operation length in bytes
         }
     }
 
@@ -71,7 +69,7 @@ std::map<unsigned int, hostUInt8> Assembler::run()
     for ( std::map<unsigned int, ByteLine *>::iterator op = op_list.begin();
           op != op_list.end(); op ++)
     {
-        unsigned int start_addr = op->first * 4; // in bytes
+        unsigned int start_addr = op->first; // in bytes
         ByteLine *bytes = op->second;
 
         for ( int i = 0; i < (int)bytes->getSizeOfLine(); i ++)
@@ -243,6 +241,34 @@ ByteLine *Assembler::encodeOperation(
         }
 
         op.setALU( NOP, NOP, NOP, 0, 0, 0, 0, 0);
+    }
+    else if ( *operation == "jmp")
+    {
+        hostUInt8 sd = 0;
+        hostUInt8 rd = 0;
+        hostUInt16 imm16 = 0;
+
+        if ( operation->nOperands() != 1)
+        {
+            assert( 0);
+        }
+
+        if ( (*operation)[0]->isDirectGpr())
+        {
+            sd = 0;
+            rd = getGprNum( (*operation)[0]->str());
+        }
+        else if ( (*operation)[0]->isDirectCustomId())
+        {
+            sd = 1;
+            imm16 = label_addr[(*operation)[0]->str()];
+        }
+        else
+        {
+            assert( 0);
+        }
+
+        op.setPFLOW( JMP, sd, rd, imm16);
     }
     else
     {
