@@ -161,7 +161,7 @@ ByteLine *Assembler::encodeOperation(
         op.setMOVE( LD, sd, imm16, 0,
                 getGprNum( (*operation)[1]->str()));
     }
-    else if ( *operation == "add")
+    else if ( *operation == "add" || *operation == "sub")
     {
         hostUInt8 am = 0;
         hostUInt8 rs1 = 0;
@@ -231,7 +231,8 @@ ByteLine *Assembler::encodeOperation(
             throw; // wrong numbers of operands for 'add'
         }
 
-        op.setALU( NOP, ADD, NOP, am, imm10, rs1, rs2, rd);
+        op.setALU( NOP, *operation == "add" ? ADD : SUB, NOP,
+                   am, imm10, rs1, rs2, rd);
     }
     else if ( *operation == "nop")
     {
