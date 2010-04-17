@@ -58,5 +58,11 @@ private:
      * The sequence of semantic units given on the input
      */
     std::vector<SemanticUnit *> units;
+
+    /**
+     * map from label identifiers to its absolute byte addresses
+     * in program memory
+     */
+    std::map<std::string, unsigned int> label_addr;
 };
 
