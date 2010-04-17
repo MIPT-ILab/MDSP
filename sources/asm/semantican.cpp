@@ -173,6 +173,11 @@ bool Operand::isConstInt() const
     return type == OPERAND_CONST_INT;
 }
 
+bool Operand::isDirectCustomId() const
+{
+    return !indirect && type == OPERAND_CUSTOM_ID;
+}
+
 SemanticUnit *SemanticUnit::createOperation(
     std::string opcode, std::vector<Operand *> operands)
 {
