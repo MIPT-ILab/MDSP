@@ -85,6 +85,12 @@ public:
     bool isConstInt() const;
 
     /**
+     * Returns whether the operand is a user-defined identifier
+     * (e.g. a label)
+     */
+    bool isDirectCustomId() const;
+
+    /**
      * Returns the identifier for operands of types
      * OPERAND_GPR and OPERAND_CUSTOM_ID
      *
