@@ -3,6 +3,7 @@
 CXX:=g++ -Wall
 
 COMMON_OBJS_CPP := \
+    funcsim/config.cpp\
 	funcsim/core.cpp \
 	funcsim/flags.cpp \
 	funcsim/memory.cpp \

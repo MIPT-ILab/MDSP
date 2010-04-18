@@ -36,4 +36,4 @@ public:
     char* getLogFilename();
 };
 
-#endif CONFIG_H
+#endif  // CONFIG_H
