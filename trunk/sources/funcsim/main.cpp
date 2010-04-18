@@ -10,9 +10,6 @@
 #include "types.h"
 #include "main_functions.h"
 #include "config.h"
-#include "defines.h"
-
-#include "config.cpp"
 
 using namespace std;
 
