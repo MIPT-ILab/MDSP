@@ -9,21 +9,17 @@
 #include "core.h"
 #include "types.h"
 #include "main_functions.h"
-#include "handle_args.h"
+#include "config.h"
 #include "defines.h"
 
 using namespace std;
 
 int main(int argc, char** argv)
 {
-    /*
-    * Analysing and handling of inserted arguments
-    * see description in "handle_args.h
-    */
-    char test_file[FILE_NAME_SIZE] = "\0";
-    char log_file[FILE_NAME_SIZE] = "\0";
-    handleArgs( argc, argv, test_file, log_file);
-    
+    /* Analysing and handling of inserted arguments */
+    Config handler( argc, argv);
+    handler.handleArgs();
+
     /* Check arguments number */
     checkArguments( argc);
 
