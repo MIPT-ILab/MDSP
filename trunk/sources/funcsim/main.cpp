@@ -12,6 +12,8 @@
 #include "config.h"
 #include "defines.h"
 
+#include "config.cpp"
+
 using namespace std;
 
 int main(int argc, char** argv)
