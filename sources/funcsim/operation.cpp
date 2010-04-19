@@ -556,7 +556,7 @@ void Operation::dumpPFLOW()
             cout << "jmp " << (int) this->sd << ", r" << (int) temp << ";" << endl;
             break;
         case JGT:
-            cout << "jmp " << (int) this->sd << ", r" << (int) temp << ";" << endl;
+            cout << "jgt " << (int) this->sd << ", r" << (int) temp << ";" << endl;
             break;
         default:
             cout << "Operation code is invalid in P_FLOW\n";
