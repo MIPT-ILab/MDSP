@@ -802,12 +802,12 @@ void testOperation()
         0x62044020);
     testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 1, 0, 0,  5, 0, 0, 0, "jmp 1, r5;\n",
         0x050080a0);
-    testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 1, 0, 0, 10, 0, 0, 0, "jmp 1, r10;\n",
-        0x0a0080a4);
+    testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 1, 0, 0, 10, 0, 0, 0, "jgt 1, r10;\n",
+        0x0a0080a2);
     testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 0, 0, 0,  0, 0, 0, 2, "jmp 0, r2;\n",
         0x020000a0);
-    testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 0, 0, 0,  0, 0, 0, 5, "jmp 0, r5;\n",
-        0x050000a4);
+    testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 0, 0, 0,  0, 0, 0, 5, "jgt 0, r5;\n",
+        0x050000a2);
 }
 
 void testRegisterFileModel()
