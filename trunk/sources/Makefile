@@ -3,7 +3,7 @@
 CXX:=g++ -Wall
 
 COMMON_OBJS_CPP := \
-    funcsim/config.cpp\
+	funcsim/config.cpp \
 	funcsim/core.cpp \
 	funcsim/flags.cpp \
 	funcsim/memory.cpp \
@@ -23,11 +23,17 @@ ASM_OBJS_CPP := \
 	funcsim/operation.cpp \
 	funcsim/register_file.cpp 
 
-MAIN_OBJS_O:=${MAIN_OBJS_CPP:%.cpp=%.o}
-TEST_OBJS_O:=${TEST_OBJS_CPP:%.cpp=%.o}
-ASM_OBJS_O:=${ASM_OBJS_CPP:%.cpp=%.o}
+MAIN_OBJS_O:=${MAIN_OBJS_CPP:%.cpp=build/%.o}
+TEST_OBJS_O:=${TEST_OBJS_CPP:%.cpp=build/%.o}
+ASM_OBJS_O:=${ASM_OBJS_CPP:%.cpp=build/%.o}
 
 all: funcsim test asm
+
+build/%.o: %.cpp build_dirs
+	$(CXX) -c -o $@ $<
+
+build_dirs:
+	mkdir -p build/{asm,funcsim}
 
 bin:
 	mkdir -p bin
@@ -45,5 +51,5 @@ asm: $(ASM_OBJS_O) bin
 	@echo "--- asm created ---"
 
 clean:
-	rm -f bin/funcsim bin/test bin/asm $(MAIN_OBJS_O) $(TEST_OBJS_O) $(ASM_OBJS_O)
+	rm -rf build bin
 
