@@ -58,7 +58,8 @@ bool SemanticAn::isOpcode( std::string s)
 {
     return s == "brm" || s == "brr" || s == "ld" ||
            s == "nop" || s == "add" || s == "sub" ||
-           s == "jmp" || s == "jgt";
+           s == "jmp" || s == "jgt" ||
+           s == "hlt" || s == "int";
 }
 
 std::vector<Operand *> SemanticAn::parseOperandList()
