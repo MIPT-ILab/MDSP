@@ -70,7 +70,8 @@ typedef enum OperType
     MAC,
     DMAC,
     SIMD,
-    P_FLOW
+    P_FLOW,
+    SYS
 } OperType;
 
 /* Operation code */
@@ -83,7 +84,9 @@ typedef enum OperCode
     ADD,
     SUB,
     JMP,
-    JGT
+    JGT,
+    HLT,
+    INT
 } OperCode;
 
 typedef enum FlagType
