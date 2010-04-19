@@ -16,8 +16,8 @@ using namespace std;
 int main(int argc, char** argv)
 {
     /* Analysing and handling of inserted arguments */
-    Config handler( argc, argv);
-    handler.handleArgs();
+    Config handler;
+    handler.handleArgs( argc, argv);
 
     /* Check arguments number */
     checkArguments( argc);
