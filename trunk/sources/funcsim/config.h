@@ -1,3 +1,4 @@
+
 /**
  * config.h - class for analysing and handling of inputed arguments 
  * @author Dmitry Lukiyanchuk
@@ -7,18 +8,15 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <string>
+using namespace std;
+
 class Config
 {
 private:
-    /* static variables */
-    static const unsigned short int version_size = 10;
-    static const unsigned short int file_name_size = 80;
     /* variables */
-    int argc;
-    char** argv;
-    char input_filename[file_name_size];
-    char log_filename[file_name_size];
-    char version[version_size];
+    string* input_filename;
+    string* log_filename;
 
     /* auxiliary methods */
     bool checkFileExisting(const char* filename) const;
@@ -27,13 +25,12 @@ private:
 public:
     /* constructors */
     Config();
-    Config( const int argc, char** argv);
     ~Config();
 
     /* methods */
-    int handleArgs();
-    char* getInputFilename();
-    char* getLogFilename();
+    int handleArgs( int argc, char** argv);
+    string getInputFilename() const;
+    string getLogFilename() const;
 };
 
 #endif  // CONFIG_H

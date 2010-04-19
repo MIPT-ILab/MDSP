@@ -18,19 +18,13 @@ using namespace std;
 /* constructors */
 Config::Config()
 {
-    strncpy( version, "0.1", version_size);
-    strncpy( input_filename, "\0", file_name_size);
-    strncpy( log_filename, "\0", file_name_size);
-}
-Config::Config( const int main_argc, char** main_argv):
-argc(main_argc), argv(main_argv)
-{
-    strncpy( version, "0.1", version_size);
-    strncpy( input_filename, "\0", file_name_size);
-    strncpy( log_filename, "\0", file_name_size);
+    this->input_filename = new string;
+    this->log_filename = new string;
 }
 Config::~Config()
 {
+    delete[] this->input_filename;
+    delete[] this->log_filename;
 }
 /* public methods */
 /*
@@ -46,7 +40,7 @@ Config::~Config()
 *    Now allowed symbols are {a-z, A-Z, 0-9, _, ., \, /}.
 * If <log> already exist, function will ask user for replacing.
 */
-int Config::handleArgs()
+int Config::handleArgs( int argc, char** argv)
 {
     /* case: -h*/
     for ( int i = 0; i < argc; i++)
@@ -55,7 +49,7 @@ int Config::handleArgs()
         {
             // Print help information and stop programm
             cout << "Functional simulator of multimedia digital signal processor." << endl;
-            cout << "Version: " << version << endl;
+            cout << "Version: 0.1" << endl;
             cout << "Usage:" << endl;
             cout << endl;
             cout << "\t" << argv[0] << " -h - show this help" << endl;
@@ -75,12 +69,12 @@ int Config::handleArgs()
         * if not - report about error and stop programm;
         * if yes - save input_filename_name.
         */
-        if ( checkFileExisting(argv[1]) != 0)
+        if ( this->checkFileExisting(argv[1]) != 0)
         {
             cout << "Unable to open \"" << argv[1] << "\"" << endl;
             exit(-1);    // Stop programm
         }
-        strncpy( input_filename, argv[1], file_name_size);
+        *this->input_filename = argv[1];
     } else
     {
         DIE( "Wrong input. Call \"%s -h\" for help\n", argv[0])
@@ -90,30 +84,30 @@ int Config::handleArgs()
         /* case: -l <log> */
         if ( strcmp( argv[i], "-l") == 0)
         {
-            if ( strcmp( log_filename, "\0") != 0)
+            if ( *this->log_filename != "\0")
             {
                 DIE( "Error! Doubling call of \"-l\" parameter.\n")
             } else if ( i == ( argc - 1))
             {
                 DIE( "Wrong call of \"-l\" parameter. Call \"%s -h\" for help.\n", argv[0])
             }
-            if ( checkSymbols( argv[i+1]) != 0)
+            if ( this->checkSymbols( argv[i+1]) != 0)
             {
-                DIE( "There is permitted symbol in log_filename name.\n")
+                DIE( "There is forbided symbol in log_filename.\n")
             }
-            if ( checkFileExisting(argv[i+1]) == 0)
+            if ( this->checkFileExisting(argv[i+1]) == 0)
             {
                 cout << "File \"" << argv[i+1] << "\" already exist." 
                  << "Do you wont replace it?" << " (y/n)" << endl;
-                char answer[10] = "\0";
+                char answer[2] = "\0";
                 bool flag = 1;
                 while ( flag != 0)
                 {
                     cout << ">";
-                    cin >> answer;
+                    cin.get( answer, 2);
                     if ( strcmp( answer, "y") == 0)
                     {
-                        strncpy( log_filename, argv[i+1], file_name_size);
+                        *this->log_filename = argv[i+1];
                         flag = 0;
                     } else if( strcmp( answer, "n") == 0)
                     {
@@ -125,7 +119,7 @@ int Config::handleArgs()
                 }
             } else
             {
-                strncpy( log_filename, argv[i+1], file_name_size);
+                *this->log_filename = argv[i+1];
             }
             ++i;    // <log> has been already used
         } 
@@ -137,17 +131,17 @@ int Config::handleArgs()
     }
     return 0;    // continue main
 }
-char* Config::getInputFilename()
+string Config::getInputFilename() const
 {
-    return input_filename;
+    return *this->input_filename;
 }
 /*
  * To check, if <log> was called you should check if
  * getLogFilename != "\0".
  */
-char* Config::getLogFilename()
+string Config::getLogFilename() const
 {
-    return log_filename;
+    return *this->log_filename;
 }
 /* auxiliary private methods */
 bool Config::checkFileExisting(const char *filename) const
@@ -164,19 +158,16 @@ bool Config::checkFileExisting(const char *filename) const
  * Check acceptability of file name symbols
  * {a-z, A-Z, 0-9, _, ., \, /}.
  */
-bool Config::checkSymbols(const char *filename) const
+bool Config::checkSymbols(const char* filename) const
 {
     unsigned short int len = int( strlen(filename));
     for( int i = 0; i < len; i++)
     {
-        if(( filename[i] >= 'a' && filename[i] <= 'z') 
+        if(!(( filename[i] >= 'a' && filename[i] <= 'z') 
             || ( filename[i] >= 'A' && filename[i] <= 'Z') 
             || ( filename[i] >= '0' && filename[i] <= '9')
             || filename[i] == '_' || filename[i] == '.'
-            || filename[i] == '\\'|| filename[i] == '/')
-        {
-        }
-        else
+            || filename[i] == '\\'|| filename[i] == '/'))
         {
             return 1;
         }
