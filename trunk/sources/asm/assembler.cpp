@@ -270,6 +270,20 @@ ByteLine *Assembler::encodeOperation(
 
         op.setPFLOW( *operation == "jmp" ? JMP : JGT, sd, rd, imm16);
     }
+    else if ( *operation == "hlt")
+    {
+        assert( operation->nOperands() == 0);
+        
+        op.setSYS( HLT, 0);
+    }
+    else if ( *operation == "int")
+    {
+        assert( operation->nOperands() == 1);
+
+        int arg = (*operation)[0]->integer();
+        assert( arg >= 0 && arg <= 255);
+        op.setSYS( INT, arg);
+    }
     else
     {
         cout << "Unknown operation: " << operation->str() << endl;

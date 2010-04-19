@@ -26,3 +26,7 @@ label:
 	jgt %r0
 	jgt label
 
+
+	int $5
+	hlt
+
