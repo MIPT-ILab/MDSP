@@ -1,7 +1,7 @@
 /**
  * operation.h - Header of Operation class,
  * which defines an instruction fields
- * @author Pavel Zaichenkov
+ * @author Pavel Zaichenkov, Alexander Potashev
  * Copyright 2009 MDSP team
  */
 
@@ -34,6 +34,7 @@ class Operation
     /* Bit fields are used for memory saving */
     hostUInt8 sd:2; // S/D field
     hostUInt8 am:3; // addressing mode field
+    hostUInt8 imm8;
     hostUInt16 imm10:10;
     hostUInt16 imm16;
     hostUInt8 rs1:5, rs2:5, rd:5;
@@ -54,14 +55,17 @@ class Operation
     void decodeMOVE();
     void decodeALU();
     void decodePFLOW();
+    void decodeSYS();
 
     void encodeMOVE();
     void encodeALU();
     void encodePFLOW();
+    void encodeSYS();
 
     void dumpMOVE();
     void dumpALU();
     void dumpPFLOW();
+    void dumpSYS();
 
     void executeMove();
     void executeALU();
@@ -168,6 +172,10 @@ public:
                    hostUInt8 sd,
                    hostUInt8 rd,
                    hostUInt16 imm16);
+
+    /* Set method for an operation of SYS type */
+    void setSYS( OperCode opcode0,
+                 hostUInt8 imm8);
 
 
     /* Encode the operation */

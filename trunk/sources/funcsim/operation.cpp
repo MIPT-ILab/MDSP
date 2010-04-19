@@ -1,6 +1,6 @@
 /**
  * operation.cpp - Implementation of Operation class methods
- * @author Pavel Zaichenkov
+ * @author Pavel Zaichenkov, Alexander Potashev
  * Copyright 2009 MDSP team
  */
 
@@ -127,6 +127,8 @@ OperType Operation::getType( hostUInt32 type)
             return SIMD;
         case 5:
             return P_FLOW;
+        case 6:
+            return SYS;
     }
 }
 
@@ -149,6 +151,8 @@ hostUInt32 Operation::getInt32FromType( OperType type)
             return 4;
         case P_FLOW:
             return 5;
+        case SYS:
+            return 6;
         default:
             cout << "Unknown operation type encoded in "<< (int) type << " type" << endl;
             assert( 0);
@@ -208,6 +212,18 @@ OperCode Operation::getCode( OperType type, hostUInt32 code)
                     return NOP;
             }
             break;
+        case SYS:
+            switch ( code)
+            {
+                case 0:
+                    return HLT;
+                case 1:
+                    return INT;
+                default:
+                    cout << "Illegal operation in SYS\n";
+                    assert( 0);
+                    return NOP;
+            }
         default:
             cout << "Invalid operation type\n";
             assert( 0);
@@ -264,6 +280,17 @@ hostUInt32 Operation::getInt32FromCode( OperType type, OperCode code)
                     assert( 0);
             }
             break;
+        case SYS:
+            switch ( code)
+            {
+                case HLT:
+                    return 0;
+                case INT:
+                    return 1;
+                default:
+                    cout << "Illegal operation in SYS\n";
+                    assert( 0);
+            }
         default:
             cout << "Invalid operation type\n";
             assert( 0);
@@ -426,6 +453,33 @@ void Operation::setPFLOW( OperCode opcode0,
     }
 }
 
+/**
+ * Set an operation of SYS type
+ */
+void Operation::setSYS( OperCode opcode0,
+                        hostUInt8 imm8)
+{
+    this->clear();
+    this->type = SYS;
+    this->opcode0 = opcode0;
+    this->imm8 = imm8;
+
+    switch ( opcode0)
+    {
+        case HLT:
+            if ( imm8)
+            {
+                cout << "Imm8 has to be set to 0 in HLT\n";
+            }
+            break;
+        case INT:
+            break;
+        default:
+            cout << "Illegal operation code in SYS\n";
+            assert( 0);
+    }
+}
+
 /*
  * Print MOVE operation to the console
  */
@@ -506,6 +560,25 @@ void Operation::dumpPFLOW()
             break;
         default:
             cout << "Operation code is invalid in P_FLOW\n";
+            assert(0);
+    }
+}
+
+/*
+ * Print SYS operation to the console
+ */
+void Operation::dumpSYS()
+{
+    switch ( this->opcode0)
+    {
+        case HLT:
+            cout << "hlt;" << endl;
+            break;
+        case INT:
+            cout << "int 0x" << hex << (int) this->imm8 << dec << ";" << endl;
+            break;
+        default:
+            cout << "Operation code is invalid in SYS\n";
             assert(0);
     }
 }
@@ -605,6 +678,9 @@ MemVal* Operation::encode()
         case P_FLOW:
             this->encodePFLOW();
             break;
+        case SYS:
+            this->encodeSYS();
+            break;
         default:
             cout << "Illegal type in encode()\n";
             assert( 0);
@@ -637,6 +713,9 @@ void Operation::decode( MemVal* mem_value)
             break;
         case P_FLOW:
             this->decodePFLOW();
+            break;
+        case SYS:
+            this->decodeSYS();
             break;
         default:
             cout << "Illegal type in decode()\n";
@@ -842,7 +921,7 @@ void Operation::decodePFLOW()
 }
 
 /*
- * Encode MOVE command to a binary form
+ * Encode P_FLOW command to a binary form
  * Necessary bytes are set in the determined position
  * All mask are set as it is described in architecture.
  */
@@ -860,6 +939,35 @@ void Operation::encodePFLOW()
     }
 }
 
+/**
+ * Decode SYS command from binary form
+ */
+void Operation::decodeSYS()
+{
+    /* skip type decoding as we already know the type */
+
+    hostUInt32       op_mask = 0x1E000000; // OP mask
+    hostUInt32     imm8_mask = 0x000000FF; // imm8 mask
+
+    /* temporary fields */
+    OperCode opcode0;
+    hostUInt8 imm8;
+
+    opcode0 = this->getCode( SYS, this->getValueByMask( op_mask, 25));
+    imm8 = this->getValueByMask( imm8_mask, 0);
+
+    this->setSYS( opcode0, imm8);
+}
+
+/*
+ * Encode SYS command to a binary form
+ */
+void Operation::encodeSYS()
+{
+    setValueByShift( getInt32FromCode( SYS, this->opcode0), 25);
+    setValueByShift( this->imm8, 0);
+}
+
 /*
 * Print an operation to console
 */
@@ -875,6 +983,9 @@ void Operation::dump()
             break;
         case P_FLOW:
             this->dumpPFLOW();
+            break;
+        case SYS:
+            this->dumpSYS();
             break;
         default:
             cout << "Can't print to console, because operation has illegal type\n";
