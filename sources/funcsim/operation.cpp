@@ -906,7 +906,7 @@ void Operation::decodePFLOW()
     hostUInt8 sd = 0, rd = 0;
     hostUInt16 imm16 = 0;
 
-    opcode0 = this->getCode( P_FLOW, this->getValueByMask( op_mask, 26));
+    opcode0 = this->getCode( P_FLOW, this->getValueByMask( op_mask, 25));
     sd = this->getValueByMask( sd_mask, 23);
 
     if ( !sd)
@@ -927,7 +927,7 @@ void Operation::decodePFLOW()
  */
 void Operation::encodePFLOW()
 {
-    setValueByShift( getInt32FromCode( P_FLOW, this->opcode0), 26);
+    setValueByShift( getInt32FromCode( P_FLOW, this->opcode0), 25);
     setValueByShift( this->sd, 23);
     if( !this->sd)
     {
