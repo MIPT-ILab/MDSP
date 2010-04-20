@@ -808,6 +808,11 @@ void testOperation()
         0x020000a0);
     testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 0, 0, 0, 0,  0, 0, 0, 5, "jgt 0, r5;\n",
         0x050000a2);
+    testOperationSetDumpEncode( SYS, HLT, NOP, NOP, 0, 0, 0, 0,  0, 0, 0, 0, "hlt;\n",
+        0x000000C0);
+    testOperationSetDumpEncode( SYS, INT, NOP, NOP, 0, 0, 16, 0,  0, 0, 0, 0, "int 0x10;\n",
+        0x100000C2);
+
 }
 
 void testRegisterFileModel()
