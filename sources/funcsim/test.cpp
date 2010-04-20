@@ -759,7 +759,7 @@ void testMemModel()
 void testOperationSetDumpEncode(
     OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
     hostUInt8 sd, hostUInt8 am,
-    hostUInt16 imm10, hostUInt16 imm16,
+    hostUInt8 imm8, hostUInt16 imm10, hostUInt16 imm16,
     hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd,
     const char *expected, hostUInt32 expected_word)
 {
@@ -767,7 +767,7 @@ void testOperationSetDumpEncode(
 
     setTestingCoutHandler();
     op->set( type, opcode0, opcode1, opcode2,
-             sd, am, imm10, imm16, rs1, rs2, rd);
+             sd, am, imm8, imm10, imm16, rs1, rs2, rd);
     op->dump();
     setStandardCoutHandler();
     if (getTestingCoutBuffer().compare(expected))
@@ -790,23 +790,23 @@ void testOperationSetDumpEncode(
 
 void testOperation()
 {
-    testOperationSetDumpEncode(   MOVE, BRR, NOP, NOP, 0, 0, 0,  0, 1, 0, 2, "brr 1, r2;\n",
+    testOperationSetDumpEncode(   MOVE, BRR, NOP, NOP, 0, 0, 0, 0,  0, 1, 0, 2, "brr 1, r2;\n",
         0x2200000c); // 000 011 --- -- ----------- 00001 00010
-    testOperationSetDumpEncode(   MOVE, BRM, NOP, NOP, 1, 0, 0,  0, 1, 0, 2, "brm 1, r1, r2;\n",
+    testOperationSetDumpEncode(   MOVE, BRM, NOP, NOP, 1, 0, 0, 0,  0, 1, 0, 2, "brm 1, r1, r2;\n",
         0x22002004); // 000 001 --- 01
-    testOperationSetDumpEncode(   MOVE,  LD, NOP, NOP, 0, 0, 0,  1, 0, 0, 2, "ld 0, r1, r2;\n",
+    testOperationSetDumpEncode(   MOVE,  LD, NOP, NOP, 0, 0, 0, 0,  1, 0, 0, 2, "ld 0, r1, r2;\n",
         0x22000018); // 000 110 --- 00
-    testOperationSetDumpEncode(    ALU, NOP, ADD, NOP, 0, 1, 6,  0, 0, 0, 2, "add 1, 6, r2;\n",
+    testOperationSetDumpEncode(    ALU, NOP, ADD, NOP, 0, 1, 0, 6,  0, 0, 0, 2, "add 1, 6, r2;\n",
         0xc2802020);
-    testOperationSetDumpEncode(    ALU, NOP, SUB, NOP, 0, 0, 0,  0, 1, 3, 2, "sub 0, r1, r3, r2;\n",
+    testOperationSetDumpEncode(    ALU, NOP, SUB, NOP, 0, 0, 0, 0,  0, 1, 3, 2, "sub 0, r1, r3, r2;\n",
         0x62044020);
-    testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 1, 0, 0,  5, 0, 0, 0, "jmp 1, r5;\n",
+    testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 1, 0, 0, 0,  5, 0, 0, 0, "jmp 1, r5;\n",
         0x050080a0);
-    testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 1, 0, 0, 10, 0, 0, 0, "jgt 1, r10;\n",
+    testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 1, 0, 0, 0, 10, 0, 0, 0, "jgt 1, r10;\n",
         0x0a0080a2);
-    testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 0, 0, 0,  0, 0, 0, 2, "jmp 0, r2;\n",
+    testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 0, 0, 0, 0,  0, 0, 0, 2, "jmp 0, r2;\n",
         0x020000a0);
-    testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 0, 0, 0,  0, 0, 0, 5, "jgt 0, r5;\n",
+    testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 0, 0, 0, 0,  0, 0, 0, 5, "jgt 0, r5;\n",
         0x050000a2);
 }
 
@@ -890,6 +890,7 @@ void testRegisterFileModel()
     }
 
 }
+
 
 int main()
 {
