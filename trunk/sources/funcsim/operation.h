@@ -128,6 +128,7 @@ public:
     }
     inline void setSD( hostUInt8 sd) { this->sd = sd; }
     inline void setAM( hostUInt8 am) { this->am = am; }
+    inline void setImm8 (hostUInt8 imm8) { this->imm8 = imm8; }
     inline void setImm10( hostUInt16 imm10) { this->imm10 = imm10; }
     inline void setImm16( hostUInt16 imm16) { this->imm16 = imm16; }
     inline void setSReg1( hostUInt8 rs1) { this->rs1 = rs1; }
@@ -140,7 +141,7 @@ public:
         this->type = MOVE;
         this->opcode0 = this->opcode1 = this->opcode2 = NOP;
         this->sd = this->am = 0;
-        this->imm10 = this->imm16 = 0;
+        this->imm8 = this->imm10 = this->imm16 = 0;
         this->rs1 = this->rs2 = this->rd = 0;
     }
 
