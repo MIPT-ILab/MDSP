@@ -147,7 +147,7 @@ public:
     /* General set method (includes all properties as parameters) */
     void set( OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
               hostUInt8 sd, hostUInt8 am,
-              hostUInt16 imm10, hostUInt16 imm16,
+              hostUInt8 imm8, hostUInt16 imm10, hostUInt16 imm16,
               hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd);
 
     /* Set method for an operation of MOVE type */

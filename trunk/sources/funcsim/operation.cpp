@@ -31,7 +31,7 @@ Operation::Operation()
  */
 void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode opcode2,
                      hostUInt8 sd, hostUInt8 am,
-                     hostUInt16 imm10, hostUInt16 imm16,
+                     hostUInt8 imm8, hostUInt16 imm10, hostUInt16 imm16,
                      hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd)
 {
     switch ( type)
@@ -42,6 +42,10 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
             if ( am)
             {
                 cout << "AM has to be set to 0 in MOVE\n";
+            }
+            if ( imm8)
+            {
+                cout << "Imm8 has to be set to 0 in MOVE\n";
             }
             if ( imm10)
             {
@@ -98,6 +102,45 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
                 cout << "OpCode2 has to be set to 0 in P_FLOW\n";
             }
             this->setPFLOW( opcode0, sd, rd, imm16);
+            break;
+        case SYS:
+            if ( opcode1)
+            {
+                cout << "OpCode1 has to be set to 0 in SYS\n";
+            }
+            if ( opcode2)
+            {
+                cout << "OpCode2 has to be set to 0 in SYS\n";
+            }
+            if ( sd)
+            {
+                cout << "SD has to be set to 0 in SYS\n";
+            }
+            if ( am)
+            {
+                cout << "AM has to be set to 0 in SYS\n";
+            }
+            if ( imm10)
+            {
+                cout << "imm10 has to be set to 0 in SYS\n";
+            }
+            if ( imm16)
+            {
+                cout << "imm16 has to be set to 0 in SYS\n";
+            }
+            if ( rs1)
+            {
+                cout << "Rs1 has to be set to 0 in SYS\n";
+            }
+            if ( rs2)
+            {
+                cout << "Rs2 has to be set to 0 in SYS\n";
+            }
+            if ( rd)
+            {
+                cout << "Rd has to be set to 0 in SYS\n";
+            }
+            this->setSYS(opcode0, imm8);
             break;
         default:
             cout << "Illegal Type in set method\n";
@@ -742,7 +785,7 @@ OperType Operation::decodeType()
  */
 void Operation::encodeType()
 {
-    setValueByShift(getInt32FromType(this->type), 29);
+    setValueByShift( getInt32FromType(this->type), 29);
 }
 
 /**
