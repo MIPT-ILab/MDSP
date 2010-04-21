@@ -70,6 +70,7 @@ class Operation
     void executeMove();
     void executeALU();
     void executePFlow();
+    void executeSYS();
 
     void setInstrWord( MemVal* mem_value);
     void setMemBlock( MemVal* mem_value);

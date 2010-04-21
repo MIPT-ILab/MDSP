@@ -28,6 +28,7 @@ class Core
     MemoryModel* memory;
     RegisterFileModel* rf;
     Flags* flags;
+    bool stop; // shows if instruction execution is running
 
 public:
     Core();
@@ -37,11 +38,14 @@ public:
     inline MemoryModel* GetMemory() { return this->memory; }
     inline RegisterFileModel* GetRF() { return this->rf; }
     inline Flags* GetFlags() { return this->flags; }
+    inline bool GetStop() { return this->stop; }
 
     void init( hostUInt16 start_pc);
     int loadBinary ( ifstream& input);
     void run();
 
+    void Stop() { this->stop = true; }   // stop instruction execution
+    void Start() { this->stop = false; } // start instruction execution
 };
 
 #endif /* CORE_H */
