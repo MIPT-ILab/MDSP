@@ -1052,6 +1052,9 @@ void Operation::execute()
         case P_FLOW:
             this->executePFlow();
             break;
+        case SYS:
+            this->executeSYS();
+            break;
         default:
             cout << "Invalid operation type\n";
             assert( 0);
@@ -1119,4 +1122,24 @@ void Operation::executePFlow()
     /* Read flag register before execution */
 
 }
+
+/*
+ * Execute the operation of SYS type
+ */
+void Operation::executeSYS()
+{
+    switch ( opcode0)
+    {
+        case HLT:
+            this->core->Stop();  // stop instruction execution
+            break;
+        case INT:
+            /* Interruption handling should be here */
+            break;
+        default:
+            assert ( 0);
+    }
+}
+
+
 

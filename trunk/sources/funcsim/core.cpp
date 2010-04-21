@@ -32,6 +32,7 @@ Core::Core()
 void Core::init( hostUInt16 start_pc)
 {
     this->pc = start_pc;
+    this->stop = true;
     cout << "Init. Start PC: 0x" << hex << start_pc << endl;
 }
 
@@ -77,6 +78,12 @@ void Core::run()
         /* Execute operation */
         // op->execute();
         delete( op);
+
+        /* Check if it is necessary to stop instruction execution */
+        if ( GetStop())
+        {
+            break;
+        }
     }
 
     cout << "Simulation finished." << endl;
