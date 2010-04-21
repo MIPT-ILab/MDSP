@@ -121,8 +121,6 @@ void testByte()
         cout<<"ERROR: not equal comparing"<<endl;
         assert(0);
     }
-
-    cout<<"test byte class: ok"<<endl;
 }
 
 void testByteLine()
