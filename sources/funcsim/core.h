@@ -28,7 +28,7 @@ class Core
     MemoryModel* memory;
     RegisterFileModel* rf;
     Flags* flags;
-    bool stop; // shows if instruction execution is running
+    bool stop; // shows if instruction execution is stopped
 
 public:
     Core();
