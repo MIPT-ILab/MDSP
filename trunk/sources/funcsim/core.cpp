@@ -32,7 +32,7 @@ Core::Core()
 void Core::init( hostUInt16 start_pc)
 {
     this->pc = start_pc;
-    this->stop = true;
+    this->stop = false;
     cout << "Init. Start PC: 0x" << hex << start_pc << endl;
 }
 
