@@ -336,12 +336,13 @@ ByteLine MemVal::getByteLine( unsigned int index, unsigned int count) const
     ByteLine temp( count);
     for ( unsigned int i = 0; i < count ; i++)
     {
-        if ( temp.getByte( i).getFlagEnable() != DEFAULT_ENABLE)
+		temp.setByte( i, getByte( i + index));
+        /*if ( temp.getByte( i).getFlagEnable() != DEFAULT_ENABLE)
         {
             cout << "ERROR: Out of Memory!\n";
             assert( 0);
-        }
-        temp.setByte( i, getByte( i + index));
+        }*/
+        
     }
     return temp;
 }
@@ -351,12 +352,13 @@ ByteLine MemVal::getByteLine() const
     ByteLine temp( getSizeOfMemVal());
     for ( unsigned int i = 0; i < getSizeOfMemVal(); i++)
     {
-        if ( temp.getByte( i).getFlagEnable() != DEFAULT_ENABLE)
+		temp.setByte( i, getByte( i));
+        /*if ( temp.getByte( i).getFlagEnable() != DEFAULT_ENABLE)
         {
             cout << "ERROR: Out of Memory!\n";
             assert( 0);
-        }
-        temp.setByte( i, getByte( i));
+        }*/
+        
     }
     return temp;
 }
@@ -433,7 +435,17 @@ ByteLine MemoryModel::readBL(  mathAddr read_ptr, unsigned int num_of_bytes)
     ( *mem_model).erase( start, end);
     ( *mem_model).erase( end);
     ( *mem_model)[ temp_addr] = memval;
-    return memval.getByteLine( read_ptr - temp_addr, num_of_bytes);
+	ByteLine temp( memval.getByteLine( read_ptr - temp_addr, num_of_bytes));
+    for ( unsigned int i = 0; i < temp.getSizeOfLine(); i++)
+    {
+		if ( temp.getByte( i).getFlagEnable() != DEFAULT_ENABLE)
+        {
+            cout << "ERROR: Out of Memory!\n";
+            assert( 0);
+        }
+        
+    }
+    return temp;
 }
 
 MemVal MemoryModel::read(  mathAddr read_ptr, unsigned int num_of_bytes)
