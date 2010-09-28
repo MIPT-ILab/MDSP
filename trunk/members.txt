@@ -4,3 +4,4 @@ Gilmullin Arthur
 Vladimir Dubihin
 Pavel Kryukov
 Sergei Gvozdarev
+Boris Belousov
