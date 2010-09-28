@@ -33,7 +33,8 @@ build/%.o: %.cpp build_dirs
 	$(CXX) -c -o $@ $<
 
 build_dirs:
-	mkdir -p build/{asm,funcsim}
+	mkdir -p build/asm
+	mkdir -p build/funcsim
 
 bin:
 	mkdir -p bin
