@@ -1,8 +1,8 @@
-Grigory Rechistov 
-Yuri Baida
-Gilmullin Arthur
-Vladimir Dubihin
-Pavel Kryukov
-Sergei Gvozdarev
-Boris Belousov
-Aleksey Ahnevskiy
+1. Grigory Rechistov 
+2. Yuri Baida
+3. Gilmullin Arthur
+4. Vladimir Dubihin
+5. Pavel Kryukov
+6. Sergei Gvozdarev
+7. Boris Belousov
+8. Aleksey Ahnevskiy
