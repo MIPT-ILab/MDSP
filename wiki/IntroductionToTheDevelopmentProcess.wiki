@@ -30,4 +30,8 @@ To be done.
 
 After build has suceeded, in the folder bin/ one can find three binaries: `asm` - for assembler, `funcsim` - for standalone functional simulator, and `test` - for testing. Run any of them to watch what they do.
 
+To run funcsim, type in your command shell (assuming you are in `<svn_root>/sources/` folder)
+
+`bin/funcsim ../tests/simple_test.bin`
+
 Currently, funcsim is not quite operable, so don't expect much yet.
