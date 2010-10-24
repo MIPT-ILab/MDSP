@@ -1,0 +1,33 @@
+#summary Jump start tips for the new developers.
+
+= Introduction =
+
+This page contains some notes that might be useful for students that start the development of our project. It contains the overview of the SVN structure, the ways to build, test and run the code.
+
+= Build =
+
+It should be possible to build our code with several compiler suites. We support: If one finds that something is broken on does not build on a particular OS/compiler that we support he should file this as a bug.
+
+ * Microsoft Visual Studio (on Windows)
+ TODO: what versions, how to do, usage of VCPROJ's.
+ * Cygwin GCC (on Windows)
+ To setup Cygwin, download setup.exe from the CygWin's main page: http://www.cygwin.com/
+ Run `setup.exe`, find the gcc package in the list, install it. You'll have a new item on your desktop called "Cygwin shell". Run it, and from there you'll  be able to build the code with command `make` in folder `<svn_root>/sources`.
+ * MinGW GCC (Windows)
+ Download the compiler installer from http://www.mingw.org/, install it.
+ After that a command `make` and `gcc` should be available on your system.
+ * GCC (Linux)
+ Install package called `gcc` (the name may vary depending on your distribution).
+ After that a `gcc` and `make` commands should be available from a command shell.
+
+Note that the oldest supported GCC version is 4.3.x.
+
+= Test =
+
+To be done.
+
+= Run =
+
+After build has suceeded, in the folder bin/ one can find three binaries: `asm` - for assembler, `funcsim` - for standalone functional simulator, and `test` - for testing. Run any of them to watch what they do.
+
+Currently, funcsim is not quite operable, so don't expect much yet.
