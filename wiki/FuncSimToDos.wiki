@@ -20,3 +20,5 @@ assert(0);
 
  * Extend decoder support.
  * modify `Code::run()` method to receive the amount of instructions requested and return the amount of instructions really done.
+
+ * Separate the program to semantics library and scheduler.
