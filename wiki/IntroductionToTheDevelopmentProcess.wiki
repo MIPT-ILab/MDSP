@@ -1,37 +1,99 @@
 #summary Jump start tips for the new developers.
+#labels intro
 
 = Introduction =
 
 This page contains some notes that might be useful for students that start the development of our project. It contains the overview of the SVN structure, the ways to build, test and run the code.
 
+
+= Our SVN structure =
+Here it is:
+{{{
+mdsp
+├── foils
+│   ├── arch
+│   │   ├── 2009 -- previous year slides
+│   │   └── 2010 -- this year slides, you've seen them on our lectures
+│   └── code -- presentations made by students on code they wrote
+├── sources
+│   ├── asm -- source for assembler
+│   ├── bin -- folder with binaries (if they are built)
+│   ├── build -- temporary files of build
+│   │   ├── asm
+│   │   └── funcsim
+│   ├── funcsim -- source for functional simulator
+│   └── users -- previous year code. We thiink of removing it and start using branches
+│     
+└── tests -- source code for test
+}}}
+
+
+= Working with code = 
+
+One can use any text editor of his preference to work with source code, be it Emacs, Vi, VIM, Notepad... But we suggest you to use an IDE (integrated development environment) as they provide convenient editing, navigation and debugging environment. Often an IDE is accosiated with a particular compiler/debugger set. We will support two main IDEs.
+
+== Microsoft Visual Studio ==
+
+Microsoft Visual Studio (abbreviated as "MS VS" or just "VS") is an integrated development environment from Microsoft. It is widely used in software development for Windows only.
+
+Wee will support x86 (32 bit) versions of MS VS 2008 and 2010 Professional Editions (I am not sure if an Express Edition will be complete enough). 
+
+== Eclipse CDT ==
+Eclipse is an open source community whose projects are focused on building an extensible development platform.
+The CDT Project provides a fully functional C and C++ Integrated Development Environment based on the Eclipse platform. 
+
+We will supoprt Eclipse of versions Galileo (3.5.x) and Helios (3.6.x) for both Linux (x86 and x86_64) and Windows x86.
+
+http://www.eclipse.org/cdt/
+
+== Installation and setup of an IDE ==
+
+ * MS VS
+   The installation CD image can be acquired from MSDNAA software program site if you are a participant of it (you can become one if you are a MIPT student, and you are). Or, you can ask me, Grigory, for the ISO file of this DVD. Or, just use Allter to find one.
+  Note that we don't need all .NET, MFC, C# or other mumbo-jumbo technologies from Microsoft - just plain Visual C++, so don't install everything from that DVD - just components required for C++ development. 
+
+ * Eclipse CDT
+   One can download it from the official site, or find on LAN, or ask me again for assistance.
+     * Be sure to get *CDT* not just plain Eclipse!
+     * Choose right OS and architecture as well.
+   In some cases you'll also need Java Runtime Environment if you haven't installed one before.
+   
+
 = Build =
 
 It should be possible to build our code with several compiler suites. We support: If one finds that something is broken on does not build on a particular OS/compiler that we support he should file this as a bug.
 
- * Microsoft Visual Studio (on Windows)
- TODO: what versions, how to do, usage of VCPROJ's.
- * Cygwin GCC (on Windows)
- To setup Cygwin, download setup.exe from the CygWin's main page: http://www.cygwin.com/
- Run `setup.exe`, find the gcc package in the list, install it. You'll have a new item on your desktop called "Cygwin shell". Run it, and from there you'll  be able to build the code with command `make` in folder `<svn_root>/sources`.
- * MinGW GCC (Windows)
- Download the compiler installer from http://www.mingw.org/, install it.
- After that a command `make` and `gcc` should be available on your system.
- * GCC (Linux)
- Install package called `gcc` (the name may vary depending on your distribution).
- After that a `gcc` and `make` commands should be available from a command shell.
+So far, we expect to support: 
+ * Microsoft Visual Studio 2008 and 2010 (Windows x86)
+   MS VS use project files (`*.VCPROJ`) or solution files (`MDSP.SLN`) to store a project settings, so one should point it to one before trying to build.
+ * Cygwin GCC (Windows x86)
+ To setup Cygwin, download setup.exe from the Cygwin's main page: http://www.cygwin.com/
+ Run `setup.exe`, find the `gcc` package in the list, install it. You'll have a new item on your desktop called "Cygwin shell". Run it, and from there you'll  be able to build the code with command `make` in folder `<svn_root>/sources`.
+ * MinGW GCC (Windows x86)
+ Download the compiler installer from http://www.mingw.org/, run it.
+ After that a command `make` and `gcc` should be available on your system from a command shell.
+ * GCC (Linux x86 and x86_64)
+ Install a package called `gcc` (the name may vary depending on your distribution).
+ Examples:
+  * Ubuntu: `sudo apt-get install build-essential gcc`
+  * Fedora (as root): `yum install gcc`
+ After that `gcc` and `make` commands should be available from a command shell.
 
-Note that the oldest supported GCC version is 4.3.x.
+Note that the oldest supported GCC version is 4.1.x. on all platforms.
+
+After your build has suceeded, in the folder `sources/bin/` one can find three binaries: `asm` - for assembler, `funcsim` - for standalone functional simulator, and `test` - for testing. Run any of them to watch what they do.
 
 = Test =
 
-To be done.
+Run `test`. If everything is OK, no output is shown - the program just finishes. If something is wrong, then certain messages are being printed.
 
 = Run =
-
-After build has suceeded, in the folder bin/ one can find three binaries: `asm` - for assembler, `funcsim` - for standalone functional simulator, and `test` - for testing. Run any of them to watch what they do.
 
 To run funcsim, type in your command shell (assuming you are in `<svn_root>/sources/` folder)
 
 `bin/funcsim ../tests/simple_test.bin`
 
 Currently, funcsim is not quite operable, so don't expect much yet.
+
+== Assembler ==
+You can also run `asm`. Watch what it requires from you and give it to it - the samples of source code are there!
