@@ -30,38 +30,38 @@ mdsp
 
 = Working with code = 
 
-One can use any text editor of his preference to work with source code, be it Emacs, Vi, VIM, Notepad... But we suggest you to use an IDE (integrated development environment) as they provide convenient editing, navigation and debugging environment. Often an IDE is accosiated with a particular compiler/debugger set. We will support two main IDEs.
+One can use any text editor of his preference to work with source code, be it Emacs, Vi, VIM, Notepad... But we suggest you to use an IDE (integrated development environment) as they provide convenient editing, navigation and debugging environment. Often an IDE is accosiated with a particular compiler/debugger set. 
 
-== Microsoft Visual Studio ==
+== Supported IDEs ==
 
-Microsoft Visual Studio (abbreviated as "MS VS" or just "VS") is an integrated development environment from Microsoft. It is widely used in software development for Windows only.
+The following main IDEs are supported in our project:
 
-Wee will support x86 (32 bit) versions of MS VS 2008 and 2010 Professional Editions (I am not sure if an Express Edition will be complete enough). 
+ * ==== Microsoft Visual Studio ====
+   Microsoft Visual Studio (abbreviated as "MS VS" or just "VS") is an integrated development environment from Microsoft. It is widely used in software development for Windows only.
+   Wee will support x86 (32 bit) versions of MS VS 2008 and 2010 Professional Editions (I am not sure if an Express Edition will be complete enough). 
 
-== Eclipse CDT ==
-Eclipse is an open source community whose projects are focused on building an extensible development platform.
-The CDT Project provides a fully functional C and C++ Integrated Development Environment based on the Eclipse platform. 
-
-We will supoprt Eclipse of versions Galileo (3.5.x) and Helios (3.6.x) for both Linux (x86 and x86_64) and Windows x86.
-
-http://www.eclipse.org/cdt/
+ * ==== Eclipse CDT ====
+   Eclipse is an open source community whose projects are focused on building an extensible development platform.
+   The CDT Project provides a fully functional C and C++ Integrated Development Environment based on the Eclipse platform. 
+   We will supoprt Eclipse of versions Galileo (3.5.x) and Helios (3.6.x) for both Linux (x86 and x86_64) and Windows x86.
+  http://www.eclipse.org/cdt/
 
 == Installation and setup of an IDE ==
 
- * MS VS
-   The installation CD image can be acquired from MSDNAA software program site if you are a participant of it (you can become one if you are a MIPT student, and you are). Or, you can ask me, Grigory, for the ISO file of this DVD. Or, just use Allter to find one.
-  Note that we don't need all .NET, MFC, C# or other mumbo-jumbo technologies from Microsoft - just plain Visual C++, so don't install everything from that DVD - just components required for C++ development. 
+ * ==== Microsoft Visual Studio ====
+   The installation CD image can be acquired from MSDNAA software program site if you are a participant of it (you can become one if you are a MIPT student, and you are). Or, you can ask Grigory Rechistov for the ISO file of this DVD. Or, just use http://allter.mipt.ru/ to find one.
+  _ Note that we don't need all .NET, MFC, C# or other additional technologies from Microsoft - just plain Visual C++, so don't install everything from that DVD - just components required for C++ development. _
 
- * Eclipse CDT
-   One can download it from the official site, or find on LAN, or ask me again for assistance.
+ * ==== Eclipse CDT ====
+   One can download it from the official site, or find on LAN, or ask  Grigory Rechistov again for assistance.
      * Be sure to get *CDT* not just plain Eclipse!
      * Choose right OS and architecture as well.
-   In some cases you'll also need Java Runtime Environment if you haven't installed one before.
+  In some cases you'll also need Java Runtime Environment if you haven't installed one before.
    
 
 = Build =
 
-It should be possible to build our code with several compiler suites. We support: If one finds that something is broken on does not build on a particular OS/compiler that we support he should file this as a bug.
+It should be possible to build our code with several compiler suites. If one finds that something is broken on does not build on a particular OS/compiler, which we support, he should file this as a bug.
 
 So far, we expect to support: 
  * Microsoft Visual Studio 2008 and 2010 (Windows x86)
