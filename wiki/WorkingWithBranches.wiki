@@ -22,9 +22,28 @@ To be done.
 
  * Go to http://
  * Press "ask for review" button
- * wait the  mentor to make a review
- * read the results - if your code is accepted
+ * wait the  mentor to make a review.
+ * read the results - if your code is accepted then proceed to mergin your changes into main trunk.
 
-= To merge the branch = 
+= To merge the branch to main trunk = 
 
-To be done.
+ # Get a working copy (WC) of *main trunk*, not a branch!
+   `svn checkout https://mdsp.googlecode.com/svn/trunk`
+ # Remember the number of revision when your branch was created. Suppose it is *250*.
+ # Inside the trunk WC run the command:
+   {{{
+svn merge -r 250:HEAD https://mdsp.googlecode.com/svn/branches/new-branch-name
+}}}
+   {{{250:HEAD}}} is a range of revisions since the moment of branch creation to its latest version.
+ # Now your WC of trunk has merged version of the branch and the changes from trunk. If you have some messages of conflicts, resolve them (_how? this is another story..._), if everything is OK, proceed to the next step.
+ # Commit the changes to the main trunk:
+  `svn commit -m 'Merged with new-branch-name'`
+ # Congratulations! Now your work is available to the whole team. Hope you've done it well.
+
+
+= Notes = 
+
+More details at
+http://svnbook.red-bean.com/en/1.0/re16.html
+
+Or just Google it.
