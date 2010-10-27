@@ -22,7 +22,7 @@ mdsp
 │   │   ├── asm
 │   │   └── funcsim
 │   ├── funcsim -- source for functional simulator
-│   └── users -- previous year code. We thiink of removing it and start using branches
+│   └── users -- previous year code. We think of removing it and start using branches
 │     
 └── tests -- source code for test
 }}}
