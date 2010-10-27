@@ -3,7 +3,7 @@
 
 = Introduction =
 
-This page is not a guide yet, because the experiments are just started. Don't on info located on it.
+This page is not a guide yet, because the experiments are just started. Don't rely on info located on it.
 
 = To create a branch and switch to it =
 
