@@ -1,0 +1,30 @@
+#summary Some knowlegde on SVN branches and Google Code specifics of it
+#labels Phase-Requirements
+
+= Introduction =
+
+This page is not a guide yet, because the experiments are just started. Don't on info located on it.
+
+= To create a branch and switch to it =
+
+From the root of your SVN working copy:
+{{{
+svn copy . https://mdsp.googlecode.com/svn/branches/new-branch-name -m 'reason of creation'
+
+svn switch https://mdsp.googlecode.com/svn/branches/new-branch-name
+
+}}}
+
+
+= To request the review =
+
+To be done.
+
+ * Go to http://
+ * Press "ask for review" button
+ * wait the  mentor to make a review
+ * read the results - if your code is accepted
+
+= To merge the branch = 
+
+To be done.
