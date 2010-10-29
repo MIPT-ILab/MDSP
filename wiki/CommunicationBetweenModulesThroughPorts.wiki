@@ -1,5 +1,5 @@
 #summary Communication between modules using ports
-#labels Phase-Design,Phase-Implementation,Cheatsheet
+#labels Phase-Design,Cheatsheet
 
 = Introduction =
  
@@ -15,6 +15,7 @@ method calls and global variables to pass information between hardware structure
 Ports have the two main functions in MDSP:
 
  * To pass information from one module to another.
+
  * To model delays within a hardware structure.
 
 ==== Between modules ====
@@ -23,7 +24,7 @@ Modules that represent hardware structures exchange information through ports. A
 To pass information from one module to another, the sending module must write the relevant information to the port. The receiving module on the other side of the port’s connection reads the information from the port.
 
 ==== Within a module ====
-MDSP also uses ports to model delays within a hardware structure. <wiki:comment> Insert an example here <\wiki:comment> It creates a clear separation between a hardware algorithm, independent of time, and the timing component itself.
+MDSP also uses ports to model delays within a hardware structure. <wiki:comment> Insert an example here </wiki:comment> It creates a clear separation between a hardware algorithm, independent of time, and the timing component itself.
 
 == Port paradigms ==
 
@@ -32,8 +33,65 @@ Like real hardware, ports have a fixed latency and a maximum bandwidth. The info
 
 ==== Port connection ====
 MDSP implements ports through first-in, first-out (FIFO) queues. Each module declares one end of the port. The sending module declares an output port with an identifier string, and the receiving module declares the corresponding input port with the same identifier string. MDSP’s utility code handles the actual connection between output and input ports.
-The utility code runs at initialization and connects output and input ports using the identifier strings. 
+The utility code runs at initialization and connects output and input ports using the identifier strings.
 
+==== Clocking ====
+To be defined.
 ----------------------------------------------------------------------------------------
 
-= Design details =
+= Using details =
+
+The Port class is implemented as a templated C++ class. This means that a Port can be used to communicate any type of data. This part contains detailed information about how to use MDSP ports.
+
+== Port Basics ==
+
+=== Setup ===
+
+The following steps should be done to setup the port (all other connection details happen automatically):
+
+<ol>  
+<li> Declare the endpoints. </li> 
+   _Note that a port consists of two parts: write (or input) and read (or output). Be careful, usually they are also called "ports", but only their combination is a real port._
+<li> Initialize them with the same unique string. </li>
+
+<li> Set bandwidth and latency. </li>
+   Only the input knows the real bandwidth and only the output knows the latency. It means that the sending module defines the bandwidth and the receiving module defines the latency (i.e. different received modules can provide different latencies without changing of the sending module).
+</ol>
+
+Let's look at an example:
+<ol>
+<li> Declare the write port, and give it a type (CPU_INST is used for all our examples, but any type or class will work): </li>
+
+{{{  
+   WritePort<CPU_INST> var1_wport;
+}}}
+
+<li> Initialize it and set the bandwidth (usually in the module constructor): </li> 
+
+{{{  
+   var1_wport.init( "UNIQUE_STRING");
+
+   var1_wport.bandwidth( bandwidth);
+}}}
+  
+The string is used to connect the ports. The other parameter, bandwidth is the desired bandwidth for this connection.
+
+<li> Declare the read port with the same type as the write port it will get connected to: </li>
+
+{{{
+    ReadPort<CPU_INST> var1_rport; 
+}}} 
+
+<li> Initialize the read port, with the same unique string as the write port: </li>
+ 
+{{{
+    var1_rport.init( "UNIQUE_STRING");
+
+    var1_rport.latency( latency);
+}}}
+  
+Again, the string is used to connect the ports.  The other parameter, latency is the desired latency for this connection.
+</ol>
+  
+Note that the SAME unique string is used for each port. This is how the ports are connected, so these MUST be the same exact string for each connection.  As mentioned earlier, connection happens automatically, so this is all that needs to be done to setup and connect the ports.
+
