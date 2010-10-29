@@ -60,10 +60,10 @@ The following steps should be done to setup the port (all other connection detai
 
 Let's look at an example:
 <ol>
-<li> Declare the write port, and give it a type (CPU_INST is used for all our examples, but any type or class will work): </li>
+<li> Declare the write port, and give it a type (`CpuInstr` is used for all our examples, but any type or class will work): </li>
 
 {{{  
-   WritePort<CPU_INST> var1_wport;
+   WritePort<CpuInstr> var1_wport;
 }}}
 
 <li> Initialize it and set the bandwidth (usually in the module constructor): </li> 
@@ -79,19 +79,45 @@ The string is used to connect the ports. The other parameter, bandwidth is the d
 <li> Declare the read port with the same type as the write port it will get connected to: </li>
 
 {{{
-    ReadPort<CPU_INST> var1_rport; 
+    ReadPort<CpuInstr> var2_rport; 
 }}} 
 
 <li> Initialize the read port, with the same unique string as the write port: </li>
  
 {{{
-    var1_rport.init( "UNIQUE_STRING");
+    var2_rport.init( "UNIQUE_STRING");
 
-    var1_rport.latency( latency);
+    var2_rport.latency( latency);
 }}}
   
 Again, the string is used to connect the ports.  The other parameter, latency is the desired latency for this connection.
 </ol>
   
-Note that the SAME unique string is used for each port. This is how the ports are connected, so these MUST be the same exact string for each connection.  As mentioned earlier, connection happens automatically, so this is all that needs to be done to setup and connect the ports.
+Note that the SAME unique string is used for each port. This is how the ports are connected, so these MUST be the same exact string for each connection. 
+As mentioned earlier, connection happens automatically, so this is all that needs to be done to setup and connect the ports.
 
+
+=== Using Ports ===
+Using ports is pretty simple. Carrying on with the previous example:
+<ul>
+<li> To write instr1 to a port: </li>
+
+{{{  
+   CpuInstr instr1;
+   ... // fulfill instr1
+   var1_wport.write( instr1, cycle); // Where cycle is a current CPU cycle number.
+}}}
+
+<li> To read data from a port: </li>
+
+{{{
+   CpuInstr instr2; 
+
+   var2_rport.read( instr2, cycle); // Where instr2 is пшмут as a reference parameter,
+                                    // i.e. the read function fulfills it.
+                                    // Cycle is a current CPU cycle number.
+}}}
+</ul>
+
+=== Error checking ===
+To be defined.
