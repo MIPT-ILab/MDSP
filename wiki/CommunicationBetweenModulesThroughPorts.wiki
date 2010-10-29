@@ -1,14 +1,39 @@
-#summary One-sentence summary of this page.
+#summary Communication between modules using ports
 #labels Phase-Design,Phase-Implementation,Cheatsheet
 
 = Introduction =
+ 
+== Motivation ==
 
-Add your content here.
+Current trends in semiconductor scaling indicate that wire delay will play a critical role in processor performance. Thus, time and, more specifically, delays between and in hardware structures must become first-class abstractions in the processor design representation. For this reason, and to keep the interfaces between modules cleaner and better defined, we created MDSP's ports communication paradigm.
 
+Ports define interfaces between modules to facilitate coding of reusable modules. A well-defined interface disallows implicit side effects, which might hinder the fidelity, reusability, and portability of model code. Traditionally, performance models use
+method calls and global variables to pass information between hardware structures. Unfortunately, these techniques permit an unrestricted information flow that allows unexpected side effects to occur.
 
-= Details =
+== Functions == 
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Ports have the two main functions in MDSP:
+
+ * To pass information from one module to another.
+ * To model delays within a hardware structure.
+
+==== Between modules ====
+Modules that represent hardware structures exchange information through ports. A real processor or system typically does not have any global information instantaneously accessible anywhere in the chip.Instead, a processor’s state is distributed among several hardware components that might take several cycles to communicate. Components that need to access the state of other components must do so through explicit communication. Ports represent communication channels that let modules representing hardware components communicate such state information with one another.
+
+To pass information from one module to another, the sending module must write the relevant information to the port. The receiving module on the other side of the port’s connection reads the information from the port.
+
+==== Within a module ====
+MDSP also uses ports to model delays within a hardware structure. <wiki:comment> Insert an example here <\wiki:comment> It creates a clear separation between a hardware algorithm, independent of time, and the timing component itself.
+
+== Port paradigms ==
+
+==== Bandwidth and latency ====
+Like real hardware, ports have a fixed latency and a maximum bandwidth. The information that a module sends through a port does not appear in the receiving module before the port’s fixed latency elapses. Similarly, a module cannot send more information than the port’s bandwidth allows. Thus, MDSP can accurately model wire delays and bandwidth between modules.
+
+==== Port connection ====
+MDSP implements ports through first-in, first-out (FIFO) queues. Each module declares one end of the port. The sending module declares an output port with an identifier string, and the receiving module declares the corresponding input port with the same identifier string. MDSP’s utility code handles the actual connection between output and input ports.
+The utility code runs at initialization and connects output and input ports using the identifier strings. 
+
+----------------------------------------------------------------------------------------
+
+= Design details =
