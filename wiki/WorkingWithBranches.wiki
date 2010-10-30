@@ -3,7 +3,15 @@
 
 = Introduction =
 
-This page is not a guide yet, because the experiments are just started. Don't rely on info located on it.
+The branches are used to separate your version of code, which is allowed to have some errors and even to not build, from the main trunk that should be as stable as possible. The approximate work procedure is  as follows:
+ # You create a branch fro a task you are going to work on;
+ # You modify the code in branch, build it, test it;
+ # You commit the branch;
+ # You request a review from a mentor;
+ # The mentor looks through the code in branch, makes some comments, approves it;
+ # After an approve you merge the branch with main trunk.
+
+Look through the below description for details. There are some commands that can be run from a command line (_if you installed a command line version of `svn`_), but you can easily find the way to do it from TortoiseSVN.
 
 = To create a branch and switch to it =
 
@@ -23,7 +31,7 @@ To be done.
  * Go to http://
  * Press "ask for review" button
  * wait the  mentor to make a review.
- * read the results - if your code is accepted then proceed to mergin your changes into main trunk.
+ * read the results - if your code is accepted then proceed to merging your changes into main trunk.
 
 = To merge the branch to main trunk = 
 
