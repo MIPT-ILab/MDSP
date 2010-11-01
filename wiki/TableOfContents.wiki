@@ -4,13 +4,13 @@
 <wiki:comment> I'm sorry for this non-standard code style, but in other case wiki cannot generate lists right. </wiki:comment>
 
 <ul>
-<li><h2> Introduction </h2></li>
+<li> Introduction </li>
 <ul>   
 <li><b>      About Project </b></li>
 <li><b>      About Intel-MIPT lab </b></li>
 <li><b>      About Us </b></li>
 </ul>    
-<li><h2> HowTo Section </h2></li>
+<li> HowTo Section </li>
 <ul>    
 <li><b>      Build </b></li>
 <li><b>      Run Tests </b></li>
@@ -18,7 +18,7 @@
 <li><b>      Commit  </b></li>
 <li><b>      Report Bug </b></li>
 </ul>    
-<li><h2> Design </h2></li>
+<li> Design </li>
 <ul>    
 <li><b>      Instruction Set </b></li>
 <li><b>      FuncSim </b></li>
@@ -36,7 +36,7 @@
 <li>                 Hardware features </li>
 </ul>            
 </ul>    
-<li><h2> Implementation </h2></li>
+<li> Implementation </li>
 <ul>    
 <li><b>      Code Style </b></li>
 <li><b>      FuncSim </b></li>
@@ -54,7 +54,7 @@
 <li>                 Hardware features  </li>
 </ul>            
 </ul>    
-<li><h2> Quality Assurance </h2></li>
+<li> Quality Assurance </li>
 <ul>    
 <li><b>      Commit Process </b></li>
 <ul>            
@@ -77,6 +77,6 @@
 <li>                 Weekly Regression </li>
 </ul>            
 </ul>    
-<li><h2> FAQ </h2></li>
-<li><h2> BKM </h2></li>
+<li> FAQ </li>
+<li> BKM </li>
 </ul>
