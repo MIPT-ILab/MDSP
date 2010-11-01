@@ -4,85 +4,90 @@
 <wiki:comment> I'm sorry for this non-standard code style, but in other case wiki cannot generate lists right. </wiki:comment>
 
 <ul>
-<li> Introduction </li>
-<ul>    
-<li>         About Project </li>
-<li>         About Intel-MIPT lab </li>
-<li>         About Us </li>
+<li><h2> Introduction </h2></li>
+<ul>   
+<li><b>      About Project </b></li>
+<li><b>      About Intel-MIPT lab </b></li>
+<li><b>      About Us </b></li>
 </ul>    
 
-    HowTo Section
+<li><h2> HowTo Section </h2></li>
 <ul>    
-<li>         Build </li>
-<li>         Run Tests </li>
-<li>         Make changes </li>
-<li>         Commit  </li>
-<li>         Report Bug </li>
+<li><b>      Build </b></li>
+<li><b>      Run Tests </b></li>
+<li><b>      Make changes </b></li>
+<li><b>      Commit  </b></li>
+<li><b>      Report Bug </b></li>
 </ul>    
 
-<li> Design </li>
+<li><h2> Design </h2></li>
 <ul>    
-<li>         FuncSim </li>
-<li>         PerfSim </li>
+<li><b>      Instruction Set </b></li>
+<li><b>      FuncSim </b></li>
+<li><b>      PerfSim </b></li>
 <ul>            
 <li>                 Infrastructure </li>
 <ul>                    
-<li>                         Module Structure </li>
-<li>                         Clocking </li>
-<li>                         Ports </li>
-<li>                         Logs </li>
-<li>                         Stats </li>
-<li>                         Configuration </li>
+<li><i>                      Module Structure </i></li>
+<li><i>                      Clocking </i></li>
+<li><i>                      [CommunicationBetweenModulesThroughPorts Ports] </i></li>
+<li><i>                      Logs </i></li>
+<li><i>                      Stats </i></li>
+<li><i>                      Configuration </i></li>
 </ul>                    
+
 <li>                 Hardware features </li>
 </ul>            
 </ul>    
 
-<li> Implementation </li>
+<li><h2> Implementation </h2></li>
 <ul>    
-<li>         Code Style </li>
-<li>         FuncSim </li>
-<li>         PerfSim </li>
+<li><b>      Code Style </b></li>
+<li><b>      FuncSim </b></li>
+<li><b>      PerfSim </b></li>
 <ul>            
 <li>                 Infrastructure </li>
 <ul>                    
-<li>                         Module Structure </li>
-<li>                         Clocking </li>
-<li>                         Ports </li>
-<li>                         Logs </li>
-<li>                         Stats </li>
-<li>                         Configuration </li>
+<li><i>                      Module Structure </i></li>
+<li><i>                      Clocking </i></li>
+<li><i>                      Ports </i></li>
+<li><i>                      Logs </i></li>
+<li><i>                      Stats </i></li>
+<li><i>                      Configuration </i></li>
 </ul>                    
+
 <li>                 Hardware features  </li>
 </ul>            
 </ul>    
 
-<li> Quality Assurance </li>
+<li><h2> Quality Assurance </h2></li>
 <ul>    
-<li>         Commit Process </li>
+<li><b>      Commit Process </b></li>
 <ul>            
 <li>                 Svn Branches </li>
 <li>                 Review Process </li>
 <li>                 Commit Testing </li>
 </ul>             
-<li>         Bug Tracking </li>
+
+<li><b>      Bug Tracking </b></li>
 <ul>            
 <li>                 Requirements </li>
 <li>                 Bug Life Cycle </li>
 </ul>            
-<li>         Testing </li>
+
+<li><b>      Testing </b></li>
 <ul>            
 <li>                 Test Base </li>
 <ul>                    
-<li>                         Unit Tests </li>
-<li>                         Asm Tests </li>
+<li><i>                      Unit Tests </i></li>
+<li><i>                      Asm Tests </i></li>
 </ul>                    
+
 <li>                 Weekly Regression </li>
 </ul>            
 </ul>    
 
-<li>     FAQ </li>
+<li><h2> FAQ </h2></li>
 
-<li>     BKM </li>
+<li><h2> BKM </h2></li>
 </ul>
-
