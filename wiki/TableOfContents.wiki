@@ -1,82 +1,57 @@
 #summary Structure of Global Side Navigation Bar
 #labels navigation
 
-<wiki:comment> I'm sorry for this non-standard code style, but in other case wiki cannot generate lists right. </wiki:comment>
+ * Introduction  
+     * About Project 
+     * About Intel-MIPT lab 
+     * About Us 
 
-<ul>
-<li> Introduction </li>
-<ul>   
-<li><b>      About Project </b></li>
-<li><b>      About Intel-MIPT lab </b></li>
-<li><b>      About Us </b></li>
-</ul>    
-<li> HowTo Section </li>
-<ul>    
-<li><b>      Build </b></li>
-<li><b>      Run Tests </b></li>
-<li><b>      Make changes </b></li>
-<li><b>      Commit  </b></li>
-<li><b>      Report Bug </b></li>
-</ul>    
-<li> Design </li>
-<ul>    
-<li><b>      Instruction Set </b></li>
-<li><b>      FuncSim </b></li>
-<li><b>      PerfSim </b></li>
-<ul>            
-<li>                 Infrastructure </li>
-<ul>                    
-<li><i>                      Module Structure </i></li>
-<li><i>                      Clocking </i></li>
-<li><i>                      [CommunicationBetweenModulesThroughPorts Ports] </i></li>
-<li><i>                      Logs </i></li>
-<li><i>                      Stats </i></li>
-<li><i>                      Configuration </i></li>
-</ul>                    
-<li>                 Hardware features </li>
-</ul>            
-</ul>    
-<li> Implementation </li>
-<ul>    
-<li><b>      Code Style </b></li>
-<li><b>      FuncSim </b></li>
-<li><b>      PerfSim </b></li>
-<ul>            
-<li>                 Infrastructure </li>
-<ul>                    
-<li><i>                      Module Structure </i></li>
-<li><i>                      Clocking </i></li>
-<li><i>                      Ports </i></li>
-<li><i>                      Logs </i></li>
-<li><i>                      Stats </i></li>
-<li><i>                      Configuration </i></li>
-</ul>                    
-<li>                 Hardware features  </li>
-</ul>            
-</ul>    
-<li> Quality Assurance </li>
-<ul>    
-<li><b>      Commit Process </b></li>
-<ul>            
-<li>                 Svn Branches </li>
-<li>                 Review Process </li>
-<li>                 Commit Testing </li>
-</ul>             
-<li><b>      Bug Tracking </b></li>
-<ul>            
-<li>                 Requirements </li>
-<li>                 Bug Life Cycle </li>
-</ul>            
-<li><b>      Testing </b></li>
-<ul>            
-<li>                 Test Base </li>
-<ul>                    
-<li><i>                      Unit Tests </i></li>
-<li><i>                      Asm Tests </i></li>
-</ul>                    
-<li>                 Weekly Regression </li>
-</ul>            
-</ul>    
-<li> FAQ </li>
-<li> BKM </li>
-</ul>
+ * HowTo Section
+     * Build 
+     * Run Tests 
+     * Make changes 
+     * Commit  
+     * Report Bug     
+
+ * Design  
+     * FuncSim 
+     * PerfSim 
+         * Infrastructure 
+             * Module Structure 
+             * Clocking 
+             * Ports 
+             * Logs 
+             * Stats 
+             * Configuration 
+         * Hardware features 
+            
+ * Implementation 
+     * Code Style 
+     * FuncSim 
+     * PerfSim 
+         * Infrastructure 
+             * Module Structure 
+             * Clocking 
+             * Ports 
+             * Logs 
+             * Stats 
+             * Configuration 
+         * Hardware features  
+            
+ * Quality Assurance 
+     * Commit Process 
+         * Svn Branches 
+         * Review Process 
+         * Commit Testing 
+     * Bug Tracking 
+         * Requirements 
+         * Bug Life Cycle 
+     * Testing 
+         * Test Base 
+             * Unit Tests 
+             * Asm Tests 
+         * Weekly Regression 
+    
+ * FAQ 
+
+ * BKM 
