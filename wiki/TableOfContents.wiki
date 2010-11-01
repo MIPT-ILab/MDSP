@@ -29,7 +29,7 @@
          * Infrastructure 
              * Module Structure 
              * Clocking 
-             * Ports 
+             * [CommunicationBetweenModulesThroughPorts Ports]
              * Logs 
              * Stats 
              * Configuration 
