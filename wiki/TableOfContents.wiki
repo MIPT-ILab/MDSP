@@ -1,51 +1,57 @@
 #summary Structure of Global Side Navigation Bar
 #labels navigation
 
- * <font size=3> *Introduction* </font>
-     * *About Project* 
-     * *About Intel-MIPT lab*
-     * *About Us*
- * <font size=3> *HOWTO Section* </font>
-     * *Build*
-     * *Run Tests*
-     * *Make changes*
-     * *Commit*  
-     * *Report Bug*
- * <font size=3> *Design* </font>
-     * *Functional Simulation*
-     * *Performance Simulation*
+<wiki:comment>
+Don't use formating and HTML tags in the table of contents!
+It will be dispayed right, but the TOC will be reloaded
+every time you use it. It is very inconvenient.
+</wiki:comment>
+
+ * Introduction  
+     * About Project 
+     * About Intel-MIPT lab 
+     * About Us 
+ * HowTo Section
+     * Build 
+     * Run Tests 
+     * Make changes 
+     * Commit  
+     * Report Bug 
+ * Design  
+     * FuncSim 
+     * PerfSim 
          * Infrastructure 
-             * _Module Structure_
-             * _Clocking_ 
-             * <i>[CommunicationBetweenModulesThroughPorts Ports] </i>
-             * _Logs_ 
-             * _Stats_
-             * _Configuration_
-         * Hardware features            
- * <font size=3> *Implementation* </font>
-     * *Code Style* 
-     * *Functional Simulation* 
-     * *Performance Simulation* 
+             * Module Structure 
+             * Clocking 
+             * [CommunicationBetweenModulesThroughPorts Ports]
+             * Logs 
+             * Stats 
+             * Configuration 
+         * Hardware features 
+ * Implementation 
+     * Code Style 
+     * FuncSim 
+     * PerfSim 
          * Infrastructure 
-             * _Module Structure_ 
-             * _Clocking_ 
-             * _Ports_
-             * _Logs_ 
-             * _Stats_ 
-             * _Configuration_ 
-         * Hardware features              
- * <font size=3> *Quality Assurance* </font>
-     * *Commit Process* 
+             * Module Structure 
+             * Clocking 
+             * Ports 
+             * Logs 
+             * Stats 
+             * Configuration 
+         * Hardware features  
+ * Quality Assurance 
+     * Commit Process 
          * Svn Branches 
          * Review Process 
          * Commit Testing 
-     * *Bug Tracking* 
+     * Bug Tracking 
          * Requirements 
          * Bug Life Cycle 
-     * *Testing* 
+     * Testing 
          * Test Base 
-             * _Unit Tests_ 
-             * _Asm Tests_ 
-         * Weekly Regression    
- * <font size=3> *FAQ* </font>
- * <font size=3> *BKM* </font>
+             * Unit Tests 
+             * Asm Tests 
+         * Weekly Regression 
+ * FAQ 
+ * BKM 
