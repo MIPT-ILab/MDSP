@@ -1,0 +1,51 @@
+#summary Structure of Global Side Navigation Bar.
+#labels navigation
+
+* Introduction
+  * Project Bases
+
+* HowTo Section
+  * Build
+  * Run Tests
+  * Commit 
+  * Report Bug
+
+* Design
+  * FuncSim
+  * PerfSim
+    * Infrastructure
+      * Module Structure
+      * Clocking
+      * Ports
+      * Logs
+      * Stats
+      * Configuration
+    * Hardware features
+
+* Implementation
+  * Code Style
+  * FuncSim
+  * PerfSim
+    * Infrastructure
+      * Module Structure
+      * Clocking
+      * Ports
+      * Logs
+      * Stats
+      * Configuration
+    * Hardware features    
+
+* Quality Assurance
+  * Review
+    * Svn Branches
+    * Review Request
+  * Bug Tracking
+    * Requirements
+    * Bug Life Cycle
+  * Unit Tests
+  * Commit Rules
+  * Weekly Regression
+
+* FAQ
+
+* BKM
