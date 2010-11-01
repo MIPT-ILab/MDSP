@@ -1,85 +1,88 @@
 #summary Structure of Global Side Navigation Bar
 #labels navigation
 
+<wiki:comment> I'm sorry for this non-standard code style, but in other case wiki cannot generate lists right. </wiki:comment>
+
 <ul>
 <li> Introduction </li>
-    <ul>
-        <li> About Project </li>
-        <li> About Intel-MIPT lab </li>
-        <li> About Us </li>
-    </ul>
+<ul>    
+<li>         About Project </li>
+<li>         About Intel-MIPT lab </li>
+<li>         About Us </li>
+</ul>    
 
-<li>HowTo Section </li>
-    <ul>
-        <li> Build </li>
-        <li> Run Tests </li>
-        <li> Make changes </li>
-        <li> Commit  </li>
-        <li> Report Bug </li>
-    </ul>
+    HowTo Section
+<ul>    
+<li>         Build </li>
+<li>         Run Tests </li>
+<li>         Make changes </li>
+<li>         Commit  </li>
+<li>         Report Bug </li>
+</ul>    
 
 <li> Design </li>
-    <ul>
-        <li> FuncSim </li>
-        <li> PerfSim </li>
-            <ul>
-                <li> Infrastructure </li>
-                    <ul>
-                        <li> Module Structure </li>
-                        <li> Clocking </li>
-                        <li> Ports </li>
-                        <li> Logs </li>
-                        <li> Stats </li>
-                        <li> Configuration </li>
-                    </ul>
-                <li> Hardware features </li>
-            </ul>
-    </ul>
+<ul>    
+<li>         FuncSim </li>
+<li>         PerfSim </li>
+<ul>            
+<li>                 Infrastructure </li>
+<ul>                    
+<li>                         Module Structure </li>
+<li>                         Clocking </li>
+<li>                         Ports </li>
+<li>                         Logs </li>
+<li>                         Stats </li>
+<li>                         Configuration </li>
+</ul>                    
+<li>                 Hardware features </li>
+</ul>            
+</ul>    
 
 <li> Implementation </li>
-    <ul>
-        <li> Code Style </li>
-        <li> FuncSim </li>
-        <li> PerfSim </li>
-            <ul>
-                <li> Infrastructure </li>
-                    <ul>
-                        <li> Module Structure </li>
-                        <li> Clocking </li>
-                        <li> Ports </li>
-                        <li> Logs </li>
-                        <li> Stats </li>
-                        <li> Configuration </li>
-                    </ul>
-                <li> Hardware features     </li>
-            </ul>
-    </ul>
+<ul>    
+<li>         Code Style </li>
+<li>         FuncSim </li>
+<li>         PerfSim </li>
+<ul>            
+<li>                 Infrastructure </li>
+<ul>                    
+<li>                         Module Structure </li>
+<li>                         Clocking </li>
+<li>                         Ports </li>
+<li>                         Logs </li>
+<li>                         Stats </li>
+<li>                         Configuration </li>
+</ul>                    
+<li>                 Hardware features  </li>
+</ul>            
+</ul>    
 
 <li> Quality Assurance </li>
-    <ul>
-        <li> Commit Process </li>
-            <ul>
-                <li> Svn Branches </li>
-                <li> Review Process </li>
-                <li> Commit Testing </li>
-            </ul> 
-        <li> Bug Tracking </li>
-            <ul>
-                <li> Requirements </li>
-                <li> Bug Life Cycle </li>
-            </ul>
-        <li> Testing </li>
-            <ul>
-                <li> Test Base </li>
-                    <ul>
-                        <li> Unit Tests </li>
-                        <li> Asm Tests </li>
-                    </ul>
-                <li> Weekly Regression </li>
-            </ul>
-    </ul>
+<ul>    
+<li>         Commit Process </li>
+<ul>            
+<li>                 Svn Branches </li>
+<li>                 Review Process </li>
+<li>                 Commit Testing </li>
+</ul>             
+<li>         Bug Tracking </li>
+<ul>            
+<li>                 Requirements </li>
+<li>                 Bug Life Cycle </li>
+</ul>            
+<li>         Testing </li>
+<ul>            
+<li>                 Test Base </li>
+<ul>                    
+<li>                         Unit Tests </li>
+<li>                         Asm Tests </li>
+</ul>                    
+<li>                 Weekly Regression </li>
+</ul>            
+</ul>    
 
-<li> FAQ </li>
+<li>     FAQ </li>
 
-<li> BKM </li>
+<li>     BKM </li>
 </ul>
+
