@@ -5,14 +5,12 @@
      * About Project 
      * About Intel-MIPT lab 
      * About Us 
-
  * HowTo Section
      * Build 
      * Run Tests 
      * Make changes 
      * Commit  
      * Report Bug     
-
  * Design  
      * FuncSim 
      * PerfSim 
@@ -23,8 +21,7 @@
              * Logs 
              * Stats 
              * Configuration 
-         * Hardware features 
-            
+         * Hardware features            
  * Implementation 
      * Code Style 
      * FuncSim 
@@ -36,8 +33,7 @@
              * Logs 
              * Stats 
              * Configuration 
-         * Hardware features  
-            
+         * Hardware features              
  * Quality Assurance 
      * Commit Process 
          * Svn Branches 
@@ -50,8 +46,6 @@
          * Test Base 
              * Unit Tests 
              * Asm Tests 
-         * Weekly Regression 
-    
+         * Weekly Regression    
  * FAQ 
-
  * BKM 
