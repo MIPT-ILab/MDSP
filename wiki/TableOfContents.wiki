@@ -45,7 +45,7 @@ Implementation
                 <ul>
                     <li> Module Structure </li>
                     <li> Clocking </li>
-                    <li> Ports </li>
+                    <li> [CommunicationBetweenModulesThroughPorts Ports]</li>
                     <li> Logs </li>
                     <li> Stats </li>
                     <li> Configuration </li>
