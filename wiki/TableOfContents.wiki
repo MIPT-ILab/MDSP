@@ -17,7 +17,7 @@
          * Infrastructure 
              * _Module Structure_
              * _Clocking_ 
-             * _[CommunicationBetweenModulesThroughPorts Ports]_
+             * <i>[CommunicationBetweenModulesThroughPorts Ports] </i>
              * _Logs_ 
              * _Stats_
              * _Configuration_
