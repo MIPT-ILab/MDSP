@@ -1,51 +1,83 @@
-#summary Structure of Global Side Navigation Bar.
+#summary Structure of Global Side Navigation Bar
 #labels navigation
 
-* Introduction
-  * Project Bases
+Introduction
+<ul>
+    <li> About Project </li>
+    <li> About Intel-MIPT lab </li>
+    <li> About Us </li>
+</ul>
 
-* HowTo Section
-  * Build
-  * Run Tests
-  * Commit 
-  * Report Bug
+HowTo Section
+<ul>
+    <li> Build </li>
+    <li> Run Tests </li>
+    <li> Make changes </li>
+    <li> Commit  </li>
+    <li> Report Bug </li>
+</ul>
 
-* Design
-  * FuncSim
-  * PerfSim
-    * Infrastructure
-      * Module Structure
-      * Clocking
-      * Ports
-      * Logs
-      * Stats
-      * Configuration
-    * Hardware features
+Design
+<ul>
+    <li> FuncSim </li>
+    <li> PerfSim </li>
+        <ul>
+        <li> Infrastructure </li>
+                <ul>
+                    <li> Module Structure </li>
+                    <li> Clocking </li>
+                    <li> Ports </li>
+                    <li> Logs </li>
+                    <li> Stats </li>
+                    <li> Configuration </li>
+                </ul>
+            <li> Hardware features </li>
+        </ul>
+</ul>
 
-* Implementation
-  * Code Style
-  * FuncSim
-  * PerfSim
-    * Infrastructure
-      * Module Structure
-      * Clocking
-      * Ports
-      * Logs
-      * Stats
-      * Configuration
-    * Hardware features    
+Implementation
+<ul>
+    <li> Code Style </li>
+    <li> FuncSim </li>
+    <li> PerfSim </li>
+        <ul>
+            <li> Infrastructure </li>
+                <ul>
+                    <li> Module Structure </li>
+                    <li> Clocking </li>
+                    <li> Ports </li>
+                    <li> Logs </li>
+                    <li> Stats </li>
+                    <li> Configuration </li>
+                </ul>
+            <li> Hardware features     </li>
+        </ul>
+</ul>
 
-* Quality Assurance
-  * Review
-    * Svn Branches
-    * Review Request
-  * Bug Tracking
-    * Requirements
-    * Bug Life Cycle
-  * Unit Tests
-  * Commit Rules
-  * Weekly Regression
+Quality Assurance
+<ul>
+    <li> Commit Process </li>
+        <ul>
+            <li> Svn Branches </li>
+            <li> Review Process </li>
+            <li> Commit Testing </li>
+        </ul> 
+    <li> Bug Tracking </li>
+        <ul>
+            <li> Requirements </li>
+            <li> Bug Life Cycle </li>
+        </ul>
+    <li> Testing </li>
+        <ul>
+            <li> Test Base </li>
+                <ul>
+                    <li> Unit Tests </li>
+                    <li> Asm Tests </li>
+                </ul>
+            <li> Weekly Regression </li>
+        </ul>
+</ul>
 
-* FAQ
+FAQ
 
-* BKM
+BKM
