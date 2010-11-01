@@ -11,15 +11,16 @@ every time you use it. It is very inconvenient.
      * About Project 
      * About Intel-MIPT lab 
      * About Us 
- * HowTo Section
+ * HOWTO Section
      * Build 
      * Run Tests 
      * Make changes 
      * Commit  
      * Report Bug 
  * Design  
-     * FuncSim 
-     * PerfSim 
+     * Instruction Set
+     * Functional Simulation
+     * Performance Simulation 
          * Infrastructure 
              * Module Structure 
              * Clocking 
@@ -30,8 +31,8 @@ every time you use it. It is very inconvenient.
          * Hardware features 
  * Implementation 
      * Code Style 
-     * FuncSim 
-     * PerfSim 
+     * Functional Simulation
+     * Performance Simulation
          * Infrastructure 
              * Module Structure 
              * Clocking 
