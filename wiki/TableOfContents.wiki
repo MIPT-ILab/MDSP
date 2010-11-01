@@ -1,7 +1,7 @@
 #summary Structure of Global Side Navigation Bar
 #labels navigation
 
- * *Introduction*  
+ * <font size=4> *Introduction* </font>
      * About Project 
      * About Intel-MIPT lab 
      * About Us 
