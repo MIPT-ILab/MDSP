@@ -1,40 +1,40 @@
 #summary Structure of Global Side Navigation Bar
 #labels navigation
 
- * Introduction  
+ * *Introduction*  
      * About Project 
      * About Intel-MIPT lab 
      * About Us 
- * HowTo Section
+ * *HOWTO Section*
      * Build 
      * Run Tests 
      * Make changes 
      * Commit  
      * Report Bug     
- * Design  
-     * FuncSim 
-     * PerfSim 
+ * *Design*  
+     * Functional Simulation 
+     * Performance Simulation
          * Infrastructure 
-             * Module Structure 
+             * Module Structure
              * Clocking 
-             * Ports 
+             * [CommunicationBetweenModulesThroughPorts Ports] 
              * Logs 
              * Stats 
              * Configuration 
          * Hardware features            
- * Implementation 
+ * *Implementation* 
      * Code Style 
-     * FuncSim 
-     * PerfSim 
+     * Functional Simulation 
+     * Performance Simulation 
          * Infrastructure 
              * Module Structure 
              * Clocking 
-             * [CommunicationBetweenModulesThroughPorts Ports]
+             * Ports
              * Logs 
              * Stats 
              * Configuration 
          * Hardware features              
- * Quality Assurance 
+ * *Quality Assurance* 
      * Commit Process 
          * Svn Branches 
          * Review Process 
@@ -47,5 +47,5 @@
              * Unit Tests 
              * Asm Tests 
          * Weekly Regression    
- * FAQ 
- * BKM 
+ * *FAQ* 
+ * *BKM* 
