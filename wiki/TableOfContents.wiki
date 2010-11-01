@@ -10,7 +10,6 @@
 <li><b>      About Intel-MIPT lab </b></li>
 <li><b>      About Us </b></li>
 </ul>    
-
 <li><h2> HowTo Section </h2></li>
 <ul>    
 <li><b>      Build </b></li>
@@ -19,7 +18,6 @@
 <li><b>      Commit  </b></li>
 <li><b>      Report Bug </b></li>
 </ul>    
-
 <li><h2> Design </h2></li>
 <ul>    
 <li><b>      Instruction Set </b></li>
@@ -35,11 +33,9 @@
 <li><i>                      Stats </i></li>
 <li><i>                      Configuration </i></li>
 </ul>                    
-
 <li>                 Hardware features </li>
 </ul>            
 </ul>    
-
 <li><h2> Implementation </h2></li>
 <ul>    
 <li><b>      Code Style </b></li>
@@ -55,11 +51,9 @@
 <li><i>                      Stats </i></li>
 <li><i>                      Configuration </i></li>
 </ul>                    
-
 <li>                 Hardware features  </li>
 </ul>            
 </ul>    
-
 <li><h2> Quality Assurance </h2></li>
 <ul>    
 <li><b>      Commit Process </b></li>
@@ -68,13 +62,11 @@
 <li>                 Review Process </li>
 <li>                 Commit Testing </li>
 </ul>             
-
 <li><b>      Bug Tracking </b></li>
 <ul>            
 <li>                 Requirements </li>
 <li>                 Bug Life Cycle </li>
 </ul>            
-
 <li><b>      Testing </b></li>
 <ul>            
 <li>                 Test Base </li>
@@ -82,12 +74,9 @@
 <li><i>                      Unit Tests </i></li>
 <li><i>                      Asm Tests </i></li>
 </ul>                    
-
 <li>                 Weekly Regression </li>
 </ul>            
 </ul>    
-
 <li><h2> FAQ </h2></li>
-
 <li><h2> BKM </h2></li>
 </ul>
