@@ -34,7 +34,7 @@ every time you use it. It is very inconvenient.
      * Functional simulation
      * Performance simulation
          * Infrastructure 
-             * Module Structure 
+             * Module structure 
              * Clocking 
              * Ports 
              * Logs 
@@ -44,7 +44,7 @@ every time you use it. It is very inconvenient.
  * [MDSPQualityAssurance Quality assurance]
      * Commit process 
          * [WorkingWithBranches SVN branches] 
-         * Code review 
+         * [CodeReview Code review]
          * Commit testing 
      * Bug tracking 
          * Requirements 
