@@ -53,6 +53,6 @@ every time you use it. It is very inconvenient.
          * Test base 
              * Unit tests 
              * ASM tests 
-         * Weekly regression 
+         * [RegressionTesting Regular regression tests]
  * FAQ 
  * BKM 
