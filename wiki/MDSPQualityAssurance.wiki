@@ -11,14 +11,3 @@ This page contains details on process of assuring that our simulation model stay
 `funcsim/test.cpp` is a special simple program that is used to assure that every C++ class implemented is comforming to a defined set of micro-tests.
 
 *TODO* Fill me
-
-= Regular testing =
-
-A special Bash script, `mdsp_test_suite.sh`, is deployed on several (_currently one_) servers to do certain tasks on a regular basis (currently twice per week):
- # Fetch the latest SVN head.
- # Build the source.
- # Run unit test programs.
- # Run full simulation process (*NOT IMPLEMENTED YET*).
- # Mail the results to the mailing list.
-
-*TODO* Fill me
