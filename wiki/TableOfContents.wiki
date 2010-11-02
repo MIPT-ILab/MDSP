@@ -11,7 +11,7 @@ every time you use it. It is very inconvenient.
      * About Project 
      * About Intel-MIPT lab 
      * About Us 
- * HOWTO Section
+ * [IntroductionToTheDevelopmentProcess HOWTO Section]
      * Build 
      * Run Tests 
      * Make changes 
@@ -30,7 +30,7 @@ every time you use it. It is very inconvenient.
              * Configuration 
          * Hardware features 
  * Implementation 
-     * Code Style 
+     * [CodingStyle Code Style]
      * Functional Simulation
      * Performance Simulation
          * Infrastructure 
@@ -41,9 +41,9 @@ every time you use it. It is very inconvenient.
              * Stats 
              * Configuration 
          * Hardware features  
- * Quality Assurance 
+ * [MDSPQualityAssurance Quality Assurance]
      * Commit Process 
-         * Svn Branches 
+         * [WorkingWithBranches Svn Branches] 
          * Review Process 
          * Commit Testing 
      * Bug Tracking 
