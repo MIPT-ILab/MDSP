@@ -7,20 +7,20 @@ It will be dispayed right, but the TOC will be reloaded
 every time you use it. It is very inconvenient.
 </wiki:comment>
 
- * Introduction  
-     * About Project 
-     * About Intel-MIPT lab 
-     * About Us 
- * [IntroductionToTheDevelopmentProcess HOWTO Section]
+ * About
+     * Project 
+     * Team
+     * Intel-MIPT Lab
+ * [IntroductionToTheDevelopmentProcess HOWTO]
      * Build 
-     * Run Tests 
+     * Run tests 
      * Make changes 
      * Commit  
-     * Report Bug 
+     * Report a bug 
  * Design  
-     * Instruction Set
-     * Functional Simulation
-     * Performance Simulation 
+     * Instruction set architeture (ISA)
+     * Functional simulation
+     * Performance simulation 
          * Infrastructure 
              * Module Structure 
              * Clocking 
@@ -30,9 +30,9 @@ every time you use it. It is very inconvenient.
              * Configuration 
          * Hardware features 
  * Implementation 
-     * [CodingStyle Code Style]
-     * Functional Simulation
-     * Performance Simulation
+     * [CodingStyle Coding style]
+     * Functional simulation
+     * Performance simulation
          * Infrastructure 
              * Module Structure 
              * Clocking 
@@ -41,18 +41,18 @@ every time you use it. It is very inconvenient.
              * Stats 
              * Configuration 
          * Hardware features  
- * [MDSPQualityAssurance Quality Assurance]
-     * Commit Process 
-         * [WorkingWithBranches Svn Branches] 
-         * Review Process 
-         * Commit Testing 
-     * Bug Tracking 
+ * [MDSPQualityAssurance Quality assurance]
+     * Commit process 
+         * [WorkingWithBranches SVN branches] 
+         * Code review 
+         * Commit testing 
+     * Bug tracking 
          * Requirements 
-         * Bug Life Cycle 
+         * Bug lifecycle 
      * Testing 
-         * Test Base 
-             * Unit Tests 
-             * Asm Tests 
-         * Weekly Regression 
+         * Test base 
+             * Unit tests 
+             * ASM tests 
+         * Weekly regression 
  * FAQ 
  * BKM 
