@@ -28,9 +28,9 @@ svn switch https://mdsp.googlecode.com/svn/branches/new-branch-name
  * Change issue template to "Review request"
  * Put comments to reviewer
  * Wait a response from the reviewer
- * If your code is accepted then proceed to merge your changes into trunk
+ * If your code is accepted then proceed to merge your changes with trunk
 
-= To merge the branch to main trunk = 
+= To merge the branch with trunk = 
 
  # Get a working copy (WC) of *trunk*, not a branch!
    {{{
