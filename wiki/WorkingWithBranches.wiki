@@ -32,7 +32,7 @@ svn switch https://mdsp.googlecode.com/svn/branches/new-branch-name
 
 = To merge the branch with trunk = 
 
- # Get a working copy (WC) of *trunk*, not a branch!
+ # Get a working copy (WC) of *trunk*, <font color="red">_not a branch!_</font>
    {{{
    svn checkout https://mdsp.googlecode.com/svn/trunk
    }}}
