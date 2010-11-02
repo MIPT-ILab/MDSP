@@ -21,14 +21,14 @@ svn copy . https://mdsp.googlecode.com/svn/branches/new-branch-name -m 'reason o
 svn switch https://mdsp.googlecode.com/svn/branches/new-branch-name
 }}}
 
-= To request the review =
+= To request a code review =
 
-To be done.
-
- * Go to http://
- * Press "ask for review" button
- * wait the  mentor to make a review.
- * read the results - if your code is accepted then proceed to merging your changes into main trunk.
+ * Go to [http://code.google.com/p/mdsp/issues/list Issues list]
+ * Click the "New issue" link
+ * Change issue template to "Review request"
+ * Put comments to reviewer
+ * Wait a response from the reviewer
+ * If your code is accepted then proceed to merge your changes into trunk
 
 = To merge the branch to main trunk = 
 
@@ -39,7 +39,7 @@ To be done.
    {{{
    svn merge -r 250:HEAD https://mdsp.googlecode.com/svn/branches/new-branch-name
    }}}
-   {{{250:HEAD}}} is a range of revisions since the moment of branch creation to its latest version.
+   where {{{250:HEAD}}} is a range of revisions since the moment of branch creation to its latest version.
  # Now your WC of trunk has merged version of the branch and the changes from trunk. If you have some messages of conflicts, resolve them (_how? this is another story..._), if everything is OK, proceed to the next step.
  # Commit the changes to the main trunk:
    {{{
