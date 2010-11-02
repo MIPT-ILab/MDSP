@@ -12,7 +12,7 @@ mdsp
 ├── foils
 │   ├── arch
 │   │   ├── 2009 -- previous year slides
-│   │   └── 2010 -- this year slides, you've seen them on our lectures
+│   │   └── 2010 -- this year slides, you have seen them on our lectures
 │   └── code -- presentations made by students on code they wrote
 ├── sources
 │   ├── asm -- source for assembler
@@ -37,7 +37,8 @@ The following main IDEs are supported in our project:
 
  * ==== Microsoft Visual Studio ====
    Microsoft Visual Studio (abbreviated as "MS VS" or just "VS") is an integrated development environment from Microsoft. It is widely used in software development for Windows only.
-   Wee will support x86 (32 bit) versions of MS VS 2008 Professional Edition (I am not sure if an Express Edition will be complete enough). *Note that MS VS 2010 can also be used for development, but be sure not to commit to SVN `*.VCPROJ` or `*.SLN` files modified by this IDE as they are backward-incompatible with 2008.*
+   Wee will support x86 (32 bit) versions of MS VS 2008 Professional Edition (I am not sure if an Express Edition will be complete enough).
+  <font color="red"><i>Note that MS VS 2010 can also be used for development, but be sure not to commit to SVN `*.VCPROJ` or `*.SLN` files modified by this IDE as they are backward-incompatible with 2008. </i></font>
 
  * ==== Eclipse CDT ====
    Eclipse is an open source community whose projects are focused on building an extensible development platform.
