@@ -1,0 +1,26 @@
+#summary describes current status of regular testing.
+
+= Introduction =
+
+In majority of medium- to huge- sized porject regular testing (also sometimes called "nightly testing" or just "nightly") is used to assure that the quality of product did  not degraded after recent commits.
+
+This testing is usually more complex that unit tests, take more time to run and checks the interaction of units, for example, running the program being developed and assuring its output corresponds to the certain expectations.
+
+= Current status =
+A special Bash script, `mdsp_test_suite.sh`, is deployed on several (_currently one_) servers to do certain tasks on a regular basis (currently twice per week):
+ # Fetch the latest SVN head.
+ # Build the source.
+ # Run unit test programs.
+ # Run full simulation process (*NOT IMPLEMENTED YET*).
+ # Mail the results to the mailing list.
+
+
+= Plans =
+
+Our plans include bringing up the similar ocnfigurations for tests on all supported architectures/OSes:
+
+= Details = 
+
+|| Host || Type                   || Status         || Comments ||
+|| mary || Linux 32bit (Ubuntu)   || Deployed       ||             ||
+||      ||                        ||                ||          ||
