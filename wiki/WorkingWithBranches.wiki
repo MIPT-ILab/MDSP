@@ -3,7 +3,7 @@
 
 = Intro =
 
-The branches are used to separate your version of code, which is allowed to have some errors and even to not build, from the trunk that should be as stable as possible. The approximate work procedure is as follows:
+Branches are used to separate your version of code, which is allowed to have some errors and even to not build, from the trunk that should be as stable as possible. The approximate work procedure is as follows:
  # create a branch for a task you are going to work on;
  # modify the code in the branch, build it, test it;
  # commit your changes to the branch;
@@ -18,9 +18,7 @@ Look through the details below. There are some commands that can be run from a c
 From the root of your SVN working copy:
 {{{
 svn copy . https://mdsp.googlecode.com/svn/branches/new-branch-name -m 'reason of creation'
-
 svn switch https://mdsp.googlecode.com/svn/branches/new-branch-name
-
 }}}
 
 = To request the review =
@@ -39,12 +37,14 @@ To be done.
  # Remember the number of revision when your branch was created. Suppose it is *250*.
  # Inside the trunk WC run the command:
    {{{
-svn merge -r 250:HEAD https://mdsp.googlecode.com/svn/branches/new-branch-name
-}}}
+   svn merge -r 250:HEAD https://mdsp.googlecode.com/svn/branches/new-branch-name
+   }}}
    {{{250:HEAD}}} is a range of revisions since the moment of branch creation to its latest version.
  # Now your WC of trunk has merged version of the branch and the changes from trunk. If you have some messages of conflicts, resolve them (_how? this is another story..._), if everything is OK, proceed to the next step.
  # Commit the changes to the main trunk:
-  `svn commit -m 'Merged with new-branch-name'`
+   {{{
+   svn commit -m 'Merged with new-branch-name'
+   }}}
  # Congratulations! Now your work is available to the whole team. Hope you've done it well.
 
 
