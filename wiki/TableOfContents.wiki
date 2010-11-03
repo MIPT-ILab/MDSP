@@ -7,10 +7,7 @@ It will be dispayed right, but the TOC will be reloaded
 every time you use it. It is very inconvenient.
 </wiki:comment>
 
- * About
-     * Project 
-     * [MDSPTeam Team]
-     * [http://ilab.fizteh.ru/ Intel-MIPT Lab]
+ * [About About us]
  * [IntroductionToTheDevelopmentProcess HOWTO]
      * [FuncSimBuild Build] 
      * Run tests 
@@ -46,13 +43,10 @@ every time you use it. It is very inconvenient.
          * [WorkingWithBranches SVN branches] 
          * [CodeReview Code review]
          * Commit testing 
-     * Bug tracking 
-         * Requirements 
-         * Bug lifecycle 
+     * [BugTracking Bug tracking]
      * Testing 
-         * Test base 
-             * [UnitTests Unit tests]
-             * ASM tests 
+         * [UnitTests Unit tests]
+         * ASM tests 
          * [RegressionTesting Regular regression tests]
  * [FAQ] 
  * [BestKnownMethods BKM] 
