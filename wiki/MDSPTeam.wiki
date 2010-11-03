@@ -1,0 +1,6 @@
+#summary One-sentence summary of this page.
+
+Our team consists of a group of students of MIPT and mentors who supervise and direct the team's operation. 
+
+You can see the contact information on the project home page:
+https://code.google.com/p/mdsp/
