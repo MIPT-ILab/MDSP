@@ -1,6 +1,10 @@
 
-CXX:=g++ -Wall
-
+ifeq ($(DEBUG), yes)
+    CXX:=g++ -Wall -O0
+else
+    CXX:=g++ -Wall -O3
+endif
+    
 COMMON_OBJS_CPP := \
 	funcsim/config.cpp \
 	funcsim/core.cpp \
@@ -40,15 +44,21 @@ bin:
 
 funcsim: $(MAIN_OBJS_O) bin
 	$(CXX) $(MAIN_OBJS_O) -o bin/funcsim
-	@echo "--- funcsim created ---"
+    ifeq ($(DEBUG), yes)
+		@echo "--- funcsim created ---"
+    endif    
 
 test: $(TEST_OBJS_O) bin
 	$(CXX) $(TEST_OBJS_O) -o bin/test
-	@echo "--- test created ---"
+    ifeq ($(DEBUG), yes)
+		@echo "--- test created ---"
+    endif    
 
 asm: $(ASM_OBJS_O) bin
 	$(CXX) $(ASM_OBJS_O) -o bin/asm
-	@echo "--- asm created ---"
+    ifeq ($(DEBUG), yes)
+		@echo "--- asm created ---"
+    endif    
 
 clean:
 	rm -rf build bin
