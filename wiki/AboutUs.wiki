@@ -1,0 +1,13 @@
+#summary About us.
+
+= Project =
+
+Purpose of the project is to create light version of functional and clock-precise simulators of a microprocessor optimized for digital signal processing (DSP). 
+
+This project is a part of Intel Lab activity at Moscow Institute of Physics and Technology (MIPT).
+
+= Team =
+
+Our team consists of a group of students of MIPT and mentors who supervise and direct the team's operation. 
+
+You can see the contact information on the project home page: https://code.google.com/p/mdsp/
