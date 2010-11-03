@@ -23,6 +23,41 @@ DEVENV.EXE /build "Release|Win32" mdsp.sln
 }}}
 
 
-You can also try the following flags: `/rebuild`, `/clean`, 
+You can also try the following flags: `/rebuild`, `/clean`. The most interesting switch is `/?` -- this prints help with all documented switches explained. 
 
-For more details see http://msdn.microsoft.com/en-us/library/xee0c8y7(VS.80).aspx .
+For more details see http://msdn.microsoft.com/en-us/library/xee0c8y7(v=VS.90).aspx
+
+
+= Makefile build = 
+
+Makefile build is a cross platform feature, it allows you to build the code uniformly on all supported platforms. It is done from a command line (`CMD.EXE` in Windows, `Xterm` or just any other terminal in Unix)
+
+To start a build, change a directory to one with Makefile,  and start
+{{{
+make
+}}}
+
+After the 'make' process has succeeded the new binaries are in folder `sources/bin/`
+
+== Windows ==
+
+If you see the messages like "make program was not found" then make sure that you've set up the paths correctly. If you have set up CygWin, the usual position is `c:\cygwin\bin\make.exe`. For MinGW it is usually `C:\mingw\bin\make.exe`. 
+
+== Linux ==
+
+Everything should just work. If not, make sure you've installed `gcc` and `binutils` packages.
+
+= Eclipse CDT =
+
+Eclipse CDT IDE build process is based on Makefiles specified. So, to build from this IDE first provide a proper Makefile to the project (look for "Make Targets" tab and find our Makefile there), then double click the green double concentric circle.
+
+== Windows ==
+
+Eclipse CDT needs either CygWin or MinGW installed. So, may be a bit of tuning will be required before the IDE finds the binutils installed.
+
+== Linux ==
+
+Just make sure that you have installed `gcc` package, and Eclipse will find it automatically in most cases.
+
+------------
+*TODO* This page should be expanded as building from Eclipse is often complicated and vague.
