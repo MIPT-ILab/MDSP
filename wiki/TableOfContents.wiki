@@ -7,7 +7,7 @@ It will be dispayed right, but the TOC will be reloaded
 every time you use it. It is very inconvenient.
 </wiki:comment>
 
- * [About About us]
+ * [AboutUs About us]
  * [IntroductionToTheDevelopmentProcess HOWTO]
      * [FuncSimBuild Build] 
      * Run tests 
