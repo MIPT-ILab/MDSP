@@ -1,4 +1,4 @@
-#summary Structure of Global Side Navigation Bar
+#summary Side Navigation Bar and Wiki structure.
 #labels navigation
 
 <wiki:comment>
@@ -9,16 +9,16 @@ every time you use it. It is very inconvenient.
 
  * About
      * Project 
-     * Team
+     * [MDSPTeam Team]
      * Intel-MIPT Lab
  * [IntroductionToTheDevelopmentProcess HOWTO]
-     * Build 
+     * [FuncSimBuild Build] 
      * Run tests 
      * Make changes 
      * Commit  
-     * Report a bug 
+     * [BugReporting Report a bug] 
  * Design  
-     * Instruction set architeture (ISA)
+     * [MdspIsa Instruction set architecture (ISA)]
      * Functional simulation
      * Performance simulation 
          * Infrastructure 
@@ -31,7 +31,7 @@ every time you use it. It is very inconvenient.
          * Hardware features 
  * Implementation 
      * [CodingStyle Coding style]
-     * Functional simulation
+     * [FuncSimImplementation Functional simulation]
      * Performance simulation
          * Infrastructure 
              * Module structure 
@@ -54,5 +54,5 @@ every time you use it. It is very inconvenient.
              * [UnitTests Unit tests]
              * ASM tests 
          * [RegressionTesting Regular regression tests]
- * FAQ 
- * BKM 
+ * [FAQ] 
+ * [BestKnownMethods BKM] 
