@@ -56,7 +56,10 @@ The following main IDEs are supported in our project:
    One can download it from the official site, or find on LAN, or ask  Grigory Rechistov again for assistance.
      * Be sure to get *CDT* not just plain Eclipse!
      * Choose right OS and architecture as well.
-  In some cases you'll also need Java Runtime Environment if you haven't installed one before.
+   In some cases you'll also need Java Runtime Environment if you haven't installed one before.
+   
+   Note that you'll need at least one of GNU binary utils port for Windows installed in order for Eclipse CDT to be able to build your code, either CygWin or  MinGW. It's recommended to install it before the Eclipse so the latter can automatically detect its presense and save your time on configuration.
+
    
 
 = Build =
@@ -66,7 +69,7 @@ It should be possible to build our code with several compiler suites. If one fin
 So far, we expect to support: 
  * Microsoft Visual Studio 2008 and 2010 (Windows x86)
    MS VS use project files (`*.VCPROJ`) or solution files (`MDSP.SLN`) to store a project settings, so one should point it to one before trying to build.
- * Cygwin GCC (Windows x86)
+ * CygWin GCC (Windows x86)
  To setup Cygwin, download setup.exe from the Cygwin's main page: http://www.cygwin.com/
  Run `setup.exe`, find the `gcc` package in the list, install it. You'll have a new item on your desktop called "Cygwin shell". Run it, and from there you'll  be able to build the code with command `make` in folder `<svn_root>/sources`.
  * MinGW GCC (Windows x86)
