@@ -1,0 +1,28 @@
+#summary Methods of building the programs of our project.
+
+= Introduction =
+
+Currently our source code produces three binaries: `funcsim`, `asm` and `test`. They all are usually built in the same compile/link run.
+
+= Visual Studio =
+
+If you have opened the IDE with `mdsp.sln` solution then you can build it with `Ctrl-Shift-B` default key combination or through "Build->Build Solution" menu.
+
+Alternatively, you can build the solution froma command line with 
+{{{
+C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe mdsp.sln /build
+}}}
+
+Be sure to use the correct path to *DEVENV.EXE* (`C:\Program Files\...`).
+`/build` flag tells Visual Studio to build the solution file specified (`mdsp.sln`)
+
+After the command is succesfully finished, the new binaries will appear in `Debug/` or `Release/` folder. To specify the configuration different from default use the following lines:
+{{{
+DEVENV.EXE /build "Debug|Win32" mdsp.sln
+DEVENV.EXE /build "Release|Win32" mdsp.sln
+}}}
+
+
+You can also try the following flags: `/rebuild`, `/clean`, 
+
+For more details see http://msdn.microsoft.com/en-us/library/xee0c8y7(VS.80).aspx .
