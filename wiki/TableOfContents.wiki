@@ -39,10 +39,10 @@ every time you use it. It is very inconvenient.
              * Configuration 
          * Hardware features  
  * [MDSPQualityAssurance Quality assurance]
-     * Commit process 
+     * [CommitProcess Commit process]
          * [WorkingWithBranches SVN branches] 
          * [CodeReview Code review]
-         * Commit testing 
+         * [CommitTesting Commit testing] 
      * [BugTracking Bug tracking]
      * Testing 
          * [UnitTests Unit tests]
