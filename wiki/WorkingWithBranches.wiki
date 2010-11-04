@@ -23,11 +23,18 @@ svn switch https://mdsp.googlecode.com/svn/branches/new-branch-name
 
 = To request a code review =
 
- * Go to [http://code.google.com/p/mdsp/issues/list Issues list]
- * Click the "New issue" link
- * Change issue template to "Review request"
- * Put comments to reviewer
+ * Go to [http://code.google.com/p/mdsp/issues/list Issues list] or [https://code.google.com/p/mdsp/source/list Changes list].
+
+ * Find your issue or change you wish to present.
+
+ * Find [https://code.google.com/p/mdsp/issues/entry?show=review&former=sourcelist request review] link.
+
+ * # assign your reviewer as an owner;
+   # put comments for reviewer;
+   # specify the branch name;
+ 
  * Wait a response from the reviewer
+
  * If your code is accepted then proceed to merge your changes with trunk
 
 = To merge the branch with trunk = 
