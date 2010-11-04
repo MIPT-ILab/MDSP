@@ -13,31 +13,59 @@
 # 
 
 # The buildbot script version
-VERSION=2
+VERSION=3
 
 function mail_results {
-    #MAILADDRESS="multimedia-dsp-2010@googlegroups.com"
-    MAILADDRESS="ggg_mail@inbox.ru"
+    echo "=============================================================="
+
+    if [ $TEST == 1  ]
+    then
+      echo "Test run, the mail won't be sent"
+      echo "The contents of the messge would be:"
+      cat $1
+      return
+    fi
+
+    MAILADDRESS="multimedia-dsp-2010@googlegroups.com"
+    #MAILADDRESS="ggg_mail@inbox.ru"
     MAILNAME="mdsp.buildbot@inbox.ru"
-    MAILPASS=`cat .mdsp_bot_passwd`
+    MAILPASS=`cat "$HOME/.mdsp_bot_passwd"`
     if [ $? != 0 ] 
 	then
-		echo "No password for mail bot was found!"
+            echo "No password for mail account was found!"
 	    exit 1
 	fi
     MFILE=$1
     MDATE=`date "+%d.%m.%Y %H:%M.%S"`
     SUBJ="MDSP testing results $MDATE"
 
-    sendEmail -f $MAILNAME -t $MAILADDRESS  -xu $MAILNAME  -xp $MAILPASS -u $SUBJ -s smtp.inbox.ru:25 -o message-file=$MFILE -o message-charset=utf-8
-    echo " The mail is sent at $MDATE"
+    sendemail -f $MAILNAME -t $MAILADDRESS  -xu $MAILNAME  -xp $MAILPASS -u $SUBJ -s smtp.inbox.ru:25 -o message-file=$MFILE -o message-charset=utf-8
+    echo "The mail is sent at $MDATE to $MAILADDRESS"
 }
  
 function logprint {
 echo $1
-echo $1 >> "$LOGFILE"
+echo -e  $1 >> "$LOGFILE"
 }
  
+# main 
+
+# check for flags given
+if [ -z "$1"  ]
+then
+  echo "No parameters are given!"
+  echo "Usage: $0 test|mail"
+  exit 1
+fi
+
+TEST=0
+case "$1" in
+  "test" ) TEST=1 ;;
+  "mail" ) TEST=0 ;;
+  * )  echo "wrong parameter, use test or mail"; exit 1  ;;
+esac
+
+
 DATETIME=`date "+%Y-%m-%d-%H-%M-%S"`
 HOST=`uname -a`
 DATE=`date`
@@ -47,7 +75,7 @@ MAKEFLAGS=""
 LOGFILE="output.txt"
  
 logprint "Creating the working directory"
-WRK="/home/grigory.rechistov/mdsp-tests/$DATETIME"
+WRK="$HOME/mdsp-tests/$DATETIME"
 mkdir -p "$WRK" || echo "Failed to create the dir!" 1>&2
  
 cd "$WRK"
@@ -132,6 +160,8 @@ logprint "Not implemented yet"
  
 # Happily finish
 logprint "All tests are OK."  
+ENDDATE=`date "+%Y-%m-%d-%H-%M-%S"`
+logprint "Finished at $ENDDATE"
 mail_results "$LOGFILE"
  
 #cd "$HOME"
