@@ -4,10 +4,10 @@
 
 In majority of medium- to huge- sized porject regular testing (also sometimes called "nightly testing" or just "nightly") is used to assure that the quality of product did  not degraded after recent commits.
 
-This testing is usually more complex that unit tests, take more time to run and checks the interaction of units, for example, running the program being developed and assuring its output corresponds to the certain expectations.
+This testing is usually more complex than unit tests, takes more time to run and checks the interaction of units, for example, running the program being developed and assuring its output corresponds to the certain expectations.
 
 = Current status =
-A special Bash script, `mdsp_test_suite.sh`, is deployed on several (_currently one_) servers to do certain tasks on a regular basis (currently twice per week):
+A special Bash script, `mdsp_test_suite.sh`, is deployed on several hosts. It is started by `cron` scheduler and performs certain tasks on a regular basis (currently twice per week per host):
  # Fetch the latest SVN head.
  # Build the source.
  # Run unit test programs.
@@ -17,10 +17,13 @@ A special Bash script, `mdsp_test_suite.sh`, is deployed on several (_currently 
 
 = Plans =
 
-Our plans include bringing up the similar ocnfigurations for tests on all supported architectures/OSes:
+Our plans include bringing up the similar tester configurations for tests on all supported architectures/OSes.
+
+ * Porting the test suite to Windows would require some more effort as the runtime is essentially different from Unix. Specially, as we actually support up to *three* Windows runtimes, all of them need to be tested.
 
 = Details = 
 
-|| Host || Type                   || Status         || Comments ||
-|| mary || Linux 32bit (Ubuntu)   || Deployed       ||             ||
-||      ||                        ||                ||          ||
+|| Hostname || Type                   || Status         || Comments ||
+|| mary || Linux 32bit (Ubuntu)   || Deployed       || Needs update to latest suite version  ||
+|| luna32 || Linux 32 bit  (Ubuntu)  || Deployed    || Qemu VM   ||
+|| jair64 || Linux 64 bit  (Ubuntu)  || Deployed    || Qemu VM   ||
