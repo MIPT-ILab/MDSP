@@ -38,7 +38,7 @@ public:
     Byte( hostUInt8 val = 0):byte_val( val), output( DEFAULT_OUT), flag( DEFAULT_FLAG){}
 
     /* Copy constructors */
-    Byte( const Byte& byte):byte_val( byte.getByteVal()), output( DEFAULT_OUT), flag( DEFAULT_FLAG){}
+    Byte( const Byte& byte):byte_val( byte.getByteVal()), output( DEFAULT_OUT), flag( byte.getFlagEnable()){}
 
     /* Get/set methods */
 
@@ -496,7 +496,7 @@ public:
      * length and first element with index.If that position is invalid,
      * recalls exception 
      */
-    ByteLine getByteLine( unsigned int len, unsigned int index) const;
+    ByteLine getByteLine( unsigned int index, unsigned int len) const;
 
     /* The constant member function. Returns entire ByteLine */
     ByteLine getByteLine() const;
