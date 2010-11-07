@@ -14,6 +14,7 @@
 #include <iostream>
 
 #include "types.h"
+#include "log.h"
 
 #define DEFAULT_OUT HEX // default output form
 #define DEFAULT_FLAG 0
@@ -26,7 +27,7 @@ class RegVal;
 /**
  * class Byte implements
  */
-class Byte
+class Byte:public log
 {
 
     hostUInt8 byte_val;
@@ -179,7 +180,7 @@ inline Byte operator& ( const Byte& left, const Byte& right)
 /**
  * Class ByteLine implements a logical set of bytes
  */
-class ByteLine
+class ByteLine:public log
 {
     vector<Byte> *byte_line;
     OutputFormat output;
@@ -565,7 +566,7 @@ inline MemVal& MemVal::operator= ( const MemVal& mem_val)
  */
 
 typedef map< mathAddr, MemVal, std::less< mathAddr> > memMap;
-class MemoryModel
+class MemoryModel:public log
 {
 
     memMap *mem_model;
