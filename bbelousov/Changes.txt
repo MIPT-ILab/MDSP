@@ -1,0 +1,49 @@
+memory.h
+    1. Copy constructor for objects of the class Byte was changed to provide copying of the flag.
+        Before:
+            Byte( const Byte& byte):byte_val( byte.getByteVal()), output( DEFAULT_OUT), flag( DEFAULT_FLAG){}
+        After:
+            Byte( const Byte& byte):byte_val( byte.getByteVal()), output( DEFAULT_OUT), flag( byte.getFlagEnable()){}
+    
+    2. Description of the method ByteLine of the class MemVal was changed. In fact, arguments were placed in wrong order.
+            ByteLine getByteLine( unsigned int index, unsigned int len) const;
+       This is the right variant.
+
+memory.cpp
+    1. Copy constructor
+        ByteLine::ByteLine( const ByteLine& line)
+        was modified to provide copying of the flag. The new string was added
+        ( *byte_line).at( i).setFlagEnable( line.getByte( i).getFlagEnable());
+
+    2. Function void MemVal::writeByteLine( const ByteLine& line, unsigned int index) was modified.
+        The flag wasn't being activated before, although author would like to see this result.
+        
+    3. Function void MemVal::writeByteLine( const ByteLine & line) was modified.
+        Philosophical question appears "What kind of event flags should symbolize:
+        1) we wrote this byte;
+        2) we just use this byte (maybe we will write it in the future.
+        I hold the first variant. That's why in this function the flag just being copied.
+!!!     If we use the first variant, we need to write the HALT command to the commands list, which we'd like our processor to execute.
+        If we use the second variant, we need to change this function as the previous and it will work.
+
+    4. Comments in functions ByteLine MemVal::getByteLine( unsigned int index, unsigned int count) const and ByteLine MemVal::getByteLine() const are redundant.
+       It is not necessary that the flags are activated, whe we call these functions, so we don't need these checks.
+       See also changes in register_file.coo (situations are similar).
+
+register_file.cpp
+    1. Checking up section was commented in the function ByteLine RegVal::getByteLine() const, because this flag is not necessary activated.
+    
+config.cpp
+    1. Destructor Config::~Config() was changed, because it didn't work.
+       Before:
+        delete[] this->input_filename;
+        delete[] this->log_filename;
+       After:
+        delete this->input_filename;
+        delete this->log_filename.
+
+test.cpp
+    1. A lot of errors appear if you uncomment testMemVal in main. The main reason of errors is in mismatch of count of spaces and tabs.
+       It is good task for somebody to spend a nice evening.
+
+P.S. If you'd like to see MDSP working from the beginning till the end, replace memory.cpp with memory(modified.cpp). Congratulations!

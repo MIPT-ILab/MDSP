@@ -23,8 +23,8 @@ Config::Config()
 }
 Config::~Config()
 {
-    delete[] this->input_filename;
-    delete[] this->log_filename;
+    delete this->input_filename;
+    delete this->log_filename;
 }
 /* public methods */
 /*
