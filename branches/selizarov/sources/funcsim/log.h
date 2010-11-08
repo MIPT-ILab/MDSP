@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <stdarg.h>
 
 using namespace std;
 
@@ -17,10 +18,10 @@ class log
 {
 public:
 	/* Method to show warning message*/
-	void warning(const char * message);
+	void warning(const char * message, ...) const;
 
 	/* Method to show error and assert simulator*/
-	void critical(const char * message);
+	void critical(const char * message, ...) const;
 };
 
 
