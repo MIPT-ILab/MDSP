@@ -229,13 +229,12 @@ hostUInt8 ByteLine::getByteVal( unsigned int byte_num) const
 {
     if ( byte_num > this->getSizeOfLine())
     {
-		cout<<"Error: In method getByteVal of class ByteLine\nSize of byte line is less than target byte number!\n";
-		assert(0);
+		critical("In method getByteVal of class ByteLine\nSize of byte line is less than target byte number");
+		
     }
     if ( ( *byte_line).empty())
     {
-       cout<<"Error: In method getByteVal of class ByteLine\nByte line is empty!\n";
-	   assert(0);
+       critical("In method getByteVal of class ByteLine\nByte line is empty");
     }
     return ( *byte_line).at( byte_num).getByteVal();
 }
@@ -244,13 +243,11 @@ Byte ByteLine::getByte( unsigned int byte_num) const
 {
     if ( byte_num > this->getSizeOfLine())
     {
-        cout<<"Error:In method getByte of class ByteLine\nSize of byte line is less than target byte number!\n";
-		assert(0);
+        critical("In method getByte of class ByteLine\nSize of byte line is less than target byte number");
     }
     if ( ( *byte_line).empty())
     {
-       cout<<"Error: In method getByteVal of class ByteLine\nByte line is empty!\n";
-	   assert(0);
+       critical("In method getByteVal of class ByteLine\nByte line is empty!");
     }
     return ( *byte_line).at( byte_num);
 }
@@ -317,8 +314,7 @@ ByteLine MemVal::getByteLine( unsigned int index, unsigned int count) const
 {
     if ( getSizeOfMemVal() < index + count)
     {
-        cout << "Error:In method getByteLine of MemVal\n Size of MemVal is less than target byte number!\n";
-        assert( 0);
+        critical("Error:In method getByteLine of MemVal\n Size of MemVal is less than target byte number");
     }
     ByteLine temp( count);
     for ( unsigned int i = 0; i < count ; i++)
