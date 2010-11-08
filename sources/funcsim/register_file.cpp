@@ -15,11 +15,11 @@ ByteLine RegVal::getByteLine() const
     ByteLine temp( getSizeOfRegVal());
     for ( unsigned int i = 0; i < getSizeOfRegVal(); i++)
     {
-        if ( temp.getByte( i).getFlagEnable() != DEFAULT_ENABLE)
+        /*if ( temp.getByte( i).getFlagEnable() != DEFAULT_ENABLE)
         {
             cout << "ERROR: Out of Memory!\n";
             assert( 0);
-        }
+        }*/
         temp.setByte( i, getByte( i));
     }
     return temp;

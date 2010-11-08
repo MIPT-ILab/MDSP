@@ -48,6 +48,7 @@ ByteLine::ByteLine( const ByteLine& line)
     for ( unsigned int i = 0 ; i < line.getSizeOfLine(); i++)
     {
         ( *byte_line).at( i).setByteVal( line.getByteVal( i));
+        ( *byte_line).at( i).setFlagEnable( line.getByte( i).getFlagEnable());
     }
 }
 
@@ -370,10 +371,12 @@ void MemVal::writeByteLine( const ByteLine& line, unsigned int index)
         cout << "ERROR: Size of MemVal is less than target byte number!\n";
         assert( 0);
     }
+    Byte temp;
     for ( unsigned int i = 0; i < line.getSizeOfLine(); i++)
     {
-        setByte( i + index, line.getByte( i));
-        getByte( i + index).setFlagEnable( DEFAULT_ENABLE);
+        temp = line.getByte( i);
+        temp.setFlagEnable( DEFAULT_ENABLE);
+        setByte( i + index, temp);
     }
 }
 
@@ -384,10 +387,12 @@ void MemVal::writeByteLine( const ByteLine & line)
         cout << "ERROR: Size of MemVal is less than target byte number!\n";
         assert( 0);
     }
+    Byte temp;
     for ( unsigned int i = 0; i < line.getSizeOfLine(); i++)
     {
-        setByte( i, line.getByte( i));
-        getByte( i).setFlagEnable( DEFAULT_ENABLE);
+        temp = line.getByte( i);
+        temp.setFlagEnable( line.getByte( i).getFlagEnable());
+        setByte( i, temp);
     }
 }
 
@@ -440,7 +445,7 @@ ByteLine MemoryModel::readBL(  mathAddr read_ptr, unsigned int num_of_bytes)
     {
 		if ( temp.getByte( i).getFlagEnable() != DEFAULT_ENABLE)
         {
-            cout << "ERROR: Out of Memory!\n";
+            cout << "ERROR: Attempt to read from the cell without data\n";
             assert( 0);
         }
         
