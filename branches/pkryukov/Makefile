@@ -34,14 +34,17 @@ ASM_OBJS_O:=${ASM_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o}
 
 all: funcsim test asm
 	
-Release/build/%.o: sources/%.cpp build_dirs
-	$(CXX) $< -c -o $@	
-	
+ifeq ($(DEBUG), yes)
 Debug/build/%.o: sources/%.cpp build_dirs
-	$(CXX) $< -c -o $@		
+		$(CXX) $< -c -o $@		
+else		
+Release/build/%.o: sources/%.cpp build_dirs
+		$(CXX) $< -c -o $@		
+endif		
 
 build_dirs:
 	mkdir -p $(OUT)/build/asm
+	mkdir -p $(OUT)/build/test
 	mkdir -p $(OUT)/build/funcsim
 
 funcsim: $(MAIN_OBJS_O)
