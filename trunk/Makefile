@@ -67,7 +67,7 @@ asm: $(ASM_OBJS_O)
 
 clean:
 	rm -rf $(OUT)/build
-	rm -f $(OUT)/funsim
+	rm -f $(OUT)/funcsim
 	rm -f $(OUT)/test
 	rm -f $(OUT)/asm
 
