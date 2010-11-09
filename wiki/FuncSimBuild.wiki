@@ -32,18 +32,27 @@ For more details see http://msdn.microsoft.com/en-us/library/xee0c8y7(v=VS.90).a
 
 Makefile build is a cross platform feature, it allows you to build the code uniformly on all supported platforms. It is done from a command line (`CMD.EXE` in Windows, `Xterm` or just any other terminal in Unix)
 
+== Release build ==
+
 To start a build, change a directory to one with Makefile, and type
 {{{
 make
 }}}
 
-or, for debug build, type
+After the 'make' process has succeeded the new binaries are in folder `Release/`,
+object files are in folder 'Release/build/'
+
+== Debug build ==
+
+For debug build, type
 
 {{{
 make DEBUG=yes
 }}}
 
-After the 'make' process has succeeded the new binaries are in folder `sources/bin/`
+After the 'make' process has succeeded the new binaries are in folder `Debug/`,
+object files are in folder 'Debug/build/'
+
 
 == Windows ==
 
