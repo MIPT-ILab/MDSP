@@ -108,7 +108,7 @@ else # Success
 fi
  
 # Let' build the code
-MAKEDIR="mdsp/sources"
+MAKEDIR="mdsp"
 logprint "Building..."  
 MAKEOUTPUT=`make -C $MAKEDIR $MAKEFLAGS 2>&1`
 MAKEERRORCODE=$?
@@ -133,7 +133,7 @@ fi
  
 # Let' run the test suite included in MDSP
 logprint "Running unit tests..."   
-TESTOUTPUT=`mdsp/sources/bin/test 2>&1`
+TESTOUTPUT=`mdsp/Release/test 2>&1`
 TESTERRORCODE=$?
 if [ $TESTERRORCODE != 0 ] # Failure
 then
