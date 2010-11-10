@@ -12,6 +12,7 @@ void log::warning(const char * message, ...) const
 		/* show message */
 		vprintf(message, ptr);
 
+        cout <<"\n";
 		va_end(ptr);
 	}
 
@@ -26,7 +27,7 @@ void log::critical(const char * message, ...) const
 
 		/* show message */
 		vprintf(message, ptr);
-
+		cout <<"\n";
 		va_end(ptr);
 		assert(0);
 	}
