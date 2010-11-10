@@ -11,6 +11,7 @@ COMMON_OBJS_CPP := \
 	sources/funcsim/config.cpp \
 	sources/funcsim/core.cpp \
 	sources/funcsim/flags.cpp \
+	sources/funcsim/log.cpp \
 	sources/funcsim/memory.cpp \
 	sources/funcsim/operation.cpp \
 	sources/funcsim/register_file.cpp
