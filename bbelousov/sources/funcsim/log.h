@@ -11,6 +11,7 @@
 #include <iostream>
 #include <cassert>
 #include <stdarg.h>
+#include <cstdio>
 
 using namespace std;
 
