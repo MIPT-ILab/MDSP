@@ -1,0 +1,16 @@
+#summary Details of implementation-specific things on funcsim.
+
+= Things to implement =
+
+ * Command line parsing:  *getopt* on Linux/Windows
+
+ * ELF loading - external libelf on Linux/Windows/CygWin
+
+ * User intercative interface - external *libreadline* support on Linux/Windows
+
+ * Stack trace printing on errors - cross compiler implementations required.
+
+ * Disassembling
+   * At first it should disassemble only stuff it can decode
+   * Unknown instructions may be just printed as HEX code.
+   
