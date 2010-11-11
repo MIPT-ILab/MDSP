@@ -1,11 +1,81 @@
-#summary One-sentence summary of this page.
+#summary High level design of FuncSim.
 
 = Introduction =
 
-*TODO* write me.
+This page describes some ideas on how the functional part of our simulator should look like. It also should define the external interfaces to both user and clock-precise model.
+
+= Command line arguments = 
+
+== Current status ==
+{{{
+funcsim <binary>
+}}}
+
+where `<binary>` - file to  load to memory from address 0x0 before starting simulation.
+
+== Planned list of features ==
+
+=== Batch mode ===
+The batch mode means that all the required data is passed with command-line arguments, then the execution starts and cannot be interrupted by a user until it finished.
+
+{{{
+funcsim -batch -binary <binary>|-elf <binary> [-num-steps <num>] [-disasm] [-print-reg-state] [-print-mem-state] [-output-file <name>] [-trace]
+}}}
+
+`-binary` - instructs simualtor to load raw machine code from file.
+
+`-elf`    - load binary ELF file sections to memory.
+
+`-num-steps` - do only specified amount of steps  and then exit. By default core runs until it encounters `hlt` instruction or there is a simulation error.
+
+`-disasm` - print disassembly of every current instruction.
+
+`-print-reg-state` - dump register state after simulation has finished.
+
+`-print-mem-state` - dump memory state after simulation has finished.
+
+`-output-file` - redirect normal output to the given file. By default we print to stdout.
+
+`-trace` - report all architectural state changes (register modified, memory written etc)
+
+==== Return values:  ====
+
+0 - simulation finished normally with HLT or amount of steps requested were done;
+
+1 - simualtion encountered uninitialized memory ;
+
+2 - internal funcsim error (unknown instruction, crash etc);
+
+Other error codes should correspond to environment problems (file not found, cannot write file etc).
+
+=== Interactive mode  ===
+This mode assumes that a user is given with control line and is able to input commands to control the simulation flow.
+
+{{{
+funcsim -interactive [-binary <binary>|-elf <binary>]
+}}}
+
+
 
 = Details =
 
+The interaction and communication of FuncSim components are show on the picture:
+*TODO smaller picture, extend it*
+
 http://mdsp.googlecode.com/files/mdsp-funcsim-picture.jpg
 
-*TODO* exaplain me
+ * core - the functions of instructions fetching, decoding, execution, memory accessing;
+
+ * scheduler - the main user interface: parsing command line arguments, user input; control of execution of core.
+
+ * register file - architecturally defined state of MDSP;
+
+ * memory - model of memory accessible by core;
+
+
+= Things to do = 
+
+ # Design disassembler format (AT&T)
+ # Design input language for interactive mode
+ # Design register, memory dump formats.
+ # Design trace file format
