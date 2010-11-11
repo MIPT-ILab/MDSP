@@ -25,6 +25,7 @@ ASM_OBJS_CPP := \
 	sources/asm/tokenan.cpp \
 	sources/asm/semantican.cpp \
 	sources/asm/assembler.cpp \
+	sources/funcsim/log.cpp \
 	sources/funcsim/memory.cpp \
 	sources/funcsim/operation.cpp \
 	sources/funcsim/register_file.cpp 
