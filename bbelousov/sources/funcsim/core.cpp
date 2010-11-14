@@ -76,7 +76,7 @@ void Core::run()
         this->pc = this->pc + 4;
 
         /* Execute operation */
-        // op->execute();
+        op->execute();
         delete( op);
 
         /* Check if it is necessary to stop instruction execution */
