@@ -11,3 +11,4 @@ label:
 	add %r0, %r1, %r2
 	add (%r0), (%r1), (%r2)
 
+	hlt

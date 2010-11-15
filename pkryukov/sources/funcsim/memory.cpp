@@ -29,8 +29,7 @@ ByteLine::ByteLine( unsigned int count)
         (*byte_line).resize( count);
     }catch ( std::bad_alloc)
     {
-        cout << "ERROR: Can not allocate memory!\n";
-        assert( 0);
+        critical("Can not allocate memory for count constructor of ByteLine");
     }
 }
 
@@ -42,8 +41,7 @@ ByteLine::ByteLine( const ByteLine& line)
         byte_line = new vector<Byte>( line.getSizeOfLine());
     }catch ( std::bad_alloc)
     {
-        cout << "ERROR: Can not allocate memory!\n";
-        assert( 0);
+         critical("Can not allocate memory for line constructor of ByteLine");
     }
     for ( unsigned int i = 0 ; i < line.getSizeOfLine(); i++)
     {
@@ -61,8 +59,7 @@ ByteLine::ByteLine( const Byte& byte)
         ( *byte_line).push_back( byte);
     }catch ( std::bad_alloc)
     {
-        cout << "ERROR: Can not allocate memory!\n";
-        assert( 0);
+        critical("Can not allocate memory for byte constructor of ByteLine");
     }
 }
 
@@ -161,8 +158,7 @@ ByteLine::ByteLine( hostUInt8 var, OrderType type)
         convert8( byte_line, var);
     }catch ( std::bad_alloc)
     {
-        cout << "ERROR: Can not allocate memory!\n";
-        assert( 0);
+        critical("Can not allocate memory for hostUInt8 constructor of ByteLine");
     }
 }
 
@@ -175,8 +171,7 @@ ByteLine::ByteLine( hostUInt16 var, OrderType type)
         convert16( byte_line, var, type);
     }catch ( std::bad_alloc)
     {
-        cout << "ERROR: Can not allocate memory!\n";
-        assert( 0);
+        critical("Can not allocate memory for hostUInt16 constructor of ByteLine");
     }
 }
 
@@ -189,8 +184,7 @@ ByteLine::ByteLine( hostUInt32 var, OrderType type)
         convert32( byte_line, var, type);
     }catch ( std::bad_alloc)
     {
-        cout << "ERROR: Can not allocate memory!\n";
-        assert( 0);
+        critical("Can not allocate memory for hostUInt32 constructor of ByteLine");
     }
 }
 
@@ -206,8 +200,7 @@ ByteLine::ByteLine(unsigned int var, ConversionType ctype, OrderType type)
            convert8( byte_line, var);
         }catch ( std::bad_alloc)
         {
-            cout << "ERROR: Can not allocate memory!\n";
-            assert( 0);
+            critical("Can not allocate memory for HUINT8 constructor of ByteLine");
         }
         break;
     case HUINT16:
@@ -217,8 +210,7 @@ ByteLine::ByteLine(unsigned int var, ConversionType ctype, OrderType type)
             convert16( byte_line, var, type);
         }catch ( std::bad_alloc)
         {
-            cout << "ERROR: Can not allocate memory!\n";
-            assert( 0);
+            critical("Can not allocate memory for HUINT16 constructor of ByteLine");
         }
         break;
     case HUINT32:
@@ -228,8 +220,7 @@ ByteLine::ByteLine(unsigned int var, ConversionType ctype, OrderType type)
             convert32( byte_line, var, type);
         }catch ( std::bad_alloc)
         {
-            cout << "ERROR: Can not allocate memory!\n";
-            assert( 0);
+            critical("Can not allocate memory for HUINT32 constructor of ByteLine");
         }
         break;
     }
@@ -239,13 +230,11 @@ hostUInt8 ByteLine::getByteVal( unsigned int byte_num) const
 {
     if ( byte_num > this->getSizeOfLine())
     {
-        cout << "ERROR: Size of byte line is less than target byte number!\n";
-        assert( 0);
+        critical("In method getByteVal of class ByteLine\nSize of byte line is less than target byte number");
     }
     if ( ( *byte_line).empty())
     {
-        cout << "ERROR: Byte line is empty!\n";
-        assert( 0);
+        critical("In method getByteVal of class ByteLine\nByte line is empty");
     }
     return ( *byte_line).at( byte_num).getByteVal();
 }
@@ -254,13 +243,11 @@ Byte ByteLine::getByte( unsigned int byte_num) const
 {
     if ( byte_num > this->getSizeOfLine())
     {
-        cout << "ERROR: Size of byte line is less than target byte number!\n";
-        assert( 0);
+        critical("In method getByte of class ByteLine\nSize of byte line is less than target byte number");
     }
     if ( ( *byte_line).empty())
     {
-        cout << "ERROR: Byte line is empty!\n";
-        assert( 0);
+        critical("In method getByteVal of class ByteLine\nByte line is empty");
     }
     return ( *byte_line).at( byte_num);
 }
@@ -269,13 +256,11 @@ void ByteLine::setByte( unsigned int byte_num, const Byte& byte)
 {
     if ( byte_num > this->getSizeOfLine())
     {
-        cout << "ERROR: Size of byte line is less than target byte number!\n";
-        assert( 0);
+        critical("In method setByte of class ByteLine\nSize of byte line is less than target byte number");
     }
     if ( ( *byte_line).empty())
     {
-        cout << "ERROR: Byte line is empty!\n";
-        assert( 0);
+         critical("In method setByte of class ByteLine\nByte line is empty");
     }
     ( *byte_line).at( byte_num) = byte;
 }
@@ -288,8 +273,7 @@ void ByteLine::addByte( const Byte& byte)
         ( *byte_line).push_back( byte);
     }catch ( std::bad_alloc)
     {
-        cout << "ERROR: Can not allocate memory!\n";
-        assert( 0);
+        critical("Can not allocate memory in method addByte of class ByteLine");
     }
 }
 
@@ -300,8 +284,7 @@ void ByteLine::resizeByteLine( unsigned int count)
         ( *byte_line).resize( count);
     }catch ( std::bad_alloc)
     {
-        cout << "ERROR: Can not allocate memory!\n";
-        assert( 0);
+        critical("Can not allocate memory in method resizeByteLine of class ByteLine");
     }
 }
 
@@ -331,8 +314,7 @@ ByteLine MemVal::getByteLine( unsigned int index, unsigned int count) const
 {
     if ( getSizeOfMemVal() < index + count)
     {
-        cout << "ERROR: Size of MemVal is less than target byte number!\n";
-        assert( 0);
+        critical("In method getByteLine of MemVal\n Size of MemVal is less than target byte number");
     }
     ByteLine temp( count);
     for ( unsigned int i = 0; i < count ; i++)
@@ -368,8 +350,7 @@ void MemVal::writeByteLine( const ByteLine& line, unsigned int index)
 {
     if ( getSizeOfMemVal() < index + line.getSizeOfLine())
     {
-        cout << "ERROR: Size of MemVal is less than target byte number!\n";
-        assert( 0);
+        critical("In method writeByteLine of MemVal\nSize of byte line is less than target byte number");
     }
     Byte temp;
     for ( unsigned int i = 0; i < line.getSizeOfLine(); i++)
@@ -384,8 +365,7 @@ void MemVal::writeByteLine( const ByteLine & line)
 {
     if ( getSizeOfMemVal() < line.getSizeOfLine())
     {
-        cout << "ERROR: Size of MemVal is less than target byte number!\n";
-        assert( 0);
+        critical("In method writeByteLine of MemVal\nSize of byte line is less than target byte number");
     }
     Byte temp;
     for ( unsigned int i = 0; i < line.getSizeOfLine(); i++)
@@ -412,8 +392,7 @@ ByteLine MemoryModel::readBL(  mathAddr read_ptr, unsigned int num_of_bytes)
 {
     if ( ( *mem_model).empty())
     {
-        cout << "ERROR!\n";
-        assert( 0);
+        critical("In method readBL of MemoryModel\nMemoryModel is empty");
     }
 
     memMap::iterator pos, start, end;
@@ -422,16 +401,14 @@ ByteLine MemoryModel::readBL(  mathAddr read_ptr, unsigned int num_of_bytes)
     end = find( read_ptr + num_of_bytes - 1);
     if ( start == ( *mem_model).end() || end == ( *mem_model).end())
     {
-        cout << "ERROR!\n";
-        assert( 0);
+        critical("In method readBL of MemoryModel\nMemoryModel is empty");
     }
     MemVal memval = start->second;
     for ( pos = start; pos != end; ++pos)
     {
         if ( countDistance( pos) > 0)
         {
-            cout << "ERROR!\n";
-            assert( 0);
+            critical("In method readBL of MemoryModel\nImpaired memory segmentation\n");
         }
         //mergeMemVal( pos, &memval);
         memval = mergeMemVal( pos);
@@ -445,8 +422,7 @@ ByteLine MemoryModel::readBL(  mathAddr read_ptr, unsigned int num_of_bytes)
     {
 		if ( temp.getByte( i).getFlagEnable() != DEFAULT_ENABLE)
         {
-            cout << "ERROR: Attempt to read from the cell without data\n";
-            assert( 0);
+            critical("Attempt to read from the cell without data");
         }
         
     }
