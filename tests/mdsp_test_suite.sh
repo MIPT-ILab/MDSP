@@ -13,7 +13,7 @@
 # 
 
 # The buildbot script version
-VERSION=3
+VERSION=4
 
 function mail_results {
     echo "=============================================================="
@@ -47,22 +47,37 @@ function logprint {
 echo $1
 echo -e  $1 >> "$LOGFILE"
 }
+
+function usage {
+    echo "Usage:"
+    echo "$0 mail"
+    echo "    Run tests on current HEAD, mail results to the mailing list"
+    echo "$0 test"
+    echo "    Run tests on current HEAD, don't mail, just print the results"
+    echo "$0 branch <branch-name>"
+    echo "    Run tests on branch specified, print the results"
+    
+    exit 1
+}
  
 # main 
 
 # check for flags given
 if [ -z "$1"  ]
 then
-  echo "No parameters are given!"
-  echo "Usage: $0 test|mail"
-  exit 1
+    usage;
 fi
 
 TEST=0
+BRANCHNAME=""
 case "$1" in
   "test" ) TEST=1 ;;
   "mail" ) TEST=0 ;;
-  * )  echo "wrong parameter, use test or mail"; exit 1  ;;
+  "branch" ) 
+    BRANCHNAME=$2
+    TEST=1
+    ;;
+  * )  usage ;;
 esac
 
 
@@ -74,7 +89,7 @@ MAKEFLAGS=""
  
 LOGFILE="output.txt"
  
-logprint "Creating the working directory"
+echo "Creating the working directory"
 WRK="$HOME/mdsp-tests/$DATETIME"
 mkdir -p "$WRK" || echo "Failed to create the dir!" 1>&2
  
@@ -84,13 +99,15 @@ touch "$LOGFILE"
 logprint "MDSP test suite version $VERSION, started at $DATE"   
 logprint "The machine: $HOST" 
  
-# DEBUG
-#mail_results "$LOGFILE"
-#exit 0
- 
 # Getting the sources
 logprint "Fetching sources from SVN..." 
-SVNOUTPUT=`svn checkout https://mdsp.googlecode.com/svn/trunk/ mdsp 2>&1`
+if [ -n "$BRANCHNAME" ]
+then
+    URL="https://mdsp.googlecode.com/svn/branches/$BRANCHNAME"
+else
+    URL="https://mdsp.googlecode.com/svn/trunk/"
+fi
+SVNOUTPUT=`svn checkout $URL mdsp 2>&1`
 SVNERRORCODE=$?
 if [ $SVNERRORCODE != 0 ] # Failure
 then
