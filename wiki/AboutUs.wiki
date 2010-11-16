@@ -10,4 +10,20 @@ This project is a part of Intel Lab activity at Moscow Institute of Physics and 
 
 Our team consists of a group of students of MIPT and mentors who supervise and direct the team's operation. 
 
-You can see the contact information on the project home page: https://code.google.com/p/mdsp/
+== 2010-2011 years ==
+
+=== Students ===
+
+|| *Photo* || *Name (en)* || *Name (ru)* || *Email* ||
+|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/alexey_ahnevsky.jpg || Alexey Ahnevsky || Ахневский Алексей ||  aleksey.ahnevskiy@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/boris_belousov.jpg || Boris Belousov || Борис Белоусов || plim.the.best@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/sergey_gvozdaryev.jpg || Sergey Gvozdaryev || Гвоздарев Сергей || gvozdarev.sa@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/arthur_gilmullin.jpg || Arthur Gilmullin || Гильмуллин Артур || agilmullin@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/vladimir_dubihin.jpg || Vladimir Dubihin || Дубихин Владимир || vladimir.dubihin@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/stanislav_elizarov.jpg || Stanislav Elizarov || Елизаров Станислав || el.stas@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/pavel_kryukov.jpg || Pavel Kryukov || Крюков Павел || ikilevap@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/alexander_kurilovich.jpg || Alexander Kurilovich || Курилович Александр || akurae@mail.ru ||
+|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/alexander_maramzin.jpg || Alexander Maramzin || Марамзин Александр || - ||
+|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/artemije_margaritov.jpg || Artemije Margaritov || Маргаритов Артемий || margarty.frtk@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/boris_stepanenko.jpg || Boris Stepanenko || Степаненко Борис || stepanenkoat@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/nazary_tupitsa.jpg || Nazary Tupitsa || Тупица Назарий || two.nazya@gmail.com ||
