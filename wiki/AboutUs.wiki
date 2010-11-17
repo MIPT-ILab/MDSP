@@ -13,6 +13,12 @@ Our team consists of a group of students of MIPT and mentors who supervise and d
 
 == 2010-2011 years ==
 
+=== Mentors ===
+|| *Photo* || *Name (en)* || *Name (ru)* || *Email* ||
+|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/grigory_rechistov.jpg || Grigory Rechistov|| Григорий Речистов || grigory.rechistov@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/alexander_titov.jpg || Alexander Titov || Александр Титов || alexander.igorevich.titov@gmail.com ||
+|| || Юрий Байда || Yuri Baida || yuri.baida@gmail.com ||
+
 === Students ===
 
 || *Photo* || *Name (en)* || *Name (ru)* || *Email* ||
@@ -28,9 +34,3 @@ Our team consists of a group of students of MIPT and mentors who supervise and d
 || http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/artemije_margaritov.jpg || Artemije Margaritov || Маргаритов Артемий || margarty.frtk@gmail.com ||
 || http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/boris_stepanenko.jpg || Boris Stepanenko || Степаненко Борис || stepanenkoat@gmail.com ||
 || http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/nazary_tupitsa.jpg || Nazary Tupitsa || Тупица Назарий || two.nazya@gmail.com ||
-
-=== Mentors ===
-|| *Photo* || *Name (en)* || *Name (ru)* || *Email* ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/ggg.jpg || Grigory Rechistov|| Григорий Речистов|| grigory.rechistov@gmail.com ||
-|| || Alexander Titov|| Александр Титов || alexander.igorevich.titov@gmail.com ||
-|| || Юрий Байда ||Yuri Baida || yuri.baida@gmail.com ||
