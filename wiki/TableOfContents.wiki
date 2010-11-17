@@ -10,9 +10,9 @@ every time you use it. It is very inconvenient.
  * [AboutUs About us]
  * [IntroductionToTheDevelopmentProcess HOWTO]
      * [FuncSimBuild Build] 
-     * Run tests 
-     * Make changes 
-     * Commit  
+     * [TestsImplementation Run tests] 
+     * [ChangesPolicy Make changes] 
+     * [WorkingWithBranches Commit]
      * [BugReporting Report a bug] 
  * Design  
      * [MdspIsa Instruction set architecture (ISA)]
@@ -46,7 +46,7 @@ every time you use it. It is very inconvenient.
      * [BugTracking Bug tracking]
      * Testing 
          * [UnitTests Unit tests]
-         * ASM tests 
+         * [AvailableBinaries Machine code images]
          * [RegressionTesting Regular regression tests]
  * [FAQ] 
  * [BestKnownMethods BKM] 
