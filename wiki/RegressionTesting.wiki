@@ -14,6 +14,27 @@ A special Bash script, `mdsp_test_suite.sh`, is deployed on several hosts. It is
  # Run full simulation process (*NOT IMPLEMENTED YET*).
  # Mail the results to the mailing list.
 
+You can also test your branch or main trunk (without sending mails) with a copy of this script. See [http://code.google.com/p/mdsp/wiki/CommitTesting#Automated_check this notes].
+
+== How it works on Linux ==
+
+The following programs should be installed on the host that is used to test our SVN:
+ * Bourne shell (`bash`) version >= 3.0 ([http://tldp.org/LDP/abs/html/ tutorial])
+ * SVN utilities `svn` and `svnversion` ([http://linux.die.net/man/1/svn manual page]). 
+ * sendEmail, program to send emails from CLI written in Perl (_not to be confused with sendmail_) ([http://caspian.dotconf.net/menu/Software/SendEmail/ home page])
+ * cron daemon ([http://linux.die.net/man/5/crontab man page])
+ * GNU Compiler collection a.k.a. GCC version >= 4.0 ([http://gcc.gnu.org/ home page])
+ * GNU Make utility ([http://www.gnu.org/software/make/ home page])
+
+ # Set up a user which will perform tests on a regular basic. Let's name _it_ `mdsp-tester`. Its `$HOME` directory should have enough space to hold several copies of our SVN tree. Place `msdp_test_suite.sh` at `$HOME`.
+ # Create file `.mdsp_bot_passwd` in the same directory - it will hold a password to email account to be used to send emails. Make sure you control this file well - do not share it via SVN!
+ # Adjust the aforementioned files according to your changes :-)
+ # Make sure Cron daemon is working and performing tasks, then add the following line to file `/etc/crontab`:
+   {{{
+10  12  * * 2,6 mdsp-tester /home/mdsp-tester/mdsp_test_suite.sh mail 
+   }}}
+ In the setup shown above, a script will be run every 2nd and 6th day of week at 12:10 by user `mdsp-tester`
+ # Add bot's email to your mailing list so the mail won't be rejected.
 
 = Plans =
 
@@ -21,9 +42,10 @@ Our plans include bringing up the similar tester configurations for tests on all
 
  * Porting the test suite to Windows would require some more effort as the runtime is essentially different from Unix. Specially, as we actually support up to *three* Windows runtimes, all of them need to be tested.
 
-= Details = 
+= Test hosts details = 
 
 || Hostname || Type                   || Status         || Comments ||
-|| mary || Linux 32bit (Ubuntu)   || Deployed       || Needs update to latest suite version  ||
+|| mary || Linux 32bit (Ubuntu)   || Defunct   || Needs update to latest suite version  ||
 || luna32 || Linux 32 bit  (Ubuntu)  || Deployed    || Qemu VM   ||
 || jair64 || Linux 64 bit  (Ubuntu)  || Deployed    || Qemu VM   ||
+|| fenetre32 || Windows XP SP3 32 bit || Creating   ||           ||
