@@ -1,0 +1,43 @@
+#summary Requirements for assuring the code quality.
+#labels Phase-Implementation
+
+= Introduction =
+
+Suppose you got a positive code review results.
+
+To merge some changes you've done with main trunk you must be sure that your code satisfies the following list of criteria
+
+ # Of course, it should be compilable with both Makefile and VCPROJ. See FuncSimBuild.
+ # Unit tests binaries must pass (exit without messages and with exit code zero) (see UnitTests)
+ # Funcsim full-run on `simple_test.bin` should finish without errors.
+ # Code guidelines should be satsfied. See CodingStyle.
+
+*NOTE* Currently there is no automated enforcement of the rules before a commit, therefore it's a responsibility of every comitter to stick to them. Anyway, if you would introduce any problems the next automated regular testing will reveal them and that wouldn't look good!
+
+= Automated check = 
+
+To test your branch you can use the same test suite that is used for regular testing. It is located at `<svn_root>/tests/mdsp_test_suite.sh`.
+
+== Limitations ==
+
+Currently only Makefile (Windows and Linux) build can be tested with this script. Windows/MS VS support is in the progress of developement.
+
+== Prerequisites ==
+
+You must have the following things installed on your computer:
+
+ * Windows - you should have CygWin or MinGW installed.
+ * Linux - if you can fetch and build code manually then you will be able to run the script.
+
+== How to run ==
+
+To test main trunk, run
+
+{{{
+bash mdsp_test_suite.sh test
+}}}
+
+To test a branch, run
+{{{
+bash mdsp_test_suite.sh branch <branch-name>
+}}}
