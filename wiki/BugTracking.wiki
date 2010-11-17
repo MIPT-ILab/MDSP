@@ -30,4 +30,16 @@ Taken from the beautiful article '[http://www.chiark.greenend.org.uk/~sgtatham/b
 
 = Bug lifecycle =
 
-*TODO*
+Every record in the tracker has several fields and the maintaining them is a bug *Owner* responsibility. 
+ 
+The most important is *Status* field. 
+
+== Typical bug life ==
+
+ # When an issue is created, it is *New*
+ # When an owner has detected that he has a new bug and he is OK with it it is  *Accepted* (and if not - he has to either move the issue to correct owner or mark it as *Invalid*)
+ # When the actual work is in progress it is *Started*
+ # When the changes are committed to HEAD (not branch) it should be *Fixed* or *Verified* (*Verified* is better - it means that you have also made tests that check the correctness of your implementation)
+ # After that the bug dissapears from list of active issues and we consider it as _Closed_.
+
+All the statuses are actually self-descriptive.
