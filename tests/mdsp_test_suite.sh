@@ -13,7 +13,8 @@
 # 
 
 # The buildbot script version
-VERSION=4
+VERSION=5
+# PASS=0
 
 function mail_results {
     echo "=============================================================="
@@ -37,7 +38,13 @@ function mail_results {
 	fi
     MFILE=$1
     MDATE=`date "+%d.%m.%Y %H:%M.%S"`
-    SUBJ="MDSP testing results $MDATE"
+    if [ $PASS ] 
+    then
+        SUBJ="[PASS]"
+    else
+        SUBJ="[FAIL]"
+    fi   
+    SUBJ="$SUBJ MDSP testing results $MDATE"
 
     sendemail -f $MAILNAME -t $MAILADDRESS  -xu $MAILNAME  -xp $MAILPASS -u $SUBJ -s smtp.inbox.ru:25 -o message-file=$MFILE -o message-charset=utf-8
     echo "The mail is sent at $MDATE to $MAILADDRESS"
@@ -176,6 +183,7 @@ logprint "Running product tests..."
 logprint "Not implemented yet"  
  
 # Happily finish
+PASS=1
 logprint "All tests are OK."  
 ENDDATE=`date "+%Y-%m-%d-%H-%M-%S"`
 logprint "Finished at $ENDDATE"
