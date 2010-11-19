@@ -20,8 +20,7 @@ mdsp
 │   ├── build -- temporary files of build
 │   │   ├── asm
 │   │   └── funcsim
-│   ├── funcsim -- source for functional simulator
-│   └── users -- previous year code. We think of removing it and start using branches
+│   └── funcsim -- source for functional simulator
 │     
 └── tests -- source code for test
 }}}
@@ -49,11 +48,11 @@ The following main IDEs are supported in our project:
 == Installation and setup of an IDE ==
 
  * ==== Microsoft Visual Studio ====
-   The installation CD image can be acquired from MSDNAA software program site if you are a participant of it (you can become one if you are a MIPT student, and you are). Or, you can ask Grigory Rechistov for the ISO file of this DVD. Or, just use http://allter.mipt.ru/ to find one.
+   The installation CD image can be acquired from MSDNAA software program site if you are a participant of it (you can become one if you are a MIPT student, and you are). Or, you can ask mentors. Or, just use http://allter.mipt.ru/ to find one.
   _ Note that we don't need all .NET, MFC, C# or other additional technologies from Microsoft - just plain Visual C++, so don't install everything from that DVD - just components required for C++ development. _
 
  * ==== Eclipse CDT ====
-   One can download it from the official site, or find on LAN, or ask  Grigory Rechistov again for assistance.
+   One can download it from the official site, or find on MIPT LAN, or ask mentors for assistance.
      * Be sure to get *CDT* not just plain Eclipse!
      * Choose right OS and architecture as well.
    In some cases you'll also need Java Runtime Environment if you haven't installed one before.
@@ -84,7 +83,7 @@ So far, we expect to support:
 
 Note that the oldest supported GCC version is 4.1.x. on all platforms.
 
-After your build has suceeded, in the folder `sources/bin/` one can find three binaries: `asm` - for assembler, `funcsim` - for standalone functional simulator, and `test` - for testing. Run any of them to watch what they do.
+After your build has suceeded, in the folder `Release` or `Debug` one can find three binaries: `asm` - for assembler, `funcsim` - for standalone functional simulator, and `test` - for testing. Run any of them to watch what they do.
 
 = Test =
 
@@ -94,9 +93,7 @@ Run `test`. If everything is OK, no output is shown - the program just finishes.
 
 To run funcsim, type in your command shell (assuming you are in `<svn_root>/sources/` folder)
 
-`bin/funcsim ../tests/simple_test.bin`
-
-Currently, funcsim is not quite operable, so don't expect much yet.
+`Release/funcsim ../tests/simple_test.bin`
 
 == Assembler ==
 You can also run `asm`. Watch what it requires from you and give it to it - the samples of source code are there!
