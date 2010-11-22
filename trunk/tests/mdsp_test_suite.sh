@@ -83,11 +83,11 @@ fi
 
 TEST=0
 BRANCHNAME=""
-ONWC=0
+ONWC=""
 case "$1" in
   "test" ) TEST=1 ;;
   "mail" ) TEST=0 ;;
-  "branch" ) 
+  "branch" )
     BRANCHNAME=$2
     TEST=1
     ;;
@@ -107,7 +107,7 @@ MAKEFLAGS=""
  
 LOGFILE="output.txt"
  
-if [ $ONWC = 0 ]
+if [ -z $ONWC ]
     then
     echo "Creating the working directory"
     WRK="$HOME/mdsp-tests/$DATETIME"
@@ -122,8 +122,8 @@ touch "$LOGFILE"
 logprint "MDSP test suite version $VERSION, started at $DATE"   
 logprint "The machine: $HOST" 
  
-if [ ONWC = 0 ]
-    then
+if [ -z $ONWC  ]
+then
     # Getting the sources
     logprint "Fetching sources from SVN..." 
     if [ -n "$BRANCHNAME" ]
@@ -154,7 +154,7 @@ else
 fi
 
 # Let' build the code
-if [ ONWC = 0  ]
+if [ -z $ONWC  ]
 then
     MAKEDIR="mdsp"
 else
@@ -208,7 +208,7 @@ fi
 # Let' run the additional tests
 logprint "Running product tests..."  
  
-PRODOUTPUT=`$MAKEDIR/Release/funcsim tests/simple_test.bin 2>&1`
+PRODOUTPUT=`$MAKEDIR/Release/funcsim $MAKEDIR/tests/simple_test.bin 2>&1`
 PRODERORCODE=$?
 if [ $PRODERORCODE != 0 ] # Failure
 then
