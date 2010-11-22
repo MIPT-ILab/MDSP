@@ -40,9 +40,12 @@ public:
     inline Flags* GetFlags() { return this->flags; }
     inline bool GetStop() { return this->stop; }
 
+    /* print defined message */
+    void warning(int type);
+
     void init( hostUInt16 start_pc);
     int loadBinary ( ifstream& input);
-    int run( int requested);
+    hostUInt64 run( hostUInt64 requested );
 
     void Stop() { this->stop = true; }   // stop instruction execution
     void Start() { this->stop = false; } // start instruction execution

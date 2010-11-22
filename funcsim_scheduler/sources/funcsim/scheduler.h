@@ -1,12 +1,13 @@
 /**
  *Scheduler.h - header of Scheduler class
  * @author Vladimir Dubihin
- * Copyright 2009 MDSP team
+ * Copyright 2010 MDSP team
  */
 
 #ifndef SCHEDULER_H
 #define SCHEDULER_H
 
+#define MAXINT 0-1
 
 #include "core.h"
 
@@ -19,7 +20,7 @@ class Scheduler
         //Scheduler();
         void init(int argc, char** argv);
 
-        int steps_sim;//number of steps for funcsim
+        hostUInt64 steps_sim;//number of steps for funcsim
         hostUInt16 start_pc;//point counter for core
 };
 

@@ -39,12 +39,10 @@ void Core::init( hostUInt16 start_pc)
 /*
  * Run the functional simulator
  */
-int Core::run( int requested)
+hostUInt64 Core::run( hostUInt64 requested)
 {
     //number of steps the core has made
-    int steps=0;
-
-    //cout << "Simulation started." << endl;
+    hostUInt64 steps=0;
 
     /*
      * Infinite loop ("while (1)") should be here.
@@ -90,7 +88,7 @@ int Core::run( int requested)
         }
     }
 
-    //cout << "Simulation finished." << endl;
+    cout << "Number of steps executed: "<< steps << endl;
     return steps;
 }
 
@@ -112,3 +110,14 @@ int Core::loadBinary( ifstream& input)
     return 1;
 }
 
+void Core::warning(int type)
+{
+    switch(type)
+    {
+    case 0: break;//reserved
+    case 1: cout << "Simulation started." << endl;
+    break;
+    case 2: cout << "Simulation finished." << endl;
+    break;
+    }
+}
