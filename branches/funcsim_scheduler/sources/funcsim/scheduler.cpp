@@ -1,7 +1,7 @@
 /**
  *Scheduler.h - Implementation of Scheduler class
  * @author Vladimir Dubihin
- * Copyright 2009 MDSP team
+ * Copyright 2010 MDSP team
  */
 
 #include "scheduler.h"
@@ -25,8 +25,8 @@ void Scheduler::init(int argc, char** argv)
 
     closeBinaryInputFile ( in_bin, argv[1]);
 
-
-    cout<<core->run(this->steps_sim)<<endl;
-
+    core->warning(1);
+    core->run(this->steps_sim);
+    core->warning(2);
 }
 

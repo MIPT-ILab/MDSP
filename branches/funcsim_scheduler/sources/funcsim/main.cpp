@@ -25,15 +25,21 @@ int main(int argc, char** argv)
 
 
     Scheduler scheduler;
+
+    //simple input check
+    //to be ommited later
     if(argc>=3)
     {
-        scheduler.steps_sim = atoi(argv[2]);
-        scheduler.start_pc = 0x0000;
-        scheduler.init( argc, argv);
+        if (!(scheduler.steps_sim = strtoll ( argv[2], NULL, 10)) )
+            scheduler.steps_sim = MAXINT;
     } else
     {
-        cout<<"wrong input"<<endl;
-
+        scheduler.steps_sim = MAXINT;
     }
+
+    //ignition
+    scheduler.start_pc = 0x0000;
+    scheduler.init( argc, argv);
+
     return 0;
 }
