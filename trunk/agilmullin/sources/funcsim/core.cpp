@@ -72,13 +72,13 @@ void Core::run()
         //cout << op->encode()->getHostUInt32() << endl;
         //op->dump();
 
-        /* Add 4 bytes (32 bits) to access next instruction */
-        this->pc = this->pc + 4;
-
         /* Execute operation */
         op->execute();
         delete( op);
 
+        /* Add 4 bytes (32 bits) to access next instruction */
+        this->pc = this->pc + 4;		
+		
         /* Check if it is necessary to stop instruction execution */
         if ( GetStop())
         {
