@@ -11,7 +11,7 @@ A special Bash script, `mdsp_test_suite.sh`, is deployed on several hosts. It is
  # Fetch the latest SVN head.
  # Build the source.
  # Run unit test programs.
- # Run full simulation process (*NOT IMPLEMENTED YET*).
+ # Run full simulation process.
  # Mail the results to the mailing list.
 
 You can also test your branch or main trunk (without sending mails) with a copy of this script. See [http://code.google.com/p/mdsp/wiki/CommitTesting#Automated_check this notes].
@@ -42,10 +42,22 @@ Our plans include bringing up the similar tester configurations for tests on all
 
  * Porting the test suite to Windows would require some more effort as the runtime is essentially different from Unix. Specially, as we actually support up to *three* Windows runtimes, all of them need to be tested.
 
+== How it (should) work on Windows ==
+
+The following requirements should be met for a Windows host to be able to test our code.
+
+ # All build environments are installed
+ # CLI utilities are installed (can be used ones from CygWin, MinGW or "native"): `svn`, `bash`, `sendemail`
+ # Sheduler is configured to run the test scripts periodically. (Alternatively `cron` from CygWin can be used).
+
+Essentially test routines in Unix-like environments (CygWin and MinGW) use essentially the same scripts and tools and require minor additional environment configuration (like setting up `%PATH%`).
+
+Testing script for MS VS 2008 builds is essentially different as it uses `devenv` utility command-line interface to build binaries from .SLN file. Nevertheless it shares certain auxiliary tools which are taken from CygWin.
+
 = Test hosts details = 
 
 || Hostname || Type                   || Status         || Comments ||
 || mary || Linux 32bit (Ubuntu)   || Defunct   || Needs update to latest suite version  ||
 || luna32 || Linux 32 bit  (Ubuntu)  || Deployed    || Qemu VM   ||
 || jair64 || Linux 64 bit  (Ubuntu)  || Deployed    || Qemu VM   ||
-|| fenetre32 || Windows XP SP3 32 bit || Creating   ||           ||
+|| fenetre32 || Windows XP SP3 32 bit || Creating   || Test scripts for MS VS 2008, CygWin (GCC 4.4.x) and MinGW (GCC 4.5.x) ||
