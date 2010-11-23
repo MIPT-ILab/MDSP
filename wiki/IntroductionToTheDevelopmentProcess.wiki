@@ -6,9 +6,13 @@
 This page contains some notes that might be useful for students that start the development of our project. It contains the overview of the SVN structure, the ways to build, test and run the code. Feel free to extend these notes if you think you have something to share.
 
 = Our SVN structure =
-Here it is:
+
 {{{
 mdsp
+├── Release -- place for release mode binaries and object files
+│
+├── Debug -- place for debug mode binaries and object files
+│
 ├── foils
 │   ├── arch
 │   │   ├── 2009 -- previous year slides
@@ -22,7 +26,7 @@ mdsp
 │   │   └── funcsim
 │   └── funcsim -- source for functional simulator
 │     
-└── tests -- source code for test
+└── tests -- source code for tests and regular tests scripts
 }}}
 
 
@@ -34,32 +38,42 @@ One can use any text editor of his preference to work with source code, be it Em
 
 The following main IDEs are supported in our project:
 
- * ==== Microsoft Visual Studio ====
-   Microsoft Visual Studio (abbreviated as "MS VS" or just "VS") is an integrated development environment from Microsoft. It is widely used in software development for Windows only.
-   Wee will support x86 (32 bit) versions of MS VS 2008 Professional Edition (I am not sure if an Express Edition will be complete enough).
-  <font color="red"><i>Note that MS VS 2010 can also be used for development, but be sure not to commit to SVN `*.VCPROJ` or `*.SLN` files modified by this IDE as they are backward-incompatible with 2008. </i></font>
+=== Microsoft Visual Studio ===
+Microsoft Visual Studio (abbreviated as "MS VS" or just "VS") is an integrated development environment from Microsoft. It is widely used in software development for Windows only.   
 
- * ==== Eclipse CDT ====
-   Eclipse is an open source community whose projects are focused on building an extensible development platform.
-   The CDT Project provides a fully functional C and C++ Integrated Development Environment based on the Eclipse platform. 
-   We will supoprt Eclipse of versions Galileo (3.5.x) and Helios (3.6.x) for both Linux (x86 and x86_64) and Windows x86. More recent versions, if they will come, can be used too.
-  http://www.eclipse.org/cdt/
+Official site: http://www.microsoft.com/visualstudio/en-us/  
+
+We support x86 (32 bit) versions of MS VS 2008 Professional Edition (I am not sure if an Express Edition will be complete enough).
+
+<i>Note that MS VS 2010 can also be used for development, but be sure not to commit to SVN `*.VCPROJ` or `*.SLN` files modified by this IDE as they are backwards incompatible with 2008. </i>
+
+=== Eclipse CDT ===
+Eclipse is an open source community whose projects are focused on building an extensible development platform.
+
+The CDT Project provides a fully functional C and C++ Integrated Development Environment based on the Eclipse platform. 
+
+We will supoprt Eclipse of versions Galileo (3.5.x) and Helios (3.6.x) for both Linux (x86 and x86_64) and Windows x86. More recent versions, if they will come, can be used too.
+Official site: http://www.eclipse.org/cdt/
+
+=== Not officially supported IDEs ===
+
+It was reported that other developement environments can successfully work and build our project. Be aware that there is no support for them - you are on your own with them.
+ * Code::Blocks http://www.codeblocks.org/ is an open source cross-platform IDE with support of multiple compilers as backends and ability to open MS VS project files. 
+ * CodeGear C++ Builder 2007 http://www.embarcadero.com/products/cbuilder
 
 == Installation and setup of an IDE ==
 
- * ==== Microsoft Visual Studio ====
+=== Microsoft Visual Studio ===
    The installation CD image can be acquired from MSDNAA software program site if you are a participant of it (you can become one if you are a MIPT student, and you are). Or, you can ask mentors. Or, just use http://allter.mipt.ru/ to find one.
-  _ Note that we don't need all .NET, MFC, C# or other additional technologies from Microsoft - just plain Visual C++, so don't install everything from that DVD - just components required for C++ development. _
+  _ Note that we don't need all .NET, MFC, C# or other additional technologies from Microsoft - just plain Visual C++, so don't install everything from that DVD - just components required for C++ development._
 
- * ==== Eclipse CDT ====
+=== Eclipse CDT ===
    One can download it from the official site, or find on MIPT LAN, or ask mentors for assistance.
      * Be sure to get *CDT* not just plain Eclipse!
      * Choose right OS and architecture as well.
    In some cases you'll also need Java Runtime Environment if you haven't installed one before.
    
    Note that you'll need at least one of GNU binary utils port for Windows installed in order for Eclipse CDT to be able to build your code, either CygWin or  MinGW. It's recommended to install it before the Eclipse so the latter can automatically detect its presense and save your time on configuration.
-
-   
 
 = Build =
 
@@ -70,7 +84,7 @@ So far, we expect to support:
    MS VS use project files (`*.VCPROJ`) or solution files (`MDSP.SLN`) to store a project settings, so one should point it to one before trying to build.
  * CygWin GCC (Windows x86)
  To setup Cygwin, download setup.exe from the Cygwin's main page: http://www.cygwin.com/
- Run `setup.exe`, find the `gcc` package in the list, install it. You'll have a new item on your desktop called "Cygwin shell". Run it, and from there you'll  be able to build the code with command `make` in folder `<svn_root>/sources`.
+ Run `setup.exe`, find the `gcc4` package in the list, install it. You'll have a new item on your desktop called "Cygwin shell". Run it, and from there you'll  be able to build the code with command `make` in folder `<svn_root>`.
  * MinGW GCC (Windows x86)
  Download the compiler installer from http://www.mingw.org/, run it.
  After that a command `make` and `gcc` should be available on your system from a command shell.
@@ -91,7 +105,7 @@ Run `test`. If everything is OK, no output is shown - the program just finishes.
 
 = Run =
 
-To run funcsim, type in your command shell (assuming you are in `<svn_root>/sources/` folder)
+To run funcsim, type in your command shell (assuming you are in `<svn_root>` folder)
 
 `Release/funcsim ../tests/simple_test.bin`
 
