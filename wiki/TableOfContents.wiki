@@ -10,7 +10,7 @@ every time you use it. It is very inconvenient.
  * [AboutUs About us]
  * [IntroductionToTheDevelopmentProcess HOWTO]
      * [FuncSimBuild Build] 
-     * [TestsImplementation Run tests] 
+     * [CommitTesting Run tests] 
      * [ChangesPolicy Make changes] 
      * [WorkingWithBranches Commit]
      * [BugReporting Report a bug] 
