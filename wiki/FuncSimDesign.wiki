@@ -97,10 +97,17 @@ FuncSim.Core0[101]: done
 
 }}}
 
-The following ideas are to be incorporated into logging framework.
+The following ideas define this logging framework features.
  # Every object instance that logs should have its unique name
- # All logging agents' common settings be controlled from one place
+ # This object's name should be possible to print along with a message 
+ # All logging agents' common settings are controlled from one place
  # Each logging agent should have its own configuration as well.
+ # The types of messages should cover these cases:
+  # Debug messages
+  # Warning messages
+  # Not about not implemented yet features
+  # Error messages
+  # Normal messages (ones which purpose is to provide text data, like disassembly, trace record, memory inspection etc)
  # Error reports should inform user on line/function name of the problem, and specify the pre-defined error code
 
 
@@ -136,8 +143,13 @@ static setOutputFile(FILE* new_fd); // globally change the output destination
 
 ===Logging vs error reporting===
 
- * Error reporting should be implemented with help of macroes because we want to supply line and function name information in this case.
- * 
+ * Error reporting should be implemented with help of macroes because we want to supply line and function name information in this case, and it turned out to be troublesome to  reliably acquire these data with help of other language/runtime features.
+ * For such behaiour the implementation would look like this:
+{{{
+#define ERROR(msg) this->error("%s at %s in file %s:%d", msg, __FUNCTION__, __FILE__, __LINENUM__)
+}}}
+
+
 = Things to do = 
 
  # Design disassembler format (AT&T)
