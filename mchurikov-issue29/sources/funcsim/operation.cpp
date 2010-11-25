@@ -1,6 +1,6 @@
 /**
  * operation.cpp - Implementation of Operation class methods
- * @author Pavel Zaichenkov, Alexander Potashev
+ * @author Pavel Zaichenkov, Alexander Potashev, Mikhail Churikov
  * Copyright 2009 MDSP team
  */
 
@@ -1110,7 +1110,51 @@ void Operation::executeMove()
  */
 void Operation::executeALU()
 {
-
+    switch ( this->opcode1)
+    {
+        case NOP:   
+            break;
+        case ADD:
+            switch ( this->am)
+            {
+                case 0:  /*Register direct addresing mode, use rS1,rS2, rD*/
+                    
+                    break;
+                case 1:  /*Register direct and immediate data, use imm10, rD*/
+                    
+                    break;
+                case 2:  /*Register indirect mode( memory), use rS1, rS2, rD*/
+                    
+                    break;
+                case 3:  /*Register indirect with immediate, use rS1, rS2, rD*/
+                    
+                    break;
+                default:
+                    assert( 0);
+            }
+            break;
+        case SUB:
+            switch ( this->am)
+            {
+                case 0:  /*Register direct addresing mode, use rS1,rS2, rD*/
+                    
+                    break;
+                case 1:  /*Register direct and immediate data, use imm10, rD*/
+                    
+                    break;
+                case 2:  /*Register indirect mode( memory), use rS1, rS2, rD*/
+                    
+                    break;
+                case 3:  /*Register indirect with immediate, use rS1, rS2, rD*/
+                    
+                    break;
+                default:
+                    assert( 0);
+            }
+            break;
+        default:
+            assert( 0);
+    }
     /* Update flag register after execution */
 }
 
@@ -1120,6 +1164,27 @@ void Operation::executeALU()
 void Operation::executePFlow()
 {
     /* Read flag register before execution */
+    switch ( this->opcode0)
+    {
+        case JMP: /*Unconditional branch*/
+            switch ( this->sd)
+            {
+                case 0:  /*Destination is in rD*/
+                    this->core->SetPC( ( hostUInt16)rd);
+                    break;
+                case 1:  /*Destination is in imm16*/
+                    this->core->SetPC( imm16);
+                    break;
+                default:
+                    assert( 0);
+            }   
+            break;
+        case JGT:  /*Conditional branch*/
+            
+            break;
+        default:
+            assert( 0);
+    }
 
 }
 
