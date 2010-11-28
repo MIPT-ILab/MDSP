@@ -25,8 +25,8 @@ void Scheduler::init(int argc, char** argv)
 
     closeBinaryInputFile ( in_bin, argv[1]);
 
-    core->warning(1);
+    core->warning("Simulation started.");
     core->run(this->steps_sim);
-    core->warning(2);
+    core->warning("Simulation finished.");
 }
 
