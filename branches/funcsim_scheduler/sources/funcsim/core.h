@@ -11,6 +11,7 @@
 #include <cassert>
 #include <fstream>
 
+#include "log.h"
 #include "types.h"
 
 class MemoryModel;
@@ -22,7 +23,7 @@ using namespace std;
 /**
  * Class of simulator's core description
  */
-class Core
+class Core : public log
 {
     hostUInt16 pc; // 16-bit program counter
     MemoryModel* memory;
@@ -40,8 +41,7 @@ public:
     inline Flags* GetFlags() { return this->flags; }
     inline bool GetStop() { return this->stop; }
 
-    /* print defined message */
-    void warning(int type);
+
 
     void init( hostUInt16 start_pc);
     int loadBinary ( ifstream& input);

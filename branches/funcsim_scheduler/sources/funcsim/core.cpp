@@ -33,7 +33,7 @@ void Core::init( hostUInt16 start_pc)
 {
     this->pc = start_pc;
     this->stop = false;
-    cout << "Init. Start PC: 0x" << hex << start_pc << endl;
+    warning("Init. Start PC: 0x%X",start_pc);
 }
 
 /*
@@ -88,7 +88,7 @@ hostUInt64 Core::run( hostUInt64 requested)
         }
     }
 
-    cout << "Number of steps executed: "<< steps << endl;
+    warning("Number of steps executed: %d", steps);
     return steps;
 }
 
@@ -110,14 +110,3 @@ int Core::loadBinary( ifstream& input)
     return 1;
 }
 
-void Core::warning(int type)
-{
-    switch(type)
-    {
-    case 0: break;//reserved
-    case 1: cout << "Simulation started." << endl;
-    break;
-    case 2: cout << "Simulation finished." << endl;
-    break;
-    }
-}
