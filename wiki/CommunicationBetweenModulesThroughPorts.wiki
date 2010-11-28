@@ -36,7 +36,7 @@ MDSP implements ports through first-in, first-out (FIFO) queues. Each module dec
 The utility code runs at initialization and connects output and input ports using the identifier strings.
 
 ==== Clocking ====
-To be defined.
+In fact, there is no clock method for ports. Instead, the number of the current cycle is necessary when writing or reading from the ports. If the write clock and the port's latency are know it is easy to calculate the read clock, i.e. the moment when data can be read from the port.
 ----------------------------------------------------------------------------------------
 
 = Using details =
