@@ -1,10 +1,10 @@
-21:53 23.11.2010
+20:09 28.11.2010
 WARNING! New core.cpp was tested only on Visual Studio 2008. (makefile isn't tested now. I'll do it soon.)
-Столкнулся со странным багом GetPC() на четвёртой итерации возвращает неправильное значение PC. c вместо 12.
 
-1) My name and surname in members.txt were interchanged.
+1) My name and surname in members.txt are interchanged.
+surname-name -> name-surname
 
-2) Two strings in core.cpp were interchanged:
+2) Two strings in core.cpp are interchanged:
 before
 
         /* Add 4 bytes (32 bits) to access next instruction */
@@ -26,8 +26,8 @@ after
 3) Two strings are added in operation.cpp after void Operation::execute():
 
 	/* Print "execute" and current PC */
-	cout << "execute PC=" << core->GetPC() << endl;
+	cout << "execute PC=0x" << core->GetPC() << endl;
 
-(Думаю коментарий здесь неуместен: и так всё понятно. Кроме того, по код стайлу здесь вместо core->GetPC() должно быть this core->GetPC(), но такой вариант у меня не коомпилится, постараюсь исправить.)
+I think hex format of output is more comfortable than decimal. In addition I dont know how to change it. Also I have a doubt about the need for comment. I think second string is quite clear.
 
 Arthur Gilmullin
