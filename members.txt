@@ -1,6 +1,6 @@
 1. Grigory Rechistov 
 2. Yuri Baida
-3. Gilmullin Arthur
+3. Arthur Gilmullin 
 4. Vladimir Dubihin
 5. Pavel Kryukov
 6. Sergei Gvozdarev
