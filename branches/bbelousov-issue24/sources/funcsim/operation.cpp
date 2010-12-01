@@ -534,14 +534,13 @@ void Operation::dumpMOVE()
             cout << "brm " << (int) this->sd << ", r" << (int) this->rs1 << ", r" << (int) this->rd << ";" << endl;
             break;
         case BRR:
-            cout << "brr " << (int) this->rs1 << ", r" << (int) this->rd << ";" << endl;
+            cout << "brr r" << (int) this->rs1 << ", r" << (int) this->rd << ";" << endl;
             break;
         case LD:
-            cout << "ld " << (int) this->sd << ", r" << (int) this->imm16 << ", r" << (int) this->rd << ";" << endl;
+            cout << "ld " << (int) this->sd << ", 0x" << (int) this->imm16 << ", r" << (int) this->rd << ";" << endl;
             break;
         default:
-            cout << "Operation code is invalid in MOVE\n";
-            assert( 0);
+            critical( "Operation code is invalid in dumping MOVE");
     }
 }
 
@@ -555,7 +554,7 @@ void Operation::dumpALU()
         case ADD:
             if ((am == 1) || ( am == 3))
             {
-                cout << "add " << (int) this->am << ", " << (int) this->imm10 << ", r" << (int) this->rd << ";" << endl;
+                cout << "add " << (int) this->am << ", 0x" << (int) this->imm10 << ", r" << (int) this->rd << ";" << endl;
             }
             else
             {
@@ -565,16 +564,18 @@ void Operation::dumpALU()
         case SUB:
             if ((am == 1) || ( am == 3))
             {
-                cout << "sub " << (int) this->am << ", " << (int) this->imm10 << ", r" << (int) this->rd << ";" << endl;
+                cout << "sub " << (int) this->am << ", 0x" << (int) this->imm10 << ", r" << (int) this->rd << ";" << endl;
             }
             else
             {
                 cout << "sub " << (int) this->am << ", r" << (int) this->rs1 << ", r" << (int) this->rs2 << ", r" << (int) this->rd << ";" << endl;
             }
             break;
+        case NOP:
+            cout << "nop;" << endl;
+            break;
         default:
-            cout << "Operation code is invalid in ALU\n";
-            assert(0);
+            critical( "Operation code is invalid in dumping ALU");
     }
 }
 
@@ -596,14 +597,19 @@ void Operation::dumpPFLOW()
     switch ( this->opcode0)
     {
         case JMP:
-            cout << "jmp " << (int) this->sd << ", r" << (int) temp << ";" << endl;
+            if( !this->sd)
+                cout << "jmp " << (int) this->sd << ", r" << (int) temp << ";" << endl;
+            else
+                cout << "jmp " << (int) this->sd << ", 0x" << (int) temp << ";" << endl;
             break;
         case JGT:
-            cout << "jgt " << (int) this->sd << ", r" << (int) temp << ";" << endl;
+            if( !this->sd)
+                cout << "jgt " << (int) this->sd << ", r" << (int) temp << ";" << endl;
+            else
+                cout << "jgt " << (int) this->sd << ", 0x" << (int) temp << ";" << endl;
             break;
         default:
-            cout << "Operation code is invalid in P_FLOW\n";
-            assert(0);
+            critical( "Operation code is invalid in dumping P_FLOW");
     }
 }
 
@@ -621,8 +627,7 @@ void Operation::dumpSYS()
             cout << "int 0x" << hex << (int) this->imm8 << dec << ";" << endl;
             break;
         default:
-            cout << "Operation code is invalid in SYS\n";
-            assert(0);
+            critical( "Operation code is invalid in dumping SYS");
     }
 }
 
@@ -713,7 +718,7 @@ MemVal* Operation::encode()
     switch ( this->type)
     {
         case MOVE:
-        this->encodeMOVE();
+            this->encodeMOVE();
             break;
         case ALU:
             this->encodeALU();
@@ -725,8 +730,7 @@ MemVal* Operation::encode()
             this->encodeSYS();
             break;
         default:
-            cout << "Illegal type in encode()\n";
-            assert( 0);
+            warning("Illegal operation code: 0x%x", getInstrWord());
     }
     setMemBlock(mem_value);
     return mem_value;
@@ -761,9 +765,14 @@ void Operation::decode( MemVal* mem_value)
             this->decodeSYS();
             break;
         default:
-            cout << "Illegal type in decode()\n";
-            assert( 0);
+            critical( "Illegal operation type in decode: 0x%x", getInstrWord());
      }
+
+    /*
+     * We need to set instr word again (see the beginning of this method) because
+     * it is cleared by decodeXXX() functions.
+     */
+    this->setInstrWord( mem_value);
 }
 
 /**
@@ -827,8 +836,7 @@ void Operation::decodeMOVE()
             sd = this->getValueByMask( sd_mask, 21);     // get S/D
             break;
         default:
-            cout << "Illegal operation in MOVE\n";
-            assert( 0);
+            critical( "Illegal operation in MOVE");
     }
     this->setMOVE( opcode0, sd, imm16, rs1, rd);
 }
@@ -1031,8 +1039,7 @@ void Operation::dump()
             this->dumpSYS();
             break;
         default:
-            cout << "Can't print to console, because operation has illegal type\n";
-            assert( 0);
+            warning( "Unknown operation type in dump: 0x%x", getInstrWord());
     }
 }
 

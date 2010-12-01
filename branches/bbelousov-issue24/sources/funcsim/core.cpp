@@ -57,10 +57,10 @@ void Core::run()
         MemVal* mem_value ( (MemVal*) new ByteLine( memory->read32(this->GetPC()), HIGH_FIRST));
 
         /* check for "zero" instruction */
-        if (!mem_value->getHostUInt32())
+        /* if (!mem_value->getHostUInt32())
         {
             break;
-        }
+        } */
 
         op = new Operation( this);
 
@@ -68,9 +68,11 @@ void Core::run()
 
         /* Decode the operation */
         op->decode( mem_value);
-
-        //cout << op->encode()->getHostUInt32() << endl;
-        //op->dump();
+        
+        //op->encode();
+        
+        /* Disassembling */
+        op->dump();
 
         /* Add 4 bytes (32 bits) to access next instruction */
         this->pc = this->pc + 4;
