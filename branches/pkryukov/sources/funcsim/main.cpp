@@ -19,12 +19,17 @@ int main(int argc, char** argv)
     Config handler;
     handler.handleArgs( argc, argv);
 
-    /* Check arguments number */
-    checkArguments( argc);
-
     /* ifstream is used to handle binary input file */
     ifstream in_bin;
-    openBinaryInputFile ( in_bin, argv[1]);
+	if ( handler.getInputType())
+	{
+		openBinaryInputFile ( in_bin, handler.getBinaryFilename().c_str());
+	}
+	else
+	{
+		cout << "No ELF support provided\n";
+		return -1;
+	}
 
     Core* core = new Core();
     core->init( 0x0000);
