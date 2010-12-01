@@ -1041,8 +1041,11 @@ void Operation::dump()
  */
 void Operation::execute()
 {
+	/* Print "execute" and current PC */
+	cout << "execute PC=0x" << core->GetPC() << endl;
+		
     switch ( this->type)
-    {
+    {	
         case MOVE:
             this->executeMove();
             break;

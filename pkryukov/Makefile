@@ -11,6 +11,7 @@ COMMON_OBJS_CPP := \
 	sources/funcsim/config.cpp \
 	sources/funcsim/core.cpp \
 	sources/funcsim/flags.cpp \
+	sources/funcsim/log.cpp \
 	sources/funcsim/memory.cpp \
 	sources/funcsim/operation.cpp \
 	sources/funcsim/register_file.cpp
@@ -24,6 +25,7 @@ ASM_OBJS_CPP := \
 	sources/asm/tokenan.cpp \
 	sources/asm/semantican.cpp \
 	sources/asm/assembler.cpp \
+	sources/funcsim/log.cpp \
 	sources/funcsim/memory.cpp \
 	sources/funcsim/operation.cpp \
 	sources/funcsim/register_file.cpp 
@@ -67,7 +69,7 @@ asm: $(ASM_OBJS_O)
 
 clean:
 	rm -rf $(OUT)/build
-	rm -f $(OUT)/funsim
+	rm -f $(OUT)/funcsim
 	rm -f $(OUT)/test
 	rm -f $(OUT)/asm
 
