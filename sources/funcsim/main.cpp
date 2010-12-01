@@ -6,8 +6,8 @@
 #include <fstream>
 #include <iostream>
 
-#include "core.h"
-#include "types.h"
+#include <stdlib.h>
+#include "scheduler.h"
 #include "main_functions.h"
 #include "config.h"
 
@@ -15,24 +15,31 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    /* Analysing and handling of inserted arguments */
     Config handler;
-    handler.handleArgs( argc, argv);
+
+
+    //handler.handleArgs( argc, argv);
 
     /* Check arguments number */
-    checkArguments( argc);
+    //checkArguments( argc);
 
-    /* ifstream is used to handle binary input file */
-    ifstream in_bin;
-    openBinaryInputFile ( in_bin, argv[1]);
 
-    Core* core = new Core();
-    core->init( 0x0000);
-    core->loadBinary( in_bin);
+    Scheduler scheduler;
 
-    closeBinaryInputFile ( in_bin, argv[1]);
+    //simple input check
+    //to be ommited later
+    if(argc>=3)
+    {
+        if (!(scheduler.steps_sim = strtoll ( argv[2], NULL, 10)) )
+            scheduler.steps_sim = MAXINT;
+    } else
+    {
+        scheduler.steps_sim = MAXINT;
+    }
 
-    core->run();
+    //ignition
+    scheduler.start_pc = 0x0000;
+    scheduler.init( argc, argv);
 
     return 0;
 }
