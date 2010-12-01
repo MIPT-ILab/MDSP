@@ -1,9 +1,9 @@
 
 ifeq ($(DEBUG), yes)
-    CXX:=g++ -Wall -O0
+    CXX:=g++ -Wall -O0 -I boost
 	OUT:=Debug
 else
-    CXX:=g++ -Wall -O3
+    CXX:=g++ -Wall -O3 -I boost
 	OUT:=Release
 endif
     
@@ -30,8 +30,10 @@ ASM_OBJS_CPP := \
 	sources/funcsim/operation.cpp \
 	sources/funcsim/register_file.cpp 
 
-MAIN_OBJS_O:=${MAIN_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o}
-TEST_OBJS_O:=${TEST_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o}
+MAIN_OBJS_O:=${MAIN_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o} \
+	boost/stage/lib/libboost_program_options-gcc44-1_44.a
+TEST_OBJS_O:=${TEST_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o} \
+	boost/stage/lib/libboost_program_options-gcc44-1_44.a
 ASM_OBJS_O:=${ASM_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o}
 
 all: funcsim test asm
