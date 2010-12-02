@@ -8,7 +8,11 @@ else
 endif
 
 UNAME := $(shell uname)
-BIT := 32
+LBITS := $(shell getconf LONG_BIT)
+
+ifeq ($(UNAME), Linux)
+    LIBPATH := boost/libs/$(LBITS)
+endif
     
 COMMON_OBJS_CPP := \
 	sources/funcsim/config.cpp \
@@ -36,15 +40,16 @@ ASM_OBJS_CPP := \
 	sources/funcsim/register_file.cpp 
 
 MAIN_OBJS_O:=${MAIN_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o} \
-	boost/libs/$(BIT)/libboost_program_options-gcc44-1_44.a
+	$(LIBPATH)/libboost_program_options-gcc44-1_44.a
 TEST_OBJS_O:=${TEST_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o} \
-	boost/libs/$(BIT)/libboost_program_options-gcc44-1_44.a
+	$(LIBPATH)/libboost_program_options-gcc44-1_44.a
 ASM_OBJS_O:=${ASM_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o}
 
 all: funcsim test asm
 	
 ifeq ($(DEBUG), yes)
 Debug/build/%.o: sources/%.cpp build_dirs
+		@echo $(UNAME)
 		$(CXX) $< -c -o $@		
 else		
 Release/build/%.o: sources/%.cpp build_dirs
