@@ -6,6 +6,9 @@ else
     CXX:=g++ -Wall -O3 -I boost
 	OUT:=Release
 endif
+
+UNAME := $(shell uname)
+BIT := 32
     
 COMMON_OBJS_CPP := \
 	sources/funcsim/config.cpp \
@@ -14,9 +17,11 @@ COMMON_OBJS_CPP := \
 	sources/funcsim/log.cpp \
 	sources/funcsim/memory.cpp \
 	sources/funcsim/operation.cpp \
-	sources/funcsim/register_file.cpp
+	sources/funcsim/register_file.cpp \
+	sources/funcsim/scheduler.cpp \
+	sources/funcsim/main_functions.cpp
 MAIN_OBJS_CPP := ${COMMON_OBJS_CPP} \
-	sources/funcsim/main.cpp
+	sources/funcsim/main.cpp 
 TEST_OBJS_CPP := ${COMMON_OBJS_CPP} \
 	sources/funcsim/cout_wrapper.cpp \
 	sources/funcsim/test.cpp
@@ -31,9 +36,9 @@ ASM_OBJS_CPP := \
 	sources/funcsim/register_file.cpp 
 
 MAIN_OBJS_O:=${MAIN_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o} \
-	boost/stage/lib/libboost_program_options-gcc44-1_44.a
+	boost/libs/$(BIT)/libboost_program_options-gcc44-1_44.a
 TEST_OBJS_O:=${TEST_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o} \
-	boost/stage/lib/libboost_program_options-gcc44-1_44.a
+	boost/libs/$(BIT)/libboost_program_options-gcc44-1_44.a
 ASM_OBJS_O:=${ASM_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o}
 
 all: funcsim test asm

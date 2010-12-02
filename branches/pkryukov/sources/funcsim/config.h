@@ -31,7 +31,8 @@ private:
     bool dumpMemory;
     bool tracing;
     bool outputToFile;
-
+    
+    void usage();
 public:
     /* constructors */
     Config();

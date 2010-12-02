@@ -31,6 +31,24 @@ Config::~Config()
     delete this->outputFilename;
 }
 
+void Config::usage()
+{
+    /* Print help information and stop program */
+    cout << "Usage:" << endl;
+    cout << endl;
+    cout << "\t" << "--binary <file>, -b <file> - instructs simualtor to load raw machine code from file." << endl;
+    cout << "\t" << "--elf,-e - load binary ELF file sections to memory." << endl;
+    cout << "\t" << "--num-steps,-n - do only specified amount of steps and then exit."; 
+    cout << "By default core runs until it encounters hlt instruction or there is a simulation error." << endl;
+    cout << "\t" << "--disasm,-d - print disassembly of every current instruction." << endl;
+    cout << "\t" << "--print-reg-state,-r - dump register state after simulation has finished." << endl;
+    cout << "\t" << "--print-mem-state,-m - dump memory state after simulation has finished." << endl;
+    cout << "\t" << "--output-file,-o - redirect normal output to the given file. By default we print to stdout." << endl;
+    cout << "\t" << "--trace,-t - report all architectural state changes (register modified, memory written etc)" << endl;
+    cout << "\t" << "--help,-h - print help with this paragraph." << endl;
+    exit(0); 
+}
+
 /* basic method */
 int Config::handleArgs( int argc, char** argv)
 {
@@ -46,7 +64,9 @@ int Config::handleArgs( int argc, char** argv)
 	    ( "print-reg-state,r","dump registers")
 	    ( "print-mem-state,m","dump memory")
 	    ( "output-file,o",po::value<string>(),"output file")
-	    ( "trace,t","tracing");
+	    ( "trace,t","tracing")
+        ( "help,h","help message");
+
 
     po::variables_map options;
 
@@ -56,10 +76,16 @@ int Config::handleArgs( int argc, char** argv)
      } 
      catch (const std::exception& e) 
      {
-         this->critical( "Command line error:", e.what());
-         return 0;
+         usage();
      }
     
+    /* parsing help */
+    if ( options.count( "help") )
+    {
+         cout << "Functional simulator of multimedia digital signal processor." << endl;
+         cout << "Version: 0.1" << endl;
+         usage();
+    }
 
     /* parsing input file name */
     if ( options.count( "binary") == 1 ) 
@@ -71,7 +97,9 @@ int Config::handleArgs( int argc, char** argv)
     {
         if ( options.count( "binary") > 1)
 		{
-	        this->critical( "Key -b is used twice");
+	        cout << "Key -b is used twice" << endl;
+            cout << endl;
+            usage();
 		}
 		if ( options.count( "elf") == 1)
         {
@@ -82,11 +110,15 @@ int Config::handleArgs( int argc, char** argv)
         {
             if ( options.count( "elf") > 1)
 	        {
-		         this->critical( "Key -e is used twice");
+		        cout << "Key -e is used twice" << endl;
+                cout << endl;
+                usage();
 	        }
 		    else
             {
-                this->critical( "No input file");
+                cout << "No input file" << endl;
+                cout << endl;
+                usage();
             }
         }
     }
@@ -102,7 +134,9 @@ int Config::handleArgs( int argc, char** argv)
             this->outputToFile = false;
             break;
         default:
-            this->critical( "-o is used twice");
+            cout << "-o is used twice" << endl;
+            cout << endl;
+            usage();
             break;
     }
     
@@ -117,7 +151,9 @@ int Config::handleArgs( int argc, char** argv)
             this->numSteps = -1;
             break;
         default:
-            this->critical( "-n is used twice");
+            cout << "-n is used twice" << endl;
+            cout << endl;
+            usage();
             break;
     }
     
