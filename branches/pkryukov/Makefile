@@ -9,10 +9,6 @@ endif
 
 UNAME := $(shell uname)
 LBITS := $(shell getconf LONG_BIT)
-
-ifeq ($(UNAME), Linux)
-    LIBPATH := boost/libs/$(LBITS)
-endif
     
 COMMON_OBJS_CPP := \
 	sources/funcsim/config.cpp \
@@ -39,17 +35,26 @@ ASM_OBJS_CPP := \
 	sources/funcsim/operation.cpp \
 	sources/funcsim/register_file.cpp 
 
+ifeq ($(UNAME), Linux)
 MAIN_OBJS_O:=${MAIN_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o} \
-	$(LIBPATH)/libboost_program_options-gcc44-1_44.a
+	boost/libs/$(LBITS)/libboost_program_options-gcc44-1_44.a
 TEST_OBJS_O:=${TEST_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o} \
-	$(LIBPATH)/libboost_program_options-gcc44-1_44.a
+	boost/libs/$(LBITS)/libboost_program_options-gcc44-1_44.a
 ASM_OBJS_O:=${ASM_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o}
+endif
+
+ifeq ($(UNAME), CYGWIN_NT-6.1)
+MAIN_OBJS_O:=${MAIN_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o} \
+	boost/stage/lib/libboost_program_options.a
+TEST_OBJS_O:=${TEST_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o} \
+	boost/stage/lib/libboost_program_options.a
+ASM_OBJS_O:=${ASM_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o}
+endif
 
 all: funcsim test asm
 	
 ifeq ($(DEBUG), yes)
 Debug/build/%.o: sources/%.cpp build_dirs
-		@echo $(UNAME)
 		$(CXX) $< -c -o $@		
 else		
 Release/build/%.o: sources/%.cpp build_dirs
