@@ -19,24 +19,26 @@ where `<binary>` - file to  load to memory from address 0x0 before starting simu
 The batch mode means that all the required data is passed with command-line arguments, then the execution starts and cannot be interrupted by a user until it finished.
 
 {{{
-funcsim -batch -binary <binary>|-elf <binary> [-num-steps <num>] [-disasm] [-print-reg-state] [-print-mem-state] [-output-file <name>] [-trace]
+funcsim --batch --binary <binary>|--elf <binary> [--num-steps <num>] [--disasm] [--print-reg-state] [--print-mem-state] [--output-file <name>] [--trace]
 }}}
 
-`-binary` - instructs simualtor to load raw machine code from file.
+`--binary`,`-b` — instructs simualtor to load raw machine code from file.
 
-`-elf`    - load binary ELF file sections to memory.
+`--elf`,`-e` — load binary ELF file sections to memory.
 
-`-num-steps` - do only specified amount of steps  and then exit. By default core runs until it encounters `hlt` instruction or there is a simulation error.
+`--num-steps`,`-n` — do only specified amount of steps  and then exit. By default core runs until it encounters `hlt` instruction or there is a simulation error.
 
-`-disasm` - print disassembly of every current instruction.
+`--disasm`,`-d` — print disassembly of every current instruction.
 
-`-print-reg-state` - dump register state after simulation has finished.
+`--print-reg-state`,`-r` — dump register state after simulation has finished.
 
-`-print-mem-state` - dump memory state after simulation has finished.
+`--print-mem-state`,`-m` — dump memory state after simulation has finished.
 
-`-output-file` - redirect normal output to the given file. By default we print to stdout.
+`--output-file`,`-o` — redirect normal output to the given file. By default we print to stdout.
 
-`-trace` - report all architectural state changes (register modified, memory written etc)
+`--trace`,`-t` — report all architectural state changes (register modified, memory written etc)
+
+`--help`,`-h` — print help with this paragraph.
 
 ==== Return values:  ====
 
