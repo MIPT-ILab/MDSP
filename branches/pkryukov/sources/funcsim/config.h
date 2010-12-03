@@ -17,9 +17,9 @@ class Config: public log
 {
 private:
     /* variables */
-    string* binaryFilename;
-    string* elfFilename;
-    string* outputFilename;
+    string binaryFilename;
+    string elfFilename;
+    string outputFilename;
 
 	/* if numSteps is equal -1, it means that there is no limit of simulation */
     int numSteps;
