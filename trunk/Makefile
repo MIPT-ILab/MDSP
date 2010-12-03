@@ -14,7 +14,9 @@ COMMON_OBJS_CPP := \
 	sources/funcsim/log.cpp \
 	sources/funcsim/memory.cpp \
 	sources/funcsim/operation.cpp \
-	sources/funcsim/register_file.cpp
+	sources/funcsim/register_file.cpp \
+	sources/funcsim/scheduler.cpp \
+	sources/funcsim/main_functions.cpp 
 MAIN_OBJS_CPP := ${COMMON_OBJS_CPP} \
 	sources/funcsim/main.cpp
 TEST_OBJS_CPP := ${COMMON_OBJS_CPP} \
