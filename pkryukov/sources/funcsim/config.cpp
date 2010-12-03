@@ -20,15 +20,11 @@ using namespace std;
 /* constructors */
 Config::Config()
 {
-    this->binaryFilename = new string;
-    this->elfFilename = new string;
-    this->outputFilename = new string;
+
 }
 Config::~Config()
 {
-    delete this->binaryFilename;
-	delete this->elfFilename;
-    delete this->outputFilename;
+
 }
 
 void Config::usage()
@@ -90,7 +86,7 @@ int Config::handleArgs( int argc, char** argv)
     /* parsing input file name */
     if ( options.count( "binary") == 1 ) 
     {
-        *binaryFilename = options["binary"].as<string>();
+        binaryFilename = options["binary"].as<string>();
         this->inputType = true;
     }
     else
@@ -103,7 +99,7 @@ int Config::handleArgs( int argc, char** argv)
 		}
 		if ( options.count( "elf") == 1)
         {
-            *elfFilename = options["elf"].as<string>();
+            elfFilename = options["elf"].as<string>();
             this->inputType = false;
         }
         else
@@ -127,7 +123,7 @@ int Config::handleArgs( int argc, char** argv)
     switch ( options.count( "output-file"))
     {
         case 1: 
-            *outputFilename = options[ "output-file"].as<string>();
+            outputFilename = options[ "output-file"].as<string>();
             this->outputToFile = true;
             break;
         case 0:
@@ -170,17 +166,17 @@ int Config::handleArgs( int argc, char** argv)
 
 string Config::getBinaryFilename() const 
 {
-	return *this->binaryFilename;
+	return this->binaryFilename;
 }
 
 string Config::getOutputFilename() const
 {
-	return *this->outputFilename;
+	return this->outputFilename;
 }
 
 string Config::getElfFilename() const
 {
-	return *this->elfFilename;
+	return this->elfFilename;
 }
 
 int Config::getNumSteps() const
