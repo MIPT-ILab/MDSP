@@ -30,6 +30,7 @@ class Core : public log
     RegisterFileModel* rf;
     Flags* flags;
     bool stop; // shows if instruction execution is stopped
+    bool disasmPrint;
 
 public:
     Core();
@@ -40,6 +41,7 @@ public:
     inline RegisterFileModel* GetRF() { return this->rf; }
     inline Flags* GetFlags() { return this->flags; }
     inline bool GetStop() { return this->stop; }
+    inline void setDisasmPrint( bool value) { this->disasmPrint = value; } 
 
 
 

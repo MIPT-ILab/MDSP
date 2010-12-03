@@ -40,6 +40,7 @@ void Scheduler::init(Config* handler)
     Core* core = new Core();
     core->init( this->start_pc);
     core->loadBinary( in_bin);
+    core->setDisasmPrint( handler->getDisassembler());
 
     closeBinaryInputFile ( in_bin, handler->getBinaryFilename().c_str());
 

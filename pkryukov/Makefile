@@ -7,9 +7,16 @@ else
 	OUT:=Release
 endif
 
-UNAME := $(shell uname)
-LBITS := $(shell getconf LONG_BIT)
-    
+ifeq ($(shell uname -m), i686)
+	LBITS := 32
+else
+ifeq ($(shell uname -m), x86_64)
+	LBITS := 64
+else
+	LIBS_OBJS := error
+endif
+endif   
+   
 COMMON_OBJS_CPP := \
 	sources/funcsim/config.cpp \
 	sources/funcsim/core.cpp \
@@ -35,31 +42,44 @@ ASM_OBJS_CPP := \
 	sources/funcsim/operation.cpp \
 	sources/funcsim/register_file.cpp 
 
-ifeq ($(UNAME), Linux)
-MAIN_OBJS_O:=${MAIN_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o} \
-	boost/libs/$(LBITS)/libboost_program_options-gcc44-1_44.a
-TEST_OBJS_O:=${TEST_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o} \
-	boost/libs/$(LBITS)/libboost_program_options-gcc44-1_44.a
-ASM_OBJS_O:=${ASM_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o}
-endif
+UNAME := $(shell uname -o)
 
-ifeq ($(UNAME), CYGWIN_NT-6.1)
+ifeq ($(UNAME), GNU/Linux)	
+	LIBS_OBJS := boost/libs/$(LBITS)/libboost_program_options-gcc44-1_44.a
+else
+ifeq ($(UNAME), Cygwin)
+	LIBS_OBJS := boost/stage/lib/libboost_program_options.a
+else
+	LIBS_OBJS := error
+endif	
+endif	
+
 MAIN_OBJS_O:=${MAIN_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o} \
-	boost/stage/lib/libboost_program_options.a
+		${LIBS_OBJS}
 TEST_OBJS_O:=${TEST_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o} \
-	boost/stage/lib/libboost_program_options.a
+		${LIBS_OBJS}
 ASM_OBJS_O:=${ASM_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o}
-endif
 
 all: funcsim test asm
 	
 ifeq ($(DEBUG), yes)
-Debug/build/%.o: sources/%.cpp build_dirs
+Debug/build/%.o: sources/%.cpp OStest build_dirs
 		$(CXX) $< -c -o $@		
 else		
-Release/build/%.o: sources/%.cpp build_dirs
+Release/build/%.o: sources/%.cpp OStest build_dirs
 		$(CXX) $< -c -o $@		
 endif		
+
+ifeq ($(LIBS_OBJS), error)
+OStest:
+	@echo $(UNAME)
+	@echo "System isn't supported."
+	@exit 2
+else
+OStest:	
+	@echo $(UNAME)
+	@echo "system is supported."
+endif	
 
 build_dirs:
 	mkdir -p $(OUT)/build/asm
@@ -83,10 +103,11 @@ asm: $(ASM_OBJS_O)
     ifeq ($(DEBUG), yes)
 		@echo "--- asm created ---"
     endif    
-
+	
 clean:
 	rm -rf $(OUT)/build
 	rm -f $(OUT)/funcsim
 	rm -f $(OUT)/test
 	rm -f $(OUT)/asm
+
 

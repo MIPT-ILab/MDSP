@@ -1,6 +1,6 @@
 
 /**
- * config.h - Implementation of Config class
+ * config.h - class for analysing and handling of inputed arguments
  * @author Pavel Kryukov
  * Copyright 2010 MDSP team
  */

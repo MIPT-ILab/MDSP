@@ -12,6 +12,7 @@
 #include <iostream>
 
 #include "types.h"
+#include "log.h"
 #include "core.h"
 
 class MemVal;
@@ -21,7 +22,7 @@ using namespace std;
 /**
  * Class of operation description
  */
-class Operation
+class Operation: public log
 {
     Core* core;
 
