@@ -23,6 +23,7 @@ Core::Core()
     this->memory = new MemoryModel( 1024);
     this->rf = new RegisterFileModel( 32, 2); // 32 16-bit registers
     this->flags = new Flags();
+    this->disasmPrint = false;
 }
 
 /*
@@ -61,10 +62,10 @@ hostUInt64 Core::run( hostUInt64 requested)
         MemVal* mem_value ( (MemVal*) new ByteLine( memory->read32(this->GetPC()), HIGH_FIRST));
 
         /* check for "zero" instruction */
-        if (!mem_value->getHostUInt32())
+        /* if (!mem_value->getHostUInt32())
         {
             break;
-        }
+        } */
 
         op = new Operation( this);
 
@@ -72,9 +73,14 @@ hostUInt64 Core::run( hostUInt64 requested)
 
         /* Decode the operation */
         op->decode( mem_value);
-
-        //cout << op->encode()->getHostUInt32() << endl;
-        //op->dump();
+        
+        //op->encode();
+        
+        /* Disassembling */
+        if ( disasmPrint )
+        {
+            op->dump();
+        }
 
         /* Execute operation */
         op->execute();

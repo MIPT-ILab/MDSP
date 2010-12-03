@@ -158,7 +158,7 @@ int Config::handleArgs( int argc, char** argv)
     }
     
 	/* parsing some parameters */
-    this->disassembler = ( options.count("disassembly") != 0);
+    this->disassembler = ( options.count("disasm") != 0);
     this->dumpRegisters = ( options.count("print-reg-state") != 0);
     this->dumpMemory = ( options.count("print-mem-state") != 0);
     this->tracing = ( options.count("trace") != 0);
