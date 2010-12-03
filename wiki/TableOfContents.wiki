@@ -13,7 +13,8 @@ every time you use it. It is very inconvenient.
      * [CommitTesting Run tests] 
      * [ChangesPolicy Make changes] 
      * [WorkingWithBranches Commit]
-     * [BugReporting Report a bug] 
+     * [BugReporting Report a bug]
+     * [DoxygenDocumentation Make Doxygen documentation]
  * Design  
      * [MdspIsa Instruction set architecture (ISA)]
      * [FuncSimDesign Functional simulation]
