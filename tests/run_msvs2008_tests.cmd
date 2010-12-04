@@ -9,7 +9,7 @@ REM this stuff is worth it, you can buy me a beer in return.
 REM ----------------------------------------------------------------------------
 
 
-set VERSION=W2
+set VERSION=W3
 rem We still need CygWin for Unix utils, also sendEmail.exe
 PATH=c:\cygwin\bin;c:\buildbot\bin;%PATH%
 
