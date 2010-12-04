@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # A script to do the following things:
-# 1) Remove old checked out SVN directories 
-# 2) Update the main test script to latest SVN version
+# 1) Update the main test script to latest SVN version
+# 2) Remove old checked out SVN directories 
 #
 # * ----------------------------------------------------------------------------
 # "THE BEER-WARE LICENSE" (Revision 42):
@@ -14,17 +14,30 @@
 
 ROOTDIR= "$HOME"
 TESTDIR="$ROOTDIR/mdsp-tests"
-TOKEEP=7 # how many directories to keep
-
-# 1) Remove the old directories
-echo "Removing directories"
-cd $TESTDIR
 
 
-
-# Update the test script
+# 1) Update the test scripts
 cd $ROOTDIR
-echo "Updating the script"
-svn export https://mdsp.googlecode.com/svn/trunk/tests/mdsp_test_suite.sh temp.sh
-mv mdsp_test_suite.sh old.sh
-mv temp.sh mdsp_test_suite.sh
+echo "Updating scripts"
+
+# Files common to all platforms
+svn export https://mdsp.googlecode.com/svn/trunk/tests/mdsp_test_suite.sh
+svn export https://mdsp.googlecode.com/svn/trunk/tests/test_self_update.sh
+if [ `uname -o` == Cygwin ]
+then # Windows specific scripts
+  svn export https://mdsp.googlecode.com/svn/trunk/tests/run_cygwin_tests.cmd
+  svn export https://mdsp.googlecode.com/svn/trunk/tests/run_mingw_tests.cmd
+  svn export https://mdsp.googlecode.com/svn/trunk/tests/run_msvs2008_tests.cmd  
+fi
+
+# 2) Remove the old directories
+LIFETIME=20 #days old for folders to be removed 
+echo "Removing directories older than $LIFETIME days"
+mkdir -p $TESTDIR
+cd $TESTDIR
+# Find all directories in current dir that are older than specified amount of
+# days, print their names to pipe, and form a command line for `rm -r`
+find . -maxdepth 1 -type d -mtime +$LIFETIME | xargs rm -r 
+
+####
+echo "Maintanance finished"
