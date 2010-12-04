@@ -10,10 +10,11 @@ If you have opened the IDE with `mdsp.sln` solution then you can build it with `
 
 Alternatively, you can build the solution froma command line with 
 {{{
-C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.exe mdsp.sln /build
+C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\devenv.exe mdsp.sln /build
 }}}
 
 Be sure to use the correct path to *DEVENV.EXE* (`C:\Program Files\...`).
+
 `/build` flag tells Visual Studio to build the solution file specified (`mdsp.sln`)
 
 After the command is succesfully finished, the new binaries will appear in `Debug/` or `Release/` folder. To specify the configuration different from default use the following lines:
@@ -42,6 +43,15 @@ make
 After the 'make' process has succeeded the new binaries are in folder `Release/`,
 object files are in folder 'Release/build/'
 
+You can also build a particular target by specifying its name:
+{{{
+make funcsim
+make test
+make asm
+make clean
+}}}
+
+
 == Debug build ==
 
 For debug build, type
@@ -56,7 +66,7 @@ object files are in folder 'Debug/build/'
 
 == Windows ==
 
-If you see the messages like "make program was not found" then make sure that you've set up the paths correctly. If you have set up CygWin, the usual position is `c:\cygwin\bin\make.exe`. For MinGW it is usually `C:\mingw\bin\make.exe`. 
+If you see the messages like "make program was not found" then make sure that you've set up the paths correctly. If you have set up CygWin, the usual position is `c:\cygwin\bin\make.exe`. For MinGW it is usually `C:\mingw\bin\make.exe`. Google around to understand how to set up %PATH% variable in Windows.
 
 == Linux ==
 
