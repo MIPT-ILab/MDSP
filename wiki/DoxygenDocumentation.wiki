@@ -16,7 +16,7 @@ sudo apt-get install doxygen
  }}}
 And for installing GUI:
 {{{
-sudo apt-get install doxywizard
+sudo apt-get install doxygen-gui
 }}}
 Also you can compiled Doxygen from sources or install from binary:
     http://www.stack.nl/~dimitri/doxygen/download.html#latestsrc
@@ -45,6 +45,59 @@ Result will be in directory you wrote in config file:
 {{{
 OUTPUT_DIRECTORY       = C:/Users/User/Documents/Mdsp/doxygen
 }}}
+
+Doxygen extracts documentation from source file comments. Comment must be begin with double star or 3 slashes. Make sure the parameter EXTRACT_ALL in the config file is set to YES. So there is a example of comment.
+{{{
+/**
+ * @file    ...
+ * @author  ...
+ * @version 1.0
+ *
+ * @section LICENSE
+ * GNU 
+ * @section DESCRIPTION
+ *
+ * The time class represents a moment of time.
+ */
+ 
+class Time 
+{
+    public:
+       /**
+        * Constructor that sets the time to a given value.
+        * 
+        * @param timemillis Number of milliseconds 
+        */
+       Time (int timemillis)
+       {
+           ...
+       }
+
+       /**
+        * Get the current time.
+        *
+        * @return A time object set to the current time.
+        */
+       static Time now( )
+       {
+           ...
+       }
+};
+}}}
+Alternative form:
+{{{
+       /**
+        * Constructor that sets the time to a given value.
+        * 
+        */
+       Time (int timemillis ///< Number of milliseconds
+            ) 
+       {
+           ...
+       }
+
+}}}
+ 
 == Links ==
 For more information about Doxygen you can visit
 
