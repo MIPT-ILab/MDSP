@@ -46,4 +46,9 @@ bash mdsp_test_suite.sh this
  Notes:
   # This variant is designed to be run from `<svn_root>/tests` directory. In other case it won't find your sources.
   # This variant cleans your Release build directories and rebuilds the code.
-  
+
+There is also another method of running the test:
+{{{
+bash mdsp_test_suite.sh mail
+}}}
+  This variant will attempt to send an email to mailing list with results of the test. It will require a password for the SMTP server access that is situated in a separate file.
