@@ -21,10 +21,10 @@ private:
     string elfFilename;
     string outputFilename;
 
-	/* if numSteps is equal -1, it means that there is no limit of simulation */
+    /* if numSteps is equal -1, it means that there is no limit of simulation */
     int numSteps;
     
-	/*  if InputType is true, input is binary, otherwise it's ELF*/
+    /*  if InputType is true, input is binary, otherwise it's ELF*/
     bool inputType;
     bool disassembler;
     bool dumpRegisters;
@@ -41,7 +41,7 @@ public:
     /* methods */
     int handleArgs( int argc, char** argv);
 
-	/* get methods */
+    /* get methods */
     string getBinaryFilename() const;
     string getOutputFilename() const;
     string getElfFilename() const;
