@@ -17,15 +17,15 @@ void Scheduler::init(Config* handler)
     /* opening stream of input file */
     /* ifstream is used to handle binary input file */
     ifstream in_bin;
-	if ( handler->getInputType())
-	{
-		openBinaryInputFile ( in_bin, handler->getBinaryFilename().c_str());
-	}
-	else
-	{
-		cout << "No ELF support provided\n";
+    if ( handler->getInputType())
+    {
+        openBinaryInputFile ( in_bin, handler->getBinaryFilename().c_str());
+    }
+    else
+    {
+        cout << "No ELF support provided\n";
         exit(0);
-	}
+    }
     
     /* parsing number of steps */
     if ( handler->getNumSteps() != -1)

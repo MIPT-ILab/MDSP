@@ -38,11 +38,11 @@ int Config::handleArgs( int argc, char** argv)
         ( "binary,b", po::value<string>(), "Select binary file")
         ( "elf,e", po::value<string>(), "Select ELF file")
         ( "numsteps,n", po::value<int>(), "Select numsteps")
-	    ( "disasm,d", "Print disassembly")
-	    ( "print-reg-state,r", "Dump registers")
-	    ( "print-mem-state,m", "Dump memory")
-	    ( "output-file,o",po::value<string>(), "Select output file")
-	    ( "trace,t", "Print tracing")
+        ( "disasm,d", "Print disassembly")
+        ( "print-reg-state,r", "Dump registers")
+        ( "print-mem-state,m", "Dump memory")
+        ( "output-file,o",po::value<string>(), "Select output file")
+        ( "trace,t", "Print tracing")
         ( "help,h", "Print this help message");
 
 
@@ -55,7 +55,7 @@ int Config::handleArgs( int argc, char** argv)
      catch (const std::exception& e) 
      {
          cout << description << endl;
-		 exit(0);
+         exit(0);
      }
     
     /* parsing help */
@@ -64,7 +64,7 @@ int Config::handleArgs( int argc, char** argv)
          cout << "Functional simulator of multimedia digital signal processor." << endl;
          cout << "Version: 0.2" << endl << endl;
          cout << description << endl;
-		 exit(0);
+         exit(0);
     }
 
     /* parsing input file name */
@@ -76,13 +76,13 @@ int Config::handleArgs( int argc, char** argv)
     else
     {
         if ( options.count( "binary") > 1)
-		{
-	        cout << "Key -b is used twice" << endl;
+        {
+            cout << "Key -b is used twice" << endl;
             cout << endl;
             cout << description << endl;
             exit(0);
-		}
-		if ( options.count( "elf") == 1)
+        }
+        if ( options.count( "elf") == 1)
         {
             elfFilename = options["elf"].as<string>();
             this->inputType = false;
@@ -90,13 +90,13 @@ int Config::handleArgs( int argc, char** argv)
         else
         {
             if ( options.count( "elf") > 1)
-	        {
-		        cout << "Key -e is used twice" << endl;
+            {
+                cout << "Key -e is used twice" << endl;
                 cout << endl;
                 cout << description << endl;
                 exit(0);
-	        }
-		    else
+            }
+            else
             {
                 cout << "No input file" << endl;
                 cout << endl;
@@ -124,7 +124,7 @@ int Config::handleArgs( int argc, char** argv)
             break;
     }
     
-	/* parsing steps count */
+    /* parsing steps count */
 
     switch ( options.count( "numsteps"))
     {
@@ -142,12 +142,12 @@ int Config::handleArgs( int argc, char** argv)
             break;
     }
     
-	/* parsing some parameters */
+    /* parsing some parameters */
     this->disassembler = ( options.count("disasm") != 0);
     this->dumpRegisters = ( options.count("print-reg-state") != 0);
     this->dumpMemory = ( options.count("print-mem-state") != 0);
     this->tracing = ( options.count("trace") != 0);
-	
+    
     return 0;
 }
 
@@ -155,51 +155,51 @@ int Config::handleArgs( int argc, char** argv)
 
 string Config::getBinaryFilename() const 
 {
-	return this->binaryFilename;
+    return this->binaryFilename;
 }
 
 string Config::getOutputFilename() const
 {
-	return this->outputFilename;
+    return this->outputFilename;
 }
 
 string Config::getElfFilename() const
 {
-	return this->elfFilename;
+    return this->elfFilename;
 }
 
 int Config::getNumSteps() const
 {
-	return this->numSteps;
+    return this->numSteps;
 }
 
 bool Config::getInputType() const
 {
-	return this->inputType;
+    return this->inputType;
 }
 
 bool Config::getDisassembler() const
 {
-	return this->disassembler;
+    return this->disassembler;
 }
 
 bool Config::getDumpMemory() const
 {
-	return this->dumpMemory;
+    return this->dumpMemory;
 }
 
 bool Config::getDumpRegisters() const
 {
-	return this->dumpRegisters;
+    return this->dumpRegisters;
 }
 
 bool Config::getTracing() const
 {
-	return this->tracing;
+    return this->tracing;
 }
 
 bool Config::getOutputToFile() const
 {
-	return this->outputToFile;
+    return this->outputToFile;
 }
  
