@@ -27,24 +27,6 @@ Config::~Config()
 
 }
 
-void Config::usage()
-{
-    /* Print help information and stop program */
-    cout << "Usage:" << endl;
-    cout << endl;
-    cout << "\t" << "--binary <file>, -b <file> - instructs simualtor to load raw machine code from file." << endl;
-    cout << "\t" << "--elf,-e - load binary ELF file sections to memory." << endl;
-    cout << "\t" << "--num-steps,-n - do only specified amount of steps and then exit."; 
-    cout << "By default core runs until it encounters hlt instruction or there is a simulation error." << endl;
-    cout << "\t" << "--disasm,-d - print disassembly of every current instruction." << endl;
-    cout << "\t" << "--print-reg-state,-r - dump register state after simulation has finished." << endl;
-    cout << "\t" << "--print-mem-state,-m - dump memory state after simulation has finished." << endl;
-    cout << "\t" << "--output-file,-o - redirect normal output to the given file. By default we print to stdout." << endl;
-    cout << "\t" << "--trace,-t - report all architectural state changes (register modified, memory written etc)" << endl;
-    cout << "\t" << "--help,-h - print help with this paragraph." << endl;
-    exit(0); 
-}
-
 /* basic method */
 int Config::handleArgs( int argc, char** argv)
 {
@@ -53,15 +35,15 @@ int Config::handleArgs( int argc, char** argv)
     po::options_description description( "allowed options");
 
     description.add_options()
-        ( "binary,b", po::value<string>(), "choose binary")
-        ( "elf,e", po::value<string>(), "choose ELF")
-        ( "numsteps,n", po::value<int>(), "choose numsteps")
-	    ( "disasm,d", "disassembly")
-	    ( "print-reg-state,r","dump registers")
-	    ( "print-mem-state,m","dump memory")
-	    ( "output-file,o",po::value<string>(),"output file")
-	    ( "trace,t","tracing")
-        ( "help,h","help message");
+        ( "binary,b", po::value<string>(), "Select binary file")
+        ( "elf,e", po::value<string>(), "Select ELF file")
+        ( "numsteps,n", po::value<int>(), "Select numsteps")
+	    ( "disasm,d", "Print disassembly")
+	    ( "print-reg-state,r", "Dump registers")
+	    ( "print-mem-state,m", "Dump memory")
+	    ( "output-file,o",po::value<string>(), "Select output file")
+	    ( "trace,t", "Print tracing")
+        ( "help,h", "Print this help message");
 
 
     po::variables_map options;
@@ -72,15 +54,17 @@ int Config::handleArgs( int argc, char** argv)
      } 
      catch (const std::exception& e) 
      {
-         usage();
+         cout << description << endl;
+		 exit(0);
      }
     
     /* parsing help */
     if ( options.count( "help") )
     {
          cout << "Functional simulator of multimedia digital signal processor." << endl;
-         cout << "Version: 0.1" << endl;
-         usage();
+         cout << "Version: 0.2" << endl << endl;
+         cout << description << endl;
+		 exit(0);
     }
 
     /* parsing input file name */
@@ -95,7 +79,8 @@ int Config::handleArgs( int argc, char** argv)
 		{
 	        cout << "Key -b is used twice" << endl;
             cout << endl;
-            usage();
+            cout << description << endl;
+            exit(0);
 		}
 		if ( options.count( "elf") == 1)
         {
@@ -108,13 +93,15 @@ int Config::handleArgs( int argc, char** argv)
 	        {
 		        cout << "Key -e is used twice" << endl;
                 cout << endl;
-                usage();
+                cout << description << endl;
+                exit(0);
 	        }
 		    else
             {
                 cout << "No input file" << endl;
                 cout << endl;
-                usage();
+                cout << description << endl;
+                exit(0);
             }
         }
     }
@@ -132,7 +119,8 @@ int Config::handleArgs( int argc, char** argv)
         default:
             cout << "-o is used twice" << endl;
             cout << endl;
-            usage();
+            cout << description << endl;
+            exit(0);
             break;
     }
     
@@ -149,7 +137,8 @@ int Config::handleArgs( int argc, char** argv)
         default:
             cout << "-n is used twice" << endl;
             cout << endl;
-            usage();
+            cout << description << endl;
+            exit(0);
             break;
     }
     
