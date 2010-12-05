@@ -18,7 +18,7 @@
 
 # The buildbot script version
 VERSION=6
-# PASS=0
+PASS=0
 
 function mail_results {
     echo "=============================================================="
@@ -42,7 +42,7 @@ function mail_results {
 	fi
     MFILE=$1
     MDATE=`date "+%d.%m.%Y %H:%M.%S"`
-    if [ $PASS ] 
+    if [ $PASS == 1 ] 
     then
         SUBJ="[PASS]"
     else
