@@ -75,11 +75,12 @@ hostUInt64 Core::run( hostUInt64 requested)
         
         //op->encode();
         
+        /* Execute operation */
+        op->execute();
+
         /* Disassembling */
         op->dump();
 
-        /* Execute operation */
-        op->execute();
         delete( op);
 
         /* Add 4 bytes (32 bits) to access next instruction */

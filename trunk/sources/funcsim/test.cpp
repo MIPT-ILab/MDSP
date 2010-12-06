@@ -788,19 +788,19 @@ void testOperationSetDumpEncode(
 
 void testOperation()
 {
-    testOperationSetDumpEncode(   MOVE, BRR, NOP, NOP, 0, 0, 0, 0,  0, 1, 0, 2, "brr 1, r2;\n",
+    testOperationSetDumpEncode(   MOVE, BRR, NOP, NOP, 0, 0, 0, 0,  0, 1, 0, 2, "brr r1, r2;\n",
         0x2200000c); // 000 011 --- -- ----------- 00001 00010
     testOperationSetDumpEncode(   MOVE, BRM, NOP, NOP, 1, 0, 0, 0,  0, 1, 0, 2, "brm 1, r1, r2;\n",
         0x22002004); // 000 001 --- 01
-    testOperationSetDumpEncode(   MOVE,  LD, NOP, NOP, 0, 0, 0, 0,  1, 0, 0, 2, "ld 0, r1, r2;\n",
+    testOperationSetDumpEncode(   MOVE,  LD, NOP, NOP, 0, 0, 0, 0,  1, 0, 0, 2, "ld 0, 0x1, r2;\n",
         0x22000018); // 000 110 --- 00
-    testOperationSetDumpEncode(    ALU, NOP, ADD, NOP, 0, 1, 0, 6,  0, 0, 0, 2, "add 1, 6, r2;\n",
+    testOperationSetDumpEncode(    ALU, NOP, ADD, NOP, 0, 1, 0, 6,  0, 0, 0, 2, "add 1, 0x6, r2;\n",
         0xc2802020);
     testOperationSetDumpEncode(    ALU, NOP, SUB, NOP, 0, 0, 0, 0,  0, 1, 3, 2, "sub 0, r1, r3, r2;\n",
         0x62044020);
-    testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 1, 0, 0, 0,  5, 0, 0, 0, "jmp 1, r5;\n",
+    testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 1, 0, 0, 0,  5, 0, 0, 0, "jmp 1, 0x5;\n",
         0x050080a0);
-    testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 1, 0, 0, 0, 10, 0, 0, 0, "jgt 1, r10;\n",
+    testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 1, 0, 0, 0, 10, 0, 0, 0, "jgt 1, 0x10;\n",
         0x0a0080a2);
     testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 0, 0, 0, 0,  0, 0, 0, 2, "jmp 0, r2;\n",
         0x020000a0);
