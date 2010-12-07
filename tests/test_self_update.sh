@@ -12,6 +12,7 @@
 #  ----------------------------------------------------------------------------
 # 
 
+# If run run this script on Windows, make sure that %HOME% is defined! You can use %HOMEPATH% for it.
 ROOTDIR="$HOME"
 TESTDIR="$ROOTDIR/mdsp-tests"
 
@@ -21,13 +22,13 @@ cd $ROOTDIR
 echo "Updating scripts"
 
 # Files common to all platforms
-svn export https://mdsp.googlecode.com/svn/trunk/tests/mdsp_test_suite.sh
-svn export https://mdsp.googlecode.com/svn/trunk/tests/test_self_update.sh
+svn export --force https://mdsp.googlecode.com/svn/trunk/tests/mdsp_test_suite.sh
+svn export --force https://mdsp.googlecode.com/svn/trunk/tests/test_self_update.sh
 if [ `uname -o` == Cygwin ]
 then # Windows specific scripts
-  svn export https://mdsp.googlecode.com/svn/trunk/tests/run_cygwin_tests.cmd
-  svn export https://mdsp.googlecode.com/svn/trunk/tests/run_mingw_tests.cmd
-  svn export https://mdsp.googlecode.com/svn/trunk/tests/run_msvs2008_tests.cmd  
+  svn export --force https://mdsp.googlecode.com/svn/trunk/tests/run_cygwin_tests.cmd
+  svn export --force https://mdsp.googlecode.com/svn/trunk/tests/run_mingw_tests.cmd
+  svn export --force https://mdsp.googlecode.com/svn/trunk/tests/run_msvs2008_tests.cmd  
 fi
 
 # 2) Remove the old directories
@@ -37,6 +38,7 @@ mkdir -p $TESTDIR
 cd $TESTDIR
 # Find all directories in current dir that are older than specified amount of
 # days, print their names to pipe, and form a command line for `rm -r`
+# XXX make sure that your PATH uses find from Cygwin, not Windows `find.exe` !
 find . -maxdepth 1 -type d -mtime +$LIFETIME | xargs rm -r 
 
 ####
