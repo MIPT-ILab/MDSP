@@ -198,6 +198,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\main_functions.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\memory.cpp"
 				>
 			</File>
@@ -207,6 +211,10 @@
 			</File>
 			<File
 				RelativePath=".\register_file.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\scheduler.cpp"
 				>
 			</File>
 		</Filter>
@@ -236,6 +244,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\main_functions.h"
+				>
+			</File>
+			<File
 				RelativePath=".\memory.h"
 				>
 			</File>
@@ -245,6 +257,10 @@
 			</File>
 			<File
 				RelativePath=".\register_file.h"
+				>
+			</File>
+			<File
+				RelativePath=".\scheduler.h"
 				>
 			</File>
 			<File
