@@ -45,21 +45,29 @@ int Config::handleArgs( int argc, char** argv)
         ( "trace,t", "Print tracing")
         ( "help,h", "Print this help message");
 
+    po::positional_options_description posDescription;
+	
+	posDescription.add( "binary",1);
+		
+    po::variables_map vm;
 
-    po::variables_map options;
-
-     try 
-     {
-         po::store(po::parse_command_line(argc, argv, description), options);
-     } 
-     catch (const std::exception& e) 
-     {
-         cout << description << endl;
-         exit(0);
-     }
+    try 
+    {
+        po::store(po::command_line_parser(argc, argv).
+	                                  options(description).
+									  positional(posDescription).
+									  run(), 
+									  vm);
+	    po::notify(vm);
+    } 
+    catch (const std::exception& e) 
+    {
+        cout << description << endl;
+        exit(0);
+    }
     
     /* parsing help */
-    if ( options.count( "help") )
+    if ( vm.count( "help") )
     {
          cout << "Functional simulator of multimedia digital signal processor." << endl;
          cout << "Version: 0.2" << endl << endl;
@@ -68,28 +76,28 @@ int Config::handleArgs( int argc, char** argv)
     }
 
     /* parsing input file name */
-    if ( options.count( "binary") == 1 ) 
+    if ( vm.count( "binary") == 1 ) 
     {
-        binaryFilename = options["binary"].as<string>();
+        binaryFilename = vm["binary"].as<string>();
         this->inputType = true;
     }
     else
     {
-        if ( options.count( "binary") > 1)
+        if ( vm.count( "binary") > 1)
         {
             cout << "Key -b is used twice" << endl;
             cout << endl;
             cout << description << endl;
             exit(0);
         }
-        if ( options.count( "elf") == 1)
+        if ( vm.count( "elf") == 1)
         {
-            elfFilename = options["elf"].as<string>();
+            elfFilename = vm["elf"].as<string>();
             this->inputType = false;
         }
         else
         {
-            if ( options.count( "elf") > 1)
+            if ( vm.count( "elf") > 1)
             {
                 cout << "Key -e is used twice" << endl;
                 cout << endl;
@@ -107,10 +115,10 @@ int Config::handleArgs( int argc, char** argv)
     }
 
     /* parsing output-file */
-    switch ( options.count( "output-file"))
+    switch ( vm.count( "output-file"))
     {
         case 1: 
-            outputFilename = options[ "output-file"].as<string>();
+            outputFilename = vm[ "output-file"].as<string>();
             this->outputToFile = true;
             break;
         case 0:
@@ -126,10 +134,10 @@ int Config::handleArgs( int argc, char** argv)
     
     /* parsing steps count */
 
-    switch ( options.count( "numsteps"))
+    switch ( vm.count( "numsteps"))
     {
         case 1: 
-            this->numSteps = options["numsteps"].as<int>();
+            this->numSteps = vm["numsteps"].as<int>();
             break;
         case 0:
             this->numSteps = -1;
@@ -143,10 +151,10 @@ int Config::handleArgs( int argc, char** argv)
     }
     
     /* parsing some parameters */
-    this->disassembler = ( options.count("disasm") != 0);
-    this->dumpRegisters = ( options.count("print-reg-state") != 0);
-    this->dumpMemory = ( options.count("print-mem-state") != 0);
-    this->tracing = ( options.count("trace") != 0);
+    this->disassembler = ( vm.count("disasm") != 0);
+    this->dumpRegisters = ( vm.count("print-reg-state") != 0);
+    this->dumpMemory = ( vm.count("print-mem-state") != 0);
+    this->tracing = ( vm.count("trace") != 0);
     
     return 0;
 }

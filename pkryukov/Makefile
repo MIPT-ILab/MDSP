@@ -72,12 +72,12 @@ endif
 
 ifeq ($(LIBS_OBJS), error)
 OStest:
-	@echo $(UNAME)
+	@echo $(UNAME) $(LBITS)
 	@echo "System isn't supported."
 	@exit 2
 else
 OStest:	
-	@echo $(UNAME)
+	@echo $(UNAME) $(LBITS)
 	@echo "system is supported."
 endif	
 
@@ -109,5 +109,3 @@ clean:
 	rm -f $(OUT)/funcsim
 	rm -f $(OUT)/test
 	rm -f $(OUT)/asm
-
-

@@ -75,6 +75,9 @@ hostUInt64 Core::run( hostUInt64 requested)
         op->decode( mem_value);
         
         //op->encode();
+
+        /* Execute operation */
+        op->execute();
         
         /* Disassembling */
         if ( disasmPrint )
@@ -82,8 +85,6 @@ hostUInt64 Core::run( hostUInt64 requested)
             op->dump();
         }
 
-        /* Execute operation */
-        op->execute();
         delete( op);
 
         /* Add 4 bytes (32 bits) to access next instruction */
