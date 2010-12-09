@@ -8,7 +8,7 @@ REM can do whatever you want with this stuff. If we meet some day, and you think
 REM this stuff is worth it, you can buy me a beer in return.
 REM ----------------------------------------------------------------------------
 
-set VERSION=W4
+set VERSION=W5
 
 rem We still need CygWin for Unix utils, also sendEmail.exe
 PATH=c:\cygwin\bin;c:\buildbot\bin;%PATH%
@@ -43,13 +43,19 @@ rem check command line parameters
 if "%1" == "branch" ( 
     set BRANCHBUILD=1
     set BRANCHNAME=%2
+    if "%BRANCHNAME%" == "" (
+        echo Empty branch name!
+        goto :end
+        )
     ) else (
     set BRANCHBUILD=0
 )
 
-if "%BRANCHNAME%" == "" (
-    echo Empty branch name!
-    goto :end
+if "%1" == "test" (
+    echo Test run, the mail won't be sent
+    set NOMAIL=1
+) else (
+    set NOMAIL=0
 )
 
 echo ===============================================================
@@ -116,12 +122,17 @@ goto :mailresults
 rem Exit point -------------------------------------------
 :mailresults
 
+cd %HOMEPATH%
+
 if %BRANCHBUILD% == 1 (
     echo Branch testing is finished
     goto :end
 )
+if %NOMAIL% == 1 (
+    echo Main trunk testing is finished
+    goto :end
+)
 
-cd %HOMEPATH%
 set MAILADDRESS="multimedia-dsp-2010@googlegroups.com"
 rem set MAILADDRESS="ggg_mail@inbox.ru"
 set MAILNAME="mdsp.buildbot@inbox.ru"
