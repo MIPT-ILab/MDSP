@@ -13,14 +13,16 @@ using namespace std;
 /*
  * Check argument number in program call
  */
+/*
 int checkArguments(int argc);
+*/
 
 /*
  * Safe binary input file opening ("test.bin", for instance).
  * Checks for all possible errors.
  * Returns 1 if there weren't any errors, in case of errors returns 0.
  */
-int openBinaryInputFile(ifstream& input, char* filename);
+int openBinaryInputFile(ifstream& input, const char* filename);
 
 
 /*
@@ -28,6 +30,6 @@ int openBinaryInputFile(ifstream& input, char* filename);
  * Checks for all possible errors.
  * Returns 1 if there weren't any errors, in case of errors returns 0.
  */
-int closeBinaryInputFile(ifstream& input, char* filename);
+int closeBinaryInputFile(ifstream& input, const char* filename);
 
 #endif

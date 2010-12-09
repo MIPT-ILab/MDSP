@@ -1,27 +1,38 @@
 
 /**
- * config.h - class for analysing and handling of inputed arguments 
- * @author Dmitry Lukiyanchuk
- * Copyright 2009 MDSP team
+ * config.h - class for analysing and handling of inputed arguments
+ * @author Pavel Kryukov
+ * Copyright 2010 MDSP team
  */
 
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include "log.h"
+
 #include <string>
 using namespace std;
 
-class Config
+class Config: public log
 {
 private:
     /* variables */
-    string* input_filename;
-    string* log_filename;
+    string binaryFilename;
+    string elfFilename;
+    string outputFilename;
 
-    /* auxiliary methods */
-    bool checkFileExisting(const char* filename) const;
-    bool checkSymbols(const char* filename) const;
-
+    /* if numSteps is equal -1, it means that there is no limit of simulation */
+    int numSteps;
+    
+    /*  if InputType is true, input is binary, otherwise it's ELF*/
+    bool inputType;
+    bool disassembler;
+    bool dumpRegisters;
+    bool dumpMemory;
+    bool tracing;
+    bool outputToFile;
+    
+    void usage();
 public:
     /* constructors */
     Config();
@@ -29,8 +40,21 @@ public:
 
     /* methods */
     int handleArgs( int argc, char** argv);
-    string getInputFilename() const;
-    string getLogFilename() const;
+
+    /* get methods */
+    string getBinaryFilename() const;
+    string getOutputFilename() const;
+    string getElfFilename() const;
+
+    int getNumSteps() const;
+
+    bool getInputType() const;
+    bool getDisassembler() const;
+    bool getDumpMemory() const;
+    bool getDumpRegisters() const;
+    bool getTracing() const;
+    bool getOutputToFile() const;
+
 };
 
 #endif  // CONFIG_H

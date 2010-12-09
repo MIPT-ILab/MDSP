@@ -4,8 +4,6 @@
  * Copyright 2009 MDSP team
  */
 
-
-
 #include <fstream>
 #include <iostream>
 #include <cassert>
@@ -17,6 +15,11 @@ using namespace std;
 /*
  * Check argument number in program call
  */
+
+/* 
+    * Useless function!
+*/
+/*
 int checkArguments(int argc)
 {
     int param_number = 2;
@@ -27,13 +30,14 @@ int checkArguments(int argc)
     }
     return 1;
 }
+*/
 
 /*
  * Safe binary input file opening ("test.bin", for instance).
  * Checks for all possible errors.
  * Returns 1 if there weren't any errors, in case of errors returns 0.
  */
-int openBinaryInputFile(ifstream& input, char* filename)
+int openBinaryInputFile(ifstream& input, const char* filename)
 {
     cout << "Input file: " << filename << endl;
     input.open (filename, ifstream::binary);
@@ -51,7 +55,7 @@ int openBinaryInputFile(ifstream& input, char* filename)
  * Checks for all possible errors.
  * Returns 1 if there weren't any errors, in case of errors returns 0.
  */
-int closeBinaryInputFile(ifstream& input, char* filename)
+int closeBinaryInputFile(ifstream& input, const char* filename)
 {
     if (input.is_open())
     {

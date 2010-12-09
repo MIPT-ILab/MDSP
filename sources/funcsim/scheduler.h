@@ -10,6 +10,7 @@
 #define MAXINT 0-1
 
 #include "core.h"
+#include "config.h"
 
 
 using namespace std;
@@ -18,7 +19,7 @@ class Scheduler
 {
     public:
         //Scheduler();
-        void init(int argc, char** argv);
+        void init(Config* config);
 
         hostUInt64 steps_sim;//number of steps for funcsim
         hostUInt16 start_pc;//point counter for core
