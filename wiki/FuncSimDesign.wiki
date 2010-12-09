@@ -7,22 +7,15 @@ This page describes some ideas on how the functional part of our simulator shoul
 = Command line arguments = 
 
 == Current status ==
-{{{
-funcsim <binary>
-}}}
-
-where `<binary>` - file to  load to memory from address 0x0 before starting simulation.
-
-== Planned list of features ==
 
 === Batch mode ===
 The batch mode means that all the required data is passed with command-line arguments, then the execution starts and cannot be interrupted by a user until it finished.
 
 {{{
-funcsim --batch --binary <binary>|--elf <binary> [--num-steps <num>] [--disasm] [--print-reg-state] [--print-mem-state] [--output-file <name>] [--trace]
+funcsim --binary <binary>|--elf <binary> [--num-steps <num>] [--disasm] [--print-reg-state] [--print-mem-state] [--output-file <name>] [--trace]
 }}}
 
-`--binary`,`-b` — instructs simualtor to load raw machine code from file.
+`--binary`,`-b` — instructs simualtor to load raw machine code from file. You're allowed not to write this key.
 
 `--elf`,`-e` — load binary ELF file sections to memory.
 
@@ -39,6 +32,8 @@ funcsim --batch --binary <binary>|--elf <binary> [--num-steps <num>] [--disasm] 
 `--trace`,`-t` — report all architectural state changes (register modified, memory written etc)
 
 `--help`,`-h` — print help with this paragraph.
+
+== Planned list of features ==
 
 ==== Return values:  ====
 
