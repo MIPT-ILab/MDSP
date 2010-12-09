@@ -27,17 +27,24 @@ if exist "%VS90COMNTOOLS%\vsvars32.bat" (
     rem for user machines
     call "%VS90COMNTOOLS%\vsvars32.bat"
 ) else (
-    rem for buildbot, it does not have the variable defined
+    rem for buildbot, it does not have the variable defined in batch mode
     call "C:\Program Files\Microsoft Visual Studio 9.0\Common7\Tools\vsvars32.bat"
 )
 
+rem Set up buildbot home dir. If not set, take user's home dir 
+if "%HOME%" == "" (
+	set HOME=%HOMEPATH% 
+)
+
 echo Creating the working directory
-set WRK=%HOMEPATH%\mdsp-tests\%DATE%
+set WRK=%HOME%\mdsp-tests\%DATE%
+
+echo %WRK%
 
 rem change disk to the home, then change directory
 %HOMEDRIVE% 
-mkdir %WRK% 
-cd %WRK%
+mkdir "%WRK%" 
+cd "%WRK%"
 
 rem check command line parameters
 if "%1" == "branch" ( 
@@ -122,7 +129,7 @@ goto :mailresults
 rem Exit point -------------------------------------------
 :mailresults
 
-cd %HOMEPATH%
+cd "%HOME%"
 
 if %BRANCHBUILD% == 1 (
     echo Branch testing is finished
