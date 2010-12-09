@@ -23,6 +23,7 @@ Core::Core()
     this->memory = new MemoryModel( 1024);
     this->rf = new RegisterFileModel( 32, 2); // 32 16-bit registers
     this->flags = new Flags();
+    this->disasmPrint = false;
 }
 
 /*
@@ -74,12 +75,15 @@ hostUInt64 Core::run( hostUInt64 requested)
         op->decode( mem_value);
         
         //op->encode();
-        
+
         /* Execute operation */
         op->execute();
-
+        
         /* Disassembling */
-        op->dump();
+        if ( disasmPrint )
+        {
+            op->dump();
+        }
 
         delete( op);
 

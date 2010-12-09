@@ -1,176 +1,213 @@
 /**
  * config.cpp - Implementation of Config class
- * @author Dmitry Lukiyanchuk
- * Copyright 2009 MDSP team
+ * @author Pavel Kryukov
+ * Copyright 2010 MDSP team
  */
 
+#include "log.h"
 #include "config.h"
-
 #include "defines.h"
+
 #include <iostream>
 #include <fstream>
 #include <cstring>
 #include <cstdlib>
 
-using namespace std;
+#include <boost/program_options.hpp>
 
+using namespace std;
 
 /* constructors */
 Config::Config()
 {
-    this->input_filename = new string;
-    this->log_filename = new string;
+
 }
 Config::~Config()
 {
-    delete this->input_filename;
-    delete this->log_filename;
+
 }
-/* public methods */
-/*
-* Function handleArgs() analyses and handles inserted arguments.
-* There are three cases of corect call:
-*    funcsim * -h *
-*    funcsim <testname>
-*    funcsim <testname> -l <log>
-* Function checks inputed <testname> for existance.
-*    If <testname> doesn't exist,
-*    function will report about error and stop programm.
-* Function checks inputed <log> for acceptability of its symbols.
-*    Now allowed symbols are {a-z, A-Z, 0-9, _, ., \, /}.
-* If <log> already exist, function will ask user for replacing.
-*/
+
+/* basic method */
 int Config::handleArgs( int argc, char** argv)
 {
-    /* case: -h*/
-    for ( int i = 0; i < argc; i++)
+    namespace po = boost::program_options;
+
+    po::options_description description( "allowed options");
+
+    description.add_options()
+        ( "binary,b", po::value<string>(), "Select binary file")
+        ( "elf,e", po::value<string>(), "Select ELF file")
+        ( "numsteps,n", po::value<int>(), "Select numsteps")
+        ( "disasm,d", "Print disassembly")
+        ( "print-reg-state,r", "Dump registers")
+        ( "print-mem-state,m", "Dump memory")
+        ( "output-file,o",po::value<string>(), "Select output file")
+        ( "trace,t", "Print tracing")
+        ( "help,h", "Print this help message");
+
+    po::positional_options_description posDescription;
+	
+	posDescription.add( "binary",1);
+		
+    po::variables_map vm;
+
+    try 
     {
-        if ( strcmp(argv[i], "-h") == 0)
-        {
-            // Print help information and stop programm
-            cout << "Functional simulator of multimedia digital signal processor." << endl;
-            cout << "Version: 0.1" << endl;
-            cout << "Usage:" << endl;
-            cout << endl;
-            cout << "\t" << argv[0] << " -h - show this help" << endl;
-            cout << "\t" << argv[0] << " <testname> [options]" << endl;
-            cout << endl;
-            cout << "Available options:" << endl;
-            cout << "\t" << "-h" << "      " << " - show this help" << endl;
-            cout << "\t" << "-l <log> - print logs into file <log>" << endl;
-            exit(0);    // Stop programm
-        }
+        po::store(po::command_line_parser(argc, argv).
+	                                  options(description).
+									  positional(posDescription).
+									  run(), 
+									  vm);
+	    po::notify(vm);
+    } 
+    catch (const std::exception& e) 
+    {
+        cout << description << endl;
+        exit(0);
     }
-    /* case: funcsim <testname> */
-    if ( argc > 1)
+    
+    /* parsing help */
+    if ( vm.count( "help") )
     {
-        /*
-        * Try if input_filename exist,
-        * if not - report about error and stop programm;
-        * if yes - save input_filename_name.
-        */
-        if ( this->checkFileExisting(argv[1]) != 0)
-        {
-            cout << "Unable to open \"" << argv[1] << "\"" << endl;
-            exit(-1);    // Stop programm
-        }
-        *this->input_filename = argv[1];
-    } else
-    {
-        DIE( "Wrong input. Call \"%s -h\" for help\n", argv[0])
+         cout << "Functional simulator of multimedia digital signal processor." << endl;
+         cout << "Version: 0.2" << endl << endl;
+         cout << description << endl;
+         exit(0);
     }
-    for ( int i = 2; i < argc; i++)
+
+    /* parsing input file name */
+    if ( vm.count( "binary") == 1 ) 
     {
-        /* case: -l <log> */
-        if ( strcmp( argv[i], "-l") == 0)
+        binaryFilename = vm["binary"].as<string>();
+        this->inputType = true;
+    }
+    else
+    {
+        if ( vm.count( "binary") > 1)
         {
-            if ( *this->log_filename != "\0")
-            {
-                DIE( "Error! Doubling call of \"-l\" parameter.\n")
-            } else if ( i == ( argc - 1))
-            {
-                DIE( "Wrong call of \"-l\" parameter. Call \"%s -h\" for help.\n", argv[0])
-            }
-            if ( this->checkSymbols( argv[i+1]) != 0)
-            {
-                DIE( "There is forbided symbol in log_filename.\n")
-            }
-            if ( this->checkFileExisting(argv[i+1]) == 0)
-            {
-                cout << "File \"" << argv[i+1] << "\" already exist." 
-                 << "Do you wont replace it?" << " (y/n)" << endl;
-                char answer[2] = "\0";
-                bool flag = 1;
-                while ( flag != 0)
-                {
-                    cout << ">";
-                    cin.get( answer, 2);
-                    if ( strcmp( answer, "y") == 0)
-                    {
-                        *this->log_filename = argv[i+1];
-                        flag = 0;
-                    } else if( strcmp( answer, "n") == 0)
-                    {
-                        exit(0);    // Stop programm
-                    } else
-                    {
-                        cout << "Incorrect input. Please answer again: (y/n)" << endl;
-                    }
-                }
-            } else
-            {
-                *this->log_filename = argv[i+1];
-            }
-            ++i;    // <log> has been already used
-        } 
-        /* place for new parameters adding */
+            cout << "Key -b is used twice" << endl;
+            cout << endl;
+            cout << description << endl;
+            exit(0);
+        }
+        if ( vm.count( "elf") == 1)
+        {
+            elfFilename = vm["elf"].as<string>();
+            this->inputType = false;
+        }
         else
         {
-            DIE( "Wrong input. Call \"%s -h\" for help\n", argv[0])
+            if ( vm.count( "elf") > 1)
+            {
+                cout << "Key -e is used twice" << endl;
+                cout << endl;
+                cout << description << endl;
+                exit(0);
+            }
+            else
+            {
+                cout << "No input file" << endl;
+                cout << endl;
+                cout << description << endl;
+                exit(0);
+            }
         }
     }
-    return 0;    // continue main
-}
-string Config::getInputFilename() const
-{
-    return *this->input_filename;
-}
-/*
- * To check, if <log> was called you should check if
- * getLogFilename != "\0".
- */
-string Config::getLogFilename() const
-{
-    return *this->log_filename;
-}
-/* auxiliary private methods */
-bool Config::checkFileExisting(const char *filename) const
-{
-    ifstream fin( filename);
-    if( !fin)
+
+    /* parsing output-file */
+    switch ( vm.count( "output-file"))
     {
-        return 1;
+        case 1: 
+            outputFilename = vm[ "output-file"].as<string>();
+            this->outputToFile = true;
+            break;
+        case 0:
+            this->outputToFile = false;
+            break;
+        default:
+            cout << "-o is used twice" << endl;
+            cout << endl;
+            cout << description << endl;
+            exit(0);
+            break;
     }
-    fin.close();
+    
+    /* parsing steps count */
+
+    switch ( vm.count( "numsteps"))
+    {
+        case 1: 
+            this->numSteps = vm["numsteps"].as<int>();
+            break;
+        case 0:
+            this->numSteps = -1;
+            break;
+        default:
+            cout << "-n is used twice" << endl;
+            cout << endl;
+            cout << description << endl;
+            exit(0);
+            break;
+    }
+    
+    /* parsing some parameters */
+    this->disassembler = ( vm.count("disasm") != 0);
+    this->dumpRegisters = ( vm.count("print-reg-state") != 0);
+    this->dumpMemory = ( vm.count("print-mem-state") != 0);
+    this->tracing = ( vm.count("trace") != 0);
+    
     return 0;
 }
-/*
- * Check acceptability of file name symbols
- * {a-z, A-Z, 0-9, _, ., \, /}.
- */
-bool Config::checkSymbols(const char* filename) const
+
+/* get methods */
+
+string Config::getBinaryFilename() const 
 {
-    unsigned short int len = int( strlen(filename));
-    for( int i = 0; i < len; i++)
-    {
-        if(!(( filename[i] >= 'a' && filename[i] <= 'z') 
-            || ( filename[i] >= 'A' && filename[i] <= 'Z') 
-            || ( filename[i] >= '0' && filename[i] <= '9')
-            || filename[i] == '_' || filename[i] == '.'
-            || filename[i] == '\\'|| filename[i] == '/'))
-        {
-            return 1;
-        }
-    }
-    return 0;
+    return this->binaryFilename;
 }
+
+string Config::getOutputFilename() const
+{
+    return this->outputFilename;
+}
+
+string Config::getElfFilename() const
+{
+    return this->elfFilename;
+}
+
+int Config::getNumSteps() const
+{
+    return this->numSteps;
+}
+
+bool Config::getInputType() const
+{
+    return this->inputType;
+}
+
+bool Config::getDisassembler() const
+{
+    return this->disassembler;
+}
+
+bool Config::getDumpMemory() const
+{
+    return this->dumpMemory;
+}
+
+bool Config::getDumpRegisters() const
+{
+    return this->dumpRegisters;
+}
+
+bool Config::getTracing() const
+{
+    return this->tracing;
+}
+
+bool Config::getOutputToFile() const
+{
+    return this->outputToFile;
+}
+ 
