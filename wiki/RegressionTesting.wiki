@@ -29,32 +29,32 @@ The following programs should be installed on the host that is used to test our 
  # Set up a user which will perform tests on a regular basic. Let's name _it_ `mdsp-tester`. Its `$HOME` directory should have enough space to hold several copies of our SVN tree. Place `msdp_test_suite.sh` at `$HOME`.
  # Create file `.mdsp_bot_passwd` in the same directory - it will hold a password to email account to be used to send emails. Make sure you control this file well - do not share it via SVN!
  # Adjust the aforementioned files according to your changes :-)
- # Make sure Cron daemon is working and performing tasks, then add the following line to file `/etc/crontab`:
+ # Make sure Cron daemon is working and performing tasks, then add the similar line to file `/etc/crontab`:
    {{{
 10  12  * * 2,6 mdsp-tester /home/mdsp-tester/mdsp_test_suite.sh mail 
    }}}
  In the setup shown above, a script will be run every 2nd and 6th day of week at 12:10 by user `mdsp-tester`
- # Add bot's email to your mailing list so the mail won't be rejected.
+ # Add bot's email to your mailing list so its mail won't be rejected.
 
 
 == How it works on Windows ==
 
-Specially, as we actually support up to *three* Windows runtimes, all of them need to be tested.
+As we support two Windows runtimes, both of them need to be tested.
 
 The following requirements should be met for a Windows host to be able to test our code.
 
  # All build environments are installed
  # CLI utilities are installed (can be used ones from CygWin, MinGW or "native"): `svn`, `bash`, `sendemail`
- # Sheduler is configured to run the test scripts periodically. (Alternatively `cron` from CygWin can be used).
+ # Scheduler is configured to run the test scripts periodically. (In current setups `cron` from CygWin is used).
 
 *NOTE* scheduler process must be run as a regular user, not Local Service. Visual Studio 2008 has a nasty non-fixed bug that will prevent you from building sources from a batch file if you run in as Local Service.
 
-Essentially test routines in Unix-like environments (CygWin and MinGW) use essentially the same scripts and tools and require minor additional environment configuration (like setting up `%PATH%`).
+Test routines in Unix-like environments (CygWin) use essentially the same scripts and tools and require minor additional environment configuration (like setting up `%PATH%`).
 
-Testing script for MS VS 2008 builds is essentially different as it uses `devenv` utility command-line interface to build binaries from .SLN file. Nevertheless it shares certain auxiliary tools which are taken from CygWin.
+Testing script for MS VS 2008 builds is completely different as it uses `devenv.exe` utility command-line interface to build binaries from .SLN file. Nevertheless it shares certain auxiliary tools which are taken from CygWin.
 
 == Weekly schedule==
-Summarily we have 2 Linux and 3 Windows test suites that are distributed to be run one or two times per week.
+Summarily we have 2 Linux and 2 Windows test suites that are distributed to be run one or two times per week.
 
 ==Maintainance==
 
@@ -65,11 +65,10 @@ As test scripts are placed in SVN too they should be moved to `$HOME` before the
 ===Cleaning up old directories===
 To save disk space of VMs older test build configurations are removed periodically by `test_self_update.sh`. Refer to its source code for details.
 
-
 = Test hosts details = 
 
 || Hostname || Type                   || Status         || Comments ||
 || mary || Linux 32bit (Ubuntu)   || Defunct   || Needs update to latest suite version  ||
 || luna32 || Linux 32 bit  (Ubuntu)  || Deployed    || Qemu VM   ||
 || jair64 || Linux 64 bit  (Ubuntu)  || Deployed    || Qemu VM   ||
-|| fenetre32 || Windows XP SP3 32 bit || Deployed   || Test scripts for MS VS 2008, CygWin (GCC 4.4.x) and MinGW (GCC 4.5.x), Virtualbox VM ||
+|| fenetre32 || Windows XP SP3 32 bit || Deployed   || Test scripts for MS VS 2008, CygWin (GCC 4.4.x), Virtualbox VM ||
