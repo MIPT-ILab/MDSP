@@ -73,21 +73,19 @@ It was reported that other developement environments can successfully work and b
      * Choose right OS and architecture as well.
    In some cases you'll also need Java Runtime Environment if you haven't installed one before.
    
-   Note that you'll need at least one of GNU binary utils port for Windows installed in order for Eclipse CDT to be able to build your code, either CygWin or  MinGW. It's recommended to install it before the Eclipse so the latter can automatically detect its presense and save your time on configuration.
+   Note that you'll need a GNU binutils port for Windows installed in order for Eclipse CDT to be able to build your code, either CygWin or  MinGW (_unsupported_). It's recommended to install it before the Eclipse so the latter can automatically detect its presence and save your time on configuration.
 
 = Build =
 
-It should be possible to build our code with several compiler suites. If one finds that something is broken on does not build on a particular OS/compiler, which we support, he should file this as a bug.
+It should be possible to build our code with several compiler suites. If one finds that something is broken on does not build on a particular OS/compiler which we support he/she should file this as a bug.
 
-So far, we expect to support: 
- * Microsoft Visual Studio 2008 and 2010 (Windows x86)
-   MS VS use project files (`*.VCPROJ`) or solution files (`MDSP.SLN`) to store a project settings, so one should point it to one before trying to build.
+== Supported compilers==
+ 
+ * Microsoft Visual Studio 2008 (Windows x86), known as VC++9.
+   MS VS uses project files (`*.VCPROJ`) and solution files (`MDSP.SLN`) to store compiler settings, so one should point the IDE to such file and then build.
  * CygWin GCC (Windows x86)
  To setup Cygwin, download setup.exe from the Cygwin's main page: http://www.cygwin.com/
  Run `setup.exe`, find the `gcc4` package in the list, install it. You'll have a new item on your desktop called "Cygwin shell". Run it, and from there you'll  be able to build the code with command `make` in folder `<svn_root>`.
- * MinGW GCC (Windows x86)
- Download the compiler installer from http://www.mingw.org/, run it.
- After that a command `make` and `gcc` should be available on your system from a command shell.
  * GCC (Linux x86 and x86_64)
  Install a package called `gcc` (the name may vary depending on your distribution).
  Examples:
@@ -97,7 +95,17 @@ So far, we expect to support:
 
 Note that the oldest supported GCC version is 4.1.x. on all platforms.
 
-After your build has suceeded, in the folder `Release` or `Debug` one can find three binaries: `asm` - for assembler, `funcsim` - for standalone functional simulator, and `test` - for testing. Run any of them to watch what they do.
+==Not officially supported compilers==
+
+The main reason for us to support limited set of compilers is the necessity to ship the precompiled versions of a few Boost libraries, such as `program_options`, while Boost itself supports much wider range of OSes and compilers. So it is not guaranteed to properly link with these libraries. If you manage to get your own version of required libs and place them in proper places then the build should work for you. If someone is ready to provide support for other compilers then we may consider including them in our work.
+
+ * MS VS 2010 aka VC++10
+ * MinGW GCC (Windows x86) aka MSYS. You can download the installer from http://www.mingw.org/.
+ After that a command `make` and `gcc` should be available on your system from a command shell.
+
+=Compilation results=
+
+After your build has succeeded, in the folder `Release` or `Debug` one can find three binaries: `asm` - for assembler, `funcsim` - for standalone functional simulator, and `test` - for testing. Run any of them to watch what they do.
 
 = Test =
 
