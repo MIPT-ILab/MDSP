@@ -13,11 +13,6 @@ mdsp
 │
 ├── Debug -- place for debug mode binaries and object files
 │
-├── foils
-│   ├── arch
-│   │   ├── 2009 -- previous year slides
-│   │   └── 2010 -- this year slides, you have seen them on our lectures
-│   └── code -- presentations made by students on code they wrote
 ├── sources
 │   ├── asm -- source for assembler
 │   ├── bin -- folder with binaries (if they are built)
