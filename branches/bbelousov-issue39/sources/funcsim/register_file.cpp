@@ -90,9 +90,7 @@ RegVal* RegisterFileModel::readReg( physRegNum reg_num)
         /* If 'reg_num' is incorrect report the error and exit the program */
         cout << "Error: number of register to be readed is out of range!\n";
         assert( 0);
-        // Needed to avoid warnings of MS VS
-        //If you improve this code, delete the following string.
-        return reg_file[ 0];
+        return (RegVal*)0;  /* UNREACHABLE */
     }
 }
 
