@@ -62,6 +62,7 @@ int Config::handleArgs( int argc, char** argv)
     } 
     catch (const std::exception& e) 
     {
+        (void)e;
         cout << description << endl;
         exit(0);
     }

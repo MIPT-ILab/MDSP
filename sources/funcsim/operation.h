@@ -143,7 +143,8 @@ public:
         this->type = MOVE;
         this->opcode0 = this->opcode1 = this->opcode2 = NOP;
         this->sd = this->am = 0;
-        this->imm8 = this->imm10 = this->imm16 = 0;
+        this->imm8 = 0;
+        this->imm10 = this->imm16 = 0;
         this->rs1 = this->rs2 = this->rd = 0;
     }
 
