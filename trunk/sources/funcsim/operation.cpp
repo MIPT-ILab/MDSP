@@ -199,6 +199,7 @@ hostUInt32 Operation::getInt32FromType( OperType type)
         default:
             cout << "Unknown operation type encoded in "<< (int) type << " type" << endl;
             assert( 0);
+            return 0;   /* UNREACHABLE */
     }
 }
 
@@ -295,6 +296,7 @@ hostUInt32 Operation::getInt32FromCode( OperType type, OperCode code)
                 default:
                     cout << "Illegal operation in MOVE\n";
                     assert( 0);
+                    return 0;   /* UNREACHABLE */
             }
             break;
         case ALU:
@@ -309,6 +311,7 @@ hostUInt32 Operation::getInt32FromCode( OperType type, OperCode code)
                 default:
                     cout << "Illegal operation in ALU\n";
                     assert( 0);
+                    return 0;   /* UNREACHABLE */
             }
             break;
         case P_FLOW:
@@ -321,6 +324,7 @@ hostUInt32 Operation::getInt32FromCode( OperType type, OperCode code)
                 default:
                     cout << "Illegal operation in P_FLOW\n";
                     assert( 0);
+                    return 0;   /* UNREACHABLE */
             }
             break;
         case SYS:
@@ -333,10 +337,12 @@ hostUInt32 Operation::getInt32FromCode( OperType type, OperCode code)
                 default:
                     cout << "Illegal operation in SYS\n";
                     assert( 0);
+                    return 0;   /* UNREACHABLE */
             }
         default:
             cout << "Invalid operation type\n";
             assert( 0);
+            return 0;   /* UNREACHABLE */
     }
 }
 
