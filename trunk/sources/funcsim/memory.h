@@ -269,7 +269,7 @@ public:
     /* The constant member function. Return size of Byteline */
     unsigned int getSizeOfLine() const
     {
-        return ( *byte_line).size();
+        return (unsigned int)( *byte_line).size();
     }
 
     OutputFormat getOutputFormat() const
