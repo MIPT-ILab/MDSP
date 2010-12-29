@@ -8,7 +8,7 @@ REM can do whatever you want with this stuff. If we meet some day, and you think
 REM this stuff is worth it, you can buy me a beer in return.
 REM ----------------------------------------------------------------------------
 
-set VERSION=W5
+set VERSION=W6
 
 rem We still need CygWin for Unix utils, also sendEmail.exe
 PATH=c:\cygwin\bin;c:\buildbot\bin;%PATH%
@@ -36,42 +36,52 @@ if "%HOME%" == "" (
 	set HOME=%HOMEPATH% 
 )
 
+set NOMAIL=0
+set BRANCHBUILD=0
+set WCTEST=0
+
+rem check command line parameters
+if "%1" == "branch" ( 
+  set BRANCHBUILD=1
+  set BRANCHNAME=%2
+  if "%BRANCHNAME%" == "" (
+    echo Empty branch name!
+    goto :end
+  )    
+) else if "%1" == "test" (
+  echo Test run, the mail won't be sent
+  set NOMAIL=1
+) else if "%1" == "this" (
+	echo Testing working copy
+	set NOMAIL=1
+	set WCTEST=1
+) else if "%1" == "" (
+	rem Empty option is the default mode: test HEAD, send mail.
+) else (
+  echo Unexpected option is given. Valid options: test this branch
+  goto :end
+)
+echo ===============================================================
+echo MDSP test suite version %VERSION%, started at %DATE%
+echo The machine: %HOST% 
+if %BRANCHBUILD% == 1 echo Testing branch %BRANCHNAME%
+if %WCTEST% == 1 echo Testing current working directory
+echo ===============================================================
+set PASS=0 
+ 
+if %WCTEST% == 1 (
+  cd ..
+  goto :skipfetch
+)
+
 echo Creating the working directory
 set WRK=%HOME%\mdsp-tests\%DATE%
-
 echo %WRK%
-
 rem change disk to the home, then change directory
 %HOMEDRIVE% 
 mkdir "%WRK%" 
 cd "%WRK%"
 
-rem check command line parameters
-if "%1" == "branch" ( 
-    set BRANCHBUILD=1
-    set BRANCHNAME=%2
-    if "%BRANCHNAME%" == "" (
-        echo Empty branch name!
-        goto :end
-        )
-    ) else (
-    set BRANCHBUILD=0
-)
-
-if "%1" == "test" (
-    echo Test run, the mail won't be sent
-    set NOMAIL=1
-) else (
-    set NOMAIL=0
-)
-
-echo ===============================================================
-echo MDSP test suite version %VERSION%, started at %DATE%
-echo The machine: %HOST% 
-if %BRANCHBUILD% == 1 echo Testing branch %BRANCHNAME%
-echo ===============================================================
-set PASS=0 
- 
 rem Getting the sources
 echo  Fetching sources from SVN... 
 
@@ -82,9 +92,10 @@ if %BRANCHBUILD% == 1 (
 )
 svn checkout %URL% mdsp > nul
 if errorlevel 1 goto :svnerror
-
+cd mdsp
+:skipfetch
 rem Build funcsim
-devenv mdsp/sources/funcsim/funcsim.vcproj /useenv /build "Release|Win32" 
+devenv sources/funcsim/funcsim.vcproj /useenv /build "Release|Win32" 
 if errorlevel 1 (
     goto :blderr 
 )
@@ -96,7 +107,7 @@ REM if errorlevel 1 goto :unittesterror
 
 rem Run funcsim
 echo Running funcsim
-mdsp\sources\funcsim\Release\funcsim.exe mdsp\tests\simple_test.bin
+sources\funcsim\Release\funcsim.exe tests\simple_test.bin
 if errorlevel 1 goto :fsimerr
 
 rem Success
@@ -131,14 +142,8 @@ rem Exit point -------------------------------------------
 
 cd "%HOME%"
 
-if %BRANCHBUILD% == 1 (
-    echo Branch testing is finished
-    goto :end
-)
-if %NOMAIL% == 1 (
-    echo Main trunk testing is finished
-    goto :end
-)
+if %NOMAIL% == 1 goto :end
+if %BRANCHBUILD% == 1 goto :end
 
 set MAILADDRESS="multimedia-dsp-2010@googlegroups.com"
 rem set MAILADDRESS="ggg_mail@inbox.ru"
