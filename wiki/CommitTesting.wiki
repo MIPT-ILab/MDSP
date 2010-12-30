@@ -41,13 +41,13 @@ bash mdsp_test_suite.sh branch <branch-name>
 bash mdsp_test_suite.sh this
 }}}
  Notes:
-  # The last is designed to be run from `<svn_root>/tests` directory. In other case it won't find your sources. It also cleans your Release build directories and rebuilds the code.
+  # The last is designed to be run from `<svn_root>/tests` directory. In other cases it won't find your sources. It also cleans your Release build directories and rebuilds the code.
 
 There is also another method of running the test:
 {{{
 bash mdsp_test_suite.sh mail
 }}}
-  This will attempt to send an email to mailing list with results of the test. It will require a password for the SMTP server access that is situated in a separate file.
+  _NOTE: This will attempt to send an email to mailing list with results of the test. It will require a password for the SMTP server access that is situated in a separate file._
 
 ===Windows MSVS 2008===
 
@@ -59,9 +59,13 @@ run_msvs2008_tests.cmd test
 {{{
 run_msvs2008_tests.cmd branch <branchname>
 }}}
-*NOTE* testing of working copy is not currently implemented.
 
-To test main trunk and send mail to mailing list use
+ # To test your working copy, run from `<svn_root>/tests`:
+{{{
+run_msvs2008_tests.cmd this
+}}}
+
+To test main trunk and send mail to mailing list, use
 {{{
 run_msvs2008_tests.cmd > testlog.txt
 }}}
