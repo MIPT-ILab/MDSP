@@ -8,7 +8,7 @@ REM can do whatever you want with this stuff. If we meet some day, and you think
 REM this stuff is worth it, you can buy me a beer in return.
 REM ----------------------------------------------------------------------------
 
-set VERSION=W6
+set VERSION=W7
 
 rem We still need CygWin for Unix utils, also sendEmail.exe
 PATH=c:\cygwin\bin;c:\buildbot\bin;%PATH%
@@ -91,8 +91,12 @@ if %BRANCHBUILD% == 1 (
     set URL=https://mdsp.googlecode.com/svn/trunk/
 )
 svn checkout %URL% mdsp > nul
-if errorlevel 1 goto :svnerror
+if errorlevel 1 goto :svnretry
 cd mdsp
+goto :skipfetch
+:svnretry
+svn update mdsp > nul
+if errorlevel 1 goto :svnerror
 :skipfetch
 rem Build funcsim
 devenv sources/funcsim/funcsim.vcproj /useenv /build "Release|Win32" 
