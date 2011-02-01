@@ -97,6 +97,7 @@ goto :skipfetch
 :svnretry
 svn update mdsp > nul
 if errorlevel 1 goto :svnerror
+cd mdsp
 :skipfetch
 rem Build funcsim
 devenv sources/funcsim/funcsim.vcproj /useenv /build "Release|Win32" 
