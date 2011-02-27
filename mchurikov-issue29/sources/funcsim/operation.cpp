@@ -7,6 +7,7 @@
 #include "operation.h"
 #include "memory.h"
 #include "register_file.h"
+#include "flags.h"
 
 /**
  * Constructor with pointer to core. Pointer to core
@@ -16,6 +17,8 @@ Operation::Operation( Core *core)
 {
     this->core = core;
     this->clear();
+    this->memory = this->core->GetMemory();
+    this->RF = this->core->GetRF();
 }
 
 /**
@@ -24,6 +27,8 @@ Operation::Operation( Core *core)
 Operation::Operation()
 {
     this->clear();
+    this->memory = this->core->GetMemory();
+    this->RF = this->core->GetRF();
 }
 
 /**
@@ -1072,29 +1077,26 @@ void Operation::executeMove()
             switch ( sd)
             {
                 case 0:
-                    core->GetMemory()->write16( ( mathAddr)rd, 
-                        core->GetRF()->read16( ( physRegNum)rs1));
+                    memory->write16( ( mathAddr)rd, RF->read16( ( physRegNum)rs1));
                     break;
                 case 1:
-                    core->GetRF()->write16( ( physRegNum)rd, 
-                        core->GetMemory()->read16( (  mathAddr)rs1));
+                    RF->write16( ( physRegNum)rd, memory->read16( (  mathAddr)rs1));
                     break;
                 default:
                     assert( 0);
             }   
             break;
         case BRR:
-            core->GetRF()->write16( ( physRegNum)rd, 
-                core->GetRF()->read16( ( physRegNum)rs1));
+            RF->write16( ( physRegNum)rd, RF->read16( ( physRegNum)rs1));
             break;
         case LD:
             switch ( sd)
             {
                 case 0:
-                    core->GetRF()->write16( ( physRegNum)rd, imm16);
+                    RF->write16( ( physRegNum)rd, imm16);
                     break;
                 case 1:
-                    core->GetMemory()->write16( ( mathAddr)rd, imm16);
+                    memory->write16( ( mathAddr)rd, imm16);
                     break;
                 default:
                     assert( 0);
@@ -1110,6 +1112,8 @@ void Operation::executeMove()
  */
 void Operation::executeALU()
 {
+    hostSInt16 result;
+    Flags* flags = this->core->GetFlags();
     switch ( this->opcode1)
     {
         case NOP:   
@@ -1118,16 +1122,20 @@ void Operation::executeALU()
             switch ( this->am)
             {
                 case 0:  /*Register direct addresing mode, use rS1,rS2, rD*/
-                    
+                    result = RF->read16( ( physRegNum)rs1) + RF->read16( ( physRegNum)rs2);
+                    RF->write16( ( physRegNum)rd, result);
                     break;
                 case 1:  /*Register direct and immediate data, use imm10, rD*/
-                    
+                    result = RF->read16( ( physRegNum)rd) + ( hostSInt16)imm10;
+                    RF->write16( ( physRegNum)rd, result);
                     break;
                 case 2:  /*Register indirect mode( memory), use rS1, rS2, rD*/
-                    
+                    result = memory->read16( (  mathAddr)rs1) + memory->read16( (  mathAddr)rs1);
+                    memory->write16( ( mathAddr)rd, result);
                     break;
-                case 3:  /*Register indirect with immediate, use rS1, rS2, rD*/
-                    
+                case 3:  /*Register indirect with immediate, use imm10, rD*/
+                    result = memory->read16( (  mathAddr)rd) + ( hostSInt16)imm10;
+                    memory->write16( ( mathAddr)rd, result);
                     break;
                 default:
                     assert( 0);
@@ -1137,16 +1145,20 @@ void Operation::executeALU()
             switch ( this->am)
             {
                 case 0:  /*Register direct addresing mode, use rS1,rS2, rD*/
-                    
+                    result = RF->read16( ( physRegNum)rs1) - RF->read16( ( physRegNum)rs2);
+                    RF->write16( ( physRegNum)rd, result);
                     break;
                 case 1:  /*Register direct and immediate data, use imm10, rD*/
-                    
+                    result = RF->read16( ( physRegNum)rd) - ( hostSInt16)imm10;
+                    RF->write16( ( physRegNum)rd, result);
                     break;
                 case 2:  /*Register indirect mode( memory), use rS1, rS2, rD*/
-                    
+                    result = memory->read16( (  mathAddr)rs1) - memory->read16( ( mathAddr)rs1);
+                    memory->write16( ( mathAddr)rd, result);
                     break;
                 case 3:  /*Register indirect with immediate, use rS1, rS2, rD*/
-                    
+                    result = memory->read16( (  mathAddr)rd) - ( hostSInt16)imm10;
+                    memory->write16( ( mathAddr)rd, result);
                     break;
                 default:
                     assert( 0);
@@ -1156,6 +1168,7 @@ void Operation::executeALU()
             assert( 0);
     }
     /* Update flag register after execution */
+    //flags->setFlag( Z, true);
 }
 
 /*

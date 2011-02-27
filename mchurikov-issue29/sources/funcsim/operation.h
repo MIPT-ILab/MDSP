@@ -13,6 +13,7 @@
 
 #include "types.h"
 #include "core.h"
+#include "flags.h"
 
 class MemVal;
 
@@ -24,6 +25,9 @@ using namespace std;
 class Operation
 {
     Core* core;
+    
+    RegisterFileModel* RF;
+    MemoryModel* memory;
 
     /* Operation encoded in binary form */
     hostUInt32 instr_word;
