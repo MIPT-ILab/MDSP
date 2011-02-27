@@ -7,7 +7,7 @@
 #include "operation.h"
 #include "memory.h"
 #include "register_file.h"
-#include "flags.h"
+//#include "flags.h"
 
 /**
  * Constructor with pointer to core. Pointer to core
@@ -19,6 +19,7 @@ Operation::Operation( Core *core)
     this->clear();
     this->memory = this->core->GetMemory();
     this->RF = this->core->GetRF();
+    this->flags = this->core->GetFlags();
 }
 
 /**
@@ -27,8 +28,6 @@ Operation::Operation( Core *core)
 Operation::Operation()
 {
     this->clear();
-    this->memory = this->core->GetMemory();
-    this->RF = this->core->GetRF();
 }
 
 /**
@@ -1113,7 +1112,6 @@ void Operation::executeMove()
 void Operation::executeALU()
 {
     hostSInt16 result;
-    Flags* flags = this->core->GetFlags();
     switch ( this->opcode1)
     {
         case NOP:   

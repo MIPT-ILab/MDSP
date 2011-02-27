@@ -10,6 +10,7 @@
 #include "operation.h"
 #include "register_file.h"
 #include "cout_wrapper.h"
+#include "flags.h"
 
 using namespace std;
 
@@ -761,7 +762,8 @@ void testOperationSetDumpEncode(
     hostUInt8 rs1, hostUInt8 rs2, hostUInt8 rd,
     const char *expected, hostUInt32 expected_word)
 {
-    Operation *op = new Operation();
+    Core *core = new Core();
+    Operation *op = new Operation(core);
 
     setTestingCoutHandler();
     op->set( type, opcode0, opcode1, opcode2,
@@ -894,6 +896,36 @@ void testRegisterFileModel()
 
 }
 
+void testFlags()
+{
+    Flags* flags;
+    flags = new Flags;
+    
+    ///set all true
+    flags->setFlag( N, true);
+    flags->setFlag( Z, true);
+    flags->setFlag( C, true);
+    flags->setFlag( O, true);
+    
+    ///check
+    if ( !( flags->getFlag(N))) assert( 0);
+    if ( !( flags->getFlag(Z))) assert( 0);
+    if ( !( flags->getFlag(C))) assert( 0);
+    if ( !( flags->getFlag(O))) assert( 0);
+    
+    ///set all false
+    flags->setFlag( N, false);
+    flags->setFlag( Z, false);
+    flags->setFlag( C, false);
+    flags->setFlag( O, false);
+    
+    ///check
+    if ( flags->getFlag(N)) assert( 0);
+    if ( flags->getFlag(Z)) assert( 0);
+    if ( flags->getFlag(C)) assert( 0);
+    if ( flags->getFlag(O)) assert( 0);
+}
+
 
 int main()
 {
@@ -903,6 +935,7 @@ int main()
     testMemModel();
     testOperation();
     testRegisterFileModel();
+    testFlags();
     return 0;
 }
 

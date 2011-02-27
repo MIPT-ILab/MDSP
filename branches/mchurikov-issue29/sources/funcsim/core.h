@@ -15,8 +15,7 @@
 
 class MemoryModel;
 class RegisterFileModel;
-//class Flags;
-#include "flags.h"
+class Flags;
 
 using namespace std;
 
