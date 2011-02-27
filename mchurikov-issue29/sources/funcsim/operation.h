@@ -28,6 +28,7 @@ class Operation
     
     RegisterFileModel* RF;
     MemoryModel* memory;
+    Flags* flags;
 
     /* Operation encoded in binary form */
     hostUInt32 instr_word;
