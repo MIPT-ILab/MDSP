@@ -69,6 +69,6 @@ To save disk space of VMs older test build configurations are removed periodical
 
 || Hostname || Type                   || Status         || Comments ||
 || lapsi32|| Linux 32bit (Ubuntu)   || Active   || VirtualBox VM, placed at helena.ilab.mipt.ru  ||
-|| luna32 || Linux 32 bit  (Ubuntu)  || Removed || Qemu VM   ||
+|| luna32 || Linux 32 bit  (Ubuntu)  || Off || Qemu VM   ||
 || jair64 || Linux 64 bit  (Ubuntu)  || Deployed    || Qemu VM   ||
-|| fenetre32 || Windows XP SP3 32 bit || Deployed   || Test scripts for MS VS 2008, CygWin (GCC 4.4.x), Virtualbox VM ||
+|| fenetre32 || Windows XP SP3 32 bit || Deployed   || Test scripts for MS VS 2008, CygWin (GCC 4.4.x), Virtualbox VM, placed at helena.ilab.mipt.ru ||
