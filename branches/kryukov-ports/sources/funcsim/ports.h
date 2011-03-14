@@ -20,9 +20,9 @@ template<class T> class WritePort: public log
 {
     private:
         std::queue<T*> _data;
+        std::queue<hostUInt64> _cycle;
         string _key;
         int _bandwidth;
-        hostUInt64 _cycle;
     public:
         WritePort<T>( string, int);
         void write( T*, hostUInt64);
@@ -60,7 +60,7 @@ template<class T> void WritePort<T>::write( T* what, hostUInt64 cycle)
     if (_data.size() < _bandwidth)
     {
         _data.push(what);
-        _cycle = cycle;  // should this be redone?
+        _cycle.push(cycle); 
     }    
     else
     {
@@ -86,6 +86,7 @@ template<class T> T* WritePort<T>::getData()
     // Getting front element
         T* buffer = _data.front();
         _data.pop();
+        _cycle.pop();
         return buffer;
     }
 }
@@ -95,7 +96,7 @@ template<class T> T* WritePort<T>::getData()
 */
 template<class T> hostUInt64 WritePort<T>::getCycle() const
 {
-    return _cycle;
+    return _cycle.front();
 }
 
 /*
