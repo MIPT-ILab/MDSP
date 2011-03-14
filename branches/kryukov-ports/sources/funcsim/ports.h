@@ -25,6 +25,7 @@ template<class T> class WritePort: public log
         int _bandwidth;
     public:
         WritePort<T>( string, int);
+        ~WritePort<T>();
         void write( T*, hostUInt64);
         
         T* getData();
@@ -47,6 +48,14 @@ template<class T> WritePort<T>::WritePort(string key, int bandwidth)
     _key = key;
     _bandwidth = bandwidth;
     portMap.insert(std::pair<string, WritePort<T>*>(_key, this));
+}
+
+/*
+ * Destructor
+*/
+template<class T> WritePort<T>::~WritePort()
+{
+    portMap.erase(portMap.find(_key));
 }
 
 /*
