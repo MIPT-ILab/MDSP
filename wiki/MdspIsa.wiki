@@ -1,12 +1,9 @@
 #summary ISA
-
-
 = Short description =
 
-Some kind of short description of MDSP architecture can be found in the document located in our SVN: [https://code.google.com/p/mdsp/source/browse/trunk/TaskGuide.doc?r=357 Revision 357]
+Some kind of short description of MDSP architecture can be found in the document located in "Downloads" section: [http://code.google.com/p/mdsp/downloads/detail?name=TaskGuide.doc#makechanges]
 
 *TODO* extend me
-
 
 = Details =
 
