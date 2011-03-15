@@ -27,6 +27,7 @@ int main(int argc, char* argv[])
     WritePort<int> writer(&map,"INIT", SIZE, SIZE);
     ReadPort<int> reader1(&map,"INIT", 10);
     ReadPort<int> reader2(&map,"INIT", 15);
+    map.init();
     
     int operation1 = 100;
     int operation2 = 200;

@@ -11,12 +11,9 @@
 #include <queue>
 #include <list>
 #include <string>
-#include <iterator>
 
 #include "log.h"
 #include "types.h"
-
-using namespace std;
 
 template<class T> class PortMap;
 
@@ -57,7 +54,7 @@ template<class T> WritePort<T>::WritePort( PortMap<T>* portMap, std::string key,
     _bandwidth = bandwidth;
     _phoneOn = phoneOn;
 
-    _portMap->addWritePort(_key, this);    
+    _portMap->addWritePort( _key, this);    
 }
 
 /*
@@ -68,7 +65,7 @@ template<class T> WritePort<T>::WritePort( PortMap<T>* portMap, std::string key,
 */
 template<class T> void WritePort<T>::write( T* what, hostUInt64 cycle)
 {
-    if (_data.size() < _bandwidth)
+    if ( _data.size() < _bandwidth)
     {
         _data.push(what);
         _cycle.push(cycle); 
@@ -76,10 +73,9 @@ template<class T> void WritePort<T>::write( T* what, hostUInt64 cycle)
     else
     {
     // If port is overloaded, assert.
-        critical("Port is overloaded\n");//, _key);
+        critical( "Port '%s' is overloaded\n", _key.c_str());
     }
 }
-
 
 /*
  * Get data method.
@@ -87,10 +83,10 @@ template<class T> void WritePort<T>::write( T* what, hostUInt64 cycle)
 */
 template<class T> T* WritePort<T>::getData()
 {
-    if (_data.empty())
+    if ( _data.empty())
     {
     // If there's nothing in port, assert.
-        critical("No data in port\n");//, _key);
+        critical( "No data in '%s'", _key.c_str());
     }
     else
     {
@@ -130,7 +126,7 @@ template<class T> class ReadPort: public log
         PortMap<T>* _portMap;        
     public:
         ReadPort<T>( PortMap<T>*, std::string, hostUInt64);
-        void setSource( const WritePort<T>*);
+        void setSource( WritePort<T>*);
         int read( T**, hostUInt64) const;        
 };
 
@@ -163,7 +159,7 @@ template<class T> ReadPort<T>::ReadPort( PortMap<T>* portMap,std::string key, ho
 */
 template<class T> int ReadPort<T>::read( T** address, hostUInt64 cycle) const
 {   
-    if ( (_source->getCycle() + _latency) <= cycle)
+    if ( ( _source->getCycle() + _latency) <= cycle)
     {
         *address = _source->getData();
         return 0;
@@ -177,7 +173,7 @@ template<class T> int ReadPort<T>::read( T** address, hostUInt64 cycle) const
 /*
  * Sets source WritePort.
 */
-template<class T> void ReadPort<T>::setSource( const WritePort<T>* source)
+template<class T> void ReadPort<T>::setSource( WritePort<T>* source)
 {
     _source = source;
 }
@@ -188,12 +184,16 @@ template<class T> void ReadPort<T>::setSource( const WritePort<T>* source)
 template<class T> class PortMap: public log
 {
     private:
+        typedef std::list<ReadPort<T>* > ReadListType;
+        typedef typename ReadListType::iterator ReadListTypeIt;
         struct Entry
         {
             WritePort<T>* writer;
-            std::list<ReadPort<T>* > readers;
+            ReadListType readers;
         };
-        std::map<std::string, Entry> _map;
+        typedef std::map<std::string, Entry> MapType;
+        typedef typename MapType::iterator MapTypeIt;
+        MapType _map;
     public:
         void addWritePort( std::string, WritePort<T>*);
         void addReadPort( std::string, ReadPort<T>*);        
@@ -211,7 +211,7 @@ template<class T> void PortMap<T>::addWritePort( std::string key, WritePort<T>* 
         Entry entry;
         entry.writer = 0;
         entry.readers.resize(0);
-        _map.insert( std::pair<string, Entry>( key, entry));
+        _map.insert( std::pair<std::string, Entry>( key, entry));
     }
     _map[key].writer = pointer;
 }
@@ -226,9 +226,9 @@ template<class T> void PortMap<T>::addReadPort( std::string key, ReadPort<T>* po
         Entry entry;
         entry.writer = 0;
         entry.readers.resize(0);        
-        _map.insert( std::pair<string, Entry>( key, entry));    
+        _map.insert( std::pair<std::string, Entry>( key, entry));    
     }
-    _map[key].readers.push_front(pointer);
+    _map[key].readers.push_front( pointer);
 }
 
 /*
@@ -240,25 +240,27 @@ template<class T> void PortMap<T>::addReadPort( std::string key, ReadPort<T>* po
 */ 
 template<class T> void PortMap<T>::init()
 {
-    for (std::map<std::string, Entry>::iterator it; it != _map.end(); ++it)
+    for ( MapTypeIt it = _map.begin(); it != _map.end(); ++it)
     {
-        size_t size = it->second.readers.size();
-        if (!it->second.writer)
+        if ( !it->second.writer)
         {
-           critical("No WritePort for '%s' key", it->first);
+           critical( "No WritePort for '%s' key", it->first.c_str());
         }
+        
         WritePort<T>* writer = it->second.writer;
-        if (!size)
+        size_t size = it->second.readers.size();
+        
+        if ( !size)
         {
-           critical("No ReadPorts for '%s' key", it->first);
+           critical( "No ReadPorts for '%s' key", it->first.c_str());
         }
-        if (size > writer->getPhoneOn())
+        if ( size > writer->getPhoneOn())
         {
-           critical("Too much ReadPorts for '%s' key", it->first);
+           critical( "Too much ReadPorts for '%s' key", it->first.c_str());
         }
-        for ( std::list<ReadPort<T>*>::iterator jt = it->second.begin(); jt != it->second.end(); ++jt)
+        for ( ReadListTypeIt jt = it->second.readers.begin(); jt != it->second.readers.end(); ++jt)
         {
-            jt->setSource(writer);
+            (*jt)->setSource(writer);
         }
     }
 }
