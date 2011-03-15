@@ -34,5 +34,8 @@ According to Joel Emer, _all_ data dependencies can be represented via these pha
 
 http://mdsp.googlecode.com/svn/wiki/images/execution-in-phases.png 
 
+= Detailed Example = 
 
+Three different timing models executing the same instruction sequence:
 
+http://mdsp.googlecode.com/svn/wiki/images/execution-example.png 
