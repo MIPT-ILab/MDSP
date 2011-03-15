@@ -23,9 +23,10 @@ static int SIZE = 100;
 
 int main(int argc, char* argv[])
 {
-    WritePort<int> writer("INIT", SIZE);
-    ReadPort<int> reader1("INIT", 10);
-    ReadPort<int> reader2("INIT", 15);
+    PortMap<int> map;
+    WritePort<int> writer(&map,"INIT", SIZE, SIZE);
+    ReadPort<int> reader1(&map,"INIT", 10);
+    ReadPort<int> reader2(&map,"INIT", 15);
     
     int operation1 = 100;
     int operation2 = 200;
@@ -73,7 +74,6 @@ int main(int argc, char* argv[])
             std::cout  << "'" << *address << "' was readed from ReadPort2 on " << i << "-th clock" << std::endl;
         }
     }    
-    
     
     return 0;
 

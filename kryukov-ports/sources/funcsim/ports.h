@@ -9,9 +9,16 @@
 
 #include <map>
 #include <queue>
+#include <list>
+#include <string>
+#include <iterator>
 
 #include "log.h"
 #include "types.h"
+
+using namespace std;
+
+template<class T> class PortMap;
 
 /*
  * WritePort
@@ -21,41 +28,36 @@ template<class T> class WritePort: public log
     private:
         std::queue<T*> _data;
         std::queue<hostUInt64> _cycle;
-        string _key;
-        int _bandwidth;
+        std::string _key;
+        unsigned _bandwidth;
+        unsigned _phoneOn;
+        PortMap<T>* _portMap;
     public:
-        WritePort<T>( string, int);
-        ~WritePort<T>();
+        WritePort<T>( PortMap<T>*,std::string, unsigned, unsigned);
         void write( T*, hostUInt64);
-        
         T* getData();
         hostUInt64 getCycle() const;
+        unsigned getPhoneOn() const;
 };
-
-/*
- * Map of ports (should be upgraded to class
-*/
-std::map<string, WritePort<int>* > portMap;
 
 /*
  * Constructor
  *
- * First argument is key which is used to connect ports.
- * Second is the bandwidth of port (how much data items can port hold)
+ * First argument is pointer to map of ports.
+ * Second argument is key which is used to connect ports.
+ * Third is the bandwidth of port (how much data items can port hold).
+ * Fourth is maximum number of ReadPorts.
+ *
+ * Adds port to needed PortMap.
 */
-template<class T> WritePort<T>::WritePort(string key, int bandwidth)
+template<class T> WritePort<T>::WritePort( PortMap<T>* portMap, std::string key, unsigned bandwidth, unsigned phoneOn)
 {
     _key = key;
+    _portMap = portMap;
     _bandwidth = bandwidth;
-    portMap.insert(std::pair<string, WritePort<T>*>(_key, this));
-}
+    _phoneOn = phoneOn;
 
-/*
- * Destructor
-*/
-template<class T> WritePort<T>::~WritePort()
-{
-    portMap.erase(portMap.find(_key));
+    _portMap->addWritePort(_key, this);    
 }
 
 /*
@@ -109,31 +111,45 @@ template<class T> hostUInt64 WritePort<T>::getCycle() const
 }
 
 /*
- * Read Port
- *
- * It's just a receiver, so it much more simplier
+ * Get phoneon method
 */
+template<class T> unsigned WritePort<T>::getPhoneOn() const
+{
+    return _phoneOn;
+}
 
+/*
+ * Read Port
+*/
 template<class T> class ReadPort: public log
 {
     private:
-        string _key;
+        std::string _key;
         hostUInt64 _latency;
+        WritePort<T>* _source;
+        PortMap<T>* _portMap;        
     public:
-        ReadPort<T>( string, hostUInt64);
-        int read( T**, hostUInt64);
+        ReadPort<T>( PortMap<T>*, std::string, hostUInt64);
+        void setSource( const WritePort<T>*);
+        int read( T**, hostUInt64) const;        
 };
 
 /*
  * Constructor
  *
- * First argument is the connection key.
- * Second argument is the latency of port.
+ * First argument is the address of portMap.
+ * Second argument is the connection key.
+ * Third argument is the latency of port.
+ *
+ * Adds port to needed PortMap.
 */ 
-template<class T> ReadPort<T>::ReadPort( string key, hostUInt64 latency)
+template<class T> ReadPort<T>::ReadPort( PortMap<T>* portMap,std::string key, hostUInt64 latency)
 {
     _key = key;
+    _portMap = portMap;
     _latency = latency;
+    
+    portMap->addReadPort( _key, this);
 }
 
 /*
@@ -141,29 +157,109 @@ template<class T> ReadPort<T>::ReadPort( string key, hostUInt64 latency)
  *
  * First arguments is address, second is the number of cycle
  *
- * Finds writePort with data from PortMap. If not, asserts.
- * Then compares current cycle with needed cycle (cycle of adding plus latency).
+ * Compares current cycle with needed cycle (cycle of adding plus latency).
  * If current cycle is less than needed, returns 1;
  * If current cycle is equal or greater than needed, tries to return data address to first argument. (see WritePort::getData)
 */
-template<class T> int ReadPort<T>::read( T** address, hostUInt64 cycle)
+template<class T> int ReadPort<T>::read( T** address, hostUInt64 cycle) const
 {   
-    if (  portMap.find(_key) != portMap.end())
+    if ( (_source->getCycle() + _latency) <= cycle)
     {
-        if ( (portMap[_key]->getCycle() + _latency) <= cycle)
-        {
-            *address = portMap[_key]->getData();
-            return 0;
-        }
-        else
-        {
-            return -1;
-        }
+        *address = _source->getData();
+        return 0;
     }
     else
     {
-        critical("Read port is not connected\n");
+        return -1;
     }
 }
 
+/*
+ * Sets source WritePort.
+*/
+template<class T> void ReadPort<T>::setSource( const WritePort<T>* source)
+{
+    _source = source;
+}
+
+/*
+ * Map of ports
+*/
+template<class T> class PortMap: public log
+{
+    private:
+        struct Entry
+        {
+            WritePort<T>* writer;
+            std::list<ReadPort<T>* > readers;
+        };
+        std::map<std::string, Entry> _map;
+    public:
+        void addWritePort( std::string, WritePort<T>*);
+        void addReadPort( std::string, ReadPort<T>*);        
+        
+        void init();
+}; 
+
+/*
+ * Adding WritePort to the map.
+*/
+template<class T> void PortMap<T>::addWritePort( std::string key, WritePort<T>* pointer)
+{
+    if ( _map.find( key) == _map.end())
+    {
+        Entry entry;
+        entry.writer = 0;
+        entry.readers.resize(0);
+        _map.insert( std::pair<string, Entry>( key, entry));
+    }
+    _map[key].writer = pointer;
+}
+
+/*
+ * Adding ReadPort to the map.
+*/
+template<class T> void PortMap<T>::addReadPort( std::string key, ReadPort<T>* pointer)
+{
+    if ( _map.find(key) == _map.end())
+    {
+        Entry entry;
+        entry.writer = 0;
+        entry.readers.resize(0);        
+        _map.insert( std::pair<string, Entry>( key, entry));    
+    }
+    _map[key].readers.push_front(pointer);
+}
+
+/*
+ * Initialize map of ports.
+ *
+ * Iterates all map and sets _source field on readPorts.
+ * If there're any unconnected ports, asserts.
+ * If there're any overloaded WritePort, also asserts.
+*/ 
+template<class T> void PortMap<T>::init()
+{
+    for (std::map<std::string, Entry>::iterator it; it != _map.end(); ++it)
+    {
+        size_t size = it->second.readers.size();
+        if (!it->second.writer)
+        {
+           critical("No WritePort for '%s' key", it->first);
+        }
+        WritePort<T>* writer = it->second.writer;
+        if (!size)
+        {
+           critical("No ReadPorts for '%s' key", it->first);
+        }
+        if (size > writer->getPhoneOn())
+        {
+           critical("Too much ReadPorts for '%s' key", it->first);
+        }
+        for ( std::list<ReadPort<T>*>::iterator jt = it->second.begin(); jt != it->second.end(); ++jt)
+        {
+            jt->setSource(writer);
+        }
+    }
+}
 #endif // PORTS_H
