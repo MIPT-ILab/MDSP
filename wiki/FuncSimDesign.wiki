@@ -62,7 +62,7 @@ funcsim -interactive [-binary <binary>|-elf <binary>]
 The interaction and communication of FuncSim components are show on the picture:
 *TODO smaller picture, extend it*
 
-http://mdsp.googlecode.com/svn/wiki/images/func-timing-partitioning.png 
+http://mdsp.googlecode.com/svn/wiki/images/funcsim-structure.jpg 
 
  * core - the functions of instructions fetching, decoding, execution, memory accessing;
 
