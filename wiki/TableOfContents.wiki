@@ -18,7 +18,7 @@ every time you use it. It is very inconvenient.
  * Design  
      * [MdspIsa Instruction set architecture (ISA)]
      * [FuncSimDesign Functional simulation]
-     * Performance simulation 
+     * [PerfSim Performance simulation]
          * Infrastructure 
              * Module Structure 
              * Clocking 
