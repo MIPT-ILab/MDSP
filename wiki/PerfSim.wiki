@@ -1,0 +1,38 @@
+#summary Performance simulation methodology.
+
+= Motivation =
+  * We want to simulate target processor quickly
+  * We also want to construct simulator quickly
+  * *Partitioned simulators* are a known technique:
+    * Simplifies timing model
+    * Amortize functional model design effort over many models
+
+http://mdsp.googlecode.com/svn/wiki/images/func-timing-partitioning.png 
+
+= Different Partitioning Schemes =
+
+As categorized by Mauer, Hill and Wood (Mauer 2002, ACM SIGMETRICS):
+
+http://mdsp.googlecode.com/svn/wiki/images/partitioning-schemes.png 
+
+We believe that a _timing-directed_ solution will ultimately lead to the best performance.
+
+= Functional Partition Interface = 
+
+Generally, functional partition should have the following interface methods:
+  * Get Instruction (at a given Address)
+  * Get Dependencies
+  * Get Instruction Results
+  * Read Memory
+  * Speculatively Write Memory (locally visible)
+  * Commit or Abort instruction
+  * Write Memory (globally visible)
+
+= Execution in Phases = 
+
+According to Joel Emer, _all_ data dependencies can be represented via these phases.
+
+http://mdsp.googlecode.com/svn/wiki/images/execution-in-phases.png 
+
+
+
