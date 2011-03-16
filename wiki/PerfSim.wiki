@@ -29,13 +29,17 @@ partitioned software simulators include Asim and MASE.
 = Functional Partition Interface = 
 
 Generally, functional partition should have the following interface methods:
-  * Get Instruction (at a given Address)
-  * Get Dependencies
-  * Get Instruction Results
-  * Read Memory
-  * Speculatively Write Memory (locally visible)
-  * Commit or Abort instruction
-  * Write Memory (globally visible)
+
+|| *Operation* || *Parameters* || *Return value* || *Effect* ||
+|| Get Instruction || Addr || Instr || Fetch the instruction at this address and place it in flight. ||
+|| Get Dependencies || Instr || Deps || Get the dependencies of this instruction relative to other in-flight instructions. ||
+|| Get Operands || Instr || Srcs || Read the register file and prepare the instruction for execution. ||
+|| Get Results || Instr || Result || Execute the instruction and return the result, including branch information. For loads and stores, do effective address calculation. ||
+|| Read Memory (Do Loads) || Instr || Value || Perform and memory reads associated with the instruction. ||
+|| Speculatively Write Memory || Instr || -- || Make any memory writes visible to local loads. ||
+|| Commit || Instr || -- || Commit the instruction’s local changes and remove it from being in-flight. ||
+|| Abort  || Instr || -- || Abort the instruction’s local changes and remove it from being in-flight. ||
+|| Write Memory || Instr || -- || Make any memory writes globally visible. ||
 
 These operations roughly correspond to stages in a traditional microprocessor pipeline, with additional support for controlling the precise timing of store operations.
 
