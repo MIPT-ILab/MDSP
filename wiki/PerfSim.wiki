@@ -12,7 +12,7 @@ http://mdsp.googlecode.com/svn/wiki/images/func-timing-partitioning.png
 
 = Different Partitioning Schemes =
 
-Within partitioned simulation, there are many potential ways for these functional/timing partitions to interact. Mauer, Hill and Wood [Mauer 2002, ACM SIGMETRICS] categorized such simulators as *functional-first* (traditionally called *trace-driven*), *timing-directed*, and *timing-first*. 
+Within partitioned simulation, there are many potential ways for these functional/timing partitions to interact. Mauer, Hill and Wood (Mauer 2002, ACM SIGMETRICS) categorized such simulators as *functional-first* (traditionally called *trace-driven*), *timing-directed*, and *timing-first*. 
 
 http://mdsp.googlecode.com/svn/wiki/images/partitioning-schemes.png 
 
