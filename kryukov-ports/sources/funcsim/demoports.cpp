@@ -19,60 +19,62 @@
 
 #include "ports.h"
 
+using std::cout;
+using std::endl;
+
 static int SIZE = 100;
 
 int main(int argc, char* argv[])
 {
-    PortMap<int> map;
-    WritePort<int> writer(&map,"INIT", SIZE, SIZE);
-    ReadPort<int> reader1(&map,"INIT", 10);
-    ReadPort<int> reader2(&map,"INIT", 15);
-    map.init();
+    WritePort<int> writer("INIT", SIZE, 2);
+    ReadPort<int> reader1("INIT", 10);
+    ReadPort<int> reader2("INIT", 15);
+    Port<int>::_portMap->init();
     
     int operation1 = 100;
     int operation2 = 200;
     int *address;
    
-    std::cout << std::endl << "First demo" << std::endl;
+    cout << std::endl << "First demo" << endl;
     
     writer.write(&operation1, 3);
-    std::cout << "'" << operation1 << "' was added on 3-rd clock" << std::endl;
+    cout << "'" << operation1 << "' was added on 3-rd clock" << endl;
     
     writer.write(&operation2, 4); 
-    std::cout << "'" << operation2 << "' was added on 4-rd clock" << std::endl;    
+    cout << "'" << operation2 << "' was added on 4-rd clock" << endl;    
     
     for ( unsigned i = 5; i < 15; i++)
     {
-        std::cout << i << "-th clock;" << std::endl;
+        cout << i << "-th clock;" << endl;
         if (!reader1.read(&address, i))
         {
-            std::cout  << "'" << *address << "' was readed from ReadPort1 on " << i << "-th clock" << std::endl;
+            cout  << "'" << *address << "' was readed from ReadPort1 on " << i << "-th clock" << endl;
         }
     }
     
-    std::cout << std::endl << "Second demo" << std::endl;
+    cout << std::endl << "Second demo" << endl;
     
     writer.write(&operation1, 3);
-    std::cout << "'" << operation1 << "' was added on 3-rd clock" << std::endl;
+    cout << "'" << operation1 << "' was added on 3-rd clock" << endl;
     
     writer.write(&operation2, 4); 
-    std::cout << "'" << operation2 << "' was added on 4-rd clock" << std::endl;  
+    cout << "'" << operation2 << "' was added on 4-rd clock" << endl;  
     
     for ( unsigned i = 5; i < 14; i++)
     {
-        std::cout << i << "-th clock;" << std::endl;
+        cout << i << "-th clock;" << endl;
         if (!reader1.read(&address, i))
         {
-            std::cout  << "'" << *address << "' was readed from ReadPort1 on " << i << "-th clock" << std::endl;
+            cout  << "'" << *address << "' was readed from ReadPort1 on " << i << "-th clock" << endl;
         }
     }
     
     for ( unsigned i = 14; i < 20; i++)
     {
-        std::cout << i << "-th clock;" << std::endl;
+        cout << i << "-th clock;" << endl;
         if (!reader2.read(&address, i))
         {
-            std::cout  << "'" << *address << "' was readed from ReadPort2 on " << i << "-th clock" << std::endl;
+            cout  << "'" << *address << "' was readed from ReadPort2 on " << i << "-th clock" << endl;
         }
     }    
     
