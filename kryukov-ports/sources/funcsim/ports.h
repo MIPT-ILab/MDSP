@@ -81,6 +81,7 @@ template<class T> class WritePort: public Port<T>
         
         // _writeCounter is synonime for _dataVector[_lastCycle].size()
         hostUInt32 _writeCounter;
+        
     public:
         // Constructor
         WritePort<T>( std::string, hostUInt32, hostUInt32);
@@ -90,6 +91,9 @@ template<class T> class WritePort: public Port<T>
         
         // Get Method (is called by ReadPort)
         T* getData( hostUInt64);
+        
+        // Returns cycle of the oldest token
+        hostUInt64 oldest();
 };
 
 /*
@@ -108,7 +112,7 @@ template<class T> WritePort<T>::WritePort( std::string key, hostUInt32 bandwidth
     _fanout = fanout;
     
     _dataVector.resize(1);
-    _dataVector[0] = new SameCycleData;
+    _dataVector[0] = 0;
     
     _lastCycle = 0;
     _writeCounter = 0;
@@ -124,6 +128,11 @@ template<class T> WritePort<T>::WritePort( std::string key, hostUInt32 bandwidth
 */
 template<class T> void WritePort<T>::write( T* what, hostUInt64 cycle)
 {
+    if (cycle == 0)
+    {
+        _dataVector.resize(1, 0);
+        _dataVector[cycle] = new SameCycleData;
+    }
     if (_lastCycle != cycle)
     {
         // If cycle number was changed, 
@@ -131,7 +140,7 @@ template<class T> void WritePort<T>::write( T* what, hostUInt64 cycle)
         _writeCounter = 0;
         
         // Creating new vector element for current cycle    
-        _dataVector.resize(_lastCycle+1);
+        _dataVector.resize(_lastCycle+1, 0);
         _dataVector[cycle] = new SameCycleData;
     }
     if (_writeCounter < _bandwidth)
@@ -171,7 +180,7 @@ template<class T> T* WritePort<T>::getData( hostUInt64 cycle)
         return 0;
     }
     Cage buffer = _dataVector[cycle]->front();
-    if (_dataVector[cycle]->front().readCounter == _fanout)
+    if (++(_dataVector[cycle]->front().readCounter) == _fanout)
     {
     // If there was 'readCounter' readings, removing
         _dataVector[cycle]->pop();
@@ -181,12 +190,17 @@ template<class T> T* WritePort<T>::getData( hostUInt64 cycle)
             _dataVector[cycle] = 0;
         }
     }
-    else
-    {
-    // Otherwise, writes about new reading
-        _dataVector[cycle]->front().readCounter++;
-    }
-    return _dataVector[cycle]->front().data;
+    return buffer.data;
+}
+
+/*
+ * Returning the oldest cycle
+*/
+template<class T> hostUInt64 WritePort<T>::oldest()
+{
+    hostUInt64 it = 0;
+    for ( it = 0; (it <= _lastCycle) && (!_dataVector[it]); ++it);
+    return it;
 }
 
 
@@ -209,7 +223,10 @@ template<class T> class ReadPort: public Port<T>
         void setSource( WritePort<T>*);
         
         // Read method
-        hostSInt8 read( T**, hostUInt64) const;        
+        hostSInt8 read( T**, hostUInt64) const;  
+
+        // Get latency for tests
+        hostUInt64 getLatency() const;
 };
 
 /*
@@ -263,6 +280,14 @@ template<class T> void ReadPort<T>::setSource( WritePort<T>* source)
 }
 
 /*
+ * Returns latency of port.
+*/
+template<class T> hostUInt64 ReadPort<T>::getLatency() const
+{
+    return _latency;
+}
+
+/*
  * Map of ports
 */
 template<class T> class PortMap: public log
@@ -292,6 +317,9 @@ template<class T> class PortMap: public log
         
         // Init method
         void init();
+        
+        // Finding lost elements
+        void lost( hostUInt64);
 }; 
 
 /*
@@ -354,4 +382,31 @@ template<class T> void PortMap<T>::init()
         }
     }
 }
+
+/*
+ * Function for founding lost elements at port
+ *
+ * Argument is the number of current cycle.
+ * If some token couldn't be get in future, warnings
+*/
+template<class T> void PortMap<T>::lost( hostUInt64 cycle)
+{
+    for ( MapTypeIt it = _map.begin(); it != _map.end(); ++it)
+    {
+        hostUInt64 oldest = it->second.writer->oldest();
+        bool flag = false;
+        for ( ReadListTypeIt jt = it->second.readers.begin(); jt != it->second.readers.end(); ++jt)
+        {
+            if (((*jt)->getLatency() + oldest) > cycle)
+            {
+                flag = true;
+            }
+        }
+        if (!flag)
+        {
+            warning("In %s port data was added at %d clock and will not be readed\n", it->first.c_str(), oldest);
+        }
+    }
+}    
+    
 #endif // PORTS_H
