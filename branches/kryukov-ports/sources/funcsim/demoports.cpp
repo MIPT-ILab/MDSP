@@ -51,6 +51,7 @@ int main(int argc, char* argv[])
             cout  << "'" << *address << "' was readed from ReadPort1 on " << i << "-th clock" << endl;
         }
     }
+    Port<int>::_portMap->lost( 16);
     
     cout << std::endl << "Second demo" << endl;
     
@@ -78,6 +79,7 @@ int main(int argc, char* argv[])
         }
     }    
     
+    Port<int>::_portMap->lost( 20);
+    
     return 0;
-
 }
