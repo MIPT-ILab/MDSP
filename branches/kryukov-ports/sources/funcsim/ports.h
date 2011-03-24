@@ -10,6 +10,7 @@
 #include <map>
 #include <queue>
 #include <list>
+#include <vector>
 #include <string>
 
 #include "log.h"
@@ -18,134 +19,214 @@
 template<class T> class PortMap;
 
 /*
+ * Port class
+*/
+template<class T> class Port: public log
+{
+    protected:
+        // Key of port
+        std::string _key;
+    public:    
+        // Static ports Map to connect ports between for themselves;
+        static PortMap<T>* _portMap;
+        
+        // Constructor of port
+        Port<T>( std::string);
+};
+
+/*
+ * Init a map of ports (see bottom of file
+*/
+template<class T> PortMap<T>* Port<T>::_portMap = new PortMap<T>;
+
+/*
+ * Constructor
+*/
+template<class T> Port<T>::Port( std::string key)
+{
+    _key = key;
+}
+
+/*
  * WritePort
  */
-template<class T> class WritePort: public log
+template<class T> class WritePort: public Port<T>
 {
     private:
-        std::queue<T*> _data;
-        std::queue<hostUInt64> _cycle;
-        std::string _key;
-        unsigned _bandwidth;
-        unsigned _phoneOn;
-        PortMap<T>* _portMap;
+        // Number of tokens that can be added in one cycle;
+        hostUInt32 _bandwidth;
+        
+        // Number of reader that can read from this port
+        hostUInt32 _fanout;
+        
+        // Cage consists of data and counter of reading data
+        struct Cage
+        {   
+            T* data;
+            hostUInt32 readCounter;
+        };
+        
+        // Type of queue of data which were added in same cycle
+        typedef std::queue<Cage> SameCycleData;
+        
+        // Type of vector of SameCycleData for every cycle
+        typedef typename std::vector<SameCycleData*> DataVector;
+        
+        // DataVector includes all added data
+        DataVector _dataVector;
+        
+        // Variables for counting token in the last cycle
+        // _lastCycle is synonime for _dataVector.size()-1
+        hostUInt32 _lastCycle;
+        
+        // _writeCounter is synonime for _dataVector[_lastCycle].size()
+        hostUInt32 _writeCounter;
     public:
-        WritePort<T>( PortMap<T>*,std::string, unsigned, unsigned);
+        // Constructor
+        WritePort<T>( std::string, hostUInt32, hostUInt32);
+        
+        // Write Method
         void write( T*, hostUInt64);
-        T* getData();
-        hostUInt64 getCycle() const;
-        unsigned getPhoneOn() const;
+        
+        // Get Method (is called by ReadPort)
+        T* getData( hostUInt64);
 };
 
 /*
  * Constructor
  *
- * First argument is pointer to map of ports.
- * Second argument is key which is used to connect ports.
- * Third is the bandwidth of port (how much data items can port hold).
- * Fourth is maximum number of ReadPorts.
+ * First argument is key which is used to connect ports.
+ * Second is the bandwidth of port (how much data items can port hold).
+ * Third is maximum number of ReadPorts.
  *
  * Adds port to needed PortMap.
 */
-template<class T> WritePort<T>::WritePort( PortMap<T>* portMap, std::string key, unsigned bandwidth, unsigned phoneOn)
+template<class T> WritePort<T>::WritePort( std::string key, hostUInt32 bandwidth, hostUInt32 fanout):
+    Port<T>::Port( key)
 {
-    _key = key;
-    _portMap = portMap;
     _bandwidth = bandwidth;
-    _phoneOn = phoneOn;
+    _fanout = fanout;
+    
+    _dataVector.resize(1);
+    _dataVector[0] = new SameCycleData;
+    
+    _lastCycle = 0;
+    _writeCounter = 0;
 
-    _portMap->addWritePort( _key, this);    
+    this->_portMap->addWritePort( this->_key, this);    
 }
 
 /*
  * Write method.
  *
  * First argument is the link to data.
- * Second argument is the cycle number.
+ * Second argument is the current cycle number.
 */
 template<class T> void WritePort<T>::write( T* what, hostUInt64 cycle)
 {
-    if ( _data.size() < _bandwidth)
+    if (_lastCycle != cycle)
     {
-        _data.push(what);
-        _cycle.push(cycle); 
-    }    
+        // If cycle number was changed, 
+        _lastCycle = cycle;
+        _writeCounter = 0;
+        
+        // Creating new vector element for current cycle    
+        _dataVector.resize(_lastCycle+1);
+        _dataVector[cycle] = new SameCycleData;
+    }
+    if (_writeCounter < _bandwidth)
+    {
+    // If we can add something more on that cycle, adding
+        Cage cage;
+        cage.data = what;
+        cage.readCounter = 0;
+        _dataVector[cycle]->push(cage);
+        
+        _writeCounter++;
+    }
     else
     {
-    // If port is overloaded, assert.
-        critical( "Port '%s' is overloaded\n", _key.c_str());
+    // If we overloaded port's bandwidth, assert
+        critical("Port %s is overloaded\n", this->_key.c_str());
     }
 }
 
 /*
  * Get data method.
  * It's not a const method, it takes element from queue.
+ *
+ * Argument is cycle number of adding that we want to get
+ *
+ * If there was nothing added on this cycle, returns zero pointer.
 */
-template<class T> T* WritePort<T>::getData()
+template<class T> T* WritePort<T>::getData( hostUInt64 cycle)
 {
-    if ( _data.empty())
+    // If there's nothing added on this cycle, return zero
+    if (
+        ( _dataVector.size() < cycle) || 
+        ( _dataVector[cycle] == 0) || 
+        ( _dataVector[cycle]->empty())
+       )
     {
-    // If there's nothing in port, assert.
-        critical( "No data in '%s'", _key.c_str());
+        return 0;
+    }
+    Cage buffer = _dataVector[cycle]->front();
+    if (_dataVector[cycle]->front().readCounter == _fanout)
+    {
+    // If there was 'readCounter' readings, removing
+        _dataVector[cycle]->pop();
+        if (_dataVector[cycle]->empty())
+        {
+            delete _dataVector[cycle];
+            _dataVector[cycle] = 0;
+        }
     }
     else
     {
-    // Getting front element
-        T* buffer = _data.front();
-        _data.pop();
-        _cycle.pop();
-        return buffer;
+    // Otherwise, writes about new reading
+        _dataVector[cycle]->front().readCounter++;
     }
+    return _dataVector[cycle]->front().data;
 }
 
-/*
- * Get cycle method
-*/
-template<class T> hostUInt64 WritePort<T>::getCycle() const
-{
-    return _cycle.front();
-}
-
-/*
- * Get phoneon method
-*/
-template<class T> unsigned WritePort<T>::getPhoneOn() const
-{
-    return _phoneOn;
-}
 
 /*
  * Read Port
 */
-template<class T> class ReadPort: public log
+template<class T> class ReadPort: public Port<T>
 {
     private:
-        std::string _key;
+        // Latency is the number of cycles after which we may take data from port.
         hostUInt64 _latency;
-        WritePort<T>* _source;
-        PortMap<T>* _portMap;        
+        
+        // Pointer to source-WritePort
+        WritePort<T>* _source;       
     public:
-        ReadPort<T>( PortMap<T>*, std::string, hostUInt64);
+        // Constructor
+        ReadPort<T>( std::string, hostUInt64);
+        
+        // setSource method. Used by PortMap
         void setSource( WritePort<T>*);
-        int read( T**, hostUInt64) const;        
+        
+        // Read method
+        hostSInt8 read( T**, hostUInt64) const;        
 };
 
 /*
  * Constructor
  *
- * First argument is the address of portMap.
- * Second argument is the connection key.
- * Third argument is the latency of port.
+ * First argument is the connection key.
+ * Second argument is the latency of port.
  *
  * Adds port to needed PortMap.
 */ 
-template<class T> ReadPort<T>::ReadPort( PortMap<T>* portMap,std::string key, hostUInt64 latency)
+template<class T> ReadPort<T>::ReadPort( std::string key, hostUInt64 latency):
+    Port<T>::Port( key)
 {
-    _key = key;
-    _portMap = portMap;
     _latency = latency;
+    _source = 0;
     
-    portMap->addReadPort( _key, this);
+    this->_portMap->addReadPort( this->_key, this);
 }
 
 /*
@@ -153,15 +234,18 @@ template<class T> ReadPort<T>::ReadPort( PortMap<T>* portMap,std::string key, ho
  *
  * First arguments is address, second is the number of cycle
  *
- * Compares current cycle with needed cycle (cycle of adding plus latency).
- * If current cycle is less than needed, returns 1;
- * If current cycle is equal or greater than needed, tries to return data address to first argument. (see WritePort::getData)
+ * Counts cycle of adding data and call to WritePort get method
 */
-template<class T> int ReadPort<T>::read( T** address, hostUInt64 cycle) const
+template<class T> hostSInt8 ReadPort<T>::read( T** address, hostUInt64 cycle) const
 {   
-    if ( ( _source->getCycle() + _latency) <= cycle)
+    if ( !_source)
     {
-        *address = _source->getData();
+        this->critical("Ports was not initialized");
+    }
+    T* result = _source->getData( cycle - _latency);
+    if ( result)
+    {
+        *address = result; 
         return 0;
     }
     else
@@ -184,20 +268,29 @@ template<class T> void ReadPort<T>::setSource( WritePort<T>* source)
 template<class T> class PortMap: public log
 {
     private:
+        // List of readers type and iterator type
         typedef std::list<ReadPort<T>* > ReadListType;
         typedef typename ReadListType::iterator ReadListTypeIt;
+        
+        // Entry of portMap — one writer and list of readers
         struct Entry
         {
             WritePort<T>* writer;
             ReadListType readers;
         };
+        
+        // Type of map of Entry
         typedef std::map<std::string, Entry> MapType;
         typedef typename MapType::iterator MapTypeIt;
+        
+        // Map itself
         MapType _map;
     public:
+        // Adding methods
         void addWritePort( std::string, WritePort<T>*);
         void addReadPort( std::string, ReadPort<T>*);        
         
+        // Init method
         void init();
 }; 
 
@@ -208,6 +301,7 @@ template<class T> void PortMap<T>::addWritePort( std::string key, WritePort<T>* 
 {
     if ( _map.find( key) == _map.end())
     {
+    // If there's no record in this map, create it.
         Entry entry;
         entry.writer = 0;
         entry.readers.resize(0);
@@ -223,6 +317,7 @@ template<class T> void PortMap<T>::addReadPort( std::string key, ReadPort<T>* po
 {
     if ( _map.find(key) == _map.end())
     {
+    // If there's no record in this map, create it.
         Entry entry;
         entry.writer = 0;
         entry.readers.resize(0);        
@@ -236,7 +331,6 @@ template<class T> void PortMap<T>::addReadPort( std::string key, ReadPort<T>* po
  *
  * Iterates all map and sets _source field on readPorts.
  * If there're any unconnected ports, asserts.
- * If there're any overloaded WritePort, also asserts.
 */ 
 template<class T> void PortMap<T>::init()
 {
@@ -253,10 +347,6 @@ template<class T> void PortMap<T>::init()
         if ( !size)
         {
            critical( "No ReadPorts for '%s' key", it->first.c_str());
-        }
-        if ( size > writer->getPhoneOn())
-        {
-           critical( "Too much ReadPorts for '%s' key", it->first.c_str());
         }
         for ( ReadListTypeIt jt = it->second.readers.begin(); jt != it->second.readers.end(); ++jt)
         {
