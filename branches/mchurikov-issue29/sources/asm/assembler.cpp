@@ -6,6 +6,7 @@
 
 #include "assembler.h"
 #include "operation.h"
+#include "../funcsim/core.h"
 
 
 Assembler::Assembler( std::vector<SemanticUnit *> units)

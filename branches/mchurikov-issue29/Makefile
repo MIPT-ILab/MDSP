@@ -28,7 +28,9 @@ ASM_OBJS_CPP := \
 	sources/funcsim/log.cpp \
 	sources/funcsim/memory.cpp \
 	sources/funcsim/operation.cpp \
-	sources/funcsim/register_file.cpp 
+	sources/funcsim/register_file.cpp \
+	sources/funcsim/core.cpp \
+	sources/funcsim/flags.cpp
 
 MAIN_OBJS_O:=${MAIN_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o}
 TEST_OBJS_O:=${TEST_OBJS_CPP:sources/%.cpp=$(OUT)/build/%.o}
