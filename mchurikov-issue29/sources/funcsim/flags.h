@@ -11,6 +11,11 @@
 
 #include "register_file.h"
 
+#define FLAG_N_POSITION 128
+#define FLAG_Z_POSITION 64
+#define FLAG_C_POSITION 32
+#define FLAG_O_POSITION 16
+
 /**
  * Class of flag register description
  */

@@ -902,28 +902,28 @@ void testFlags()
     flags = new Flags;
     
     ///set all true
-    flags->setFlag( N, true);
-    flags->setFlag( Z, true);
-    flags->setFlag( C, true);
-    flags->setFlag( O, true);
+    flags->setFlag( FLAG_NEG, true);
+    flags->setFlag( FLAG_ZERO, true);
+    flags->setFlag( FLAG_CARRY, true);
+    flags->setFlag( FLAG_OVERFLOW, true);
     
     ///check
-    if ( !( flags->getFlag(N))) assert( 0);
-    if ( !( flags->getFlag(Z))) assert( 0);
-    if ( !( flags->getFlag(C))) assert( 0);
-    if ( !( flags->getFlag(O))) assert( 0);
+    if ( !( flags->getFlag( FLAG_NEG))) assert( 0);
+    if ( !( flags->getFlag( FLAG_ZERO))) assert( 0);
+    if ( !( flags->getFlag( FLAG_CARRY))) assert( 0);
+    if ( !( flags->getFlag( FLAG_OVERFLOW))) assert( 0);
     
     ///set all false
-    flags->setFlag( N, false);
-    flags->setFlag( Z, false);
-    flags->setFlag( C, false);
-    flags->setFlag( O, false);
+    flags->setFlag( FLAG_NEG, false);
+    flags->setFlag( FLAG_ZERO, false);
+    flags->setFlag( FLAG_CARRY, false);
+    flags->setFlag( FLAG_OVERFLOW, false);
     
     ///check
-    if ( flags->getFlag(N)) assert( 0);
-    if ( flags->getFlag(Z)) assert( 0);
-    if ( flags->getFlag(C)) assert( 0);
-    if ( flags->getFlag(O)) assert( 0);
+    if ( flags->getFlag( FLAG_NEG)) assert( 0);
+    if ( flags->getFlag( FLAG_ZERO)) assert( 0);
+    if ( flags->getFlag( FLAG_CARRY)) assert( 0);
+    if ( flags->getFlag( FLAG_OVERFLOW)) assert( 0);
 }
 
 
