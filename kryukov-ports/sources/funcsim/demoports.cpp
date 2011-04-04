@@ -22,18 +22,20 @@
 using std::cout;
 using std::endl;
 
-static int SIZE = 100;
-
 int main(int argc, char* argv[])
 {
-    WritePort<int> writer("INIT", SIZE, 2);
+    WritePort<int> writer("INIT", 1, 3);
     ReadPort<int> reader1("INIT", 10);
     ReadPort<int> reader2("INIT", 15);
-    Port<int>::_portMap->init();
+    Port<int>::portMap->init();
     
     int operation1 = 100;
     int operation2 = 200;
     int *address;
+   
+    goto demo1;
+   
+demo1:
    
     cout << std::endl << "First demo" << endl;
     
@@ -51,7 +53,10 @@ int main(int argc, char* argv[])
             cout  << "'" << *address << "' was readed from ReadPort1 on " << i << "-th clock" << endl;
         }
     }
-    Port<int>::_portMap->lost( 16);
+    Port<int>::portMap->lost( 16);
+    return 0;
+
+demo2:
     
     cout << std::endl << "Second demo" << endl;
     
@@ -79,7 +84,18 @@ int main(int argc, char* argv[])
         }
     }    
     
-    Port<int>::_portMap->lost( 20);
+    Port<int>::portMap->lost( 20);
+    return 0;
+    
+demo3:
+   
+    cout << std::endl << "Third demo" << endl;
+    
+    writer.write(&operation1, 4);
+    cout << "'" << operation1 << "' was added on 3-rd clock" << endl;
+    
+    writer.write(&operation2, 4); 
+    cout << "'" << operation2 << "' was added on 4-rd clock" << endl;     
     
     return 0;
 }
