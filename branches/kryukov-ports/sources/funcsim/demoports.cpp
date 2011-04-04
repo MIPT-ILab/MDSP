@@ -14,6 +14,9 @@
  * We are adding data to port in 3 and 4 clock, trying to get in from Reader1 from 5 to 13 clock.
  * After, from 14 to 19 clock we're trying to read data from Reader2.
  *
+ * Third demo:
+ * Overloading of WritePort by bandwidth
+ *
  * Kryukov Pavel, 2011
 */
 
