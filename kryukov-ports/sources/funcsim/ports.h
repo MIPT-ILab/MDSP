@@ -92,7 +92,7 @@ template<class T> class WritePort: public Port<T>
         void write( T*, hostUInt64);
         
         // Addes destination ReadPort to list
-        void setDestination(ReadListType*);
+        void setDestination( ReadListType*);
         
         // Returns fanout for test of connection
         hostUInt32 getFanout() const;
@@ -132,23 +132,23 @@ template<class T> WritePort<T>::WritePort( std::string key, hostUInt32 bandwidth
 */
 template<class T> void WritePort<T>::write( T* what, hostUInt64 cycle)
 {
-    if (!this->_init) 
+    if ( !this->_init) 
     {
     // If no init, asserts
-        critical("%s WritePort was not initializated", this->_key.c_str());
+        critical( "%s WritePort was not initializated", this->_key.c_str());
         return;
     }
-    if (_lastCycle != cycle)
+    if ( _lastCycle != cycle)
     {
         // If cycle number was changed, zero counter.
         _lastCycle = cycle;
         _writeCounter = 0;
     }
-    if (_writeCounter < _bandwidth)
+    if ( _writeCounter < _bandwidth)
     {
     // If we can add something more on that cycle, forwarding it to all ReadPorts.
         _writeCounter++;
-        for (ReadListIt it = _destinations->begin(); it != _destinations->end(); ++it)
+        for ( ReadListIt it = _destinations->begin(); it != _destinations->end(); ++it)
         {
             (*it)->pushData(what, cycle);
         }
@@ -156,7 +156,7 @@ template<class T> void WritePort<T>::write( T* what, hostUInt64 cycle)
     else
     {
     // If we overloaded port's bandwidth, assert
-        critical("Port '%s' is overloaded by bandwidth\n", this->_key.c_str());
+        critical( "Port '%s' is overloaded by bandwidth\n", this->_key.c_str());
     }
 }
 
@@ -202,10 +202,10 @@ template<class T> class ReadPort: public Port<T>
         hostSInt8 read( T**, hostUInt64);
 
         // Pushes data from WritePort
-        void pushData(T*, hostUInt64);
+        void pushData( T*, hostUInt64);
         
         // Tests if there is any ungot data
-        bool selfTest(hostUInt64, hostUInt64*) const;
+        bool selfTest( hostUInt64, hostUInt64*) const;
 };
 
 /*
@@ -235,13 +235,13 @@ template<class T> ReadPort<T>::ReadPort( std::string key, hostUInt64 latency):
 */
 template<class T> hostSInt8 ReadPort<T>::read( T** address, hostUInt64 cycle)
 {   
-    if (!this->_init) 
+    if ( !this->_init) 
     {
-        critical("%s ReadPort was not initializated", this->_key.c_str());
+        critical( "%s ReadPort was not initializated", this->_key.c_str());
         return -2;
     }
-    if (_dataQueue.empty()) return -1;
-    if (_dataQueue.front().cycle == cycle)
+    if ( _dataQueue.empty()) return -1;
+    if ( _dataQueue.front().cycle == cycle)
     {
         *address = _dataQueue.front().data;
         _dataQueue.pop();
@@ -261,7 +261,7 @@ template<class T> void ReadPort<T>::pushData( T* what, hostUInt64 cycle)
     DataCage buffer;
     buffer.data = what;
     buffer.cycle = cycle + _latency;
-    _dataQueue.push(buffer);
+    _dataQueue.push( buffer);
 }
 
 /*
@@ -271,8 +271,8 @@ template<class T> void ReadPort<T>::pushData( T* what, hostUInt64 cycle)
 */
 template<class T> bool ReadPort<T>::selfTest(hostUInt64 cycle, hostUInt64* wantedCycle) const
 {
-    if (_dataQueue.empty()) return true;
-    if (_dataQueue.front().cycle < cycle)
+    if ( _dataQueue.empty()) return true;
+    if ( _dataQueue.front().cycle < cycle)
     {
         *wantedCycle = _dataQueue.front().cycle - _latency;
         return false;
@@ -329,10 +329,10 @@ template<class T> void PortMap<T>::addWritePort( std::string key, WritePort<T>* 
     }
     else
     {
-        if (!_map[key].writer)
+        if ( !_map[key].writer)
         {
         // Warning of double using of same key for WritePort
-            warning("Reusing of '%s' key for WritePort. Last WritePort will be used.", key.c_str());
+            warning( "Reusing of '%s' key for WritePort. Last WritePort will be used.", key.c_str());
         }
     }
     _map[key].writer = pointer;
@@ -377,16 +377,16 @@ template<class T> void PortMap<T>::init()
            critical( "No ReadPorts for '%s' key", it->first.c_str());
            return;
         }
-        if (readersCounter > writer->getFanout())
+        if ( readersCounter > writer->getFanout())
         {
             critical( "%s WritePort is overloaded by fanout", it->first.c_str());
             return;
         }
-        if (readersCounter < writer->getFanout())
+        if ( readersCounter < writer->getFanout())
         {
             warning( "%s WritePort is underloaded by fanout", it->first.c_str());
         }
-        it->second.writer->setDestination(&(it->second.readers));
+        it->second.writer->setDestination( &(it->second.readers));
 
         // Initializing ports with setting their init flags.
         for ( ReadListTypeIt jt = it->second.readers.begin(); jt != it->second.readers.end(); ++jt)
@@ -410,9 +410,9 @@ template<class T> void PortMap<T>::lost( hostUInt64 cycle)
         for ( ReadListTypeIt jt = it->second.readers.begin(); jt != it->second.readers.end(); ++jt)
         {
             hostUInt64 addCycle;
-            if (!(*jt)->selfTest(cycle, &addCycle))
+            if ( !(*jt)->selfTest( cycle, &addCycle))
             {
-                warning("In %s port data was added at %d clock and will not be readed\n", it->first.c_str(), addCycle);
+                warning( "In %s port data was added at %d clock and will not be readed\n", it->first.c_str(), addCycle);
             }
         }
     }
