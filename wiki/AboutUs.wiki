@@ -15,22 +15,22 @@ Our team consists of a group of students of MIPT and mentors who supervise and d
 
 === Mentors ===
 || *Photo* || *Name (en)* || *Name (ru)* || *Email* ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/grigory_rechistov.jpg || Grigory Rechistov|| Григорий Речистов || grigory.rechistov@gmail.com ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/alexander_titov.jpg || Alexander Titov || Александр Титов || alexander.igorevich.titov@gmail.com ||
-|| || Юрий Байда || Yuri Baida || yuri.baida@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/grigory-rechistov.jpg || Grigory Rechistov|| Григорий Речистов || grigory.rechistov@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/alexander-titov.jpg || Alexander Titov || Александр Титов || alexander.igorevich.titov@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/yuri-baida.jpg || Юрий Бáйда || Yuri Baida || yuri.baida@gmail.com ||
 
 === Students ===
 
 || *Photo* || *Name (en)* || *Name (ru)* || *Email* ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/alexey_ahnevsky.jpg || Alexey Ahnevsky || Ахневский Алексей ||  aleksey.ahnevskiy@gmail.com ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/boris_belousov.jpg || Boris Belousov || Борис Белоусов || plim.the.best@gmail.com ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/sergey_gvozdaryev.jpg || Sergey Gvozdaryev || Гвоздарев Сергей || gvozdarev.sa@gmail.com ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/arthur_gilmullin.jpg || Arthur Gilmullin || Гильмуллин Артур || agilmullin@gmail.com ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/vladimir_dubihin.jpg || Vladimir Dubihin || Дубихин Владимир || vladimir.dubihin@gmail.com ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/stanislav_elizarov.jpg || Stanislav Elizarov || Елизаров Станислав || el.stas@gmail.com ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/pavel_kryukov.jpg || Pavel Kryukov || Крюков Павел || ikilevap@gmail.com / kryukov@frtk.ru ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/alexander_kurilovich.jpg || Alexander Kurilovich || Курилович Александр || akurae@mail.ru ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/alexander_maramzin.jpg || Alexander Maramzin || Марамзин Александр || - ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/artemije_margaritov.jpg || Artemije Margaritov || Маргаритов Артемий || margarty.frtk@gmail.com ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/boris_stepanenko.jpg || Boris Stepanenko || Степаненко Борис || stepanenkoat@gmail.com ||
-|| http://mdsp.googlecode.com/svn/wiki/team_photos/2010_2011/nazary_tupitsa.jpg || Nazary Tupitsa || Тупица Назарий || two.nazya@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/alexey-ahnevsky.jpg || Alexey Ahnevsky || Ахневский Алексей ||  aleksey.ahnevskiy@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/boris-belousov.jpg || Boris Belousov || Борис Белоусов || plim.the.best@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/sergey-gvozdaryev.jpg || Sergey Gvozdaryev || Гвоздарев Сергей || gvozdarev.sa@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/arthur-gilmullin.jpg || Arthur Gilmullin || Гильмуллин Артур || agilmullin@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/vladimir-dubihin.jpg || Vladimir Dubihin || Дубихин Владимир || vladimir.dubihin@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/stanislav-elizarov.jpg || Stanislav Elizarov || Елизаров Станислав || el.stas@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/pavel-kryukov.jpg || Pavel Kryukov || Крюков Павел || ikilevap@gmail.com / kryukov@frtk.ru ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/alexander-kurilovich.jpg || Alexander Kurilovich || Курилович Александр || akurae@mail.ru ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/alexander-maramzin.jpg || Alexander Maramzin || Марамзин Александр || - ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/artemije-margaritov.jpg || Artemije Margaritov || Маргаритов Артемий || margarty.frtk@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/boris-stepanenko.jpg || Boris Stepanenko || Степаненко Борис || stepanenkoat@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/nazary-tupitsa.jpg || Nazary Tupitsa || Тупица Назарий || two.nazya@gmail.com ||
