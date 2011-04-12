@@ -17,7 +17,7 @@ Our team consists of a group of students of MIPT and mentors who supervise and d
 || *Photo* || *Name (en)* || *Name (ru)* || *Email* ||
 || http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/grigory-rechistov.jpg || Grigory Rechistov|| Григорий Речистов || grigory.rechistov@gmail.com ||
 || http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/alexander-titov.jpg || Alexander Titov || Александр Титов || alexander.igorevich.titov@gmail.com ||
-|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/yuri-baida.jpg || Юрий Бáйда || Yuri Baida || yuri.baida@gmail.com ||
+|| http://mdsp.googlecode.com/svn/wiki/photos/2010-2011/yuri-baida.jpg || Yuri Baida || Юрий Бáйда || yuri.baida@gmail.com ||
 
 === Students ===
 
