@@ -50,23 +50,23 @@ void Flags::setFlag( FlagType flag, bool value)
     {
         case FLAG_NEG:
             if ( value) this->setByte( 0, ( this->getByteVal( 0) & 
-                                         0b01111111) ^ 0b10000000); //0b01111111
-            else this->setByte( 0,  this->getByteVal( 0) & !FLAG_N_POSITION);
+                                            FLAG_N_POS_INVERSED) ^ FLAG_N_POSITION);
+            else this->setByte( 0,  this->getByteVal( 0) & FLAG_N_POS_INVERSED);
             break;
         case FLAG_ZERO:
             if ( value) this->setByte( 0, ( this->getByteVal( 0) & 
-                                            0b10111111) ^ 0b01000000); //0b10111111
-            else this->setByte( 0,  this->getByteVal( 0) & !( hostUInt8)64);
+                                            FLAG_Z_POS_INVERSED) ^ FLAG_Z_POSITION);
+            else this->setByte( 0,  this->getByteVal( 0) & FLAG_Z_POS_INVERSED);
             break;
         case FLAG_CARRY:
             if ( value) this->setByte( 0, ( this->getByteVal( 0) & 
-                                            0b11011111) ^ 0b00100000); //0b11011111 
-            else this->setByte( 0,  this->getByteVal( 0) & 0b11011111);
+                                            FLAG_C_POS_INVERSED) ^ FLAG_C_POSITION);
+            else this->setByte( 0,  this->getByteVal( 0) & FLAG_C_POS_INVERSED);
             break;
         case FLAG_OVERFLOW:
             if ( value) this->setByte( 0, ( this->getByteVal( 0) & 
-                                            0b11101111) ^ 0b00010000); //0b11101111
-            else this->setByte( 0,  this->getByteVal( 0) & 0b11101111);
+                                            FLAG_O_POS_INVERSED) ^ FLAG_O_POSITION);
+            else this->setByte( 0,  this->getByteVal( 0) & FLAG_O_POS_INVERSED);
             break;
         default:
             cout << "Invalid flag register type\n";
