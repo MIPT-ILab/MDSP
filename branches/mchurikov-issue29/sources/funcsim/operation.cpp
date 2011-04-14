@@ -1111,7 +1111,8 @@ void Operation::executeMove()
  */
 void Operation::executeALU()
 {
-    hostSInt16 result, firstOperand, secondOperand;
+    hostSInt16 result = 0;
+    hostSInt32 firstOperand, secondOperand;
     Flags* flags;
     flags = this->core->GetFlags();
     switch ( this->opcode1)
@@ -1136,7 +1137,7 @@ void Operation::executeALU()
                     break;
                 case 2:  /*Register indirect mode( memory), use rS1, rS2, rD*/
                     firstOperand = memory->read16( (  mathAddr)rs1);
-                    secondOperand = memory->read16( (  mathAddr)rs1);
+                    secondOperand = memory->read16( (  mathAddr)rs2);
                     result = firstOperand + secondOperand;
                     memory->write16( ( mathAddr)rd, result);
                     break;
@@ -1149,7 +1150,7 @@ void Operation::executeALU()
                 default:
                     assert( 0);
             }
-            if ( ( firstOperand ^ secondOperand) >= 65536) flags->setFlag( FLAG_OVERFLOW, true);
+            if ( ( firstOperand + secondOperand) > 0x0FFFF) flags->setFlag( FLAG_OVERFLOW, true);
             if ( firstOperand & secondOperand) flags->setFlag( FLAG_CARRY, true);
             break;
         case SUB:
@@ -1169,7 +1170,7 @@ void Operation::executeALU()
                     break;
                 case 2:  /* Register indirect mode( memory), use rS1, rS2, rD*/
                     firstOperand = memory->read16( (  mathAddr)rs1);
-                    secondOperand = memory->read16( ( mathAddr)rs1);
+                    secondOperand = memory->read16( ( mathAddr)rs2);
                     result = firstOperand - secondOperand;
                     memory->write16( ( mathAddr)rd, result);
                     break;
@@ -1190,7 +1191,7 @@ void Operation::executeALU()
     /* Update flag register after execution */
     if ( result == 0) flags->setFlag( FLAG_ZERO, true);
     else flags->setFlag( FLAG_ZERO, false);
-    if ( result <= 0) flags->setFlag( FLAG_NEG, true);
+    if ( result < 0) flags->setFlag( FLAG_NEG, true);
     else flags->setFlag( FLAG_NEG, false);
 }
 
@@ -1208,7 +1209,7 @@ void Operation::executePFlow()
             switch ( this->sd)
             {
                 case 0:  /*Destination is in rD*/
-                    this->core->SetPC( ( hostUInt16)rd);
+                    this->core->SetPC( RF->read16( ( physRegNum)rd));
                     break;
                 case 1:  /*Destination is in imm16*/
                     this->core->SetPC( imm16);
@@ -1223,7 +1224,7 @@ void Operation::executePFlow()
                 switch ( this->sd)
                 {
                     case 0:  /*Destination is in rD*/
-                        this->core->SetPC( ( hostUInt16)rd);
+                        this->core->SetPC(  RF->read16( ( physRegNum)rd));
                         break;
                     case 1:  /*Destination is in imm16*/
                         this->core->SetPC( imm16);
