@@ -1076,10 +1076,12 @@ void Operation::executeMove()
             switch ( sd)
             {
                 case 0:
-                    memory->write16( ( mathAddr)rd, RF->read16( ( physRegNum)rs1));
+                    memory->write16( ( mathAddr)rd, 
+                                    RF->read16( ( physRegNum)rs1));
                     break;
                 case 1:
-                    RF->write16( ( physRegNum)rd, memory->read16( (  mathAddr)rs1));
+                    RF->write16( ( physRegNum)rd, 
+                                memory->read16( (  mathAddr)rs1));
                     break;
                 default:
                     assert( 0);
@@ -1150,8 +1152,12 @@ void Operation::executeALU()
                 default:
                     assert( 0);
             }
-            if ( ( firstOperand + secondOperand) > 0x0FFFF) flags->setFlag( FLAG_OVERFLOW, true);
-            if ( firstOperand & secondOperand) flags->setFlag( FLAG_CARRY, true);
+            if ( ( firstOperand + secondOperand) >= 0x0FFFF) 
+                    flags->setFlag( FLAG_OVERFLOW, true);
+            else flags->setFlag( FLAG_OVERFLOW, false);
+            if ( firstOperand & secondOperand) 
+                    flags->setFlag( FLAG_CARRY, true);
+            else flags->setFlag( FLAG_CARRY, false);
             break;
         case SUB:
             switch ( this->am)
@@ -1183,7 +1189,8 @@ void Operation::executeALU()
                 default:
                     assert( 0);   
             }
-            if ( firstOperand & ( (!secondOperand) + 0b1)) flags->setFlag( FLAG_CARRY, true);
+            if ( firstOperand & ( (!secondOperand) + 0b1)) 
+                    flags->setFlag( FLAG_CARRY, true);
             break;
         default:
             assert( 0);
