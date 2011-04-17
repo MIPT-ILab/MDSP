@@ -15,6 +15,7 @@ every time you use it. It is very inconvenient.
      * [WorkingWithBranches Commit]
      * [BugReporting Report a bug]
      * [DoxygenDocumentation Make Doxygen documentation]
+     * [SmartPointers Use Smart Pointers]
  * Design  
      * [MdspIsa Instruction set architecture (ISA)]
      * [FuncSimDesign Functional simulation]
