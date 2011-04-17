@@ -1,0 +1,151 @@
+#summary General overview of Smart Pointers, implementation in the STL and Boost, examples of the use.
+
+= Introduction =
+
+Smart Pointers can greatly *simplify C++ development*. Chiefly, they provide *automatic memory management* close to more restrictive languages (like C# or VB), but there is much more they can do.
+
+The first part of this article named *General Overview* answers three questions about smart pointers: _what_, _why_ and _which_. If you already know what smart pointers are and interested in using Boost smart pointers in your programs look through the second part of the article named *Smart Pointers In The Boost Library*.
+
+= General Overview =
+
+== What are they? ==
+
+*A Smart Pointer is a C++ object that acts like a pointer, but additionally deletes the object when it is no longer needed.* Probably the most common bugs in C++ (and C) are related to pointers and memory management: *dangling pointers*, *memory leaks*, *allocation failures* and other joys. Having a smart pointer take care of these things can save a lot of aspirin...
+
+The simplest example of a smart pointer is *`auto_ptr`*, which is included in the standard C++ library. You can find it in the header `<memory>`. Here is part of auto_ptr's implementation, to illustrate what it does:
+
+{{{
+template <class T> class auto_ptr
+{
+    T* ptr;
+public:
+    explicit auto_ptr(T* p = 0) : ptr(p) {}
+    ~auto_ptr()                 {delete ptr;}
+    T& operator*()              {return *ptr;}
+    T* operator->()             {return ptr;}
+    // ...
+};
+}}}
+
+As you can see, *`auto_ptr`* is a simple wrapper around a regular pointer. It forwards all meaningful operations to this pointer (*dereferencing* and *indirection*). Its smartness in the destructor: the *destructor takes care of deleting* the pointer.
+
+For the user of *`auto_ptr`*, this means that instead of writing:
+
+{{{
+void foo()
+{
+    MyClass* p(new MyClass);
+    p->DoSomething();
+    delete p;
+}
+}}}
+
+You can write:
+
+{{{
+void foo()
+{
+    auto_ptr<MyClass> p(new MyClass);
+    p->DoSomething();
+}
+}}}
+
+And trust p to cleanup after itself.
+
+== Why would I use them? ==
+
+=== Why: Less bugs ===
+
+  * *Automatic cleanup.* You don't need to remember to free the pointer, and so there is no chance you will forget about it.
+  * *Automatic initialization.* You don't need to initialize the `auto_ptr` to `NULL`, since the default constructor does that for you.
+  * *Dangling pointers.* A common pitfall of regular pointers is the dangling pointer: a pointer that points to an object that is already deleted.
+
+There are some possible strategies for handling the statement *q = p*, where *p* and *q* are smart pointers, to *avoid pointers dangling*:
+
+    * *Nullify* *p* when it is copied (`auto_ptr` works according to this conception).
+    * *Create a new copy* of the object pointed by *p*, and have *q* point to this copy.
+    * *Ownership transfer:* Let both *p* and *q* point to the same object, but transfer the responsibility for cleaning up ("ownership") from *p* to *q*.
+    * *Reference counting:* Maintain a count of the smart pointers that point to the same object, and delete the object when this count becomes zero.
+    * *Reference linking:* The same as reference counting, only instead of a count, maintain a circular doubly linked list of all smart pointers that point to the same object.
+    * *Copy on write:* Use reference counting or linking as long as the pointed object is not modified. When it is about to be modified, copy it and modify the copy.
+
+=== Why: Exception safety ===
+
+Let's take another look at this simple example:
+
+{{{
+void foo()
+{
+    MyClass* p(new MyClass);
+    p->DoSomething();
+    delete p;
+}
+}}}
+
+What happens if *`DoSomething()`* throws an *exception*? All the lines after it will not get executed and *p* *will never get deleted!* If we're lucky, this leads only to memory leaks. However, `MyClass` may free some other resources in its destructor (file handles, threads, transactions, COM references, mutexes) and so not calling it may cause severe resource locks.
+
+If we use a *smart pointer*, however, *p* *will be cleaned up whenever it gets out of scope*, whether it was during the normal path of execution or during the stack unwinding caused by throwing an exception.
+
+=== Why: Garbage collection ===
+
+The simplest garbage collection scheme is *reference counting* or *reference linking*, but it is quite possible to implement more sophisticated garbage collection schemes with smart pointers. For more information see [http://www.iecc.com/gclist/GC-faq.html the garbage collection FAQ].
+
+=== Why: Efficiency ===
+
+A common strategy for using memory more efficiently is *copy on write (COW)*. This means that the same *object* is *shared* by many COW pointers as long as it is only *read* and not modified. When some part of the program tries to modify the object ("write"), the COW pointer creates a *new copy* of the object and *modifies* this copy instead of the original object. The standard string class is commonly implemented using COW semantics (see the `<string>` header).
+
+{{{
+string s("Hello");
+
+string t = s;       // t and s point to the same buffer of characters
+
+t += " there!";     // a new buffer is allocated for t before
+                    // appending " there!", so s is unchanged.
+}}}
+
+=== Why: STL containers ===
+
+The C++ standard library includes a set of containers and algorithms known as the standard template library (STL). STL is designed to be _generic_ (can be used with any kind of object) and _efficient_ (does not incur time overhead compared to alternatives). To achieve these two design goals, STL containers *store* their *objects by value*. This means that if you have an STL container that *stores objects* of class *Base*, it cannot *store objects* of classes *derived* from Base. To have a *collection* of objects from *different classes* you can use a *collection of pointers* and since the smart pointer automatically cleans up after itself, there is *no need to manually delete the pointed objects*.
+
+*NOTE:* STL containers may copy and delete their elements behind the scenes (for example, when they resize themselves). Therefore, *all copies of an element must be equivalent*, or the wrong copy may be the one to survive all this copying and deleting. This means that *some smart pointers cannot be used within STL containers*, specifically the standard *auto_ptr* and any *ownership-transferring* pointer. For more info about this issue, see [http://www.gotw.ca/gotw/025.htm C++ Guru of the Week #25].
+
+== Which one should I use? ==
+
+=== Which: Local variables ===
+
+The standard *`auto_ptr`* is the simplest smart pointer, and it is also, well, standard. If there are no special requirements, you should use it.
+
+=== Which: Class members ===
+
+Although you can use `auto_ptr` as a class member (and save yourself the trouble of freeing objects in the destructor), copying one object to another will nullify the pointer; using a *copied pointer* instead of auto_ptr solves this problem.
+
+=== Which: STL containers ===
+
+As explained above, using *garbage-collected* pointers with STL containers lets you store objects from *different classes* in the *same container*.
+
+It is important to consider the characteristics of the specific garbage collection scheme used. Specifically, *reference counting/linking* can *leak* in the case of *circular references* (i.e., when the pointed object itself contains a counted pointer, which points to an object that contains the original counted pointer).
+
+Reference counting might be:
+  * *Intrusive* - the pointed object itself contains the count.
+  * *Non-intrusive* - requires an allocation of a count for each counted object.
+  
+http://mdsp.googlecode.com/svn/wiki/images/intrusive_pointers.gif
+http://mdsp.googlecode.com/svn/wiki/images/non-intrusive_pointers.gif
+http://mdsp.googlecode.com/svn/wiki/images/linked_pointers.gif
+
+*Reference linking* *does not require* any changes to be made to the pointed objects, nor does it require any additional allocations. A reference linked pointer takes *a little more space* than a *reference counted* pointer - just enough to store one or two more pointers.
+
+=== Which: Big objects ===
+
+If you have objects that take a lot of space, you can *save* some of this *space* by using *COW* pointers. This way, an object will be *copied only when necessary*, and shared otherwise. The sharing is implemented using some garbage collection scheme, like reference counting or linking.
+
+=== Which: Summary ===
+
+|| *For this:* || *Use that:* ||
+|| local variables || `auto_ptr` ||
+|| class members || `copied` pointer ||
+|| STL containers || `garbage collected` pointer (e.g. reference counting/linking) ||
+|| big objects || `copy on write` ||
+
+-----
+Smart pointers are useful tools for writing safe and efficient code in C++. Like any tool, they should be used with appropriate care, thought and knowledge.
