@@ -149,3 +149,42 @@ If you have objects that take a lot of space, you can *save* some of this *space
 
 -----
 Smart pointers are useful tools for writing safe and efficient code in C++. Like any tool, they should be used with appropriate care, thought and knowledge.
+
+= Smart Pointers In The Boost Library =
+
+Boost provides the following smart pointer implementations:
+
+|| *shared_ptr`<T>`* || a pointer to *T* using a reference count to determine when the object is no longer needed. *shared_ptr* is the generic, most versatile smart pointer offered by boost ||
+|| *scoped_ptr`<T>`* || a pointer automatically deleted when it goes out of scope. No assignment possible, but no performance penalties compared to "raw" pointers ||
+|| *intrusive_ptr`<T>`* || another reference counting pointer. It provides better performance than *shared_ptr*, but requires the type *T* to provide its own reference counting mechanism ||
+|| *weak_ptr`<T>`* || a weak pointer, working in conjunction with *shared_ptr* to avoid circular references ||
+|| *shared_array`<T>`* || like *shared_ptr*, but access syntax is for an Array of *T* ||
+|| *scoped_array`<T>`* || like *scoped_ptr*, but access syntax is for an Array of *T* ||
+
+== boost::scoped_ptr`<T>` ==
+
+*scoped_ptr* is the simplest smart pointer provided by boost. It guarantees automatic deletion when the pointer goes out of scope. Sample:
+
+{{{
+#include "boost/smart_ptr.h"
+
+void Sample1_ScopedPtr()
+{
+  boost::scoped_ptr<CSample> 
+             samplePtr(new CSample);
+
+  if (!samplePtr->Query() )
+  {
+  // just some function...
+    return;    
+  }
+
+  samplePtr->Use();
+}
+}}}
+
+|| *use for* || automatic deletion of local objects or class members^1^, Delayed Instantiation, implementing PIMPL and RAII (see below) ||
+|| *not good for* || element in an STL container, multiple pointers to the same object ||
+|| *performance* || *scoped_ptr* adds little (if any) overhead to a "plain" pointer, it performs ||
+
+^1^For this purpose, using *scoped_ptr* is more expressive than the (easy to misuse and more complex) *std::auto_ptr*; using *scoped_ptr* you indicate that ownership transfer is not intended or allowed.
