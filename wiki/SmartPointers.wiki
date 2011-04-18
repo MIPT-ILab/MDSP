@@ -148,7 +148,8 @@ If you have objects that take a lot of space, you can *save* some of this *space
 || big objects || `copy on write` ||
 
 -----
-Smart pointers are useful tools for writing safe and efficient code in C++. Like any tool, they should be used with appropriate care, thought and knowledge.
+
+
 
 = Smart Pointers In The Boost Library =
 
@@ -188,3 +189,208 @@ void Sample1_ScopedPtr()
 || *performance* || *scoped_ptr* adds little (if any) overhead to a "plain" pointer, it performs ||
 
 ^1^For this purpose, using *scoped_ptr* is more expressive than the (easy to misuse and more complex) *std::auto_ptr*; using *scoped_ptr* you indicate that ownership transfer is not intended or allowed.
+
+== Reference counting pointers ==
+
+The "normal" reference counted pointer provided by boost is *shared_ptr* (the name indicates that multiple pointers can share the same object). Sample:
+
+{{{
+void Sample2_Shared()
+{
+  // (A) create a new CSample instance with one reference
+
+  boost::shared_ptr<CSample> mySample(new CSample); 
+  printf("The Sample now has %i references\n", mySample.use_count()); // should be 1
+
+  // (B) assign a second pointer to it:
+
+  boost::shared_ptr<CSample> mySample2 = mySample; // should be 2 refs by now
+
+  printf("The Sample now has %i references\n", mySample.use_count());
+
+  // (C) set the first pointer to NULL
+
+  mySample.reset(); 
+  printf("The Sample now has %i references\n", mySample2.use_count());  // 1
+
+  // the object allocated in (1) is deleted automatically
+
+  // when mySample2 goes out of scope
+}
+}}}
+
+Here are some use cases for a *shared_ptr*:
+  * use in containers
+  * using the pointer-to-implementation idiom [http://c2.com/cgi/wiki?PimplIdiom (PIMPL)]
+  * Resource-Acquisition-Is-Initialization idiom [http://www.hackcraft.net/raii/ (RAII)]
+  * Separating Interface from Implementation
+
+=== Important features of boost::shared_ptr ===
+
+  * *shared_ptr`<T>` works with an incomplete type:* when declaring or using a *shared_ptr`<T>`*, *T* may be an "incomplete type". E.g., you do only a forward declaration using `class T;` but do not yet define how *T* really looks like. Only where you dereference the pointer, the compiler needs to know "everything".
+  * *shared_ptr`<T>` works with any type:* there are virtually *no* requirements towards *T* (such as deriving from a base class).
+  * *shared_ptr`<T>` supports a custom deleter:* so you can store objects that need a different cleanup than `delete p`. For more information, see [http://www.boost.org/doc/libs/1_46_1/libs/smart_ptr/smart_ptr.htm the boost documentation].
+  * *Implicit conversion:* if a type *`U*`* can be implicitly converted to *`T*`* (e.g., because *T* is base class of *U*), a *shared_ptr`<U>`* can also be converted to *shared_ptr`<T>`* implicitly.
+  * *shared_ptr is thread safe:* this is a design choice rather than an advantage, however, it is a necessity in multithreaded programs, and the overhead is low.
+  * *Works on many platforms, proven and peer-reviewed,* the usual things.
+
+=== Example: using shared_ptr in containers ===
+
+Many container classes, including the STL containers, require *copy operations* (e.g., when inserting an existing element into a list, vector, or container). However, when this copy operations are *expensive* (or are even unavailable), the typical solution is to use a *container of pointers*. Sample with the *shared_ptr*:
+
+{{{
+typedef boost::shared_ptr<CMyLargeClass>  CMyLargeClassPtr;
+std::vector<CMyLargeClassPtr> vec;
+vec.push_back( CMyLargeClassPtr(new CMyLargeClass("bigString")) );
+}}}
+
+If you use *shared_ptr*, the elements get destroyed automatically when the vector is destroyed - unless, of course, there's another smart pointer still holding a reference. Let's have a look at sample 3:
+
+{{{
+void Sample3_Container()
+{
+  typedef boost::shared_ptr<CSample> CSamplePtr;
+
+  // (A) create a container of CSample pointers:
+
+  std::vector<CSamplePtr> vec;
+
+  // (B) add three elements
+
+  vec.push_back(CSamplePtr(new CSample));
+  vec.push_back(CSamplePtr(new CSample));
+  vec.push_back(CSamplePtr(new CSample));
+
+  // (C) "keep" a pointer to the second: 
+
+  CSamplePtr anElement = vec[1];
+
+  // (D) destroy the vector:
+
+  vec.clear();
+
+  // (E) the second element still exists
+
+  anElement->Use();
+  printf("done. cleanup is automatic\n");
+
+  // (F) anElement goes out of scope, deleting the last CSample instance
+}
+}}}
+
+== What you absolutely must know to use boost smart pointers correctly ==
+
+A few things can go wrong with smart pointers (most prominent is an invalid reference count, which deletes the object too early, or not at all). The boost implementation promotes safety, making all *potentially dangerous* operations *explicit*. So, with a few *rules* to remember, you are *safe*.
+
+*Rule 1: Assign and keep* - Assign a newly constructed instance to a smart pointer immediately, and then keep it there. The smart pointer(s) now own the object, you must not delete it manually, nor can you take it away again. This helps to not accidentally delete an object that is still referenced by a smart pointer, or end up with an invalid reference count.
+
+*Rule 2: *a* `_`ptr`<T>` *is not a* `T*` * - More correctly, there are *no implicit conversions* between a *`T*`* and a *smart pointer* to type *`T`*.
+
+*This means:*
+  * When creating a smart pointer, you explicitly have to write *`..._ptr<T> myPtr(new T)`*
+  * You cannot assign a *`T*`* to a smart pointer
+  * You cannot even write ptr = NULL. Use *ptr.reset()* for that.
+  * To retrieve the raw pointer, use *ptr.get()*. Of course, you must not delete this pointer, or use it after the smart pointer it comes from is destroyed, reset or reassigned. Use get() only when you have to *pass the pointer to a function* that expects a raw pointer.
+  * You cannot pass a *`T*`* to a function that expects a *`_`ptr`<T>`* directly. You have to *construct* a smart pointer *explicitly*, which also makes it clear that you transfer ownership of the raw pointer to the smart pointer. (See also Rule 4)
+  * There is no generic way to find the smart pointer that "holds" a given raw pointer. However, [http://www.boost.org/doc/libs/1_46_1/libs/smart_ptr/sp_techniques.html the boost: smart pointer programming techniques] illustrate solutions for many common cases.
+
+*Rule 3: No circular references* - If you have two objects referencing each other through a reference counting pointer, they are never deleted. Boost provides *weak_ptr* to *break* such *cycles* (see below).
+
+*Rule 4: No temporary shared_ptr* - Do not construct temporary *shared_ptr* to pass them to functions, always *use a named (local) variable*. (This makes your code safe in case of exceptions. See the [http://www.boost.org/doc/libs/1_46_1/libs/smart_ptr/shared_ptr.htm boost: shared_ptr best practices] for a detailed explanation.)
+
+== Using weak_ptr to break cycles ==
+
+=== Strong vs. Weak References ===
+
+
+A *strong reference keeps the referenced object alive* (i.e., as long as there is at least one strong reference to the object, it is not deleted). *boost::shared_ptr* acts as a *strong reference*. In contrast, a *weak reference does not keep the object alive*, it merely references it as long as it lives.
+
+Note that a *raw C++ pointer* in this sense is a *weak reference*. However, if you have just the pointer, you have no ability to detect whether the object still lives.
+
+*boost::weak_ptr`<T>`* is a smart pointer acting as *weak reference*. When you need it, you can request a strong (shared) pointer from it. (This can be NULL if the object was already deleted.) Of course, the strong pointer should be released immediately after use.
+
+== intrusive_ptr - lightweight shared pointer ==
+
+*shared_ptr* offers quite some services beyond a "normal" pointer. This has a little price: *the size of a shared pointer is larger than a normal pointer*, and for each object held in a shared pointer, there is a tracking object holding the reference count and the deleter. In most cases, this is negligible.
+
+*intrusive_ptr* provides an interesting tradeoff: it provides the *"lightest possible"* reference counting pointer, if the *object implements the reference count* itself. This isn't so bad after all, when designing your own classes to work with smart pointers; it is easy to embed the reference count in the class itself, to get less memory footprint and better performance.
+
+To use a type *T* with *intrusive_ptr*, you need to define two functions: *intrusive_ptr_add_ref* and *intrusive_ptr_release*. The following sample shows how to do that for a custom class:
+
+{{{
+#include "boost/intrusive_ptr.hpp"
+
+// forward declarations
+
+class CRefCounted;
+
+
+namespace boost
+{
+    void intrusive_ptr_add_ref(CRefCounted * p);
+    void intrusive_ptr_release(CRefCounted * p);
+};
+
+// My Class
+
+class CRefCounted
+{
+  private:
+    long    references;
+    friend void ::boost::intrusive_ptr_add_ref(CRefCounted * p);
+    friend void ::boost::intrusive_ptr_release(CRefCounted * p);
+
+  public:
+    CRefCounted() : references(0) {}   // initialize references to 0
+
+};
+
+// class specific addref/release implementation
+
+// the two function overloads must be in the boost namespace on most compilers:
+
+namespace boost
+{
+ inline void intrusive_ptr_add_ref(CRefCounted * p)
+  {
+    // increment reference count of object *p
+
+    ++(p->references);
+  }
+
+
+ inline void intrusive_ptr_release(CRefCounted * p)
+  {
+   // decrement reference count, and delete object when reference count reaches 0
+
+   if (--(p->references) == 0)
+     delete p;
+  } 
+} // namespace boost
+}}}
+
+== scoped_array and shared_array ==
+
+They are almost identical to *scoped_ptr* and *shared_ptr* - only they act like pointers to arrays, i.e., like pointers that were allocated using `operator new[]`. They provide an overloaded `operator[]`. Note that neither of them knows the length initially allocated.
+
+-----
+
+
+
+= Conclusion =
+
+Smart pointers are useful tools for writing safe and efficient code in C++. Like any tool, they should be used with appropriate care, thought and knowledge.
+
+== Additional reading ==
+
+The main source of information:
+http://www.boost.org/doc/libs/1_46_1/libs/smart_ptr/smart_ptr.htm
+
+About smart pointers in general:
+http://ootips.org/yonat/4dev/smart-pointers.html
+
+About implementation of smart pointers in details:
+http://www.davethehat.com/articles/smartp.htm
+
+About the Boost smart pointers:
+http://www.codeproject.com/KB/stl/boostsmartptr.aspx
