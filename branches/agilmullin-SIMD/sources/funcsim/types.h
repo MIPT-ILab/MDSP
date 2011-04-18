@@ -86,7 +86,27 @@ typedef enum OperCode
     JMP,
     JGT,
     HLT,
-    INT
+    INT,
+/* Operation code of SIMD instruction. */
+    PADD,
+    PSUB,
+    PMUL,
+    PSAD,
+    PDOT,
+    PAVG,
+    PMIN,
+    PMAX,
+    PCMPE,
+    PAND,
+    POR,
+    PXOR,
+    PNAND,
+    PNOR,
+    PSHL,
+    PSHRL,
+    PSHRA,
+/* Reserved code. */
+    RESERVED
 } OperCode;
 
 typedef enum FlagType
