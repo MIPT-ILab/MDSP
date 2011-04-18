@@ -142,6 +142,9 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
             }
             this->setSYS(opcode0, imm8);
             break;
+           
+            //SIMD intstruction also must be here!
+
         default:
             cout << "Illegal Type in set method\n";
             assert( 0);
@@ -268,6 +271,64 @@ OperCode Operation::getCode( OperType type, hostUInt32 code)
                     assert( 0);
                     return NOP;
             }
+        case SIMD:
+            switch ( code)
+            {
+                case 0:
+                    return PADD;
+                case 1:
+                    return PSUB;
+                case 2:
+                    return PMUL;
+                case 3:
+                    return PSAD;
+                case 4:
+                    return PDOT;
+                case 5:
+                    return PAVG;
+                case 6:
+                    return PMIN;
+                case 7:
+                    return PMAX;
+                case 8:
+                    return PCMPE;
+                case 9:
+                    return PAND;
+                case 10:
+                    return POR;
+                case 11:
+                    return PXOR;
+                case 12:
+                    return PNAND;
+                case 13:
+                    return PNOR;
+                case 14:
+                    return PSHL;
+                case 15:
+                    return PSHRL;
+                case 16:
+                    return PSHRA;
+                case 17:
+                case 18:
+                case 19:
+                case 20:
+                case 21:
+                case 22:
+                case 23:
+                case 24:
+                case 25:
+                case 26:
+                case 27:
+                case 28:
+                case 29:
+                case 30:
+                case 31:
+                    return RESERVED;
+                default:
+                    cout << "Illegal operation in SIMD" << endl;
+                    assert( 0);
+                    return NOP;
+            }
         default:
             cout << "Invalid operation type\n";
             assert( 0);
@@ -336,6 +397,50 @@ hostUInt32 Operation::getInt32FromCode( OperType type, OperCode code)
                     return 1;
                 default:
                     cout << "Illegal operation in SYS\n";
+                    assert( 0);
+                    return 0;   /* UNREACHABLE */
+            }
+        case SIMD:
+            switch ( code)
+            {
+                case PADD:
+                    return 0;
+                case PSUB:
+                    return 1;
+                case PMUL:
+                    return 2;
+                case PSAD:
+                    return 3;
+                case PDOT:
+                    return 4;
+                case PAVG:
+                    return 5;
+                case PMIN:
+                    return 6;
+                case PMAX:
+                    return 7;
+                case PCMPE:
+                    return 8;
+                case PAND:
+                    return 9;
+                case POR:
+                    return 10;
+                case PXOR:
+                    return 11;
+                case PNAND:
+                    return 12;
+                case PNOR:
+                    return 13;
+                case PSHL:
+                    return 14;
+                case PSHRL:
+                    return 15;
+                case PSHRA:
+                    return 16;
+                case RESERVED:
+                    return 17;
+                default:
+                    cout << "Illegal operation in SIMD" << endl;
                     assert( 0);
                     return 0;   /* UNREACHABLE */
             }
@@ -529,6 +634,30 @@ void Operation::setSYS( OperCode opcode0,
     }
 }
 
+/**
+ * Set an operation of SIMD type
+ */
+void Operation::setSIMD( OperCode opcode0,
+                         hostUInt8 am,
+                         hostUInt8 ip,
+                         hostUInt8 mao,
+                         hostUInt8 d,
+                         hostUInt8 ro_ir,
+                         hostUInt8 sba,
+                         hostUInt8 dba_sda)
+{
+    this->clear();
+    this->type = SIMD;
+    this->opcode0 = opcode0;
+    this->am      = am;
+    this->ip      = ip;
+    this->mao     = mao;
+    this->d       = d;
+    this->ro = this->ir = ro_ir;
+    this->sba     = sba;
+    this->dba = this->sda = dba_sda;
+}
+
 /*
  * Print MOVE operation to the console
  */
@@ -637,6 +766,79 @@ void Operation::dumpSYS()
     }
 }
 
+/*
+ * Print SIMD operation to the console
+ */
+void Operation::dumpSIMD()
+{
+    cout << "Operation has to be set to SIMD with" << endl;
+    cout << "opcode0=";
+        switch (opcode0)
+        {
+                case PADD:
+                    cout << "PADD" << endl;
+                    break;
+                case PSUB:
+                    cout << "PSUB" << endl;
+                    break;
+                case PMUL:
+                    cout << "PMUL" << endl;
+                    break;
+                case PSAD:
+                    cout << "PSAD" << endl;
+                    break;
+                case PDOT:
+                    cout << "PDOT" << endl;
+                    break;
+                case PAVG:
+                    cout << "PAVG" << endl;
+                    break;
+                case PMIN:
+                    cout << "PMIN" << endl;
+                    break;
+                case PMAX:
+                    cout << "PMAX" << endl;
+                    break;
+                case PCMPE:
+                    cout << "PCMPE" << endl;
+                    break;
+                case PAND:
+                    cout << "PAND" << endl;
+                    break;
+                case POR:
+                    cout << "POR" << endl;
+                    break;
+                case PXOR:
+                    cout << "PXOR" << endl;
+                    break;
+                case PNAND:
+                    cout << "PNAND" << endl;
+                    break;
+                case PNOR:
+                    cout << "PNOR" << endl;
+                    break;
+                case PSHL:
+                    cout << "PSHL" << endl;
+                    break;
+                case PSHRL:
+                    cout << "PSHRL" << endl;
+                    break;
+                case PSHRA:
+                    cout << "PSHRA" << endl;
+                    break;
+                case RESERVED:
+                    cout << "Reserved" << endl;
+                    break;
+                default:
+                    cout << "unknown" << endl;
+        }
+    cout << "AM=" << this->am << " IP=" << this->ip;
+    cout << "MAO=" << this->mao << " D=" << this->d << endl;
+    cout << "Row offset=" << this->ro << " Aux Register=" << this->ir << endl;
+    cout << "Source base address=" << this->sba;
+    cout << "Destination base address=" << this->dba << " S/D ACR=" << this->sda << endl;
+}
+
 /**
  * Get 4 Byte value from MemVal
  *
@@ -735,6 +937,9 @@ MemVal* Operation::encode()
         case SYS:
             this->encodeSYS();
             break;
+        case SIMD:
+            this->encodeSIMD();
+            break;
         default:
             warning("Illegal operation code: 0x%x", getInstrWord());
     }
@@ -769,6 +974,9 @@ void Operation::decode( MemVal* mem_value)
             break;
         case SYS:
             this->decodeSYS();
+            break;
+        case SIMD:
+            this->decodeSIMD();
             break;
         default:
             critical( "Illegal operation type in decode: 0x%x", getInstrWord());
@@ -976,7 +1184,6 @@ void Operation::decodePFLOW()
     }
     this->setPFLOW( opcode0, sd, rd, imm16);
 }
-
 /*
  * Encode P_FLOW command to a binary form
  * Necessary bytes are set in the determined position
@@ -1025,6 +1232,64 @@ void Operation::encodeSYS()
     setValueByShift( this->imm8, 0);
 }
 
+/**
+ * Decode SIMD command from binary form
+ * All mask are set as it is described in architecture.
+ */
+void Operation::decodeSIMD()
+{
+    /* skip type decoding as we already know the type */
+
+    hostUInt32         op_mask = 0x1F000000; // Opcode mask
+    hostUInt32         am_mask = 0x00E00000; // AM mask
+    hostUInt32         ip_mask = 0x00100000; // IP mask
+    hostUInt32        mao_mask = 0x000FF000; // MAO mask
+    hostUInt32          d_mask = 0x00000800; // D mask
+    hostUInt32      ro_ir_mask = 0x000007C0; // Row offset/Aux. register mask
+    hostUInt32        sba_mask = 0x00000038; // Source base address mask
+    hostUInt32    dba_sda_mask = 0x00000007; // Destination base address/ SD ACR mask
+
+    /* temporary fields */
+    OperCode opcode0 = this->getCode( SIMD, this->getValueByMask( op_mask, 24));;
+    hostUInt32         am = this->getValueByMask( am_mask, 21);      // AM
+    hostUInt32         ip = this->getValueByMask( ip_mask, 20);      // IP
+    hostUInt32        mao = this->getValueByMask( mao_mask, 12);     // MAO
+    hostUInt32          d = this->getValueByMask( d_mask, 11);       // D
+    hostUInt32      ro_ir = this->getValueByMask( ro_ir_mask, 6);    // Row offset/Aux. register
+    hostUInt32        sba = this->getValueByMask( sba_mask, 3);      // Source base address
+    hostUInt32    dba_sda = this->getValueByMask( dba_sda_mask, 0);  // Destination base address/ SD ACR
+
+    this->setSIMD( opcode0, am, ip, mao, d, ro_ir, sba, dba_sda);
+}
+/*
+ * Encode SIMD command to a binary form
+ */
+void Operation::encodeSIMD()
+{
+    setValueByShift( getInt32FromCode( SIMD, this->opcode0), 24);
+    setValueByShift( am, 21);
+    setValueByShift( ip, 20);
+    setValueByShift( mao, 12);
+    setValueByShift( d, 11);
+    if ( ro==ir)
+    {
+        setValueByShift( ro, 6);
+    }
+    else
+    {
+        assert( 0);
+    }
+    setValueByShift( sba, 3);
+    if ( dba==sda)
+    {
+        setValueByShift( dba, 0);
+    }
+    else
+    {
+        assert( 0);
+    }
+}
+
 /*
 * Print an operation to console
 */
@@ -1043,6 +1308,9 @@ void Operation::dump()
             break;
         case SYS:
             this->dumpSYS();
+            break;
+        case SIMD:
+            this->dumpSIMD();
             break;
         default:
             warning( "Unknown operation type in dump: 0x%x", getInstrWord());
@@ -1070,6 +1338,9 @@ void Operation::execute()
             break;
         case SYS:
             this->executeSYS();
+            break;
+        case SIMD:
+            this->executeSIMD();
             break;
         default:
             cout << "Invalid operation type\n";
@@ -1157,5 +1428,11 @@ void Operation::executeSYS()
     }
 }
 
-
+/*
+ * Execute the operation of SIMD type
+ */
+void Operation::executeSIMD()
+{
+//Execute SIMD must be here!
+}
 
