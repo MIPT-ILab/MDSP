@@ -34,24 +34,24 @@ int main(int argc, char* argv[])
     
     int operation1 = 100;
     int operation2 = 200;
-    int *address;
+    int *address = new int;
    
-    goto demo1;
+    goto demo3;
    
 demo1:
    
     cout << std::endl << "First demo" << endl;
     
-    writer.write(&operation1, 3);
+    writer.write(operation1, 3);
     cout << "'" << operation1 << "' was added on 3-rd clock" << endl;
     
-    writer.write(&operation2, 4); 
+    writer.write(operation2, 4); 
     cout << "'" << operation2 << "' was added on 4-rd clock" << endl;    
     
     for ( unsigned i = 5; i < 15; i++)
     {
         cout << i << "-th clock;" << endl;
-        if (!reader1.read(&address, i))
+        if (!reader1.read(address, i))
         {
             cout  << "'" << *address << "' was readed from ReadPort1 on " << i << "-th clock" << endl;
         }
@@ -63,16 +63,16 @@ demo2:
     
     cout << std::endl << "Second demo" << endl;
     
-    writer.write(&operation1, 3);
+    writer.write(operation1, 3);
     cout << "'" << operation1 << "' was added on 3-rd clock" << endl;
     
-    writer.write(&operation2, 4); 
+    writer.write(operation2, 4); 
     cout << "'" << operation2 << "' was added on 4-rd clock" << endl;  
     
     for ( unsigned i = 5; i < 14; i++)
     {
         cout << i << "-th clock;" << endl;
-        if (!reader1.read(&address, i))
+        if (!reader1.read(address, i))
         {
             cout  << "'" << *address << "' was readed from ReadPort1 on " << i << "-th clock" << endl;
         }
@@ -81,7 +81,7 @@ demo2:
     for ( unsigned i = 14; i < 20; i++)
     {
         cout << i << "-th clock;" << endl;
-        if (!reader2.read(&address, i))
+        if (!reader2.read(address, i))
         {
             cout  << "'" << *address << "' was readed from ReadPort2 on " << i << "-th clock" << endl;
         }
@@ -94,10 +94,10 @@ demo3:
    
     cout << std::endl << "Third demo" << endl;
     
-    writer.write(&operation1, 4);
+    writer.write(operation1, 4);
     cout << "'" << operation1 << "' was added on 3-rd clock" << endl;
     
-    writer.write(&operation2, 4); 
+    writer.write(operation2, 4); 
     cout << "'" << operation2 << "' was added on 4-rd clock" << endl;     
     
     return 0;

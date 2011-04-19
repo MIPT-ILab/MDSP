@@ -89,7 +89,7 @@ template<class T> class WritePort: public Port<T>
         WritePort<T>( std::string, hostUInt32, hostUInt32);
         
         // Write Method
-        void write( T*, hostUInt64);
+        void write( T, hostUInt64);
         
         // Addes destination ReadPort to list
         void setDestination( ReadListType*);
@@ -130,7 +130,7 @@ template<class T> WritePort<T>::WritePort( std::string key, hostUInt32 bandwidth
  * If port wasn't initialized, asserts.
  * If port is overloaded by bandwidth (more than _bandwidth token during one cycle, asserts).
 */
-template<class T> void WritePort<T>::write( T* what, hostUInt64 cycle)
+template<class T> void WritePort<T>::write( T what, hostUInt64 cycle)
 {
     if ( !this->_init) 
     {
@@ -188,7 +188,7 @@ template<class T> class ReadPort: public Port<T>
         // Queue of data that should be released
         struct DataCage
         {
-            T* data;
+            T data;
             hostUInt64 cycle;
         };
         typedef std::queue<DataCage> DataQueue;
@@ -199,10 +199,10 @@ template<class T> class ReadPort: public Port<T>
         ReadPort<T>( std::string, hostUInt64);
         
         // Read method
-        hostSInt8 read( T**, hostUInt64);
+        hostSInt8 read( T*, hostUInt64);
 
         // Pushes data from WritePort
-        void pushData( T*, hostUInt64);
+        void pushData( T, hostUInt64);
         
         // Tests if there is any ungot data
         bool selfTest( hostUInt64, hostUInt64*) const;
@@ -233,7 +233,7 @@ template<class T> ReadPort<T>::ReadPort( std::string key, hostUInt64 latency):
  * If succesful, returns 0
  * If uninitalized, asserts
 */
-template<class T> hostSInt8 ReadPort<T>::read( T** address, hostUInt64 cycle)
+template<class T> hostSInt8 ReadPort<T>::read( T* address, hostUInt64 cycle)
 {   
     if ( !this->_init) 
     {
@@ -256,7 +256,7 @@ template<class T> hostSInt8 ReadPort<T>::read( T** address, hostUInt64 cycle)
 /*
  * Receive data from WritePort
 */
-template<class T> void ReadPort<T>::pushData( T* what, hostUInt64 cycle)
+template<class T> void ReadPort<T>::pushData( T what, hostUInt64 cycle)
 {
     DataCage buffer;
     buffer.data = what;
