@@ -105,7 +105,7 @@ typedef enum OperCode
     PSHL,
     PSHRL,
     PSHRA,
-/* Reserved code. */
+/* Code of reserved operation. */
     RESERVED
 } OperCode;
 

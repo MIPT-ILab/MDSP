@@ -142,9 +142,6 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
             }
             this->setSYS(opcode0, imm8);
             break;
-           
-            //SIMD intstruction also must be here!
-
         default:
             cout << "Illegal Type in set method\n";
             assert( 0);
@@ -308,21 +305,11 @@ OperCode Operation::getCode( OperType type, hostUInt32 code)
                     return PSHRL;
                 case 16:
                     return PSHRA;
-                case 17:
-                case 18:
-                case 19:
-                case 20:
-                case 21:
-                case 22:
-                case 23:
-                case 24:
-                case 25:
-                case 26:
-                case 27:
-                case 28:
-                case 29:
-                case 30:
-                case 31:
+                case 17: case 18: case 19:
+                case 20: case 21: case 22:
+                case 23: case 24: case 25:
+                case 26: case 27: case 28:
+                case 29: case 30: case 31:
                     return RESERVED;
                 default:
                     cout << "Illegal operation in SIMD" << endl;
@@ -642,9 +629,9 @@ void Operation::setSIMD( OperCode opcode0,
                          hostUInt8 ip,
                          hostUInt8 mao,
                          hostUInt8 d,
-                         hostUInt8 ro_ir,
-                         hostUInt8 sba,
-                         hostUInt8 dba_sda)
+                         hostUInt8 imm5_rind,
+                         hostUInt8 aprs,
+                         hostUInt8 aprd_pad)
 {
     this->clear();
     this->type = SIMD;
@@ -653,9 +640,9 @@ void Operation::setSIMD( OperCode opcode0,
     this->ip      = ip;
     this->mao     = mao;
     this->d       = d;
-    this->ro = this->ir = ro_ir;
-    this->sba     = sba;
-    this->dba = this->sda = dba_sda;
+    this->imm5 = this->rind = imm5_rind;
+    this->aprs    = aprs;
+    this->aprd = this->pad = aprd_pad;
 }
 
 /*
@@ -834,9 +821,9 @@ void Operation::dumpSIMD()
         }
     cout << "AM=" << this->am << " IP=" << this->ip;
     cout << "MAO=" << this->mao << " D=" << this->d << endl;
-    cout << "Row offset=" << this->ro << " Aux Register=" << this->ir << endl;
-    cout << "Source base address=" << this->sba;
-    cout << "Destination base address=" << this->dba << " S/D ACR=" << this->sda << endl;
+    cout << "Row offset=" << this->imm5 << " Aux Register=" << this->rind << endl;
+    cout << "Source base address=" << this->aprs;
+    cout << "Destination base address=" << this->aprd << " S/D ACR=" << this->pad << endl;
 }
 
 /**
@@ -1240,26 +1227,26 @@ void Operation::decodeSIMD()
 {
     /* skip type decoding as we already know the type */
 
-    hostUInt32         op_mask = 0x1F000000; // Opcode mask
-    hostUInt32         am_mask = 0x00E00000; // AM mask
-    hostUInt32         ip_mask = 0x00100000; // IP mask
-    hostUInt32        mao_mask = 0x000FF000; // MAO mask
-    hostUInt32          d_mask = 0x00000800; // D mask
-    hostUInt32      ro_ir_mask = 0x000007C0; // Row offset/Aux. register mask
-    hostUInt32        sba_mask = 0x00000038; // Source base address mask
-    hostUInt32    dba_sda_mask = 0x00000007; // Destination base address/ SD ACR mask
+    hostUInt32          op_mask = 0x1F000000; // Opcode mask
+    hostUInt32          am_mask = 0x00E00000; // AM mask
+    hostUInt32          ip_mask = 0x00100000; // IP mask
+    hostUInt32         mao_mask = 0x000FF000; // MAO mask
+    hostUInt32           d_mask = 0x00000800; // D mask
+    hostUInt32   imm5_rind_mask = 0x000007C0; // Row offset/Aux. register mask
+    hostUInt32        aprs_mask = 0x00000038; // Source base address mask
+    hostUInt32    aprd_pad_mask = 0x00000007; // Destination base address/ SD ACR mask
 
     /* temporary fields */
     OperCode opcode0 = this->getCode( SIMD, this->getValueByMask( op_mask, 24));;
-    hostUInt32         am = this->getValueByMask( am_mask, 21);      // AM
-    hostUInt32         ip = this->getValueByMask( ip_mask, 20);      // IP
-    hostUInt32        mao = this->getValueByMask( mao_mask, 12);     // MAO
-    hostUInt32          d = this->getValueByMask( d_mask, 11);       // D
-    hostUInt32      ro_ir = this->getValueByMask( ro_ir_mask, 6);    // Row offset/Aux. register
-    hostUInt32        sba = this->getValueByMask( sba_mask, 3);      // Source base address
-    hostUInt32    dba_sda = this->getValueByMask( dba_sda_mask, 0);  // Destination base address/ SD ACR
+    hostUInt32          am = this->getValueByMask( am_mask, 21);       // AM
+    hostUInt32          ip = this->getValueByMask( ip_mask, 20);       // IP
+    hostUInt32         mao = this->getValueByMask( mao_mask, 12);      // MAO
+    hostUInt32           d = this->getValueByMask( d_mask, 11);        // D
+    hostUInt32   imm5_rind = this->getValueByMask( imm5_rind_mask, 6); // Row offset/Aux. register
+    hostUInt32        aprs = this->getValueByMask( aprs_mask, 3);      // Source base address
+    hostUInt32    aprd_pad = this->getValueByMask( aprd_pad_mask, 0);  // Destination base address/ SD ACR
 
-    this->setSIMD( opcode0, am, ip, mao, d, ro_ir, sba, dba_sda);
+    this->setSIMD( opcode0, am, ip, mao, d, imm5_rind, aprs, aprd_pad);
 }
 /*
  * Encode SIMD command to a binary form
@@ -1271,18 +1258,18 @@ void Operation::encodeSIMD()
     setValueByShift( ip, 20);
     setValueByShift( mao, 12);
     setValueByShift( d, 11);
-    if ( ro==ir)
+    if ( imm5==rind)
     {
-        setValueByShift( ro, 6);
+        setValueByShift( imm5, 6);
     }
     else
     {
         assert( 0);
     }
-    setValueByShift( sba, 3);
-    if ( dba==sda)
+    setValueByShift( aprs, 3);
+    if ( aprd==pad)
     {
-        setValueByShift( dba, 0);
+        setValueByShift( aprd, 0);
     }
     else
     {
@@ -1317,7 +1304,7 @@ void Operation::dump()
     }
 }
 
-/*
+/**
  * Execute the operation
  */
 void Operation::execute()
