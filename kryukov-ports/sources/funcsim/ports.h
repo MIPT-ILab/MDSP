@@ -122,7 +122,7 @@ template<class T> WritePort<T>::WritePort( std::string key, hostUInt32 bandwidth
 /*
  * Write method.
  *
- * First argument is the link to data.
+ * First argument is data itself.
  * Second argument is the current cycle number.
  * 
  * Forwards data to all connected ReadPorts 
@@ -161,7 +161,7 @@ template<class T> void WritePort<T>::write( T what, hostUInt64 cycle)
 }
 
 /*
- * Shows to WritePort list of his ReadPorts (from 
+ * Shows to WritePort list of his ReadPorts (from PortMap)
 */
 template<class T> void WritePort<T>::setDestination(ReadListType* pointer)
 {
@@ -254,7 +254,7 @@ template<class T> hostSInt8 ReadPort<T>::read( T* address, hostUInt64 cycle)
 }
 
 /*
- * Receive data from WritePort
+ * Receive data from WritePort.
 */
 template<class T> void ReadPort<T>::pushData( T what, hostUInt64 cycle)
 {
