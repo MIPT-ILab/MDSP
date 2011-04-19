@@ -1420,6 +1420,6 @@ void Operation::executeSYS()
  */
 void Operation::executeSIMD()
 {
-//Execute SIMD must be here!
+cout << "Execute SIMD is not implemented yet." <<endl;
 }
 
