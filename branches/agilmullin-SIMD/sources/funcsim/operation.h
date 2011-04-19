@@ -41,14 +41,14 @@ class Operation: public log
     hostUInt8 rs1:5, rs2:5, rd:5;
 
     /* Special bit fields of SIMD instruction. */
-    hostUInt8  ip:1;  // Input Precision
-    hostUInt8 mao:8;  // Memory Acces Order
-    hostUInt8   d:1;  // D field
-    hostUInt8  ro:5;  // Row Offset
-    hostUInt8  ir:5;  // Index Register
-    hostUInt8 sba:3;  // Source base address
-    hostUInt8 dba:3;  // Destination base address
-    hostUInt8 sda:3;  // S/D_ACR
+    hostUInt8   ip:1;  // Input Precision
+    hostUInt8  mao:8;  // Memory Acces Order
+    hostUInt8    d:1;  // D field
+    hostUInt8 imm5:5;  // Row Offset
+    hostUInt8 rind:5;  // Index Register
+    hostUInt8 aprs:3;  // Source base address
+    hostUInt8 aprd:3;  // Destination base address
+    hostUInt8  pad:3;  // S/D_ACR
 
     /* Decode type */
     OperType decodeType();
@@ -124,11 +124,11 @@ public:
     inline hostUInt8 getIP(){ return this->ip; }
     inline hostUInt8 getMAO(){ return this->mao; }
     inline hostUInt8 getD(){ return this->d; }
-    inline hostUInt8 getRO(){ return this->ro; }
-    inline hostUInt8 getIR(){ return this->ir; }
-    inline hostUInt8 getSBA(){ return this->sba; }
-    inline hostUInt8 getDBA(){ return this->dba; }
-    inline hostUInt8 getSDA(){ return this->sda; }
+    inline hostUInt8 getImm5(){ return this->imm5; }
+    inline hostUInt8 getRInd(){ return this->rind; }
+    inline hostUInt8 getAprS(){ return this->aprs; }
+    inline hostUInt8 getAprD(){ return this->aprd; }
+    inline hostUInt8 getPaD(){ return this->pad; }
 
     /* Set methods */
     inline void setType( OperType type) { this->type = type; }
@@ -161,11 +161,11 @@ public:
     inline void setIP( hostUInt8 ip){ this->ip = ip; }
     inline void setMAO( hostUInt8 mao){ this->mao = mao; }
     inline void setD( hostUInt8 d){ this->d = d; }
-    inline void setRO( hostUInt8 ro){ this->ro = ro; }
-    inline void setIR( hostUInt8 ir){ this->ir = ir; }
-    inline void setSBA( hostUInt8 sba){ this->sba = sba; }
-    inline void setDBA( hostUInt8 dba){ this->dba = dba; }
-    inline void setSDA( hostUInt8 sda){ this->sda = sda; }
+    inline void setImm5( hostUInt8 imm5){ this->imm5 = imm5; }
+    inline void setRInd( hostUInt8 rind){ this->rind = rind; }
+    inline void setAprS( hostUInt8 aprs){ this->aprs = aprs; }
+    inline void setAprD( hostUInt8 aprd){ this->aprd = aprd; }
+    inline void setPaD( hostUInt8 pad){ this->pad = pad; }
 
     inline void clear()
     {
@@ -179,9 +179,9 @@ public:
         this->ip = 0;
         this->mao = 0;
         this->d = 0;
-        this->ro = this->ir = 0;
-        this->sba = 0;
-        this->dba = this->sda = 0;
+        this->imm5 = this->rind = 0;
+        this->aprs = 0;
+        this->aprd = this->pad = 0;
     }
 
     /* General set method (includes all properties as parameters) */
@@ -223,9 +223,9 @@ public:
                   hostUInt8 ip,
                   hostUInt8 mao,
                   hostUInt8 d,
-                  hostUInt8 ro_ir,
-                  hostUInt8 sba,
-                  hostUInt8 dba_sda);
+                  hostUInt8 imm5_rind,
+                  hostUInt8 aprs,
+                  hostUInt8 aprd_pad);
 
     /* Encode the operation */
     MemVal* encode();
