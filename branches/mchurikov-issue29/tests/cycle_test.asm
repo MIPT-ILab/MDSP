@@ -2,7 +2,7 @@ main:
     ld $100, %r0
     brm %r0, (%r0)
     ld $1, %r1
-    ld $10100, %r2
+    ld $200, %r2
     
 label1:
     add %r0, %r1, %r0

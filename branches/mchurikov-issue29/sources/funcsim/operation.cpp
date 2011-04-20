@@ -1189,8 +1189,9 @@ void Operation::executeALU()
                 default:
                     assert( 0);   
             }
-            if ( firstOperand & ( (!secondOperand) + 0b1)) 
+            if ( firstOperand & ( (!secondOperand) + 1)) 
                     flags->setFlag( FLAG_CARRY, true);
+            else flags->setFlag( FLAG_CARRY, false);
             break;
         default:
             assert( 0);
