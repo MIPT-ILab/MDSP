@@ -16,10 +16,10 @@
 #define FLAG_C_POSITION 0x20
 #define FLAG_O_POSITION 0x10
 
-#define FLAG_N_POS_INVERSED 0x7F
-#define FLAG_Z_POS_INVERSED 0xBF
-#define FLAG_C_POS_INVERSED 0xDF
-#define FLAG_O_POS_INVERSED 0xEF
+#define FLAG_N_POS_INVERSED (char)(~FLAG_N_POSITION)
+#define FLAG_Z_POS_INVERSED (char)(~FLAG_Z_POSITION)
+#define FLAG_C_POS_INVERSED (char)(~FLAG_C_POSITION)
+#define FLAG_O_POS_INVERSED (char)(~FLAG_O_POSITION)
 
 /**
  * Class of flag register description

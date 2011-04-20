@@ -924,6 +924,30 @@ void testFlags()
     if ( flags->getFlag( FLAG_ZERO)) assert( 0);
     if ( flags->getFlag( FLAG_CARRY)) assert( 0);
     if ( flags->getFlag( FLAG_OVERFLOW)) assert( 0);
+    
+    ///set all
+    flags->setFlag( FLAG_NEG, true);
+    flags->setFlag( FLAG_ZERO, false);
+    flags->setFlag( FLAG_CARRY, true);
+    flags->setFlag( FLAG_OVERFLOW, false);
+    
+    ///check
+    if ( !( flags->getFlag( FLAG_NEG))) assert( 0);
+    if ( ( flags->getFlag( FLAG_ZERO))) assert( 0);
+    if ( !( flags->getFlag( FLAG_CARRY))) assert( 0);
+    if ( ( flags->getFlag( FLAG_OVERFLOW))) assert( 0);
+    
+    ///set all
+    flags->setFlag( FLAG_NEG, false);
+    flags->setFlag( FLAG_ZERO, true);
+    flags->setFlag( FLAG_CARRY, false);
+    flags->setFlag( FLAG_OVERFLOW, true);
+    
+    ///check
+    if ( ( flags->getFlag( FLAG_NEG))) assert( 0);
+    if ( !( flags->getFlag( FLAG_ZERO))) assert( 0);
+    if ( ( flags->getFlag( FLAG_CARRY))) assert( 0);
+    if ( !( flags->getFlag( FLAG_OVERFLOW))) assert( 0);
 }
 
 void testExecution()
