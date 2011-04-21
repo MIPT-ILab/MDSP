@@ -23,6 +23,7 @@ Core::Core()
     this->memory = new MemoryModel( 1024);
     this->rf = new RegisterFileModel( 32, 2); // 32 16-bit registers
     this->flags = new Flags();
+    this->disasmPrint = false;
 }
 
 /*
@@ -34,15 +35,19 @@ void Core::init( hostUInt16 start_pc)
     this->pc = start_pc;
     this->flags->init();
     this->stop = false;
-    cout << "Init. Start PC: 0x" << hex << start_pc << endl;
+    warning("Init. Start PC: 0x%X",start_pc);
 }
 
 /*
  * Run the functional simulator
  */
-void Core::run()
+
+hostUInt64 Core::run( hostUInt64 requested)
+
 {
-    cout << "Simulation started." << endl;
+    //number of steps the core has made
+    hostUInt64 steps=0;
+
 
     /*
      * Infinite loop ("while (1)") should be here.
@@ -50,7 +55,7 @@ void Core::run()
      * As there isn't any "return" instruction in the assembler at the moment,
      * check for "zero" instruction will be held.
      */
-    while (1)
+    while ( steps < requested )
     {
         Operation* op;
 
@@ -58,10 +63,10 @@ void Core::run()
         MemVal* mem_value ( (MemVal*) new ByteLine( memory->read32(this->GetPC()), HIGH_FIRST));
 
         /* check for "zero" instruction */
-        if (!mem_value->getHostUInt32())
+        /* if (!mem_value->getHostUInt32())
         {
             break;
-        }
+        } */
 
         op = new Operation( this);
 
@@ -69,16 +74,24 @@ void Core::run()
 
         /* Decode the operation */
         op->decode( mem_value);
+        
+        //op->encode();
 
-        //cout << op->encode()->getHostUInt32() << endl;
-        //op->dump();
+        /* Execute operation */
+        op->execute();
+        
+        /* Disassembling */
+        if ( disasmPrint )
+        {
+            op->dump();
+        }
+
+        delete( op);
 
         /* Add 4 bytes (32 bits) to access next instruction */
         this->pc = this->pc + 4;
 
-        /* Execute operation */
-        op->execute();
-        delete( op);
+        steps++;
 
         /* Check if it is necessary to stop instruction execution */
         if ( GetStop())
@@ -87,7 +100,9 @@ void Core::run()
         }
     }
 
-    cout << "Simulation finished." << endl;
+
+    warning("Number of steps executed: %d", steps);
+    return steps;
 }
 
 /*
