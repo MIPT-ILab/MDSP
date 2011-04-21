@@ -40,7 +40,9 @@ ASM_OBJS_CPP := \
 	sources/funcsim/log.cpp \
 	sources/funcsim/memory.cpp \
 	sources/funcsim/operation.cpp \
-	sources/funcsim/register_file.cpp 
+	sources/funcsim/register_file.cpp \
+	sources/funcsim/core.cpp \
+	sources/funcsim/flags.cpp
 
 UNAME := $(shell uname -o)
 
