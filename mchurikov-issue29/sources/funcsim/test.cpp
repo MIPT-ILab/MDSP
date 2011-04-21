@@ -790,19 +790,19 @@ void testOperationSetDumpEncode(
 
 void testOperation()
 {
-    testOperationSetDumpEncode(   MOVE, BRR, NOP, NOP, 0, 0, 0, 0,  0, 1, 0, 2, "brr 1, r2;\n",
+    testOperationSetDumpEncode(   MOVE, BRR, NOP, NOP, 0, 0, 0, 0,  0, 1, 0, 2, "brr r1, r2;\n",
         0x2200000c); // 000 011 --- -- ----------- 00001 00010
     testOperationSetDumpEncode(   MOVE, BRM, NOP, NOP, 1, 0, 0, 0,  0, 1, 0, 2, "brm 1, r1, r2;\n",
         0x22002004); // 000 001 --- 01
-    testOperationSetDumpEncode(   MOVE,  LD, NOP, NOP, 0, 0, 0, 0,  1, 0, 0, 2, "ld 0, r1, r2;\n",
+    testOperationSetDumpEncode(   MOVE,  LD, NOP, NOP, 0, 0, 0, 0,  1, 0, 0, 2, "ld 0, 0x1, r2;\n",
         0x22000018); // 000 110 --- 00
-    testOperationSetDumpEncode(    ALU, NOP, ADD, NOP, 0, 1, 0, 6,  0, 0, 0, 2, "add 1, 6, r2;\n",
+    testOperationSetDumpEncode(    ALU, NOP, ADD, NOP, 0, 1, 0, 6,  0, 0, 0, 2, "add 1, 0x6, r2;\n",
         0xc2802020); 
     testOperationSetDumpEncode(    ALU, NOP, SUB, NOP, 0, 0, 0, 0,  0, 1, 3, 2, "sub 0, r1, r3, r2;\n",
         0x62044020);
-    testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 1, 0, 0, 0,  5, 0, 0, 0, "jmp 1, r5;\n",
+    testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 1, 0, 0, 0,  5, 0, 0, 0, "jmp 1, 0x5;\n",
         0x050080a0);
-    testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 1, 0, 0, 0, 10, 0, 0, 0, "jgt 1, r10;\n",
+    testOperationSetDumpEncode( P_FLOW, JGT, NOP, NOP, 1, 0, 0, 0, 10, 0, 0, 0, "jgt 1, 0x10;\n",
         0x0a0080a2);
     testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 0, 0, 0, 0,  0, 0, 0, 2, "jmp 0, r2;\n",
         0x020000a0);
@@ -963,7 +963,7 @@ void testExecution()
     core->GetRF()->write16( 1, 0x2);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetMemory()->read16( 9) != 0x2) 
     {
         cout << "ERROR: incorrect execution BRM sd = 0." << endl;
@@ -977,7 +977,7 @@ void testExecution()
     core->GetMemory()->write16( 0xb, 0x3);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetRF()->read16( 2) != 0x3) 
     {
         cout << "ERROR: incorrect execution BRM sd = 1." << endl;
@@ -991,7 +991,7 @@ void testExecution()
     core->GetRF()->write16( 1, 0x7);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetRF()->read16( 2) != 0x7) 
     {
         cout << "ERROR: incorrect execution BRR." << endl;
@@ -1004,7 +1004,7 @@ void testExecution()
     core->init( 0x0000);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetRF()->read16( 2) != 0xa) 
     {
         cout << "ERROR: incorrect execution LD sd = 0." << endl;
@@ -1017,7 +1017,7 @@ void testExecution()
     core->init( 0x0000);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if ( core->GetMemory()->read16( 0xc) != 0xa) 
     {
         cout << "ERROR: incorrect execution LD sd = 0." << endl;
@@ -1032,7 +1032,7 @@ void testExecution()
     core->GetRF()->write16( 1, 0x2);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if ( core->GetPC() != 8)
     {
         cout << "ERROR: incorrect execution NOP." << endl;
@@ -1048,7 +1048,7 @@ void testExecution()
     core->GetRF()->write16( 1, 0x3);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetRF()->read16( 2) != 0x5) 
     {
         cout << "ERROR: incorrect execution ADD am = 0." << endl;
@@ -1062,7 +1062,7 @@ void testExecution()
     core->GetRF()->write16( 1, 0x2);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetRF()->read16( 1) != 0xa) 
     {
         cout << "ERROR: incorrect execution ADD am = 1." << endl;
@@ -1077,7 +1077,7 @@ void testExecution()
     core->GetMemory()->write16( 0xe, 0x4);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetMemory()->read16( 0xa) != 0x5) 
     {
         cout << "ERROR: incorrect execution ADD am = 2." << endl;
@@ -1091,7 +1091,7 @@ void testExecution()
     core->GetMemory()->write16( 0x9, 0x3);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetMemory()->read16( 0x9) != 0xa) 
     {
         cout << "ERROR: incorrect execution ADD am = 3." << endl;
@@ -1107,7 +1107,7 @@ void testExecution()
     core->GetRF()->write16( 1, 0x3);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetRF()->read16( 2) != 0x4) 
     {
         cout << "ERROR: incorrect execution SUB am = 0." << endl;
@@ -1121,7 +1121,7 @@ void testExecution()
     core->GetRF()->write16( 1, 0x12);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetRF()->read16( 1) != 0xa) 
     {
         cout << "ERROR: incorrect execution SUB am = 1." << endl;
@@ -1136,7 +1136,7 @@ void testExecution()
     core->GetMemory()->write16( 0xe, 0x3);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetMemory()->read16( 0xa) != 0x1) 
     {
         cout << "ERROR: incorrect execution SUB am = 2." << endl;
@@ -1150,7 +1150,7 @@ void testExecution()
     core->GetMemory()->write16( 0x9, 0x7);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetMemory()->read16( 0x9) != 0x4) 
     {
         cout << "ERROR: incorrect execution SUB am = 3." << endl;
@@ -1166,7 +1166,7 @@ void testExecution()
     core->GetRF()->write16( 1, 0x2);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetFlags()->getFlag( FLAG_ZERO) != true) 
     {
         cout << "ERROR: incorrect FLAG_ZERO." << endl;
@@ -1181,7 +1181,7 @@ void testExecution()
     core->GetRF()->write16( 1, -0x3);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetFlags()->getFlag( FLAG_NEG) != true) 
     {
         cout << "ERROR: incorrect FLAG_NEG." << endl;
@@ -1196,7 +1196,7 @@ void testExecution()
     core->GetRF()->write16( 1, 0x8);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetFlags()->getFlag( FLAG_OVERFLOW) != true) 
     {
         cout << "ERROR: incorrect FLAG_OVERFLOW." << endl;
@@ -1211,7 +1211,7 @@ void testExecution()
     core->GetRF()->write16( 1, 0xF);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetFlags()->getFlag( FLAG_CARRY) != true) 
     {
         cout << "ERROR: incorrect FLAG_CARRY in ADD." << endl;
@@ -1226,7 +1226,7 @@ void testExecution()
     core->GetRF()->write16( 1, 0x7FF1);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetFlags()->getFlag( FLAG_CARRY) != true) 
     {
         cout << "ERROR: incorrect FLAG_CARRY in SUB." << endl;
@@ -1241,7 +1241,7 @@ void testExecution()
     core->GetRF()->write16( 0, 0x8);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0008, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x10);
     if( core->GetPC() != 0xc) 
     {
         cout << "ERROR: incorrect execution JMP sd = 0." << endl;
@@ -1254,7 +1254,7 @@ void testExecution()
     core->init( 0x0000);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0008, 0x000000C0); //halt 
-    core->run();
+    core->run( 0x2);
     if( core->GetPC() != 0xc) 
     {
         cout << "ERROR: incorrect execution JMP sd = 1." << endl;
@@ -1273,7 +1273,7 @@ void testExecution()
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x00010, 0x000000C0); //halt 
     core->init( 0x0000);
-    core->run();
+    core->run( 0x3);
     if( core->GetPC() != 0x14) 
     {
         cout << "ERROR: incorrect execution JGT sd = 0." << endl;
@@ -1291,7 +1291,7 @@ void testExecution()
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x00010, 0x000000C0); //halt 
     core->init( 0x0000);
-    core->run();
+    core->run( 0x3);
     if( core->GetPC() != 0x14) 
     {
         cout << "ERROR: incorrect execution JGT sd = 1." << endl;

@@ -1,5 +1,5 @@
 #!/bin/bash
- 
+
 # This script fetches the latest sources from MDSP SVN, builds them and run several tests.
 # It also collects output from these stages and stores it for further analysis.
 # After the procedure is over it sends a brief report to MDSP mailing list.
@@ -14,11 +14,11 @@
 #  can do whatever you want with this stuff. If we meet some day, and you think
 #  this stuff is worth it, you can buy me a beer in return.
 #  ----------------------------------------------------------------------------
-# 
+#
 
 # The buildbot script version
 VERSION=6
-# PASS=0
+PASS=0
 
 function mail_results {
     echo "=============================================================="
@@ -42,18 +42,18 @@ function mail_results {
 	fi
     MFILE=$1
     MDATE=`date "+%d.%m.%Y %H:%M.%S"`
-    if [ $PASS ] 
+    if [ $PASS == 1 ] 
     then
         SUBJ="[PASS]"
     else
         SUBJ="[FAIL]"
-    fi   
+    fi
     SUBJ="$SUBJ MDSP testing results $MDATE"
 
     sendemail -f $MAILNAME -t $MAILADDRESS  -xu $MAILNAME  -xp $MAILPASS -u $SUBJ -s smtp.inbox.ru:25 -o message-file=$MFILE -o message-charset=utf-8
     echo "The mail is sent at $MDATE to $MAILADDRESS"
 }
- 
+
 function logprint {
 echo $1
 echo -e  $1 >> "$LOGFILE"
@@ -132,7 +132,8 @@ then
     else
         URL="https://mdsp.googlecode.com/svn/trunk/"
     fi
-    SVNOUTPUT=`svn checkout $URL mdsp 2>&1`
+    # Sometimes the initial svn checkout can fail, so run `svn update` in that case to get the missing files
+    SVNOUTPUT=`svn checkout $URL mdsp 2>&1 && svn update`
     SVNERRORCODE=$?
     if [ $SVNERRORCODE != 0 ] # Failure
     then
