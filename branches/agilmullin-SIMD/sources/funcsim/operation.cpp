@@ -1227,14 +1227,14 @@ void Operation::decodeSIMD()
 {
     /* skip type decoding as we already know the type */
 
-    hostUInt32          op_mask = 0x1F000000; // Opcode mask
-    hostUInt32          am_mask = 0x00E00000; // AM mask
-    hostUInt32          ip_mask = 0x00100000; // IP mask
-    hostUInt32         mao_mask = 0x000FF000; // MAO mask
-    hostUInt32           d_mask = 0x00000800; // D mask
-    hostUInt32   imm5_rind_mask = 0x000007C0; // Row offset/Aux. register mask
-    hostUInt32        aprs_mask = 0x00000038; // Source base address mask
-    hostUInt32    aprd_pad_mask = 0x00000007; // Destination base address/ SD ACR mask
+    const hostUInt32          op_mask = 0x1F000000; // Opcode mask
+    const hostUInt32          am_mask = 0x00E00000; // AM mask
+    const hostUInt32          ip_mask = 0x00100000; // IP mask
+    const hostUInt32         mao_mask = 0x000FF000; // MAO mask
+    const hostUInt32           d_mask = 0x00000800; // D mask
+    const hostUInt32   imm5_rind_mask = 0x000007C0; // Row offset/Aux. register mask
+    const hostUInt32        aprs_mask = 0x00000038; // Source base address mask
+    const hostUInt32    aprd_pad_mask = 0x00000007; // Destination base address/ SD ACR mask
 
     /* temporary fields */
     OperCode opcode0 = this->getCode( SIMD, this->getValueByMask( op_mask, 24));;
@@ -1335,7 +1335,7 @@ void Operation::execute()
     }
 }
 
-/*
+/**
  * Execute the operation of MOVE type
  */
 void Operation::executeMove()
@@ -1379,7 +1379,7 @@ void Operation::executeMove()
     }
 }
 
-/*
+/**
  * Execute the operation of ALU type
  */
 void Operation::executeALU()
@@ -1397,7 +1397,7 @@ void Operation::executePFlow()
 
 }
 
-/*
+/**
  * Execute the operation of SYS type
  */
 void Operation::executeSYS()
@@ -1415,11 +1415,152 @@ void Operation::executeSYS()
     }
 }
 
-/*
+/**
  * Execute the operation of SIMD type
  */
 void Operation::executeSIMD()
 {
 cout << "Execute SIMD is not implemented yet." <<endl;
-}
+    
+    /* destintation showes where should result be: in the memory or accumulator register. */
+    const hostUInt8 memory = 0;
+    const hostUInt8 acr = 1;
+    hostUInt8 destintaion = memory;
 
+    /* dp0 - dp3 descibe in which order the parallel data path are accesing the memories in the memory bank. */
+    const hostUInt8 unused = 4; // Mark for unused data path.
+    hostUInt8 dp0 = (this->mao>>6)%4;
+    hostUInt8 dp1 = (this->mao>>4)%4;
+    hostUInt8 dp2 = (this->mao>>2)%4;
+    hostUInt8 dp3 = (this->mao>>0)%4;
+    
+    /**
+    *
+    *
+    *
+    */
+    switch ( ip)
+    {
+        case 0:
+            if ( dp1==dp0) 
+                dp1 = unused;
+            if ( ( dp2==dp0) || ( dp2==dp1) ) 
+                dp2 = unused;
+            if ( ( dp3==dp0) || ( dp3==dp1) || ( dp3==dp2) ) 
+                dp3 = unused;
+            break;
+        case 1:
+            if ( dp0==0) dp0 = unused;
+            if ( dp1==1) dp1 = unused;
+            if ( dp2==2) dp2 = unused;
+            if ( dp3==3) dp3 = unused;
+            break;
+        default:
+            cout << "Invalid IP in SIMD instruction." << endl;
+            assert( 0);
+    }
+
+// getting from somewhere and somehow source data
+    hostSInt32 operand1dp0 = 0, operand2dp0 = 0, resultdp0;
+    hostSInt32 operand1dp1 = 0, operand2dp1 = 0, resultdp1;
+    hostSInt32 operand1dp2 = 0, operand2dp2 = 0, resultdp2;
+    hostSInt32 operand1dp3 = 0, operand2dp3 = 0, resultdp3;
+
+    switch ( opcode0)
+    {
+        case PADD: // An addition
+            resultdp0 = operand1dp0 + operand2dp0;
+            resultdp1 = operand1dp1 + operand2dp1;
+            resultdp2 = operand1dp2 + operand2dp2;
+            resultdp3 = operand1dp3 + operand2dp3;
+            break;
+        case PAND: // Bitwise AND
+            resultdp0 = operand1dp0 & operand2dp0;
+            resultdp1 = operand1dp1 & operand2dp1;
+            resultdp2 = operand1dp2 & operand2dp2;
+            resultdp3 = operand1dp3 & operand2dp3;
+            break;
+        case PAVG: // Average Value
+            resultdp0 = ( operand1dp0 + operand2dp0 )/2;
+            resultdp1 = ( operand1dp1 + operand2dp1 )/2;
+            resultdp2 = ( operand1dp2 + operand2dp2 )/2;
+            resultdp3 = ( operand1dp3 + operand2dp3 )/2;
+            break;
+        case PCMPE: // Compare to zero
+            cout << "Compare to zero is not implemented yet." << endl;
+            break;
+        case PDOT: // DOT multiplication product
+            cout << "DOT multiplication product is not implemented yet." << endl;
+            break;
+        case PMAX: // A maximum value
+            resultdp0 = ( operand1dp0 > operand2dp0 ) ? operand1dp0 : operand2dp0;
+            resultdp1 = ( operand1dp1 > operand2dp1 ) ? operand1dp1 : operand2dp1;
+            resultdp2 = ( operand1dp2 > operand2dp2 ) ? operand1dp2 : operand2dp2;
+            resultdp3 = ( operand1dp3 > operand2dp3 ) ? operand1dp3 : operand2dp3;
+            break;
+        case PMIN: // A minimum value
+            resultdp0 = ( operand1dp0 < operand2dp0 ) ? operand1dp0 : operand2dp0;
+            resultdp1 = ( operand1dp1 < operand2dp1 ) ? operand1dp1 : operand2dp1;
+            resultdp2 = ( operand1dp2 < operand2dp2 ) ? operand1dp2 : operand2dp2;
+            resultdp3 = ( operand1dp3 < operand2dp3 ) ? operand1dp3 : operand2dp3;
+            break;
+        case PMUL: // A Multiplication
+            resultdp0 = operand1dp0 * operand2dp0;
+            resultdp1 = operand1dp1 * operand2dp1;
+            resultdp2 = operand1dp2 * operand2dp2;
+            resultdp3 = operand1dp3 * operand2dp3;
+            break;
+        case PNAND: // Bitwise NAND
+            resultdp0 = !( operand1dp0 & operand2dp0 );
+            resultdp1 = !( operand1dp1 & operand2dp1 );
+            resultdp2 = !( operand1dp2 & operand2dp2 );
+            resultdp3 = !( operand1dp3 & operand2dp3 );
+            break;
+        case PNOR: // Bitwise NOR
+            resultdp0 = !( operand1dp0 | operand2dp0 );
+            resultdp1 = !( operand1dp1 | operand2dp1 );
+            resultdp2 = !( operand1dp2 | operand2dp2 );
+            resultdp3 = !( operand1dp3 | operand2dp3 );
+            break;
+        case POR: // Bitwise OR
+            resultdp0 = operand1dp0 | operand2dp0;
+            resultdp1 = operand1dp1 | operand2dp1;
+            resultdp2 = operand1dp2 | operand2dp2;
+            resultdp3 = operand1dp3 | operand2dp3;
+            break;
+        case PSAD: // Sum of Absolute Differences
+            cout << "Sum of Absolute Differences is not implemented yet." << endl;
+            break;
+        case PSHL: // Bitwise logic left shift
+            cout << "Bitwise logic left shift is not implemented yet." << endl;
+            break;
+        case PSHRA: // Bitwise arithmetic right shift
+            cout << "Bitwise arithmetic right shift is not implemented yet." << endl;
+            break;
+        case PSHRL: // Bitwise logic right shift
+            cout << "Bitwise logic right shift is not implemented yet." << endl;
+            break;
+        case PSUB: // A substraction
+            resultdp0 = operand1dp0 + operand2dp0;
+            resultdp1 = operand1dp1 + operand2dp1;
+            resultdp2 = operand1dp2 + operand2dp2;
+            resultdp3 = operand1dp3 + operand2dp3;
+            break;
+        case PXOR: // Bitwise XOR
+            resultdp0 = operand1dp0 ^ operand2dp0;
+            resultdp1 = operand1dp1 ^ operand2dp1;
+            resultdp2 = operand1dp2 ^ operand2dp2;
+            resultdp3 = operand1dp3 ^ operand2dp3;
+            break;
+        case RESERVED:
+            cout << "Reserved operation in SIMD instruction." << endl;
+            break;
+        default:
+            cout << "Wrong opcode in SIMD instruction" << endl;
+            assert( 0);
+    }
+
+    /* Update flag register after execution. */
+
+// getting to somewhere and somehow destination data
+}
