@@ -1,12 +1,13 @@
 /**
  * operation.cpp - Implementation of Operation class methods
- * @author Pavel Zaichenkov, Alexander Potashev
+ * @author Pavel Zaichenkov, Alexander Potashev, Mikhail Churikov
  * Copyright 2009 MDSP team
  */
 
 #include "operation.h"
 #include "memory.h"
 #include "register_file.h"
+#include "flags.h"
 
 /**
  * Constructor with pointer to core. Pointer to core
@@ -16,6 +17,8 @@ Operation::Operation( Core *core)
 {
     this->core = core;
     this->clear();
+    this->memory = this->core->GetMemory();
+    this->RF = this->core->GetRF();
 }
 
 /**
@@ -1049,7 +1052,7 @@ void Operation::dump()
     }
 }
 
-/*
+/**
  * Execute the operation
  */
 void Operation::execute()
@@ -1077,7 +1080,7 @@ void Operation::execute()
     }
 }
 
-/*
+/**
  * Execute the operation of MOVE type
  */
 void Operation::executeMove()
@@ -1088,29 +1091,28 @@ void Operation::executeMove()
             switch ( sd)
             {
                 case 0:
-                    core->GetMemory()->write16( ( mathAddr)rd, 
-                        core->GetRF()->read16( ( physRegNum)rs1));
+                    memory->write16( ( mathAddr)rd, 
+                                    RF->read16( ( physRegNum)rs1));
                     break;
                 case 1:
-                    core->GetRF()->write16( ( physRegNum)rd, 
-                        core->GetMemory()->read16( (  mathAddr)rs1));
+                    RF->write16( ( physRegNum)rd, 
+                                memory->read16( (  mathAddr)rs1));
                     break;
                 default:
                     assert( 0);
             }   
             break;
         case BRR:
-            core->GetRF()->write16( ( physRegNum)rd, 
-                core->GetRF()->read16( ( physRegNum)rs1));
+            RF->write16( ( physRegNum)rd, RF->read16( ( physRegNum)rs1));
             break;
         case LD:
             switch ( sd)
             {
                 case 0:
-                    core->GetRF()->write16( ( physRegNum)rd, imm16);
+                    RF->write16( ( physRegNum)rd, imm16);
                     break;
                 case 1:
-                    core->GetMemory()->write16( ( mathAddr)rd, imm16);
+                    memory->write16( ( mathAddr)rd, imm16);
                     break;
                 default:
                     assert( 0);
@@ -1121,25 +1123,147 @@ void Operation::executeMove()
     }
 }
 
-/*
+/**
  * Execute the operation of ALU type
  */
 void Operation::executeALU()
 {
-
+    hostSInt16 result = 0;
+    hostSInt32 firstOperand, secondOperand;
+    Flags* flags;
+    flags = this->core->GetFlags();
+    switch ( this->opcode1)
+    {
+        case NOP: 
+            /// stall  
+            break;
+        case ADD:
+            switch ( this->am)
+            {
+                case 0:  /*Register direct addresing mode, use rS1,rS2, rD*/
+                    firstOperand = RF->read16( ( physRegNum)rs1);
+                    secondOperand = RF->read16( ( physRegNum)rs2);
+                    result = firstOperand + secondOperand;
+                    RF->write16( ( physRegNum)rd, result);
+                    break;
+                case 1:  /*Register direct and immediate data, use imm10, rD*/
+                    firstOperand = RF->read16( ( physRegNum)rd);
+                    secondOperand = ( hostSInt16)imm10;
+                    result = firstOperand + secondOperand;
+                    RF->write16( ( physRegNum)rd, result);
+                    break;
+                case 2:  /*Register indirect mode( memory), use rS1, rS2, rD*/
+                    firstOperand = memory->read16( (  mathAddr)rs1);
+                    secondOperand = memory->read16( (  mathAddr)rs2);
+                    result = firstOperand + secondOperand;
+                    memory->write16( ( mathAddr)rd, result);
+                    break;
+                case 3:  /*Register indirect with immediate, use imm10, rD*/
+                    firstOperand = memory->read16( (  mathAddr)rd);
+                    secondOperand = ( hostSInt16)imm10;
+                    result = firstOperand + secondOperand;
+                    memory->write16( ( mathAddr)rd, result);
+                    break;
+                default:
+                    assert( 0);
+            }
+            if ( ( firstOperand + secondOperand) >= 0x0FFFF) 
+                    flags->setFlag( FLAG_OVERFLOW, true);
+            else flags->setFlag( FLAG_OVERFLOW, false);
+            if ( firstOperand & secondOperand) 
+                    flags->setFlag( FLAG_CARRY, true);
+            else flags->setFlag( FLAG_CARRY, false);
+            break;
+        case SUB:
+            switch ( this->am)
+            {
+                case 0:  /* Register direct addresing mode, use rS1,rS2, rD*/
+                    firstOperand = RF->read16( ( physRegNum)rs1);
+                    secondOperand = RF->read16( ( physRegNum)rs2);
+                    result = firstOperand - secondOperand;
+                    RF->write16( ( physRegNum)rd, result);
+                    break;
+                case 1:  /* Register direct and immediate data, use imm10, rD*/
+                    firstOperand = RF->read16( ( physRegNum)rd);
+                    secondOperand = ( hostSInt16)imm10;
+                    result = firstOperand - secondOperand;
+                    RF->write16( ( physRegNum)rd, result);
+                    break;
+                case 2:  /* Register indirect mode( memory), use rS1, rS2, rD*/
+                    firstOperand = memory->read16( (  mathAddr)rs1);
+                    secondOperand = memory->read16( ( mathAddr)rs2);
+                    result = firstOperand - secondOperand;
+                    memory->write16( ( mathAddr)rd, result);
+                    break;
+                case 3:  /* Register indirect with immediate, use rS1, rS2, rD*/
+                    firstOperand = memory->read16( (  mathAddr)rd);
+                    secondOperand = ( hostSInt16)imm10;
+                    result = firstOperand - secondOperand;;
+                    memory->write16( ( mathAddr)rd, result);
+                    break;
+                default:
+                    assert( 0);   
+            }
+            if ( firstOperand & ( (!secondOperand) + 1)) 
+                    flags->setFlag( FLAG_CARRY, true);
+            else flags->setFlag( FLAG_CARRY, false);
+            break;
+        default:
+            assert( 0);
+    }
     /* Update flag register after execution */
+    if ( result == 0) flags->setFlag( FLAG_ZERO, true);
+    else flags->setFlag( FLAG_ZERO, false);
+    if ( result < 0) flags->setFlag( FLAG_NEG, true);
+    else flags->setFlag( FLAG_NEG, false);
 }
 
-/*
+/**
  * Execute the operation of P_FLOW type
  */
 void Operation::executePFlow()
 {
+    Flags* flags;
+    flags = this->core->GetFlags();
     /* Read flag register before execution */
+    switch ( this->opcode0)
+    {
+        case JMP: /*Unconditional branch*/
+            switch ( this->sd)
+            {
+                case 0:  /*Destination is in rD*/
+                    this->core->SetPC( RF->read16( ( physRegNum)rd) - 4);
+                    break;
+                case 1:  /*Destination is in imm16*/
+                    this->core->SetPC( imm16 - 4);
+                    break;
+                default:
+                    assert( 0);
+            }   
+            break;
+        case JGT:  /* Conditional branch*/
+            if ( !( flags->getFlag( FLAG_NEG) || flags->getFlag( FLAG_ZERO)))
+            {
+                switch ( this->sd)
+                {
+                    case 0:  /*Destination is in rD*/
+                        this->core->SetPC(  RF->read16( ( physRegNum)rd) - 4);
+                        break;
+                    case 1:  /*Destination is in imm16*/
+                        this->core->SetPC( imm16 - 4);
+                        break;
+                    default:
+                        assert( 0);
+                }
+            } 
+            break;
+        default:
+            assert( 0);
+    }
 
 }
 
-/*
+/**
  * Execute the operation of SYS type
  */
 void Operation::executeSYS()
