@@ -7,3 +7,4 @@ This page tracks the list of available binary images that can be used with FuncS
 
 || *Name* || *Source* || *Length in instructions* || *Description*||
 || simple_test.bin    || simple_test.asm  || 8    ||  The very first test. Several loads, stores, HLT      ||
+|| cycle_test.bin     || cycle_test.bin   || 17    ||  The cycle test. Loads values, pass two cycles with icreasing and deareasing counter, and exits. ||
