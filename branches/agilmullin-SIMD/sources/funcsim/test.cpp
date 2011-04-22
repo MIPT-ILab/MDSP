@@ -970,7 +970,7 @@ void testExecution()
         assert( 0);
     }
     op->clear();
-    
+   
     // test BRM: MEM to RF
     op->set( MOVE, BRM, NOP, NOP, 1, 0, 0, 0,  0, 0xb, 0, 2);
     core->init( 0x0000);
@@ -984,7 +984,7 @@ void testExecution()
         assert( 0);
     }
     op->clear();
-    
+   
     // test BRR
     op->set( MOVE, BRR, NOP, NOP, 0, 0, 0, 0,  0, 1, 0, 2);
     core->init( 0x0000);
@@ -1024,7 +1024,7 @@ void testExecution()
         assert( 0);
     }
     op->clear();
-    
+
     // test ALU instructions
     // test NOP
     op->set( ALU, NOP, NOP, NOP, 0, 0, 0, 0,  0, 0, 0, 0);
@@ -1039,7 +1039,7 @@ void testExecution()
         assert( 0);
     }
     op->clear();
-    
+
     // test ADD
     // am = 0
     op->set( ALU, NOP, ADD, NOP, 0, 0, 0, 0,  0, 0, 1, 2);
@@ -1098,7 +1098,7 @@ void testExecution()
         assert( 0);
     }
     op->clear(); 
-    
+       
     // test SUB
     // am = 0
     op->set( ALU, NOP, SUB, NOP, 0, 0, 0, 0,  0, 0, 1, 2);
@@ -1218,7 +1218,7 @@ void testExecution()
         assert( 0);
     }
     op->clear();
-    
+     
     // FLAG_CARRY in SUB
     op->set( ALU, NOP, SUB, NOP, 0, 0, 0, 0,  0, 0, 1, 2);
     core->init( 0x0000);
@@ -1233,7 +1233,7 @@ void testExecution()
         assert( 0);
     }
     op->clear();
-    
+     
     // test P_FLOW
     // test JMP sd = 0
     op->set( P_FLOW, JMP, NOP, NOP, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -1248,7 +1248,8 @@ void testExecution()
         assert( 0);
     }
     op->clear();
-    
+
+
     // test JMP sd = 1
     op->set( P_FLOW, JMP, NOP, NOP, 1, 0, 0, 0, 0x8, 0, 0, 0);
     core->init( 0x0000);
@@ -1261,7 +1262,7 @@ void testExecution()
         assert( 0);
     }
     op->clear();
-    
+   
     // test JGT sd = 0
     op->set( ALU, NOP, ADD, NOP, 0, 0, 0, 0,  0, 0, 1, 0);
     core->GetRF()->write16( 0, 0x2);
@@ -1300,16 +1301,178 @@ void testExecution()
     op->clear();
 }
 
+void testpFlags()
+{
+    Flags* flags;
+    flags = new Flags;
+
+    // set all true
+    flags->setFlag( p_N0, true);
+    flags->setFlag( p_N1, true);
+    flags->setFlag( p_N2, true);
+    flags->setFlag( p_N3, true);
+    flags->setFlag( p_Z0, true);
+    flags->setFlag( p_Z1, true);
+    flags->setFlag( p_Z2, true);
+    flags->setFlag( p_Z3, true);
+    flags->setFlag( p_C0, true);
+    flags->setFlag( p_C1, true);
+    flags->setFlag( p_C2, true);
+    flags->setFlag( p_C3, true);
+    flags->setFlag( p_O0, true);
+    flags->setFlag( p_O1, true);
+    flags->setFlag( p_O2, true);
+    flags->setFlag( p_O3, true);
+
+    // check
+    if ( !( flags->getFlag( p_N0))) assert( 0);
+    if ( !( flags->getFlag( p_N1))) assert( 0);
+    if ( !( flags->getFlag( p_N2))) assert( 0);
+    if ( !( flags->getFlag( p_N3))) assert( 0);
+    if ( !( flags->getFlag( p_C0))) assert( 0);
+    if ( !( flags->getFlag( p_C1))) assert( 0);
+    if ( !( flags->getFlag( p_C2))) assert( 0);
+    if ( !( flags->getFlag( p_C3))) assert( 0);
+    if ( !( flags->getFlag( p_Z0))) assert( 0);
+    if ( !( flags->getFlag( p_Z1))) assert( 0);
+    if ( !( flags->getFlag( p_Z2))) assert( 0);
+    if ( !( flags->getFlag( p_Z3))) assert( 0);
+    if ( !( flags->getFlag( p_O0))) assert( 0);
+    if ( !( flags->getFlag( p_O1))) assert( 0);
+    if ( !( flags->getFlag( p_O2))) assert( 0);
+    if ( !( flags->getFlag( p_O3))) assert( 0);
+    
+    // set all false
+    flags->setFlag( p_N0, false);
+    flags->setFlag( p_N1, false);
+    flags->setFlag( p_N2, false);
+    flags->setFlag( p_N3, false);
+    flags->setFlag( p_Z0, false);
+    flags->setFlag( p_Z1, false);
+    flags->setFlag( p_Z2, false);
+    flags->setFlag( p_Z3, false);
+    flags->setFlag( p_C0, false);
+    flags->setFlag( p_C1, false);
+    flags->setFlag( p_C2, false);
+    flags->setFlag( p_C3, false);
+    flags->setFlag( p_O0, false);
+    flags->setFlag( p_O1, false);
+    flags->setFlag( p_O2, false);
+    flags->setFlag( p_O3, false);
+    
+    // check
+    if (  ( flags->getFlag( p_N0))) assert( 0);
+    if (  ( flags->getFlag( p_N1))) assert( 0);
+    if (  ( flags->getFlag( p_N2))) assert( 0);
+    if (  ( flags->getFlag( p_N3))) assert( 0);
+    if (  ( flags->getFlag( p_C0))) assert( 0);
+    if (  ( flags->getFlag( p_C1))) assert( 0);
+    if (  ( flags->getFlag( p_C2))) assert( 0);
+    if (  ( flags->getFlag( p_C3))) assert( 0);
+    if (  ( flags->getFlag( p_Z0))) assert( 0);
+    if (  ( flags->getFlag( p_Z1))) assert( 0);
+    if (  ( flags->getFlag( p_Z2))) assert( 0);
+    if (  ( flags->getFlag( p_Z3))) assert( 0);
+    if (  ( flags->getFlag( p_O0))) assert( 0);
+    if (  ( flags->getFlag( p_O1))) assert( 0);
+    if (  ( flags->getFlag( p_O2))) assert( 0);
+    if (  ( flags->getFlag( p_O3))) assert( 0);
+    
+    // set all
+    flags->setFlag( p_N0,  true);
+    flags->setFlag( p_N1, false);
+    flags->setFlag( p_N2,  true);
+    flags->setFlag( p_N3, false);
+    flags->setFlag( p_Z0,  true);
+    flags->setFlag( p_Z1, false);
+    flags->setFlag( p_Z2,  true);
+    flags->setFlag( p_Z3, false);
+    flags->setFlag( p_C0,  true);
+    flags->setFlag( p_C1, false);
+    flags->setFlag( p_C2,  true);
+    flags->setFlag( p_C3, false);
+    flags->setFlag( p_O0,  true);
+    flags->setFlag( p_O1, false);
+    flags->setFlag( p_O2,  true);
+    flags->setFlag( p_O3, false);
+    
+    // check
+    if ( !( flags->getFlag( p_N0))) assert( 0);
+    if (  ( flags->getFlag( p_N1))) assert( 0);
+    if ( !( flags->getFlag( p_N2))) assert( 0);
+    if (  ( flags->getFlag( p_N3))) assert( 0);
+    if ( !( flags->getFlag( p_C0))) assert( 0);
+    if (  ( flags->getFlag( p_C1))) assert( 0);
+    if ( !( flags->getFlag( p_C2))) assert( 0);
+    if (  ( flags->getFlag( p_C3))) assert( 0);
+    if ( !( flags->getFlag( p_Z0))) assert( 0);
+    if (  ( flags->getFlag( p_Z1))) assert( 0);
+    if ( !( flags->getFlag( p_Z2))) assert( 0);
+    if (  ( flags->getFlag( p_Z3))) assert( 0);
+    if ( !( flags->getFlag( p_O0))) assert( 0);
+    if (  ( flags->getFlag( p_O1))) assert( 0);
+    if ( !( flags->getFlag( p_O2))) assert( 0);
+    if (  ( flags->getFlag( p_O3))) assert( 0);
+    
+    // set all
+    flags->setFlag( p_N0, false);
+    flags->setFlag( p_N1,  true);
+    flags->setFlag( p_N2, false);
+    flags->setFlag( p_N3,  true);
+    flags->setFlag( p_Z0, false);
+    flags->setFlag( p_Z1,  true);
+    flags->setFlag( p_Z2, false);
+    flags->setFlag( p_Z3,  true);
+    flags->setFlag( p_C0, false);
+    flags->setFlag( p_C1,  true);
+    flags->setFlag( p_C2, false);
+    flags->setFlag( p_C3,  true);
+    flags->setFlag( p_O0, false);
+    flags->setFlag( p_O1,  true);
+    flags->setFlag( p_O2, false);
+    flags->setFlag( p_O3,  true);
+    
+    // check
+    if (  ( flags->getFlag( p_N0))) assert( 0);
+    if ( !( flags->getFlag( p_N1))) assert( 0);
+    if (  ( flags->getFlag( p_N2))) assert( 0);
+    if ( !( flags->getFlag( p_N3))) assert( 0);
+    if (  ( flags->getFlag( p_C0))) assert( 0);
+    if ( !( flags->getFlag( p_C1))) assert( 0);
+    if (  ( flags->getFlag( p_C2))) assert( 0);
+    if ( !( flags->getFlag( p_C3))) assert( 0);
+    if (  ( flags->getFlag( p_Z0))) assert( 0);
+    if ( !( flags->getFlag( p_Z1))) assert( 0);
+    if (  ( flags->getFlag( p_Z2))) assert( 0);
+    if ( !( flags->getFlag( p_Z3))) assert( 0);
+    if (  ( flags->getFlag( p_O0))) assert( 0);
+    if ( !( flags->getFlag( p_O1))) assert( 0);
+    if (  ( flags->getFlag( p_O2))) assert( 0);
+    if ( !( flags->getFlag( p_O3))) assert( 0);
+}
+
+void mytest(){
+    Core *core = new Core();
+    Operation *op = new Operation(core);
+    core->init( 0x0000);
+    op->setSIMD( PADD, 0, 0, 0, 0, 0, 0, 0);
+    op->execute();
+    op->dump();
+    system("PAUSE");
+}
+
 int main()
 {
-    testByte();
-    testByteLine();
-    testMemVal();
-    testMemModel();
-    testOperation();
-    testRegisterFileModel();
-    testFlags();
-    testExecution();
+    mytest();
+//    testByte();
+//    testByteLine();
+//    testMemVal();
+//    testMemModel();
+//    testOperation();
+//    testRegisterFileModel();
+//    testFlags();
+//    testpFlags();
+//    testExecution();
     return 0;
 }
 

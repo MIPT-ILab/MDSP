@@ -22,6 +22,9 @@ Core::Core()
 {
     this->memory = new MemoryModel( 1024);
     this->rf = new RegisterFileModel( 32, 2); // 32 16-bit registers
+    this->apr = new RegisterFileModel( 8, 2); // Address Pointer Registers
+    //this->pa  = new RegisterFileModel( 8, 3); // Parallel Accumulator Register 8 20-bit
+                                              // It should be 20-bit, but now it's 24-bit.
     this->flags = new Flags();
     this->disasmPrint = false;
 }

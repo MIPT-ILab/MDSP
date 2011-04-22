@@ -28,6 +28,8 @@ class Operation: public log
     Core* core;
 
     RegisterFileModel* RF;
+    RegisterFileModel* PA;
+    RegisterFileModel* APR;
     MemoryModel* memory;
     
 

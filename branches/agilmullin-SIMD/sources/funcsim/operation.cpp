@@ -19,6 +19,8 @@ Operation::Operation( Core *core)
     this->clear();
     this->memory = this->core->GetMemory();
     this->RF = this->core->GetRF();
+    this->APR = this->core->GetAPR();
+    //this->PA = this->core->GetPA();
     //this->flags = this->core->GetFlags();
 }
 
@@ -152,7 +154,7 @@ void Operation::set( OperType type, OperCode opcode0, OperCode opcode1, OperCode
     }
 }
 
-/*
+/**
  * Method defines the correlation between OperType and hostUInt32
  */
 OperType Operation::getType( hostUInt32 type)
@@ -179,7 +181,7 @@ OperType Operation::getType( hostUInt32 type)
     }
 }
 
-/*
+/**
  * Method defines the correlation between hostUInt32 and OperType
  */
 hostUInt32 Operation::getInt32FromType( OperType type)
@@ -208,7 +210,7 @@ hostUInt32 Operation::getInt32FromType( OperType type)
 }
 
 
-/*
+/**
  * Method defines the correlation between OperCode and hostUInt32
  */
 OperCode Operation::getCode( OperType type, hostUInt32 code)
@@ -327,7 +329,7 @@ OperCode Operation::getCode( OperType type, hostUInt32 code)
     }
 }
 
-/*
+/**
  * Method defines the correlation between OperCode and hostUInt32
  */
 hostUInt32 Operation::getInt32FromCode( OperType type, OperCode code)
@@ -649,7 +651,7 @@ void Operation::setSIMD( OperCode opcode0,
     this->aprd = this->pad = aprd_pad;
 }
 
-/*
+/**
  * Print MOVE operation to the console
  */
 void Operation::dumpMOVE()
@@ -670,7 +672,7 @@ void Operation::dumpMOVE()
     }
 }
 
-/*
+/**
  * Print ALU operation to the console
  */
 void Operation::dumpALU()
@@ -705,7 +707,7 @@ void Operation::dumpALU()
     }
 }
 
-/*
+/**
  * Print P_FLOW operation to the console
  */
 void Operation::dumpPFLOW()
@@ -739,7 +741,7 @@ void Operation::dumpPFLOW()
     }
 }
 
-/*
+/**
  * Print SYS operation to the console
  */
 void Operation::dumpSYS()
@@ -757,7 +759,7 @@ void Operation::dumpSYS()
     }
 }
 
-/*
+/**
  * Print SIMD operation to the console
  */
 void Operation::dumpSIMD()
@@ -823,11 +825,11 @@ void Operation::dumpSIMD()
                 default:
                     cout << "unknown" << endl;
         }
-    cout << "AM=" << this->am << " IP=" << this->ip;
-    cout << "MAO=" << this->mao << " D=" << this->d << endl;
-    cout << "Row offset=" << this->imm5 << " Aux Register=" << this->rind << endl;
-    cout << "Source base address=" << this->aprs;
-    cout << "Destination base address=" << this->aprd << " S/D ACR=" << this->pad << endl;
+    cout << "AM=" << (int) this->getAM() << " IP=" << (int) this->getIP();
+    cout << " MAO=" << (int) this->getMAO() << " D=" << (int) this->getD() << endl;
+    cout << "Row offset=" << (int) this->getImm5() << " Aux Register=" << (int) this->getRInd() << endl;
+    cout << "Source base address=" << (int) this->getAprS() << endl;
+    cout << "Destination base address=" << (int) this->getAprD() << " S/D ACR=" << (int) this->getPaD() << endl;
 }
 
 /**
@@ -866,7 +868,7 @@ void Operation::setInstrWord( MemVal* mem_value)
     this->instr_word = value;
 }
 
-/*
+/**
  * Set memory block from instruction word (binary representation)
  */
 void Operation::setMemBlock( MemVal* mem_value)
@@ -898,7 +900,7 @@ hostUInt32 Operation::getValueByMask( hostUInt32 mask, int shift)
     return temp;
 }
 
-/*
+/**
  * Enables to set some value on a determined position in the instruction word
  */
 void Operation::setValueByShift( hostUInt32 value, int shift)
@@ -1121,7 +1123,7 @@ void Operation::decodeALU()
     this->setALU( opcode0, opcode1, opcode2, am, imm10, rs1, rs2, rd);
 }
 
-/*
+/**
  * Encode ALU command to a binary form
  * Necessary bytes are set in the determined position
  * All mask are set as it is described in architecture.
@@ -1175,7 +1177,7 @@ void Operation::decodePFLOW()
     }
     this->setPFLOW( opcode0, sd, rd, imm16);
 }
-/*
+/**
  * Encode P_FLOW command to a binary form
  * Necessary bytes are set in the determined position
  * All mask are set as it is described in architecture.
@@ -1214,7 +1216,7 @@ void Operation::decodeSYS()
     this->setSYS( opcode0, imm8);
 }
 
-/*
+/**
  * Encode SYS command to a binary form
  */
 void Operation::encodeSYS()
@@ -1252,7 +1254,7 @@ void Operation::decodeSIMD()
 
     this->setSIMD( opcode0, am, ip, mao, d, imm5_rind, aprs, aprd_pad);
 }
-/*
+/**
  * Encode SIMD command to a binary form
  */
 void Operation::encodeSIMD()
@@ -1281,9 +1283,9 @@ void Operation::encodeSIMD()
     }
 }
 
-/*
-* Print an operation to console
-*/
+/**
+ * Print an operation to console
+ */
 void Operation::dump()
 {
     switch ( this->type)
@@ -1544,13 +1546,8 @@ void Operation::executeSYS()
  * Execute the operation of SIMD type
  */
 void Operation::executeSIMD()
-{
-cout << "Execute SIMD is not implemented yet." <<endl;
-    
-    /* destintation showes where should result be: in the memory or accumulator register. */
-    const hostUInt8 memory = 0;
-    const hostUInt8 acr = 1;
-    hostUInt8 destintaion = memory;
+{   
+    /* ip -> mao -> first operand -> am -> second operand -> result -> d -> destination -> flags */
 
     /* dp0 - dp3 descibe in which order the parallel data path are accesing the memories in the memory bank. */
     const hostUInt8 unused = 4; // Mark for unused data path.
@@ -1559,11 +1556,13 @@ cout << "Execute SIMD is not implemented yet." <<endl;
     hostUInt8 dp2 = (this->mao>>2)%4;
     hostUInt8 dp3 = (this->mao>>0)%4;
     
-    /**
-    *
-    *
-    *
-    */
+    if ( ( aprs<0) || ( aprs>8))
+    {
+        cout << "Invalid Source Base Address in SIMD instruction." << endl;
+        assert( 0);
+    }
+    mathAddr sba = this->APR->read16( ( physRegNum)aprs); // Source base address
+
     switch ( ip)
     {
         case 0:
@@ -1585,11 +1584,93 @@ cout << "Execute SIMD is not implemented yet." <<endl;
             assert( 0);
     }
 
-// getting from somewhere and somehow source data
+    /* Getting source data from memory. */
     hostSInt32 operand1dp0 = 0, operand2dp0 = 0, resultdp0;
     hostSInt32 operand1dp1 = 0, operand2dp1 = 0, resultdp1;
     hostSInt32 operand1dp2 = 0, operand2dp2 = 0, resultdp2;
     hostSInt32 operand1dp3 = 0, operand2dp3 = 0, resultdp3;
+
+    switch ( ip)
+    {
+        case 0:
+                operand1dp0 = ( hostSInt32) memory->readWithBank8( dp0, sba);
+            if ( dp1!=unused)
+                operand1dp1 = ( hostSInt32) memory->readWithBank8( dp1, sba);
+            if ( dp2!=unused)
+                operand1dp2 = ( hostSInt32) memory->readWithBank8( dp2, sba);
+            if ( dp3!=unused)
+                operand1dp3 = ( hostSInt32) memory->readWithBank8( dp3, sba);
+            break;
+        case 1:
+            if ( dp0!=unused)
+                operand2dp0 = ( hostSInt32) memory->readWithBank16( dp0, sba);
+            if ( dp1!=unused)
+                operand2dp1 = ( hostSInt32) memory->readWithBank16( dp1, sba);
+            if ( dp2!=unused)
+                operand2dp2 = ( hostSInt32) memory->readWithBank16( dp2, sba);
+            if ( dp3!=unused)
+                operand2dp3 = ( hostSInt32) memory->readWithBank16( dp3, sba);
+            break;
+        default:
+            cout << "Invalid IP in SIMD instruction." << endl;
+            assert( 0);
+    }    
+
+    switch ( am)
+    {
+        case 0: // Register indirect
+            break;
+        case 1: // Register indirect, post incremented by 1 (++)
+            sba++;
+            break;
+        case 2: // Register indirect, post decremented by 1 (--)
+            sba--;
+            break;
+        case 3: // Index addressing 
+            sba += this->RF->read16( ( physRegNum)rind);
+            break;
+        case 4: // Register indirect, post incremented by offset
+            sba += imm5 + this->RF->read16( 29);
+            break;
+        case 5: // Register indirect, post decremented by offset
+            sba -= imm5 + this->RF->read16( 29);
+            break;
+        case 6: case 7:
+            cout << "SIMD supports only indirect addressing modes." << endl;
+            assert( 0);
+            break;
+        default:
+            cout << "Invalid AM in SIMD instruction." << endl;
+            assert( 0);
+    }
+
+    //APR->write16( aprs, sba);
+
+    switch ( ip)
+    {
+        case 0:
+                operand2dp0 = ( hostSInt32) memory->readWithBank8( dp0, sba);
+            if ( dp1!=unused)
+                operand2dp1 = ( hostSInt32) memory->readWithBank8( dp1, sba);
+            if ( dp2!=unused)
+                operand2dp2 = ( hostSInt32) memory->readWithBank8( dp2, sba);
+            if ( dp3!=unused)
+                operand2dp3 = ( hostSInt32) memory->readWithBank8( dp3, sba);
+            break;
+        case 1:
+            if ( dp0!=unused)
+                operand2dp0 = ( hostSInt32) memory->readWithBank16( dp0, sba);
+            if ( dp1!=unused)
+                operand2dp1 = ( hostSInt32) memory->readWithBank16( dp1, sba);
+            if ( dp2!=unused)
+                operand2dp2 = ( hostSInt32) memory->readWithBank16( dp2, sba);
+            if ( dp3!=unused)
+                operand2dp3 = ( hostSInt32) memory->readWithBank16( dp3, sba);
+            break;
+        default:
+            cout << "Invalid IP in SIMD instruction." << endl;
+            assert( 0);
+    }
 
     switch ( opcode0)
     {
@@ -1685,7 +1766,67 @@ cout << "Execute SIMD is not implemented yet." <<endl;
             assert( 0);
     }
 
-    /* Update flag register after execution. */
+    /* destination showes where should result be: in the memory or accumulator register. */
+    const hostUInt8 mem = 0;
+    const hostUInt8 acr = 1;
+    hostUInt8 destination;
+    switch ( this->d)
+    {
+        case 0:
+            destination = mem;
+            break;
+        case 1:
+            destination = acr;
+            break;
+        default:
+            cout << "Invalid D field in SIMD instruction." << endl;
+            assert( 0);
+    }
 
-// getting to somewhere and somehow destination data
+    mathAddr dba = this->APR->read16( ( physRegNum)aprs); // Destination base address
+
+    switch ( destination)
+    {
+        case mem:
+            if ( ip==0)
+            {
+                if ( dp0!=unused)
+                    this->memory->writeWithBank8( dp0, (mathAddr) aprd, (hostSInt8) resultdp0);
+                if ( dp1!=unused)
+                    this->memory->writeWithBank8( dp1, (mathAddr) aprd, (hostSInt8) resultdp1);
+                if ( dp2!=unused)
+                    this->memory->writeWithBank8( dp0, (mathAddr) aprd, (hostSInt8) resultdp2);
+                if ( dp3!=unused)
+                    this->memory->writeWithBank8( dp0, (mathAddr) aprd, (hostSInt8) resultdp3);
+            }
+            else if ( ip==1)
+            {
+                if ( dp0!=unused)
+                    this->memory->writeWithBank16( dp0, (mathAddr) aprd, (hostSInt16) resultdp0);
+                if ( dp1!=unused)
+                    this->memory->writeWithBank16( dp1, (mathAddr) aprd, (hostSInt16) resultdp1);
+                if ( dp2!=unused)
+                    this->memory->writeWithBank16( dp0, (mathAddr) aprd, (hostSInt16) resultdp2);
+                if ( dp3!=unused)
+                    this->memory->writeWithBank16( dp0, (mathAddr) aprd, (hostSInt16) resultdp3);
+            }
+            break;
+        case acr:
+            cout << "Parallel accumulator register is not implemented yet." << endl;
+            break;
+        default:
+            cout << "Invalid destination in SIMD instruction." << endl;
+            assert( 0);
+    }
+
+    /* Update flag register after execution. */
+    if ( dp0!=unused){
+
+    }
+    if ( dp1!=unused){
+    }
+    if ( dp2!=unused){
+    }
+    if ( dp3!=unused){
+    }
 }

@@ -28,6 +28,8 @@ class Core : public log
     hostUInt16 pc; // 16-bit program counter
     MemoryModel* memory;
     RegisterFileModel* rf;
+    RegisterFileModel* apr;
+    RegisterFileModel* pa;
     Flags* flags;
     bool stop; // shows if instruction execution is stopped
     bool disasmPrint;
@@ -39,16 +41,18 @@ public:
     inline hostUInt16 GetPC() { return this->pc; }
     inline MemoryModel* GetMemory() { return this->memory; }
     inline RegisterFileModel* GetRF() { return this->rf; }
+    inline RegisterFileModel* GetAPR() { return this->apr; }
+    //inline RegisterFileModel* GetPA() { return this->pa; }
     inline Flags* GetFlags() { return this->flags; }
     inline bool GetStop() { return this->stop; }
     inline void setDisasmPrint( bool value) { this->disasmPrint = value; } 
 
-
+    inline void SetPC( hostUInt16 label) { this->pc = label; }
 
     void init( hostUInt16 start_pc);
     int loadBinary ( ifstream& input);
 
-    hostUInt64 run( hostUInt64 requested );
+    hostUInt64 run( hostUInt64 requested = 1000);
 
 
     void Stop() { this->stop = true; }   // stop instruction execution
