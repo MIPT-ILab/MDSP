@@ -92,10 +92,10 @@ typedef enum OperCode
 typedef enum FlagType
 {
     NO_FLAG,
-    N,  // negative
-    Z,  // zero
-    C,  // carry out
-    O   // overflow
+    FLAG_NEG,  // negative
+    FLAG_ZERO,  // zero
+    FLAG_CARRY,  // carry out
+    FLAG_OVERFLOW   // overflow
 } FlagType;
 
 /* Enumeration for Byte & Byteline classes' output */

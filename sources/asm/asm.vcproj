@@ -181,19 +181,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\main.cpp"
+				RelativePath="..\funcsim\core.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\semantican.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tokenan.cpp"
+				RelativePath="..\funcsim\flags.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\funcsim\log.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\main.cpp"
 				>
 			</File>
 			<File
@@ -207,7 +207,15 @@
 			<File
 				RelativePath="..\funcsim\register_file.cpp"
 				>
-			</File>			
+			</File>
+			<File
+				RelativePath=".\semantican.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tokenan.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -219,7 +227,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\funcsim\core.h"
+				>
+			</File>
+			<File
+				RelativePath="..\funcsim\flags.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ident.h"
+				>
+			</File>
+			<File
+				RelativePath="..\funcsim\log.h"
 				>
 			</File>
 			<File
@@ -231,19 +251,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\funcsim\register_file.h"
+				>
+			</File>
+			<File
 				RelativePath=".\semantican.h"
 				>
 			</File>
 			<File
 				RelativePath=".\tokenan.h"
-				>
-			</File>
-			<File
-				RelativePath="..\funcsim\log.h"
-				>
-			</File>
-			<File
-				RelativePath="..\funcsim\register_file.h"
 				>
 			</File>
 		</Filter>

@@ -40,10 +40,9 @@ public:
     inline MemoryModel* GetMemory() { return this->memory; }
     inline RegisterFileModel* GetRF() { return this->rf; }
     inline Flags* GetFlags() { return this->flags; }
-    inline bool GetStop() { return this->stop; }
+    inline bool GetStop() { return this->stop; }    
+    inline void SetPC( hostUInt16 label) { this->pc = label; }
     inline void setDisasmPrint( bool value) { this->disasmPrint = value; } 
-
-
 
     void init( hostUInt16 start_pc);
     int loadBinary ( ifstream& input);

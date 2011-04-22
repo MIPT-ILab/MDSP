@@ -211,4 +211,3 @@ bool Config::getOutputToFile() const
 {
     return this->outputToFile;
 }
- 

@@ -220,6 +220,20 @@ then
     # TODO bail out
     exit 1
 else # Success
+    logprint "First done, running second"  
+fi
+
+PRODOUTPUT=`$MAKEDIR/Release/funcsim $MAKEDIR/tests/cycle_test.bin 2>&1`
+PRODERORCODE=$?
+if [ $PRODERORCODE != 0 ] # Failure
+then
+    logprint "Failed with code $PRODERORCODE. The output is:"  
+    logprint "$PRODOUTPUT"  
+    logprint "No more actions were done"  
+    mail_results "$LOGFILE"
+    # TODO bail out
+    exit 1
+else # Success
     logprint "OK."  
 fi
  
