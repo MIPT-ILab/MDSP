@@ -607,6 +607,10 @@ public:
     hostUInt8 read8( mathAddr addr);
     hostUInt16 read16( mathAddr addr);
     hostUInt32 read32( mathAddr addr);
+    
+    hostUInt8 readWithBank8( hostUInt8 bank, mathAddr addr);
+    hostUInt16 readWithBank16( hostUInt8 bank, mathAddr addr);
+    hostUInt32 readWithBank32( hostUInt8 bank, mathAddr addr);
 
     /* 
      * Returns pointer to object of MemVal class if will be
@@ -660,6 +664,10 @@ public:
     void write8( mathAddr write_ptr, const hostUInt8 val);
     void write16( mathAddr write_ptr, const hostUInt16 val);
     void write32( mathAddr write_ptr, const hostUInt32 val);
+
+    void writeWithBank8( hostUInt8 bank, mathAddr write_ptr, const hostUInt8 val);
+    void writeWithBank16( hostUInt8 bank, mathAddr write_ptr, const hostUInt16 val);
+    void writeWithBank32( hostUInt8 bank, mathAddr write_ptr, const hostUInt32 val);
 
      /* Overloaded. Checks of belonging specified address to object of class MemVal*/
     friend bool operator== ( memMap::iterator pos, mathAddr addr);

@@ -454,6 +454,39 @@ hostUInt32 MemoryModel::read32( mathAddr addr)
     return bl.getHostUInt32();
 }
 
+hostUInt8 MemoryModel::readWithBank8( hostUInt8 bank, mathAddr addr)
+{
+    if (( bank<0) || ( bank>3))
+        assert( 0);
+    if ( addr>=(1<<16)) //addr must be smaller than 2^16
+        assert( 0);
+
+    addr += bank * (1<<16);
+    return read8( addr);
+}
+
+hostUInt16 MemoryModel::readWithBank16( hostUInt8 bank, mathAddr addr)
+{
+    if (( bank<0)||( bank>3))
+        assert( 0);
+    if ( addr>=(1<<16)) //addr must be smaller than 2^16
+        assert( 0);
+
+    addr += bank * (1<<16);
+    return read16( addr);
+}
+
+hostUInt32 MemoryModel::readWithBank32( hostUInt8 bank, mathAddr addr)
+{
+    if (( bank<0)||( bank>3))
+        assert( 0);    
+    if ( addr>=(1<<16)) //addr must be smaller than 2^16
+        assert( 0);
+
+    addr += bank * (1<<16);
+    return read32( addr);
+}
+
 MemVal MemoryModel::mergeMemVal( memMap::iterator pos)
 {
     MemVal mem_val = pos->second;
@@ -501,6 +534,39 @@ void MemoryModel::write32( mathAddr write_ptr, const hostUInt32 val)
 {
     ByteLine bl( val, HIGH_FIRST);
     write( write_ptr, bl);
+}
+
+void MemoryModel::writeWithBank8( hostUInt8 bank, mathAddr write_ptr, const hostUInt8 val)
+{
+    if (( bank<0) || ( bank>3))
+        assert( 0);
+    if ( write_ptr>=(1<<16)) //addr must be smaller than 2^16
+        assert( 0);
+
+    write_ptr += bank * (1<<16);
+    write8( write_ptr, val);
+}
+
+void MemoryModel::writeWithBank16( hostUInt8 bank, mathAddr write_ptr, const hostUInt16 val)
+{
+    if (( bank<0) || ( bank>3))
+        assert( 0);
+    if ( write_ptr>=(1<<16)) //addr must be smaller than 2^16
+        assert( 0);
+
+    write_ptr += bank * (1<<16);
+    write8( write_ptr, val);
+}
+
+void MemoryModel::writeWithBank32( hostUInt8 bank, mathAddr write_ptr, const hostUInt32 val)
+{
+    if (( bank<0) || ( bank>3))
+        assert( 0);
+    if ( write_ptr>=(1<<16)) //addr must be smaller than 2^16
+        assert( 0);
+
+    write_ptr += bank * (1<<16);
+    write8( write_ptr, val);
 }
 
 memMap::iterator MemoryModel::findOrInit( mathAddr ptr)

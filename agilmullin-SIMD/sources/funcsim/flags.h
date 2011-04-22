@@ -36,7 +36,13 @@ public:
     /* Set methods */
     void setFlag( FlagType flag, bool value);
 
-    void init(){ this->setByte( 0, 0x0000);}
+    void init()
+    {
+        this->setByte( 0, 0x0000);
+        this->setByte( 1, 0x0000);
+        this->setByte( 2, 0x0000);
+        this->setByte( 3, 0x0000);
+    }
 
 };
 

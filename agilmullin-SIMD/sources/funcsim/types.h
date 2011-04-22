@@ -77,14 +77,18 @@ typedef enum OperType
 /* Operation code */
 typedef enum OperCode
 {
+/* Operation code of ALU instruction. */
     NOP,
+    ADD,
+    SUB,
+/* Operation code of MOVE instruction. */
     BRM,
     BRR,
     LD,
-    ADD,
-    SUB,
+/* Operation code of PFLOW instruction. */
     JMP,
     JGT,
+/* Operation code of SYS instruction. */
     HLT,
     INT,
 /* Operation code of SIMD instruction. */
@@ -112,10 +116,26 @@ typedef enum OperCode
 typedef enum FlagType
 {
     NO_FLAG,
-    FLAG_NEG,  // negative
-    FLAG_ZERO,  // zero
-    FLAG_CARRY,  // carry out
-    FLAG_OVERFLOW   // overflow
+    FLAG_NEG,       // negative
+    FLAG_ZERO,      // zero
+    FLAG_CARRY,     // carry out
+    FLAG_OVERFLOW,  // overflow
+    p_N0,
+    p_Z0,
+    p_C0,
+    p_O0,
+    p_N1,
+    p_Z1,
+    p_C1,
+    p_O1,
+    p_N2,
+    p_Z2,
+    p_C2,
+    p_O2,
+    p_N3,
+    p_Z3,
+    p_C3,
+    p_O3
 } FlagType;
 
 /* Enumeration for Byte & Byteline classes' output */
