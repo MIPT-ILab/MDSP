@@ -44,10 +44,9 @@ public:
     inline RegisterFileModel* GetAPR() { return this->apr; }
     //inline RegisterFileModel* GetPA() { return this->pa; }
     inline Flags* GetFlags() { return this->flags; }
-    inline bool GetStop() { return this->stop; }
-    inline void setDisasmPrint( bool value) { this->disasmPrint = value; } 
-
+    inline bool GetStop() { return this->stop; }    
     inline void SetPC( hostUInt16 label) { this->pc = label; }
+    inline void setDisasmPrint( bool value) { this->disasmPrint = value; } 
 
     void init( hostUInt16 start_pc);
     int loadBinary ( ifstream& input);

@@ -1551,10 +1551,10 @@ void Operation::executeSIMD()
 
     /* dp0 - dp3 descibe in which order the parallel data path are accesing the memories in the memory bank. */
     const hostUInt8 unused = 4; // Mark for unused data path.
-    hostUInt8 dp0 = (this->mao>>6)%4;
-    hostUInt8 dp1 = (this->mao>>4)%4;
-    hostUInt8 dp2 = (this->mao>>2)%4;
-    hostUInt8 dp3 = (this->mao>>0)%4;
+    hostUInt8 dp0 = (this->mao>>6)&0x03;
+    hostUInt8 dp1 = (this->mao>>4)&0x03;
+    hostUInt8 dp2 = (this->mao>>2)&0x03;
+    hostUInt8 dp3 = (this->mao>>0)&0x03;
     
     if ( ( aprs<0) || ( aprs>8))
     {
