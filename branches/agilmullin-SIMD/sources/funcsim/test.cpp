@@ -797,7 +797,7 @@ void testOperation()
     testOperationSetDumpEncode(   MOVE,  LD, NOP, NOP, 0, 0, 0, 0,  1, 0, 0, 2, "ld 0, 0x1, r2;\n",
         0x22000018); // 000 110 --- 00
     testOperationSetDumpEncode(    ALU, NOP, ADD, NOP, 0, 1, 0, 6,  0, 0, 0, 2, "add 1, 0x6, r2;\n",
-        0xc2802020);
+        0xc2802020); 
     testOperationSetDumpEncode(    ALU, NOP, SUB, NOP, 0, 0, 0, 0,  0, 1, 3, 2, "sub 0, r1, r3, r2;\n",
         0x62044020);
     testOperationSetDumpEncode( P_FLOW, JMP, NOP, NOP, 1, 0, 0, 0,  5, 0, 0, 0, "jmp 1, 0x5;\n",
@@ -906,48 +906,176 @@ void testFlags()
     flags->setFlag( FLAG_ZERO, true);
     flags->setFlag( FLAG_CARRY, true);
     flags->setFlag( FLAG_OVERFLOW, true);
-    
+    flags->setFlag( p_N0, true);
+    flags->setFlag( p_N1, true);
+    flags->setFlag( p_N2, true);
+    flags->setFlag( p_N3, true);
+    flags->setFlag( p_Z0, true);
+    flags->setFlag( p_Z1, true);
+    flags->setFlag( p_Z2, true);
+    flags->setFlag( p_Z3, true);
+    flags->setFlag( p_C0, true);
+    flags->setFlag( p_C1, true);
+    flags->setFlag( p_C2, true);
+    flags->setFlag( p_C3, true);
+    flags->setFlag( p_O0, true);
+    flags->setFlag( p_O1, true);
+    flags->setFlag( p_O2, true);
+    flags->setFlag( p_O3, true);
+
     ///check
     if ( !( flags->getFlag( FLAG_NEG))) assert( 0);
     if ( !( flags->getFlag( FLAG_ZERO))) assert( 0);
     if ( !( flags->getFlag( FLAG_CARRY))) assert( 0);
     if ( !( flags->getFlag( FLAG_OVERFLOW))) assert( 0);
-    
+    if ( !( flags->getFlag( p_N0))) assert( 0);
+    if ( !( flags->getFlag( p_N1))) assert( 0);
+    if ( !( flags->getFlag( p_N2))) assert( 0);
+    if ( !( flags->getFlag( p_N3))) assert( 0);
+    if ( !( flags->getFlag( p_C0))) assert( 0);
+    if ( !( flags->getFlag( p_C1))) assert( 0);
+    if ( !( flags->getFlag( p_C2))) assert( 0);
+    if ( !( flags->getFlag( p_C3))) assert( 0);
+    if ( !( flags->getFlag( p_Z0))) assert( 0);
+    if ( !( flags->getFlag( p_Z1))) assert( 0);
+    if ( !( flags->getFlag( p_Z2))) assert( 0);
+    if ( !( flags->getFlag( p_Z3))) assert( 0);
+    if ( !( flags->getFlag( p_O0))) assert( 0);
+    if ( !( flags->getFlag( p_O1))) assert( 0);
+    if ( !( flags->getFlag( p_O2))) assert( 0);
+    if ( !( flags->getFlag( p_O3))) assert( 0);
+
     ///set all false
     flags->setFlag( FLAG_NEG, false);
     flags->setFlag( FLAG_ZERO, false);
     flags->setFlag( FLAG_CARRY, false);
     flags->setFlag( FLAG_OVERFLOW, false);
-    
+    flags->setFlag( p_N0, false);
+    flags->setFlag( p_N1, false);
+    flags->setFlag( p_N2, false);
+    flags->setFlag( p_N3, false);
+    flags->setFlag( p_Z0, false);
+    flags->setFlag( p_Z1, false);
+    flags->setFlag( p_Z2, false);
+    flags->setFlag( p_Z3, false);
+    flags->setFlag( p_C0, false);
+    flags->setFlag( p_C1, false);
+    flags->setFlag( p_C2, false);
+    flags->setFlag( p_C3, false);
+    flags->setFlag( p_O0, false);
+    flags->setFlag( p_O1, false);
+    flags->setFlag( p_O2, false);
+    flags->setFlag( p_O3, false);
+
     ///check
     if ( flags->getFlag( FLAG_NEG)) assert( 0);
     if ( flags->getFlag( FLAG_ZERO)) assert( 0);
     if ( flags->getFlag( FLAG_CARRY)) assert( 0);
     if ( flags->getFlag( FLAG_OVERFLOW)) assert( 0);
-    
+    if (  ( flags->getFlag( p_N0))) assert( 0);
+    if (  ( flags->getFlag( p_N1))) assert( 0);
+    if (  ( flags->getFlag( p_N2))) assert( 0);
+    if (  ( flags->getFlag( p_N3))) assert( 0);
+    if (  ( flags->getFlag( p_C0))) assert( 0);
+    if (  ( flags->getFlag( p_C1))) assert( 0);
+    if (  ( flags->getFlag( p_C2))) assert( 0);
+    if (  ( flags->getFlag( p_C3))) assert( 0);
+    if (  ( flags->getFlag( p_Z0))) assert( 0);
+    if (  ( flags->getFlag( p_Z1))) assert( 0);
+    if (  ( flags->getFlag( p_Z2))) assert( 0);
+    if (  ( flags->getFlag( p_Z3))) assert( 0);
+    if (  ( flags->getFlag( p_O0))) assert( 0);
+    if (  ( flags->getFlag( p_O1))) assert( 0);
+    if (  ( flags->getFlag( p_O2))) assert( 0);
+    if (  ( flags->getFlag( p_O3))) assert( 0);
+
     ///set all
     flags->setFlag( FLAG_NEG, true);
     flags->setFlag( FLAG_ZERO, false);
     flags->setFlag( FLAG_CARRY, true);
     flags->setFlag( FLAG_OVERFLOW, false);
-    
+    flags->setFlag( p_N0,  true);
+    flags->setFlag( p_N1, false);
+    flags->setFlag( p_N2,  true);
+    flags->setFlag( p_N3, false);
+    flags->setFlag( p_Z0,  true);
+    flags->setFlag( p_Z1, false);
+    flags->setFlag( p_Z2,  true);
+    flags->setFlag( p_Z3, false);
+    flags->setFlag( p_C0,  true);
+    flags->setFlag( p_C1, false);
+    flags->setFlag( p_C2,  true);
+    flags->setFlag( p_C3, false);
+    flags->setFlag( p_O0,  true);
+    flags->setFlag( p_O1, false);
+    flags->setFlag( p_O2,  true);
+    flags->setFlag( p_O3, false);
+
     ///check
     if ( !( flags->getFlag( FLAG_NEG))) assert( 0);
     if ( ( flags->getFlag( FLAG_ZERO))) assert( 0);
     if ( !( flags->getFlag( FLAG_CARRY))) assert( 0);
     if ( ( flags->getFlag( FLAG_OVERFLOW))) assert( 0);
-    
+    if ( !( flags->getFlag( p_N0))) assert( 0);
+    if (  ( flags->getFlag( p_N1))) assert( 0);
+    if ( !( flags->getFlag( p_N2))) assert( 0);
+    if (  ( flags->getFlag( p_N3))) assert( 0);
+    if ( !( flags->getFlag( p_C0))) assert( 0);
+    if (  ( flags->getFlag( p_C1))) assert( 0);
+    if ( !( flags->getFlag( p_C2))) assert( 0);
+    if (  ( flags->getFlag( p_C3))) assert( 0);
+    if ( !( flags->getFlag( p_Z0))) assert( 0);
+    if (  ( flags->getFlag( p_Z1))) assert( 0);
+    if ( !( flags->getFlag( p_Z2))) assert( 0);
+    if (  ( flags->getFlag( p_Z3))) assert( 0);
+    if ( !( flags->getFlag( p_O0))) assert( 0);
+    if (  ( flags->getFlag( p_O1))) assert( 0);
+    if ( !( flags->getFlag( p_O2))) assert( 0);
+    if (  ( flags->getFlag( p_O3))) assert( 0);
+
     ///set all
     flags->setFlag( FLAG_NEG, false);
     flags->setFlag( FLAG_ZERO, true);
     flags->setFlag( FLAG_CARRY, false);
     flags->setFlag( FLAG_OVERFLOW, true);
-    
+    flags->setFlag( p_N0, false);
+    flags->setFlag( p_N1,  true);
+    flags->setFlag( p_N2, false);
+    flags->setFlag( p_N3,  true);
+    flags->setFlag( p_Z0, false);
+    flags->setFlag( p_Z1,  true);
+    flags->setFlag( p_Z2, false);
+    flags->setFlag( p_Z3,  true);
+    flags->setFlag( p_C0, false);
+    flags->setFlag( p_C1,  true);
+    flags->setFlag( p_C2, false);
+    flags->setFlag( p_C3,  true);
+    flags->setFlag( p_O0, false);
+    flags->setFlag( p_O1,  true);
+    flags->setFlag( p_O2, false);
+    flags->setFlag( p_O3,  true);
+
     ///check
     if ( ( flags->getFlag( FLAG_NEG))) assert( 0);
     if ( !( flags->getFlag( FLAG_ZERO))) assert( 0);
     if ( ( flags->getFlag( FLAG_CARRY))) assert( 0);
     if ( !( flags->getFlag( FLAG_OVERFLOW))) assert( 0);
+    if (  ( flags->getFlag( p_N0))) assert( 0);
+    if ( !( flags->getFlag( p_N1))) assert( 0);
+    if (  ( flags->getFlag( p_N2))) assert( 0);
+    if ( !( flags->getFlag( p_N3))) assert( 0);
+    if (  ( flags->getFlag( p_C0))) assert( 0);
+    if ( !( flags->getFlag( p_C1))) assert( 0);
+    if (  ( flags->getFlag( p_C2))) assert( 0);
+    if ( !( flags->getFlag( p_C3))) assert( 0);
+    if (  ( flags->getFlag( p_Z0))) assert( 0);
+    if ( !( flags->getFlag( p_Z1))) assert( 0);
+    if (  ( flags->getFlag( p_Z2))) assert( 0);
+    if ( !( flags->getFlag( p_Z3))) assert( 0);
+    if (  ( flags->getFlag( p_O0))) assert( 0);
+    if ( !( flags->getFlag( p_O1))) assert( 0);
+    if (  ( flags->getFlag( p_O2))) assert( 0);
+    if ( !( flags->getFlag( p_O3))) assert( 0);
 }
 
 void testExecution()
@@ -1024,7 +1152,7 @@ void testExecution()
         assert( 0);
     }
     op->clear();
-
+/*
     // test ALU instructions
     // test NOP
     op->set( ALU, NOP, NOP, NOP, 0, 0, 0, 0,  0, 0, 0, 0);
@@ -1249,7 +1377,7 @@ void testExecution()
     }
     op->clear();
 
-
+  
     // test JMP sd = 1
     op->set( P_FLOW, JMP, NOP, NOP, 1, 0, 0, 0, 0x8, 0, 0, 0);
     core->init( 0x0000);
@@ -1262,7 +1390,7 @@ void testExecution()
         assert( 0);
     }
     op->clear();
-   
+ 
     // test JGT sd = 0
     op->set( ALU, NOP, ADD, NOP, 0, 0, 0, 0,  0, 0, 1, 0);
     core->GetRF()->write16( 0, 0x2);
@@ -1298,181 +1426,50 @@ void testExecution()
         cout << "ERROR: incorrect execution JGT sd = 1." << endl;
         assert( 0);
     }
-    op->clear();
+    op->clear();*/
 }
 
-void testpFlags()
+void testSIMDInstructionExecution()
 {
-    Flags* flags;
-    flags = new Flags;
-
-    // set all true
-    flags->setFlag( p_N0, true);
-    flags->setFlag( p_N1, true);
-    flags->setFlag( p_N2, true);
-    flags->setFlag( p_N3, true);
-    flags->setFlag( p_Z0, true);
-    flags->setFlag( p_Z1, true);
-    flags->setFlag( p_Z2, true);
-    flags->setFlag( p_Z3, true);
-    flags->setFlag( p_C0, true);
-    flags->setFlag( p_C1, true);
-    flags->setFlag( p_C2, true);
-    flags->setFlag( p_C3, true);
-    flags->setFlag( p_O0, true);
-    flags->setFlag( p_O1, true);
-    flags->setFlag( p_O2, true);
-    flags->setFlag( p_O3, true);
-
-    // check
-    if ( !( flags->getFlag( p_N0))) assert( 0);
-    if ( !( flags->getFlag( p_N1))) assert( 0);
-    if ( !( flags->getFlag( p_N2))) assert( 0);
-    if ( !( flags->getFlag( p_N3))) assert( 0);
-    if ( !( flags->getFlag( p_C0))) assert( 0);
-    if ( !( flags->getFlag( p_C1))) assert( 0);
-    if ( !( flags->getFlag( p_C2))) assert( 0);
-    if ( !( flags->getFlag( p_C3))) assert( 0);
-    if ( !( flags->getFlag( p_Z0))) assert( 0);
-    if ( !( flags->getFlag( p_Z1))) assert( 0);
-    if ( !( flags->getFlag( p_Z2))) assert( 0);
-    if ( !( flags->getFlag( p_Z3))) assert( 0);
-    if ( !( flags->getFlag( p_O0))) assert( 0);
-    if ( !( flags->getFlag( p_O1))) assert( 0);
-    if ( !( flags->getFlag( p_O2))) assert( 0);
-    if ( !( flags->getFlag( p_O3))) assert( 0);
-    
-    // set all false
-    flags->setFlag( p_N0, false);
-    flags->setFlag( p_N1, false);
-    flags->setFlag( p_N2, false);
-    flags->setFlag( p_N3, false);
-    flags->setFlag( p_Z0, false);
-    flags->setFlag( p_Z1, false);
-    flags->setFlag( p_Z2, false);
-    flags->setFlag( p_Z3, false);
-    flags->setFlag( p_C0, false);
-    flags->setFlag( p_C1, false);
-    flags->setFlag( p_C2, false);
-    flags->setFlag( p_C3, false);
-    flags->setFlag( p_O0, false);
-    flags->setFlag( p_O1, false);
-    flags->setFlag( p_O2, false);
-    flags->setFlag( p_O3, false);
-    
-    // check
-    if (  ( flags->getFlag( p_N0))) assert( 0);
-    if (  ( flags->getFlag( p_N1))) assert( 0);
-    if (  ( flags->getFlag( p_N2))) assert( 0);
-    if (  ( flags->getFlag( p_N3))) assert( 0);
-    if (  ( flags->getFlag( p_C0))) assert( 0);
-    if (  ( flags->getFlag( p_C1))) assert( 0);
-    if (  ( flags->getFlag( p_C2))) assert( 0);
-    if (  ( flags->getFlag( p_C3))) assert( 0);
-    if (  ( flags->getFlag( p_Z0))) assert( 0);
-    if (  ( flags->getFlag( p_Z1))) assert( 0);
-    if (  ( flags->getFlag( p_Z2))) assert( 0);
-    if (  ( flags->getFlag( p_Z3))) assert( 0);
-    if (  ( flags->getFlag( p_O0))) assert( 0);
-    if (  ( flags->getFlag( p_O1))) assert( 0);
-    if (  ( flags->getFlag( p_O2))) assert( 0);
-    if (  ( flags->getFlag( p_O3))) assert( 0);
-    
-    // set all
-    flags->setFlag( p_N0,  true);
-    flags->setFlag( p_N1, false);
-    flags->setFlag( p_N2,  true);
-    flags->setFlag( p_N3, false);
-    flags->setFlag( p_Z0,  true);
-    flags->setFlag( p_Z1, false);
-    flags->setFlag( p_Z2,  true);
-    flags->setFlag( p_Z3, false);
-    flags->setFlag( p_C0,  true);
-    flags->setFlag( p_C1, false);
-    flags->setFlag( p_C2,  true);
-    flags->setFlag( p_C3, false);
-    flags->setFlag( p_O0,  true);
-    flags->setFlag( p_O1, false);
-    flags->setFlag( p_O2,  true);
-    flags->setFlag( p_O3, false);
-    
-    // check
-    if ( !( flags->getFlag( p_N0))) assert( 0);
-    if (  ( flags->getFlag( p_N1))) assert( 0);
-    if ( !( flags->getFlag( p_N2))) assert( 0);
-    if (  ( flags->getFlag( p_N3))) assert( 0);
-    if ( !( flags->getFlag( p_C0))) assert( 0);
-    if (  ( flags->getFlag( p_C1))) assert( 0);
-    if ( !( flags->getFlag( p_C2))) assert( 0);
-    if (  ( flags->getFlag( p_C3))) assert( 0);
-    if ( !( flags->getFlag( p_Z0))) assert( 0);
-    if (  ( flags->getFlag( p_Z1))) assert( 0);
-    if ( !( flags->getFlag( p_Z2))) assert( 0);
-    if (  ( flags->getFlag( p_Z3))) assert( 0);
-    if ( !( flags->getFlag( p_O0))) assert( 0);
-    if (  ( flags->getFlag( p_O1))) assert( 0);
-    if ( !( flags->getFlag( p_O2))) assert( 0);
-    if (  ( flags->getFlag( p_O3))) assert( 0);
-    
-    // set all
-    flags->setFlag( p_N0, false);
-    flags->setFlag( p_N1,  true);
-    flags->setFlag( p_N2, false);
-    flags->setFlag( p_N3,  true);
-    flags->setFlag( p_Z0, false);
-    flags->setFlag( p_Z1,  true);
-    flags->setFlag( p_Z2, false);
-    flags->setFlag( p_Z3,  true);
-    flags->setFlag( p_C0, false);
-    flags->setFlag( p_C1,  true);
-    flags->setFlag( p_C2, false);
-    flags->setFlag( p_C3,  true);
-    flags->setFlag( p_O0, false);
-    flags->setFlag( p_O1,  true);
-    flags->setFlag( p_O2, false);
-    flags->setFlag( p_O3,  true);
-    
-    // check
-    if (  ( flags->getFlag( p_N0))) assert( 0);
-    if ( !( flags->getFlag( p_N1))) assert( 0);
-    if (  ( flags->getFlag( p_N2))) assert( 0);
-    if ( !( flags->getFlag( p_N3))) assert( 0);
-    if (  ( flags->getFlag( p_C0))) assert( 0);
-    if ( !( flags->getFlag( p_C1))) assert( 0);
-    if (  ( flags->getFlag( p_C2))) assert( 0);
-    if ( !( flags->getFlag( p_C3))) assert( 0);
-    if (  ( flags->getFlag( p_Z0))) assert( 0);
-    if ( !( flags->getFlag( p_Z1))) assert( 0);
-    if (  ( flags->getFlag( p_Z2))) assert( 0);
-    if ( !( flags->getFlag( p_Z3))) assert( 0);
-    if (  ( flags->getFlag( p_O0))) assert( 0);
-    if ( !( flags->getFlag( p_O1))) assert( 0);
-    if (  ( flags->getFlag( p_O2))) assert( 0);
-    if ( !( flags->getFlag( p_O3))) assert( 0);
-}
-
-void mytest(){
     Core *core = new Core();
     Operation *op = new Operation(core);
-    core->init( 0x0000);
-    op->setSIMD( PADD, 0, 0, 0, 0, 0, 0, 0);
-    op->execute();
+    cout << "Testing SIMD execution." << endl;
+
+    op->setSIMD( PADD, 0, 0, 0x0000001B, 0, 0, 0, 0);
     op->dump();
+    core->init( 0x0000);
+    core->GetAPR()->write16( 0, 0x0017);
+    //core->GetRF()->write16( 1, 0x2);
+    core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
+    core->GetMemory()->write32( 0x0004, 0x000000C0); //halt
+    core->GetMemory()->writeWithBank16( 0, 0x0017, 15);
+    core->GetMemory()->writeWithBank16( 1, 0x0017, 03);
+    core->GetMemory()->writeWithBank16( 2, 0x0017, 19);
+    core->GetMemory()->writeWithBank16( 3, 0x0017, 91);
+    core->run();
+    if( ( core->GetMemory()->readWithBank16( 0, 0x0017) !=  30)||
+        ( core->GetMemory()->readWithBank16( 1, 0x0017) !=   6)||
+        ( core->GetMemory()->readWithBank16( 2, 0x0017) !=  38)||
+        ( core->GetMemory()->readWithBank16( 3, 0x0017) != 182) ) 
+    {
+        cout << "ERROR: incorrect execution SIMD" << endl;
+        assert( 0);
+    }
+    op->clear();
     system("PAUSE");
 }
 
 int main()
 {
-    mytest();
-//    testByte();
-//    testByteLine();
-//    testMemVal();
-//    testMemModel();
-//    testOperation();
-//    testRegisterFileModel();
-//    testFlags();
-//    testpFlags();
+    testByte();
+    testByteLine();
+    testMemVal();
+    testMemModel();
+    testOperation();
+    testRegisterFileModel();
+    testFlags();
 //    testExecution();
+    testSIMDInstructionExecution();
     return 0;
 }
 

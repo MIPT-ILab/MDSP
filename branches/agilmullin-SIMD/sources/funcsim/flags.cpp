@@ -6,7 +6,7 @@
 #include "flags.h"
 
 /**
- * Default contructor - create 4 byte register (2*16-bit)
+ * Default contructor - create 4 byte register (2*0x10-bit)
  * p_flags + s_flags
  *                  p_flags
  * p_N0 p_N1 p_N2 p_N3 p_Z0 p_Z1 p_Z2 p_Z3 p_C0 p_C1 p_C2 p_C3 p_O0 p_O1 p_O2 p_O3
@@ -35,37 +35,37 @@ bool Flags::getFlag( FlagType flag)
         case FLAG_OVERFLOW:
             return this->getByteVal( 0) & FLAG_O_POSITION;
         case p_N0:
-            return this->getByteVal( 4) & 128;
+            return this->getByteVal( 3) & 0x80;
         case p_N1:
-            return this->getByteVal( 4) & 64;
+            return this->getByteVal( 3) & 0x40;
         case p_N2:
-            return this->getByteVal( 4) & 32;
+            return this->getByteVal( 3) & 0x20;
         case p_N3:
-            return this->getByteVal( 4) & 16;
+            return this->getByteVal( 3) & 0x10;
         case p_Z0:
-            return this->getByteVal( 3) & 8;
+            return this->getByteVal( 3) & 0x08;
         case p_Z1:
-            return this->getByteVal( 3) & 4;
+            return this->getByteVal( 3) & 0x04;
         case p_Z2:
-            return this->getByteVal( 3) & 2;
+            return this->getByteVal( 3) & 0x02;
         case p_Z3:
-            return this->getByteVal( 3) & 1;
+            return this->getByteVal( 3) & 0x01;
         case p_C0:
-            return this->getByteVal( 2) & 128;
+            return this->getByteVal( 2) & 0x80;
         case p_C1:
-            return this->getByteVal( 2) & 64;
+            return this->getByteVal( 2) & 0x40;
         case p_C2:
-            return this->getByteVal( 2) & 32;
+            return this->getByteVal( 2) & 0x20;
         case p_C3:
-            return this->getByteVal( 2) & 16;
+            return this->getByteVal( 2) & 0x10;
         case p_O0:
-            return this->getByteVal( 2) & 8;
+            return this->getByteVal( 2) & 0x08;
         case p_O1:
-            return this->getByteVal( 2) & 4;
+            return this->getByteVal( 2) & 0x04;
         case p_O2:
-            return this->getByteVal( 2) & 2;
+            return this->getByteVal( 2) & 0x02;
         case p_O3:
-            return this->getByteVal( 2) & 1;
+            return this->getByteVal( 2) & 0x01;
         default:
             cout << "Invalid flag register type\n";
             assert( 0);
@@ -102,68 +102,68 @@ void Flags::setFlag( FlagType flag, bool value)
             else this->setByte( 0,  this->getByteVal( 0) & FLAG_O_POS_INVERSED);
             break;
         case p_N0:
-            if ( value) this->setByte( 3, ( this->getByteVal( 3) & !128) ^ 128);
-            else this->setByte( 3,  this->getByteVal( 3) & !128);
+            if ( value) this->setByte( 3,  this->getByteVal( 3) & ~0x80 | 0x80);
+            else this->setByte( 3,  this->getByteVal( 3) & ~0x80);
             break;
         case p_N1:
-            if ( value) this->setByte( 3, ( this->getByteVal( 3) & !64) ^ 64);
-            else this->setByte( 3,  this->getByteVal( 3) & !64);
+            if ( value) this->setByte( 3,  this->getByteVal( 3) & ~0x40 | 0x40);
+            else this->setByte( 3,  this->getByteVal( 3) & ~0x40);
             break;
         case p_N2:
-            if ( value) this->setByte( 3, ( this->getByteVal( 3) & !32) ^ 32);
-            else this->setByte( 3,  this->getByteVal( 3) & !32);
+            if ( value) this->setByte( 3,  this->getByteVal( 3) & ~0x20 | 0x20);
+            else this->setByte( 3,  this->getByteVal( 3) & ~0x20);
             break;
         case p_N3:
-            if ( value) this->setByte( 3, ( this->getByteVal( 3) & !16) ^ 16);
-            else this->setByte( 3,  this->getByteVal( 3) & !16);
+            if ( value) this->setByte( 3,  this->getByteVal( 3) & ~0x10 | 0x10);
+            else this->setByte( 3,  this->getByteVal( 3) & ~0x10);
             break;
         case p_Z0:
-            if ( value) this->setByte( 3, ( this->getByteVal( 3) & !8) ^ 8);
-            else this->setByte( 3,  this->getByteVal( 3) & !8);
+            if ( value) this->setByte( 3,  this->getByteVal( 3) & ~0x08 | 0x08);
+            else this->setByte( 3,  this->getByteVal( 3) & ~0x08);
             break;
         case p_Z1:
-            if ( value) this->setByte( 3, ( this->getByteVal( 3) & !4) ^ 4);
-            else this->setByte( 3,  this->getByteVal( 3) & !4);
+            if ( value) this->setByte( 3,  this->getByteVal( 3) & ~0x04 | 0x04);
+            else this->setByte( 3,  this->getByteVal( 3) & ~0x04);
             break;
         case p_Z2:
-            if ( value) this->setByte( 3, ( this->getByteVal( 3) & !2) ^ 2);
-            else this->setByte( 3,  this->getByteVal( 3) & !2);
+            if ( value) this->setByte( 3,  this->getByteVal( 3) & ~0x02 | 0x02);
+            else this->setByte( 3,  this->getByteVal( 3) & ~0x02);
             break;
         case p_Z3:
-            if ( value) this->setByte( 3, ( this->getByteVal( 3) & !1) ^ 1);
-            else this->setByte( 3,  this->getByteVal( 3) & !1);
+            if ( value) this->setByte( 3,  this->getByteVal( 3) & ~0x01 | 0x01);
+            else this->setByte( 3,  this->getByteVal( 3) & ~0x01);
             break;
         case p_C0:
-            if ( value) this->setByte( 2, ( this->getByteVal( 2) & !128) ^ 128);
-            else this->setByte( 2,  this->getByteVal( 2) & !128);
+            if ( value) this->setByte( 2,  this->getByteVal( 2) & ~0x80 | 0x80);
+            else this->setByte( 2,  this->getByteVal( 2) & ~0x80);
             break;
         case p_C1:
-            if ( value) this->setByte( 2, ( this->getByteVal( 2) & !64) ^ 64);
-            else this->setByte( 2,  this->getByteVal( 2) & !64);
+            if ( value) this->setByte( 2,  this->getByteVal( 2) & ~0x40 | 0x40);
+            else this->setByte( 2,  this->getByteVal( 2) & ~0x40);
             break;
         case p_C2:
-            if ( value) this->setByte( 2, ( this->getByteVal( 2) & !32) ^ 32);
-            else this->setByte( 2,  this->getByteVal( 2) & !32);
+            if ( value) this->setByte( 2,   this->getByteVal( 2) & ~0x20 | 0x20);
+            else this->setByte( 2,  this->getByteVal( 2) & ~0x20);
             break;
         case p_C3:
-            if ( value) this->setByte( 2, ( this->getByteVal( 2) & !16) ^ 16);
-            else this->setByte( 2,  this->getByteVal( 2) & !16);
+            if ( value) this->setByte( 2,   this->getByteVal( 2) & ~0x10 | 0x10);
+            else this->setByte( 2,  this->getByteVal( 2) & ~0x10);
             break;
         case p_O0:
-            if ( value) this->setByte( 2, ( this->getByteVal( 2) & !8) ^ 8);
-            else this->setByte( 2,  this->getByteVal( 2) & !8);
+            if ( value) this->setByte( 2,   this->getByteVal( 2) & ~0x08 | 0x08);
+            else this->setByte( 2,  this->getByteVal( 2) & ~0x08);
             break;
         case p_O1:
-            if ( value) this->setByte( 2, ( this->getByteVal( 2) & !4) ^ 4);
-            else this->setByte( 2,  this->getByteVal( 2) & !4);
+            if ( value) this->setByte( 2,   this->getByteVal( 2) & ~0x04 | 0x04);
+            else this->setByte( 2,  this->getByteVal( 2) & ~0x04);
             break;
         case p_O2:
-            if ( value) this->setByte( 2, ( this->getByteVal( 2) & !2) ^ 2);
-            else this->setByte( 2,  this->getByteVal( 2) & !2);
+            if ( value) this->setByte( 2,   this->getByteVal( 2) & ~0x02 | 0x02);
+            else this->setByte( 2,  this->getByteVal( 2) & ~0x02);
             break;
         case p_O3:
-            if ( value) this->setByte( 2, ( this->getByteVal( 2) & !1) ^ 1);
-            else this->setByte( 2,  this->getByteVal( 2) & !1);
+            if ( value) this->setByte( 2,   this->getByteVal( 2) & ~0x01  | 0x01);
+            else this->setByte( 2,  this->getByteVal( 2) & ~0x01);
             break;
         default:
             cout << "Invalid flag register type\n";

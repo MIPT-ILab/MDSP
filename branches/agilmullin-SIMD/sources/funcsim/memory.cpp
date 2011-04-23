@@ -423,8 +423,7 @@ ByteLine MemoryModel::readBL(  mathAddr read_ptr, unsigned int num_of_bytes)
 		if ( temp.getByte( i).getFlagEnable() != DEFAULT_ENABLE)
         {
             critical("Attempt to read from the cell without data");
-        }
-        
+        }        
     }
     return temp;
 }
