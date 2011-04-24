@@ -453,37 +453,32 @@ hostUInt32 MemoryModel::read32( mathAddr addr)
     return bl.getHostUInt32();
 }
 
-hostUInt8 MemoryModel::readWithBank8( hostUInt8 bank, mathAddr addr)
+hostUInt8 MemoryModel::read8( hostUInt8 bank, physAddr addr)
 {
-    if (( bank<0) || ( bank>3))
-        assert( 0);
-    if ( addr>=(1<<16)) //addr must be smaller than 2^16
-        assert( 0);
+    if ( bank>3) assert( 0);
 
-    addr += bank * (1<<16);
-    return read8( addr);
+    mathAddr temp = addr + bank * 0x10000;
+    return read8( temp);
 }
 
-hostUInt16 MemoryModel::readWithBank16( hostUInt8 bank, mathAddr addr)
+hostUInt16 MemoryModel::read16( hostUInt8 bank, physAddr addr)
 {
-    if (( bank<0)||( bank>3))
-        assert( 0);
-    if ( addr>=(1<<16)) //addr must be smaller than 2^16
-        assert( 0);
+    if ( bank>3) assert( 0);
+    if ( addr==0xfffff)
+        critical("Illegal address in read function.");
 
-    addr += bank * (1<<16);
-    return read16( addr);
+    mathAddr temp = addr + bank * 0x10000;
+    return read16( temp);
 }
 
-hostUInt32 MemoryModel::readWithBank32( hostUInt8 bank, mathAddr addr)
+hostUInt32 MemoryModel::read32( hostUInt8 bank, physAddr addr)
 {
-    if (( bank<0)||( bank>3))
-        assert( 0);    
-    if ( addr>=(1<<16)) //addr must be smaller than 2^16
-        assert( 0);
+    if ( bank>3) assert( 0);    
+    if ( addr>0xffffd)
+        critical("Illegal address in read function.");
 
-    addr += bank * (1<<16);
-    return read32( addr);
+    mathAddr temp = addr + bank * 0x10000;
+    return read32( temp);
 }
 
 MemVal MemoryModel::mergeMemVal( memMap::iterator pos)
@@ -535,37 +530,32 @@ void MemoryModel::write32( mathAddr write_ptr, const hostUInt32 val)
     write( write_ptr, bl);
 }
 
-void MemoryModel::writeWithBank8( hostUInt8 bank, mathAddr write_ptr, const hostUInt8 val)
+void MemoryModel::write8( hostUInt8 bank, physAddr write_ptr, const hostUInt8 val)
 {
-    if (( bank<0) || ( bank>3))
-        assert( 0);
-    if ( write_ptr>=(1<<16)) //addr must be smaller than 2^16
-        assert( 0);
+    if ( bank>3) assert( 0);
 
-    write_ptr += bank * (1<<16);
-    write8( write_ptr, val);
+    mathAddr temp = write_ptr + bank * 0x10000;
+    write8( temp, val);
 }
 
-void MemoryModel::writeWithBank16( hostUInt8 bank, mathAddr write_ptr, const hostUInt16 val)
+void MemoryModel::write16( hostUInt8 bank, physAddr write_ptr, const hostUInt16 val)
 {
-    if (( bank<0) || ( bank>3))
-        assert( 0);
-    if ( write_ptr>=(1<<16)) //addr must be smaller than 2^16
-        assert( 0);
+    if ( bank>3) assert( 0);
+    if ( write_ptr==0xfffff)
+        critical("Illegal address in write function.");
 
-    write_ptr += bank * (1<<16);
-    write8( write_ptr, val);
+    mathAddr temp = write_ptr + bank * 0x10000;
+    write16( temp, val);
 }
 
-void MemoryModel::writeWithBank32( hostUInt8 bank, mathAddr write_ptr, const hostUInt32 val)
+void MemoryModel::write32( hostUInt8 bank, physAddr write_ptr, const hostUInt32 val)
 {
-    if (( bank<0) || ( bank>3))
-        assert( 0);
-    if ( write_ptr>=(1<<16)) //addr must be smaller than 2^16
-        assert( 0);
+    if ( bank>3) assert( 0);
+    if ( write_ptr>0xffffd)
+        critical("Illegal address in write function.");
 
-    write_ptr += bank * (1<<16);
-    write8( write_ptr, val);
+    mathAddr temp = write_ptr + bank * 0x10000;
+    write32( temp, val);
 }
 
 memMap::iterator MemoryModel::findOrInit( mathAddr ptr)

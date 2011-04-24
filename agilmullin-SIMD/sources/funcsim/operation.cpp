@@ -1593,28 +1593,30 @@ void Operation::executeSIMD()
     switch ( ip)
     {
         case 0:
-                operand1dp0 = ( hostSInt32) memory->readWithBank8( dp0, sba);
+                operand1dp0 = ( hostSInt32) memory->read8( dp0, sba);
             if ( dp1!=unused)
-                operand1dp1 = ( hostSInt32) memory->readWithBank8( dp1, sba);
+                operand1dp1 = ( hostSInt32) memory->read8( dp1, sba);
             if ( dp2!=unused)
-                operand1dp2 = ( hostSInt32) memory->readWithBank8( dp2, sba);
+                operand1dp2 = ( hostSInt32) memory->read8( dp2, sba);
             if ( dp3!=unused)
-                operand1dp3 = ( hostSInt32) memory->readWithBank8( dp3, sba);
+                operand1dp3 = ( hostSInt32) memory->read8( dp3, sba);
             break;
         case 1:
             if ( dp0!=unused)
-                operand2dp0 = ( hostSInt32) memory->readWithBank16( dp0, sba);
+                operand2dp0 = ( hostSInt32) memory->read16( dp0, sba);
             if ( dp1!=unused)
-                operand2dp1 = ( hostSInt32) memory->readWithBank16( dp1, sba);
+                operand2dp1 = ( hostSInt32) memory->read16( dp1, sba);
             if ( dp2!=unused)
-                operand2dp2 = ( hostSInt32) memory->readWithBank16( dp2, sba);
+                operand2dp2 = ( hostSInt32) memory->read16( dp2, sba);
             if ( dp3!=unused)
-                operand2dp3 = ( hostSInt32) memory->readWithBank16( dp3, sba);
+                operand2dp3 = ( hostSInt32) memory->read16( dp3, sba);
             break;
         default:
             cout << "Invalid IP in SIMD instruction." << endl;
             assert( 0);
     }    
+
+    cout << "look:" << (unsigned int) sba << endl;
 
     switch ( am)
     {
@@ -1644,28 +1646,29 @@ void Operation::executeSIMD()
             assert( 0);
     }
 
+    cout << "look:" << (unsigned int) sba << endl;
     //APR->write16( aprs, sba);
 
     switch ( ip)
     {
         case 0:
-                operand2dp0 = ( hostSInt32) memory->readWithBank8( dp0, sba);
+                operand2dp0 = ( hostSInt32) memory->read8( dp0, sba);
             if ( dp1!=unused)
-                operand2dp1 = ( hostSInt32) memory->readWithBank8( dp1, sba);
+                operand2dp1 = ( hostSInt32) memory->read8( dp1, sba);
             if ( dp2!=unused)
-                operand2dp2 = ( hostSInt32) memory->readWithBank8( dp2, sba);
+                operand2dp2 = ( hostSInt32) memory->read8( dp2, sba);
             if ( dp3!=unused)
-                operand2dp3 = ( hostSInt32) memory->readWithBank8( dp3, sba);
+                operand2dp3 = ( hostSInt32) memory->read8( dp3, sba);
             break;
         case 1:
             if ( dp0!=unused)
-                operand2dp0 = ( hostSInt32) memory->readWithBank16( dp0, sba);
+                operand2dp0 = ( hostSInt32) memory->read16( dp0, sba);
             if ( dp1!=unused)
-                operand2dp1 = ( hostSInt32) memory->readWithBank16( dp1, sba);
+                operand2dp1 = ( hostSInt32) memory->read16( dp1, sba);
             if ( dp2!=unused)
-                operand2dp2 = ( hostSInt32) memory->readWithBank16( dp2, sba);
+                operand2dp2 = ( hostSInt32) memory->read16( dp2, sba);
             if ( dp3!=unused)
-                operand2dp3 = ( hostSInt32) memory->readWithBank16( dp3, sba);
+                operand2dp3 = ( hostSInt32) memory->read16( dp3, sba);
             break;
         default:
             cout << "Invalid IP in SIMD instruction." << endl;
@@ -1693,10 +1696,15 @@ void Operation::executeSIMD()
             resultdp3 = ( operand1dp3 + operand2dp3 )/2;
             break;
         case PCMPE: // Compare to zero
-            cout << "Compare to zero is not implemented yet." << endl;
+            resultdp0 = ( operand1dp0 == operand2dp0 ) ? 1 : 0;
+            resultdp1 = ( operand1dp1 == operand2dp1 ) ? 1 : 0;
+            resultdp2 = ( operand1dp2 == operand2dp2 ) ? 1 : 0;
+            resultdp3 = ( operand1dp3 == operand2dp3 ) ? 1 : 0;
             break;
         case PDOT: // DOT multiplication product
-            cout << "DOT multiplication product is not implemented yet." << endl;
+            resultdp0 = abs( operand1dp0 * operand2dp0) + abs( operand1dp1 * operand2dp1) +
+                        abs( operand1dp2 * operand2dp2) + abs( operand1dp3 * operand2dp3);
+            resultdp3 = resultdp2 = resultdp1 = resultdp0;
             break;
         case PMAX: // A maximum value
             resultdp0 = ( operand1dp0 > operand2dp0 ) ? operand1dp0 : operand2dp0;
@@ -1783,7 +1791,7 @@ void Operation::executeSIMD()
             assert( 0);
     }
 
-    mathAddr dba = this->APR->read16( ( physRegNum)aprs); // Destination base address
+    physAddr dba = this->APR->read16( ( physRegNum)aprd); // Destination base address
 
     switch ( destination)
     {
@@ -1791,24 +1799,24 @@ void Operation::executeSIMD()
             if ( ip==0)
             {
                 if ( dp0!=unused)
-                    this->memory->writeWithBank8( dp0, (mathAddr) aprd, (hostSInt8) resultdp0);
+                    this->memory->write8( dp0, dba, (hostSInt8) resultdp0);
                 if ( dp1!=unused)
-                    this->memory->writeWithBank8( dp1, (mathAddr) aprd, (hostSInt8) resultdp1);
+                    this->memory->write8( dp1, dba, (hostSInt8) resultdp1);
                 if ( dp2!=unused)
-                    this->memory->writeWithBank8( dp0, (mathAddr) aprd, (hostSInt8) resultdp2);
+                    this->memory->write8( dp2, dba, (hostSInt8) resultdp2);
                 if ( dp3!=unused)
-                    this->memory->writeWithBank8( dp0, (mathAddr) aprd, (hostSInt8) resultdp3);
+                    this->memory->write8( dp3, dba, (hostSInt8) resultdp3);
             }
             else if ( ip==1)
             {
                 if ( dp0!=unused)
-                    this->memory->writeWithBank16( dp0, (mathAddr) aprd, (hostSInt16) resultdp0);
+                    this->memory->write16( dp0, (mathAddr) aprd, (hostSInt16) resultdp0);
                 if ( dp1!=unused)
-                    this->memory->writeWithBank16( dp1, (mathAddr) aprd, (hostSInt16) resultdp1);
+                    this->memory->write16( dp1, (mathAddr) aprd, (hostSInt16) resultdp1);
                 if ( dp2!=unused)
-                    this->memory->writeWithBank16( dp0, (mathAddr) aprd, (hostSInt16) resultdp2);
+                    this->memory->write16( dp0, (mathAddr) aprd, (hostSInt16) resultdp2);
                 if ( dp3!=unused)
-                    this->memory->writeWithBank16( dp0, (mathAddr) aprd, (hostSInt16) resultdp3);
+                    this->memory->write16( dp0, (mathAddr) aprd, (hostSInt16) resultdp3);
             }
             break;
         case acr:
@@ -1819,9 +1827,15 @@ void Operation::executeSIMD()
             assert( 0);
     }
 
+    cout << "Debug print" << endl;
+    cout << operand1dp0 << " " << operand2dp0 << " " << resultdp0 << endl;
+    cout << operand1dp1 << " " << operand2dp1 << " " << resultdp1 << endl;
+    cout << operand1dp2 << " " << operand2dp2 << " " << resultdp2 << endl;
+    cout << operand1dp3 << " " << operand2dp3 << " " << resultdp3 << endl;
+    cout << "where to " << (hostUInt32) dba << endl;
+
     /* Update flag register after execution. */
     if ( dp0!=unused){
-
     }
     if ( dp1!=unused){
     }
