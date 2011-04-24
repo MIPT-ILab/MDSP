@@ -1435,27 +1435,146 @@ void testSIMDInstructionExecution()
     Operation *op = new Operation(core);
     cout << "Testing SIMD execution." << endl;
 
-    op->setSIMD( PADD, 0, 0, 0x0000001B, 0, 0, 0, 0);
+    /**
+     * PADD
+     * am = 0 ip = 0 MAO = 00011011h d = 0 aprS = 0 aprD = 0
+     */
+    op->setSIMD( PADD, 0, 0, 0x1B, 0, 0, 0, 0);
     op->dump();
     core->init( 0x0000);
     core->GetAPR()->write16( 0, 0x0017);
-    //core->GetRF()->write16( 1, 0x2);
     core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
     core->GetMemory()->write32( 0x0004, 0x000000C0); //halt
-    core->GetMemory()->writeWithBank16( 0, 0x0017, 15);
-    core->GetMemory()->writeWithBank16( 1, 0x0017, 03);
-    core->GetMemory()->writeWithBank16( 2, 0x0017, 19);
-    core->GetMemory()->writeWithBank16( 3, 0x0017, 91);
+    
+    core->GetMemory()->write8( 0, 0x0017, 15);
+    core->GetMemory()->write8( 1, 0x0017, 03);
+    core->GetMemory()->write8( 2, 0x0017, 19);
+    core->GetMemory()->write8( 3, 0x0017, 91);
     core->run();
-    if( ( core->GetMemory()->readWithBank16( 0, 0x0017) !=  30)||
-        ( core->GetMemory()->readWithBank16( 1, 0x0017) !=   6)||
-        ( core->GetMemory()->readWithBank16( 2, 0x0017) !=  38)||
-        ( core->GetMemory()->readWithBank16( 3, 0x0017) != 182) ) 
+    if( ( core->GetMemory()->read8( 0, 0x0017) !=  30)||
+        ( core->GetMemory()->read8( 1, 0x0017) !=   6)||
+        ( core->GetMemory()->read8( 2, 0x0017) !=  38)||
+        ( core->GetMemory()->read8( 3, 0x0017) != 182) ) 
     {
         cout << "ERROR: incorrect execution SIMD" << endl;
         assert( 0);
     }
+    cout << endl;
     op->clear();
+
+    /**
+     * PAND
+     * am = 1 ip = 0 MAO = 00011000h d = 0 aprS = 3 aprD = 4
+     */
+    op->setSIMD( PAND, 1, 0, 0x18, 0, 0, 3, 4);
+    op->dump();
+    core->init( 0x0000);
+    core->GetAPR()->write16( 3, 0x0133);
+    core->GetAPR()->write16( 4, 0x0677);
+    //core->GetRF()->write16( 1, 0x2);
+    core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
+    core->GetMemory()->write32( 0x0004, 0x000000C0); //halt
+    
+    core->GetMemory()->write8( 0, 0x0133, 0xE);
+    core->GetMemory()->write8( 0, 0x0134, 0x3);
+    core->GetMemory()->write8( 1, 0x0133, 0xA);
+    core->GetMemory()->write8( 1, 0x0134, 0x5);
+    core->GetMemory()->write8( 2, 0x0133, 0xC);
+    core->GetMemory()->write8( 2, 0x0134, 0xC);
+    core->GetMemory()->write8( 3, 0x0133, 0xF);
+    core->GetMemory()->write8( 3, 0x0134, 0xF);
+
+    core->GetMemory()->write8( 0, 0x0677, 0x0); // Without this lines test crushed (MS VS 2008, GCC everything OK). 
+    core->GetMemory()->write8( 1, 0x0677, 0x0);
+    core->GetMemory()->write8( 2, 0x0677, 0x0);
+    core->GetMemory()->write8( 3, 0x0677, 0x0);
+
+    core->run();
+
+    if( ( core->GetMemory()->read8( 0, 0x0677) !=   0x2)||
+        ( core->GetMemory()->read8( 1, 0x0677) !=   0x0)||
+        ( core->GetMemory()->read8( 2, 0x0677) !=   0xC)||
+        ( core->GetMemory()->read8( 3, 0x0677) !=   0x0) ) 
+    {
+        cout << "ERROR: incorrect execution SIMD" << endl;
+        assert( 0);
+    }
+    cout << endl;
+    op->clear();
+
+    /**
+     * PAVG
+     * am = 2 ip = 0 MAO = 00000000h d = 0 aprS = 7 aprD = 1
+     */
+    op->setSIMD( PAVG, 2, 0, 0x0, 0, 0, 7, 1);
+    op->dump();
+    core->init( 0x0000);
+    core->GetAPR()->write16( 7, 0x0120);
+    core->GetAPR()->write16( 1, 0x0102);
+    //core->GetRF()->write16( 1, 0x2);
+    core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
+    core->GetMemory()->write32( 0x0004, 0x000000C0); //halt
+    
+    core->GetMemory()->write8( 0, 0x0120, 14);
+    core->GetMemory()->write8( 0, 0x011F, 16);
+    core->GetMemory()->write8( 1, 0x0120, 11);
+    core->GetMemory()->write8( 1, 0x011F, 27);
+    core->GetMemory()->write8( 2, 0x0120, 30);
+    core->GetMemory()->write8( 2, 0x011F, 12);
+    core->GetMemory()->write8( 3, 0x0120, 23);
+    core->GetMemory()->write8( 3, 0x011F, 35);
+    core->GetMemory()->write8( 1, 0x0102,  0);
+    core->GetMemory()->write8( 2, 0x0102,  0);
+    core->GetMemory()->write8( 3, 0x0102,  0);
+
+    core->run();
+
+    if( ( core->GetMemory()->read8( 0, 0x0102) !=  15)||
+        ( core->GetMemory()->read8( 1, 0x0102) !=   0)||
+        ( core->GetMemory()->read8( 2, 0x0102) !=   0)||
+        ( core->GetMemory()->read8( 3, 0x0102) !=   0) ) 
+    {
+        cout << "ERROR: incorrect execution SIMD" << endl;
+        assert( 0);
+    }
+    cout << endl;
+    op->clear();
+
+   /**
+     * PCMPE
+     * am = 1 ip = 0 MAO = 11100100h d = 0 aprS = 2 aprD = 3
+     */
+    op->setSIMD( PCMPE, 1, 0, 0xE4, 0, 0, 2, 3);
+    op->dump();
+    core->init( 0x0000);
+    core->GetAPR()->write16( 2, 0x2011);
+    core->GetAPR()->write16( 3, 0x2012);
+    //core->GetRF()->write16( 1, 0x2);
+    core->GetMemory()->write32( 0x0000, op->encode()->getHostUInt32());
+    core->GetMemory()->write32( 0x0004, 0x000000C0); //halt
+    
+    core->GetMemory()->write8( 0, 0x2011, 13);
+    core->GetMemory()->write8( 0, 0x2012, 31);
+    core->GetMemory()->write8( 1, 0x2011, 14);
+    core->GetMemory()->write8( 1, 0x2012, 14);
+    core->GetMemory()->write8( 2, 0x2011, 16);
+    core->GetMemory()->write8( 2, 0x2012, 12);
+    core->GetMemory()->write8( 3, 0x2011, 19);
+    core->GetMemory()->write8( 3, 0x2012, 19);
+
+    core->run();
+
+    if( ( core->GetMemory()->read8( 0, 0x2012) !=  0)||
+        ( core->GetMemory()->read8( 1, 0x2012) !=  1)||
+        ( core->GetMemory()->read8( 2, 0x2012) !=  0)||
+        ( core->GetMemory()->read8( 3, 0x2012) !=  1) ) 
+    {
+        cout << "ERROR: incorrect execution SIMD" << endl;
+        assert( 0);
+    }
+    cout << endl;
+    op->clear();
+
     system("PAUSE");
 }
 

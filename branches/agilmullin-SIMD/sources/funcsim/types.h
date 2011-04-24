@@ -59,7 +59,10 @@ typedef double hostFloat64;
 /* Type for mathematical memory address */
 typedef hostUInt32 mathAddr;
 
-/* Type for phisical register numeration */
+/* Type for physical memory address */
+typedef hostUInt16 physAddr;
+
+/* Type for physical register numeration */
 typedef hostUInt32 physRegNum;
 
 /* Operation type */
