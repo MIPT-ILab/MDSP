@@ -63,39 +63,26 @@ Let's look at an example:
 <li> Declare the write port, and give it a type (`CpuInstr` is used for all our examples, but any type or class will work): </li>
 
 {{{  
-   WritePort<CpuInstr> var1_wport;
-}}}
-
-<li> Initialize it and set the bandwidth (usually in the module constructor): </li> 
-
-{{{  
-   var1_wport.init( "UNIQUE_STRING");
-
-   var1_wport.bandwidth( bandwidth);
+   WritePort<CpuInstr> var1_wport( Key, Bandwidth, Fanout);
 }}}
   
-The string is used to connect the ports. The other parameter, bandwidth is the desired bandwidth for this connection.
+The string is used to connect the ports. Bandwidth is the desired bandwidth for this connection. Fanout is number of connected read parts of ports.
 
 <li> Declare the read port with the same type as the write port it will get connected to: </li>
 
 {{{
-    ReadPort<CpuInstr> var2_rport; 
+    ReadPort<CpuInstr> var2_rport( Key, Latency); 
 }}} 
-
-<li> Initialize the read port, with the same unique string as the write port: </li>
- 
-{{{
-    var2_rport.init( "UNIQUE_STRING");
-
-    var2_rport.latency( latency);
-}}}
   
 Again, the string is used to connect the ports.  The other parameter, latency is the desired latency for this connection.
 </ol>
   
 Note that the SAME unique string is used for each port. This is how the ports are connected, so these MUST be the same exact string for each connection. 
-As mentioned earlier, connection happens automatically, so this is all that needs to be done to setup and connect the ports.
 
+After declaring all the ports, you should init them with command
+{{{
+    Port<CpuInstr>::portMap->init(); 
+}}}
 
 === Using Ports ===
 Using ports is pretty simple. Carrying on with the previous example:
@@ -120,4 +107,66 @@ Using ports is pretty simple. Carrying on with the previous example:
 </ul>
 
 === Error checking ===
-To be defined.
+
+==== Dublicating of keys ====
+
+You can create two writing ports with the same key, but younger one will replace older one in map of ports. You'll got message with warning:
+
+{{{
+    Reusing of '<name>' key for WritePort. Last WritePort will be used.
+}}}
+
+==== No initialization error ====
+
+If you try to write or to read from uninitialized ports, you'll get message:
+
+{{{
+   <name> <type>Port was not initializated
+}}}
+
+and critical error.
+
+==== Errors during initialization ====
+
+When you call initialization of ports, you may get some messages:
+
+{{{
+    No WritePort for '<name>' key
+}}}
+
+It means that there's no writing port with this key, but there are reading ports with that. It's a critical error and execution will be stopped.
+
+{{{
+    No ReadPorts for '<name>' key
+}}}
+
+Similar, but about reading ports.
+
+{{{
+    <name> WritePort is overloaded by fanout
+}}}
+
+Your writing port is connected to greater number of reading ports, than mentioned in fanout. It's a critical error.
+
+{{{
+    <name> WritePort is underloaded by fanout
+}}}
+
+Your writing port is connected to lesser number of reading ports, than mentioned in fanout. It's NOT a critical error, it's just a warning because that situation can happen during some debug works.
+
+==== Overloading by bandwidth ====
+
+Overloading by bandwidth is a critical error, you'll be notified about it (on calling .write( ) method) with message:
+
+{{{
+    Port '<name>' is overloaded by bandwidth
+}}}
+
+==== Finding lost tokens ====
+
+Command 
+
+{{{
+    Port<type>::portMap->lost( cycle) 
+}}}
+will show you is there any 'lost tokens' in ports, which were added and haven't been got yet.
