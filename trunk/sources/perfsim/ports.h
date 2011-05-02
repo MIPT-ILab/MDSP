@@ -34,6 +34,18 @@ template<class T> class Port: public log
         // Static ports Map to connect ports between for themselves;
         static PortMap<T>* portMap;
         
+        // Call of initialization of portMap
+        static inline void init()
+        {
+            portMap->init();
+        };
+        
+        // Call of finding lost tokens in ports
+        static inline void lost( hostUInt32 cycle)
+        {
+            portMap->lost( cycle);
+        };
+        
         // Sets init flag as true.
         void setInit();
         
