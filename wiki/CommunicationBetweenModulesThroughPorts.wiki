@@ -81,7 +81,13 @@ Note that the SAME unique string is used for each port. This is how the ports ar
 
 After declaring all the ports, you should init them with command
 {{{
-    Port<CpuInstr>::portMap->init(); 
+    Port<CpuInstr>::init(); 
+}}}
+
+or
+
+{{{
+   Port<CpuInstr>::portMap->init();
 }}}
 
 === Using Ports ===
@@ -164,9 +170,15 @@ Overloading by bandwidth is a critical error, you'll be notified about it (on ca
 
 ==== Finding lost tokens ====
 
-Command 
+Commands
 
 {{{
-    Port<type>::portMap->lost( cycle) 
+    Port<type>::lost( cycle); 
+}}}
+
+or
+
+{{{
+    Port<type>::portMap->lost( cycle);
 }}}
 will show you is there any 'lost tokens' in ports, which were added and haven't been got yet.
