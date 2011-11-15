@@ -12,8 +12,8 @@
 #include <list>
 #include <string>
 
-#include "log.h"
-#include "types.h"
+#include "../funcsim/log.h"
+#include "../funcsim/types.h"
 
 template<class T> class PortMap;
 template<class T> class ReadPort;
@@ -211,7 +211,7 @@ template<class T> class ReadPort: public Port<T>
         ReadPort<T>( std::string, hostUInt64);
         
         // Read method
-        hostSInt8 read( T*, hostUInt64);
+        bool read( T*, hostUInt64);
 
         // Pushes data from WritePort
         void pushData( T, hostUInt64);
@@ -241,27 +241,31 @@ template<class T> ReadPort<T>::ReadPort( std::string key, hostUInt64 latency):
  *
  * First arguments is address, second is the number of cycle
  *
- * If there's nothing in port to give, returns -1
- * If succesful, returns 0
+ * If there's nothing in port to give, returns false
+ * If succesful, returns true
  * If uninitalized, asserts
 */
-template<class T> hostSInt8 ReadPort<T>::read( T* address, hostUInt64 cycle)
+template<class T> bool ReadPort<T>::read( T* address, hostUInt64 cycle)
 {   
     if ( !this->_init) 
     {
         critical( "%s ReadPort was not initializated", this->_key.c_str());
-        return -2;
+        return false;
     }
-    if ( _dataQueue.empty()) return -1;
+
+    if ( _dataQueue.empty()) return false; // the port is empty
+
     if ( _dataQueue.front().cycle == cycle)
     {
+		// data is successfully read
         *address = _dataQueue.front().data;
         _dataQueue.pop();
-        return 0;
+        return true;
     }
     else
     {
-        return -1;
+        // there are some entries, but they are not ready to read 
+		return false;
     }
 }
 
