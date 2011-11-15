@@ -186,7 +186,7 @@ will show you is there any 'lost tokens' in ports, which were added and haven't 
 
 -----
 
-= Example =
+= A rather big example =
 
 In this example ports are using to connect two object and also to start and to stop the calculation.
 
@@ -208,6 +208,8 @@ Note if the *DATA_LIMIT* value isn't exceeded for the certain number of cycles (
 
 The code below is main.cpp file. It contains the whole example code you need, but you have to change the relative path to port.h.   
 
+|| Please, update your trunk to r615 or later to be able to build the code ||
+
 {{{
 /**
  * A simple example of using of ports
@@ -217,7 +219,8 @@ The code below is main.cpp file. It contains the whole example code you need, bu
 
 #include <iostream>
 
-// do not move port.h just set the right relative path
+// Do not move port.h just set the right relative path.
+// You MUST change it to yours!!!
 #include "../trunk/sources/perfsim/ports.h"
 
 using namespace std;
