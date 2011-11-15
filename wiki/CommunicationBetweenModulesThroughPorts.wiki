@@ -432,3 +432,13 @@ void B::clock ( int cycle)
 }}}
 
 If everything is right the calculation should be completed in cycle 8. You can change *DATA_LIMIT* and *CLOCK_LIMIT* and investigate a behavior of the program to understand ports more carefully.
+
+----
+
+== Exercise 1 ==
+
+Add a separate class C and move DATA_LIMIT control into it. 
+
+The port connection scheme is presented in the next picture:
+
+http://mdsp.googlecode.com/svn/wiki/images/port_usage_exercise_1.png
