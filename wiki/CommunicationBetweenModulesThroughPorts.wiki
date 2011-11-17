@@ -107,7 +107,7 @@ Using ports is pretty simple. Carrying on with the previous example:
 {{{
    CpuInstr instr2; 
 
-   var2_rport.read( instr2, cycle); // Where instr2 is пшмут as a reference parameter,
+   var2_rport.read( instr2, cycle); // Where instr2 is given as a reference parameter,
                                     // i.e. the read function fulfills it.
                                     // Cycle is a current CPU cycle number.
 }}}
