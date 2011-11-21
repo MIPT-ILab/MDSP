@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "/perfsim/ports.h"
+#include "./perfsim/ports.h"
 
 using namespace std;
 
