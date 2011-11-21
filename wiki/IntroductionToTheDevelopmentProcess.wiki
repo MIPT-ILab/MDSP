@@ -7,23 +7,44 @@ This page contains some notes that might be useful for students that start the d
 
 = Our SVN structure =
 
-{{{
-mdsp
-├── Release -- place for release mode binaries and object files
-│
-├── Debug -- place for debug mode binaries and object files
-│
-├── sources
-│   ├── asm -- source for assembler
-│   ├── bin -- folder with binaries (if they are built)
-│   ├── build -- temporary files of build
-│   │   ├── asm
-│   │   └── funcsim
-│   └── funcsim -- source for functional simulator
-│     
-└── tests -- source code for tests and regular tests scripts
-}}}
-
+== [http://mdsp.googlecode.com/svn/ svn]: ==
+<ul>
+<li>
+*{{{branches}}}*  -- a side-line of development
+<ul>
+<li>*{{{2010}}}*  -- an archive</li>
+<li>*{{{2011}}}*</li>
+<ul>
+<li>*{{{issues}}}*  --  branches for feature development</li>
+<li>*{{{sandbox}}}*  -- a room for your experiment, you are free to create branches here </li>
+<li>*{{{simmy}}}*  -- development of a very simple education simulator</li>
+</ul>
+</ul>
+</li>
+<li>
+*{{{tags}}}*  -- releases
+</li>
+<li>
+*{{{trunk}}}* -- the main line of development
+<ul>
+<li>*{{{boost}}}*  -- sources of the boost library</li>
+<li>*{{{tests}}}*  -- tests sources, binaries and scripts</li>
+<li>*{{{sources}}}*  -- the main sources</li>
+<ul>
+<li>*{{{asm}}}*  -- the mdsp assembler</li>
+<li>*{{{funcsim}}}*  -- sources of the functional simulator</li>
+<li>*{{{perfsim}}}*  -- sources of the performance simulator</li>
+</ul>
+</ul> 
+</li>
+<li>
+*{{{wiki}}}* -- a storage for wiki pages
+<ul>
+<li>*{{{images}}}*  -- all images in wiki must be placed into this folder</li>
+<li>*{{{team-photos}}}*  -- photos of project participants</li>
+</ul>
+</li>
+</ul>
 
 = Working with code = 
 
