@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-#include "../perfsim/ports.h"
+#include "./perfsim/ports.h"
 
 using namespace std;
 
@@ -106,7 +106,7 @@ int main()
                 {
                         cout << "-------------------------------\n\n"
                                  << "A stop signal is recieved.\n"
-                             << "Calculation is COMPLETED in cycle " << cycle << ".\n\n"; system("Pause");
+                             << "Calculation is COMPLETED in cycle " << cycle << ".\n\n";
                         return 0;
                 }
 
