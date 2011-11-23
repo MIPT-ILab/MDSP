@@ -16,7 +16,7 @@ using namespace std;
 #define PORT_FANOUT 1
 #define PORT_BW 1
 
-#define DATA_LIMIT 5 // exit when this data value is exceeded
+#define DATA_LIMIT 15 // exit when this data value is exceeded
 #define CLOCK_LIMIT 10 // how many cycles to execute
 
 class A 
@@ -284,8 +284,5 @@ void C:: clock ( int cycle)
         		cout << "\tnothing to read\n";
                 	break;
         	}
-
-        	//this->processData( data, cycle);
-        	//break;
 	}
 } 
