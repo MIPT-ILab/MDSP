@@ -104,7 +104,7 @@ int main()
         {
                 cout << "\n--- cycle " << cycle << "----\n";
 
-                // check the stop port from A object
+                // check the stop port from C object
                 bool tmp;
                 if ( _stop.read( &tmp, cycle))
                 {
@@ -252,7 +252,6 @@ void C::processData ( int data, int cycle)
         
         // If data limit is exceeded 
         // then send a stop signal
-        //cout << DATA_LIMIT <<"   " <<data <<"\n\n\n";
         if ( data > DATA_LIMIT)
         {
                 cout << "\t\t\t data limit is exceeded => "
@@ -271,18 +270,13 @@ void C:: clock ( int cycle)
                
         // Read all the port in order 
         // and break the loop if there is no message to read.
-        while ( true)
-        {
-        	if ( _from_B->read( &data, cycle))
-        	{
-        		cout << "\tread the port from B: data = " << data << "\n";
-        		
-        	} else
-        	{
-        		cout << "\tnothing to read\n";
-                	break;
-        	}
-        	this->processData( data, cycle);
-        	break;
-	}
+     
+       	if ( _from_B->read( &data, cycle))
+      	{
+       		cout << "\tread the port from B: data = " << data << "\n";
+       		this->processData( data, cycle);
+      	} else
+       	{
+      		cout << "\tnothing to read\n";
+       	}
 } 
