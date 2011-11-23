@@ -25,8 +25,7 @@ class A
         ReadPort<int>* _from_B;
 
         ReadPort<int>* _init;
-        //WritePort<bool>* _stop;
-        
+                
         // process recieved data
         void processData ( int data, int cycle);
 
@@ -136,7 +135,6 @@ A::A()
         _from_B = new ReadPort<int> ( "B_to_A", PORT_LATENCY);
                 
         _init = new ReadPort<int> ( "Init_A", PORT_LATENCY);
-        //_stop = new WritePort<bool> ( "Stop", PORT_BW, PORT_FANOUT);
 }
 
 A::~A ()
@@ -144,7 +142,6 @@ A::~A ()
         delete _to_B;
         delete _from_B;
         delete _init;
-        //delete _stop; 
 }
         
 void A::processData ( int data, int cycle)
@@ -152,17 +149,6 @@ void A::processData ( int data, int cycle)
         // perform calculation
         ++data;
         cout << "\t\tProcess data: new value = " << data << "\n";
-
-        // If data limit is exceeded 
-        // then send a stop signal
-        //if ( data > DATA_LIMIT)
-        //{
-        //        cout << "\t\t\t data limit is exceeded => "
-        //             << "send a stop signal\n";
-        //        _stop->write( true, cycle);
-
-        //        return;
-        //}
 
         cout << "\t\t\tsend it to B\n";
         _to_B->write( data, cycle);
@@ -222,7 +208,6 @@ void B::processData ( int data, int cycle)
         cout << "\t\tProcess data: new value = " 
                         << data << "\n" << "\t\t\tsend it to A\n";
 
-        //cout << "\t\t\tsend it to A\n";
         _to_A->write( data, cycle);
         cout << "\t\t\tsend it to C\n";
         _to_C->write( data, cycle);
@@ -265,8 +250,6 @@ void C::processData ( int data, int cycle)
 {
         // do not change data
         
-        cout << "\t\tProcess data: new value = " << data << "\n";
-
         // If data limit is exceeded 
         // then send a stop signal
         //cout << DATA_LIMIT <<"   " <<data <<"\n\n\n";
@@ -278,9 +261,6 @@ void C::processData ( int data, int cycle)
 
                 return;
         }
-
-        //cout << "\t\t\tsend it to B\n";
-        //_to_B->write( data, cycle);
 }
 
 void C:: clock ( int cycle)
@@ -296,6 +276,8 @@ void C:: clock ( int cycle)
         	if ( _from_B->read( &data, cycle))
         	{
         		cout << "\tread the port from B: data = " << data << "\n";
+        		this->processData( data, cycle);
+        		break;
 
         	} else
         	{
@@ -303,6 +285,7 @@ void C:: clock ( int cycle)
                 	break;
         	}
 
-        	this->processData( data, cycle);
+        	//this->processData( data, cycle);
+        	//break;
 	}
 } 
