@@ -131,10 +131,10 @@ int main()
 
 A::A()
 {
-        _to_B = new WritePort<int> ( "A_to_B", PORT_BW, PORT_FANOUT);
-        _from_B = new ReadPort<int> ( "B_to_A", PORT_LATENCY);
+        _to_B   = new WritePort <int> ( "A_to_B", PORT_BW, PORT_FANOUT);
+        _from_B = new ReadPort  <int> ( "B_to_A", PORT_LATENCY);
                 
-        _init = new ReadPort<int> ( "Init_A", PORT_LATENCY);
+        _init   = new ReadPort  <int> ( "Init_A", PORT_LATENCY);
 }
 
 A::~A ()
