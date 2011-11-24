@@ -16,14 +16,14 @@ using namespace std;
 #define PORT_FANOUT 1
 #define PORT_BW 1
 
-#define DATA_LIMIT  100 // exit when this data value is exceeded
-#define CLOCK_LIMIT 100 // how many cycles to execute
+#define DATA_LIMIT  10 // exit when this data value is exceeded
+#define CLOCK_LIMIT 10 // how many cycles to execute
 
 class A
 {
         WritePort<int>* _to_B;
-        ReadPort<int>*  _from_B;
 
+        ReadPort<int>*  _from_B;
         ReadPort<int>*  _init;
 
 
@@ -45,10 +45,10 @@ public:
 class B
 {
         WritePort<int>* _to_A;
-        ReadPort<int>*  _from_A;
         WritePort<int>* _to_C;
 
-        // process recieved data
+        ReadPort<int>*  _from_A;
+
         void processData ( int data,  int cycle);
 
 public:
@@ -56,19 +56,15 @@ public:
         B ();
         ~B ();
 
-        /* "Clock" B object, i.e. execute all actions
-         * that it performs for a cycle: read ports,
-         * process data and so on.
-         */
         void clock ( int cycle);
 };
 
 class C
 {
-        ReadPort<int>*   _from_B;
         WritePort<bool>* _stop;
 
-        // process recieved data
+        ReadPort<int>*   _from_B;
+
         void processData ( int data,  int cycle);
 
 public:
@@ -76,10 +72,6 @@ public:
         C ();
         ~C ();
 
-        /* "Clock" B object, i.e. execute all actions
-         * that it performs for a cycle: read ports,
-         * process data and so on.
-         */
         void clock ( int cycle);
 };
 
@@ -137,6 +129,7 @@ int main()
 A::A()
 {
         _to_B   = new WritePort<int> ( "A_to_B", PORT_BW, PORT_FANOUT);
+
         _from_B = new ReadPort<int>  ( "B_to_A", PORT_LATENCY);
         _init   = new ReadPort<int>  ( "Init_A", PORT_LATENCY);
 
@@ -196,6 +189,7 @@ B::B ()
 {
         _to_A   = new WritePort<int> ( "B_to_A", PORT_BW, PORT_FANOUT);
         _to_C   = new WritePort<int> ( "B_to_C", PORT_BW, PORT_FANOUT);
+
         _from_A = new ReadPort<int>  ( "A_to_B", PORT_LATENCY);
 }
 
@@ -208,9 +202,8 @@ B::~B ()
 void B::processData ( int data, int cycle)
 {
         // perform calculation
-        ++data;
+        data *= 2;
 
-        _from_A->read( &data, cycle);
         cout << "\t\tProcess data: new value = " << data << "\n";
 
         cout << "\t\t\tsend it to A\n";
@@ -244,8 +237,9 @@ void B::clock ( int cycle)
 
 C::C()
 {
-        _from_B = new ReadPort<int>   ( "B_to_C", PORT_LATENCY);
         _stop   = new WritePort<bool> ( "Stop", PORT_BW, PORT_FANOUT);
+
+        _from_B = new ReadPort<int>   ( "B_to_C", PORT_LATENCY);
 }
 
 C::~C ()
@@ -256,10 +250,6 @@ C::~C ()
 
 void C::processData ( int data, int cycle)
 {
-        // perform calculation
-        ++data;
-        cout << "\t\tProcess data: new value = " << data << "\n";
-
         // If data limit is exceeded
         // then send a stop signal
         if ( data > DATA_LIMIT)
@@ -280,12 +270,11 @@ void C::clock ( int cycle)
 
         if( _from_B->read( &data, cycle))
         {
-        cout << "\tread the  port: data = " << data << "\n";
-        this->processData( data, cycle);
-        }
-        else
+                cout << "\tread the  port: data = " << data << "\n";
+                this->processData( data, cycle);
+        } else
         {
-        cout << "\tnothing to read\n";
+                cout << "\tnothing to read\n";
         }
 }
 
