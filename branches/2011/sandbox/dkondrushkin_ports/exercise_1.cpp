@@ -76,7 +76,7 @@ public:
         C ();
         ~C ();
         
-        /* "Clock" A object, i.e. execute all actions
+        /* "Clock" Ñ object, i.e. execute all actions
          * that it performs for a cycle: read ports,
          * process data and so on.
          */
@@ -87,7 +87,7 @@ int main()
 {
         A _a;
         B _b;
-		C _c;
+	C _c;
 
         WritePort<int> _init( "Init_A", PORT_BW, PORT_FANOUT);
         ReadPort<bool> _stop( "Stop", PORT_LATENCY);
