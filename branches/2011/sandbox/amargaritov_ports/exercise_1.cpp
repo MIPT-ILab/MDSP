@@ -1,4 +1,5 @@
 /**
+ * @file:exercise_1.cpp
  * My implementation for ex1
  * @author Artemy Margaritov
  * Copyright 2011 MDSP team
@@ -21,58 +22,45 @@ using namespace std;
 
 class A
 {
-        WritePort<int>* _to_B;
+    WritePort<int>* _to_B;
+    ReadPort<int>*  _from_B;
+    ReadPort<int>*  _init;
 
-        ReadPort<int>*  _from_B;
-        ReadPort<int>*  _init;
-
-
-        // process recieved data
-        void processData ( int data, int cycle);
+    /* Process recieved data */
+    void processData ( int data, int cycle);
 
 public:
+    A ();
+    ~A ();
 
-        A ();
-        ~A ();
-
-        /* "Clock" A object, i.e. execute all actions
-         * that it performs for a cycle: read ports,
-         * process data and so on.
-         */
-        void clock ( int cycle);
+    /* "Clock" A object, i.e. execute all actions
+     * that it performs for a cycle: read ports,
+     * process data and so on.
+     */
+    void clock ( int cycle);
 };
 
 class B
 {
-        WritePort<int>* _to_A;
-        WritePort<int>* _to_C;
-
-        ReadPort<int>*  _from_A;
-
-        void processData ( int data,  int cycle);
-
+    WritePort<int>* _to_A;
+    WritePort<int>* _to_C;
+    ReadPort<int>*  _from_A;
+    void processData ( int data,  int cycle);
 public:
-
-        B ();
-        ~B ();
-
-        void clock ( int cycle);
+    B ();
+    ~B ();
+    void clock ( int cycle);
 };
 
 class C
 {
-        WritePort<bool>* _stop;
-
-        ReadPort<int>*   _from_B;
-
-        void processData ( int data,  int cycle);
-
+    WritePort<bool>* _stop;
+    ReadPort<int>*   _from_B;
+    void processData ( int data,  int cycle);
 public:
-
-        C ();
-        ~C ();
-
-        void clock ( int cycle);
+    C ();
+    ~C ();
+    void clock ( int cycle);
 };
 
 
@@ -80,117 +68,119 @@ public:
 
 int main()
 {
-        A _a;
-        B _b;
-        C _c;
+    A _a;
+    B _b;
+    C _c;
 
-        WritePort<int> _init( "Init_A", PORT_BW, PORT_FANOUT);
-        ReadPort<bool> _stop( "Stop", PORT_LATENCY);
+    WritePort<int> _init( "Init_A", PORT_BW, PORT_FANOUT);
+    ReadPort<bool> _stop( "Stop", PORT_LATENCY);
 
-        // Connect all the ports.
-        // MUST be after declaration of all ports!
-        // MUST be for each port type!
-        Port<int>::init();
-        Port<bool>::init();
+    /*
+     * Connect all the ports.
+     * MUST be after declaration of all ports!
+     * MUST be for each port type!
+     */
+    Port<int>::init();
+    Port<bool>::init();
 
-        // Init A object by 0 value
-        _init.write(0, 0);
+    /* Init A object by 0 value */
+    _init.write(0, 0);
 
-        for ( int cycle = 0; cycle < CLOCK_LIMIT; cycle++)
+    for ( int cycle = 0; cycle < CLOCK_LIMIT; cycle++)
+    {
+        cout << "\n--- cycle " << cycle << "----\n";
+
+        /* Check the stop port from A object */
+        bool tmp;
+        if ( _stop.read( &tmp, cycle))
         {
-                cout << "\n--- cycle " << cycle << "----\n";
-
-                // check the stop port from A object
-                bool tmp;
-                if ( _stop.read( &tmp, cycle))
-                {
-                        cout << "-------------------------------\n\n"
-                                 << "A stop signal is recieved.\n"
-                             << "Calculation is COMPLETED in cycle " << cycle << ".\n\n";
-                        return 0;
-                }
-
-                // execute each module
-                _a.clock( cycle);
-                _b.clock( cycle);
-                _c.clock( cycle);
+            cout << "-------------------------------\n\n"
+                 << "A stop signal is recieved.\n"
+                 << "Calculation is COMPLETED in cycle " << cycle << ".\n\n";
+            return 0;
         }
 
-        cout << "-------------------------------\n\n"
-                 << "Calculation is FINISHED by CLOCK_LIMIT (=" << CLOCK_LIMIT << ").\n\n";
+        /* Execute each module */
+        _a.clock( cycle);
+        _b.clock( cycle);
+        _c.clock( cycle);
+    }
 
-        return 0;
+    cout << "-------------------------------\n\n"
+         << "Calculation is FINISHED by CLOCK_LIMIT (="
+         << CLOCK_LIMIT << ").\n\n";
+
+    return 0;
 }
 
-//=================================================================
-//                 Implementation of A class
-//=================================================================
-
-A::A()
+/**
+ *=================================================================
+ *                Implementation of A class
+ *=================================================================
+ */
+A::A ()
 {
-        _to_B   = new WritePort<int> ( "A_to_B", PORT_BW, PORT_FANOUT);
-
-        _from_B = new ReadPort<int>  ( "B_to_A", PORT_LATENCY);
-        _init   = new ReadPort<int>  ( "Init_A", PORT_LATENCY);
+    _to_B   = new WritePort<int> ( "A_to_B", PORT_BW, PORT_FANOUT);
+    _from_B = new ReadPort<int>  ( "B_to_A", PORT_LATENCY);
+    _init   = new ReadPort<int>  ( "Init_A", PORT_LATENCY);
 
 }
 
 A::~A ()
 {
-        delete _to_B;
-        delete _from_B;
-        delete _init;
+    delete _to_B;
+    delete _from_B;
+    delete _init;
 
 }
 
 void A::processData ( int data, int cycle)
 {
-        // perform calculation
-        ++data;
-        cout << "\t\tProcess data: new value = " << data << "\n";
+    /* Perform calculation*/
+    ++data;
+    cout << "\t\tProcess data: new value = " << data << "\n";
 
-        cout << "\t\t\tsend it to B\n";
-        _to_B->write( data, cycle);
+    cout << "\t\t\tsend it to B\n";
+    _to_B->write( data, cycle);
 }
 
 void A::clock ( int cycle)
 {
-        cout << "Clock of A:\n";
+    cout << "Clock of A:\n";
 
-        int data;
+    int data;
 
-        // Read all the port in order
-        // and break the loop if there is no message to read.
-        while( true)
+    /*
+     * Read all the port in order
+     * and break the loop if there is no message to read.
+     */
+    while( true)
+    {
+        if( _init->read( &data, cycle))
         {
-                if( _init->read( &data, cycle))
-                {
-                        cout << "\tread the init port: data = " << data << "\n";
-
-                } else if ( _from_B->read( &data, cycle))
-                {
-                        cout << "\tread the port from B: data = " << data << "\n";
-
-                } else
-                {
-                        cout << "\tnothing to read\n";
-                        break;
-                }
-
-                this->processData( data, cycle);
+            cout << "\tread the init port: data = " << data << "\n";
+        } else if ( _from_B->read( &data, cycle))
+        {
+            cout << "\tread the port from B: data = " << data << "\n";
+        } else
+        {
+            cout << "\tnothing to read\n";
+            break;
+        }
+            this->processData( data, cycle);
         }
 }
 
-//=================================================================
-//                 Implementation of B class
-//=================================================================
-
+/**
+ *=================================================================
+ *               Implementation of B class
+ *=================================================================
+ */
 B::B ()
 {
-        _to_A   = new WritePort<int> ( "B_to_A", PORT_BW, PORT_FANOUT);
-        _to_C   = new WritePort<int> ( "B_to_C", PORT_BW, PORT_FANOUT);
-
-        _from_A = new ReadPort<int>  ( "A_to_B", PORT_LATENCY);
+    _to_A   = new WritePort<int> ( "B_to_A", PORT_BW, PORT_FANOUT);
+    _to_C   = new WritePort<int> ( "B_to_C", PORT_BW, PORT_FANOUT);
+    _from_A = new ReadPort<int>  ( "A_to_B", PORT_LATENCY);
 }
 
 B::~B ()
@@ -201,81 +191,81 @@ B::~B ()
 
 void B::processData ( int data, int cycle)
 {
-        // perform calculation
-        data *= 2;
+    /* Perform calculation */
+    data *= 2;
 
-        cout << "\t\tProcess data: new value = " << data << "\n";
+    cout << "\t\tProcess data: new value = " << data << "\n";
 
-        cout << "\t\t\tsend it to A\n";
-        _to_A->write( data, cycle);
+    cout << "\t\t\tsend it to A\n";
+    _to_A->write( data, cycle);
 
 
-        cout << "\t\t\tsend it to C\n";
-        _to_C->write( data, cycle);
+    cout << "\t\t\tsend it to C\n";
+    _to_C->write( data, cycle);
 }
 
 void B::clock ( int cycle)
 {
-        cout << "Clock of B:\n";
+    cout << "Clock of B:\n";
 
-        int data;
+    int data;
 
-        if ( _from_A->read( &data, cycle))
-        {
-                cout << "\tread the port from A: data = " << data << "\n";
-                this->processData( data, cycle);
-
-        } else
-        {
-                cout << "\tnothing to read\n";
-        }
+    if ( _from_A->read( &data, cycle))
+    {
+        cout << "\tread the port from A: data = " << data << "\n";
+        this->processData( data, cycle);
+    } else
+    {
+        cout << "\tnothing to read\n";
+    }
 }
 
-//=================================================================
-//                 Implementation of C class
-//=================================================================
-
-C::C()
+/**
+ *=================================================================
+ *              Implementation of C class
+ *=================================================================
+ */
+C::C ()
 {
-        _stop   = new WritePort<bool> ( "Stop", PORT_BW, PORT_FANOUT);
-
-        _from_B = new ReadPort<int>   ( "B_to_C", PORT_LATENCY);
+    _stop   = new WritePort<bool> ( "Stop", PORT_BW, PORT_FANOUT);
+    _from_B = new ReadPort<int>   ( "B_to_C", PORT_LATENCY);
 }
 
 C::~C ()
 {
-        delete _from_B;
-        delete _stop;
+    delete _from_B;
+    delete _stop;
 }
 
 void C::processData ( int data, int cycle)
 {
-        // If data limit is exceeded
-        // then send a stop signal
-        if ( data > DATA_LIMIT)
-        {
-                cout << "\t\t\t data limit is exceeded => "
-                     << "send a stop signal\n";
-                _stop->write( true, cycle);
-
-                return;
-        }
+    /*
+     * If data limit is exceeded
+     * then send a stop signal
+     */
+    if ( data > DATA_LIMIT)
+    {
+        cout << "\t\t\t data limit is exceeded => "
+             << "send a stop signal\n";
+        _stop->write( true, cycle);
+        return;
+    }
 }
 
 void C::clock ( int cycle)
 {
-        cout << "Clock of C:\n";
+    cout << "Clock of C:\n";
 
-        int data;
+    int data;
 
-        if( _from_B->read( &data, cycle))
-        {
-                cout << "\tread the  port: data = " << data << "\n";
-                this->processData( data, cycle);
-        } else
-        {
-                cout << "\tnothing to read\n";
-        }
+    if( _from_B->read( &data, cycle))
+    {
+        cout << "\tread the  port: data = " << data << "\n";
+        this->processData( data, cycle);
+    } else
+    {
+        cout << "\tnothing to read\n";
+    }
 }
 
 
