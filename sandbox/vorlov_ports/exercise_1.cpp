@@ -6,7 +6,7 @@
  */
 
 #include <iostream>
-#include "C:/mdsp/sources/perfsim/ports.h"
+#include "./perfsim/ports.h"
 
 using namespace std;
 
