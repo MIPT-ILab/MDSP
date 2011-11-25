@@ -8,7 +8,7 @@
 
 // Do not move port.h just set the right relative path.
 // You MUST change it to yours!!!
-#include "D:\PROGRAMMING\MVS 2010\Ports\svn_ports\sandbox\dkondrushkin_ports\perfsim\ports.h"
+#include "./perfsim/ports.h"
 using namespace std;
 
 #define PORT_LATENCY 1
