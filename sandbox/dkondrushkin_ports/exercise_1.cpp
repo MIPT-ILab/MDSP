@@ -5,7 +5,6 @@
  */
 
 #include <iostream>
-#include <conio.h>
 
 // Do not move port.h just set the right relative path.
 // You MUST change it to yours!!!
@@ -112,20 +111,19 @@ int main()
                         cout << "-------------------------------\n\n"
                                  << "A stop signal is recieved.\n"
                              << "Calculation is COMPLETED in cycle " << cycle << ".\n\n";
-						_getch();
+
                         return 0;
                 }
 
                 // execute each module
                 _a.clock( cycle);
                 _b.clock( cycle);
-				_c.clock( cycle);
+		_c.clock( cycle);
         }
         
         cout << "-------------------------------\n\n"
                  << "Calculation is FINISHED by CLOCK_LIMIT (=" << CLOCK_LIMIT << ").\n\n";
 
-			_getch();
         return 0;
 }
 
@@ -192,7 +190,7 @@ void A::clock ( int cycle)
 
 B::B ()
 {
-		// add 1 to PORT_FANOUT for writing to A and C from the same port
+	// add 1 to PORT_FANOUT for writing to A and C from the same port
         _to_A_and_C = new WritePort<int> ( "B_to_A_and_C", PORT_BW, PORT_FANOUT + 1);
         _from_A = new ReadPort<int> ( "A_to_B", PORT_LATENCY);
 }
