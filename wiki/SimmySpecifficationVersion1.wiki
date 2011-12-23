@@ -336,7 +336,7 @@ The command `SSGN` takes the sign bit and set its value into sign bit of the reg
 
 SSGN 1, r3;
 
-# r3 is changed to `1 0000 0000  0000 0110` (decimal 7).
+# r3 is changed to `1 0000 0000  0000 0111` (decimal 7).
 }}}
 
 ===<font color="#595454"> `ISGN` </font>===
@@ -348,7 +348,7 @@ The command `ISGN` invert the sign of the register of `op`, i.e. change positive
 
 ISGN r3;
 
-# r3 is changed to `0 0000 0000  0000 0110` (decimal -7).
+# r3 is changed to `0 0000 0000  0000 0111` (decimal -7).
 }}}
 
 <font color="white">. </font>
@@ -428,8 +428,8 @@ int main()
     unsigned char control_byte = ( *control_byte_addr);
 
     
-    bool type_op2 = control_byte & 1; // != 0 only if the 3rd bit is 1;
-    bool sign_op2 = control_byte & 2; // != 0 only if the 4th bit is 1;
+    bool type_op2 = control_byte & 4; // != 0 only if the 3rd bit is 1;
+    bool sign_op2 = control_byte & 8; // != 0 only if the 4th bit is 1;
    
     // get the value of op2
     unsigned char* op2_addr = instr_start_addr + 3;
