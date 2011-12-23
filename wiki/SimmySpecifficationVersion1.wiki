@@ -312,7 +312,7 @@ The command `DEC` decreases the value from `op` by one.
 
 DEC r3;
 
-# r3 is changed to `1 0000 0000  0000 1000` (decimal 8).
+# r3 is changed to `1 0000 0000  0000 0110` (decimal 6).
 }}}
 
 ===<font color="#595454"> `INC` </font>===
@@ -324,7 +324,7 @@ The command `INC` increases the value from `op` by one.
 
 INC r3;
 
-# r3 is changed to `1 0000 0000  0000 0110` (decimal 6).
+# r3 is changed to `1 0000 0000  0000 1000` (decimal 8).
 }}}
 
 ===<font color="#595454"> `SSGN` </font>===
