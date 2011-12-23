@@ -1,0 +1,10 @@
+#summary ISA
+= Short description =
+
+Some kind of short description of MDSP architecture can be found in the [http://code.google.com/p/mdsp/downloads/detail?name=TaskGuide.doc document].
+
+*TODO* extend me
+
+= Details =
+
+For full details, see the official [https://code.google.com/p/mdsp/downloads/detail?name=A%20Multimedia%20DSP%20processor%20design.pdf A Multimedia DSP processor design] document.
