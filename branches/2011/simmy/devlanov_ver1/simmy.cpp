@@ -3,6 +3,20 @@
 using namespace std;
 
 
+void Simmy::initAllParams ()
+{
+	
+    memset ( reg, NULL, NUMBER_OF_REG);
+    opcode = 0; 	    
+    op1 = 0;          
+    op2 = 0;             	
+    sign_op1 = 0; 
+    sign_op2 = 0; 
+    type_op2 = 0;
+    sign_bit = 0;
+    number_reg1 = 0;
+    number_reg2 = 0;
+}
 Simmy::Simmy ( hostUInt8* bytes, hostUInt32 lenght)
 {
     cur_instr = bytes;
@@ -23,45 +37,45 @@ hostSInt32 Simmy::readInstr ()
     
     if ( control & 2)
     {
-    	sign_bit = 1;
+    	sign_bit = 1; cout << "sign_bit = " << (int)sign_bit << endl;
     } else
     {
-    	sign_bit = 0;
+    	sign_bit = 0; cout << "sign_bit = " << (int)sign_bit << endl;
     }
     
     if ( control & 4)
     {
-    	type_op2  = 1;
+    	type_op2  = 1; cout << "type_op2 = " << (int)sign_bit << endl;
+    } else
+    {
+    	type_op2  = 0; cout << "type_op2 = " << (int)sign_bit << endl;
     }
-    
-//   if ( type_op2 == 1)
-//    {
-    	sign_op2  = control & 8;          //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//    } 
-/////////////////////////////////////////////////////////////   
+
+   	sign_op2  = control & 8;          cout << "sign_op2 = " << (int)sign_op2 << endl;
+ 
     if ( ( control & 8) && ( type_op2 == 0))
     {
-    	cout << "specification Simmy does not provide for such action\n", "command does not execute\n";
-    	return -1;
+    	cout << "specification Simmy does not provide for such action\n" << "command does not execute\n";
+    	return NOT_SUPPORT;
     }
     
     if ( !( control & 8) && ( type_op2 != 0) && ( sign_bit == 1))
     {
-    	cout << "specification Simmy does not provide for such action\n", "command does not execute\n";
-    	return -1;
+    	cout << "specification Simmy does not provide for such action\n" << "command does not execute\n";
+    	return NOT_SUPPORT;
     }
-//////////////////////////////////////////////////////////////      
+      
     adr_instr++;
     
     number_reg1 = *adr_instr;
-    op1         =      reg[ number_reg1];
-    sign_op1    = sign_reg[ number_reg1];
+    op1         =      reg[ number_reg1]; cout << "op1 = " << op1 << endl;
+    sign_op1    = sign_reg[ number_reg1]; cout << "sign_op1 = " << sign_op1 << endl;
    
     adr_instr++;
     
     if ( type_op2 == 0)
-    {cout << "number_reg2 = " << number_reg2 << "\n";
-    	number_reg2 = *adr_instr;
+    {//cout << "number_reg2 = " << number_reg2 << "\n";
+    	number_reg2 = *adr_instr; cout << "number_reg2 = " << (int)number_reg2 << "\n";
     	op2         = ( hostUInt16)reg[ number_reg2];
     	sign_op2    =         sign_reg[ number_reg2];
     }
@@ -76,13 +90,17 @@ hostSInt32 Simmy::readInstr ()
     	op2 = sign_most_op2 * 256 + sign_list_op2;
     }
     cout << "op2 = " << op2 << "\n";
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 hostSInt32 Simmy::execInstr ()
 {
 	hostSInt32 status = 0;
 	
+	if ( opcode == 0)
+	{
+		funcNop ();
+	}
 	if ( opcode == 1)
 	{
 		funcAnd ();
@@ -138,6 +156,11 @@ hostSInt32 Simmy::execInstr ()
 	}
 	
 	return status;
+}
+
+void Simmy::funcNop  ()
+{
+	//this function does not execute
 }
 
 void Simmy::funcAnd  ()
@@ -199,7 +222,8 @@ int  Simmy::funcDiv  ()
 {
 	if ( op2 == 0)
 	{
-		return 2;
+		cout << "devided by null\n" << "command DIV does not execute\n";
+		return DEVIDED_BY_NULL;
 	}
 	
 	reg[ number_reg1] = op1 / op2;
@@ -251,62 +275,53 @@ void Simmy::funcInc  ()
 
 void Simmy::funcSsgn ()
 {
-	if ( sign_bit != sign_op1)
-	{
-		if ( sign_op1 == 0)
-		{
-				 reg[ number_reg1]--;
-			sign_reg[ number_reg1] = true;
-		} else
-		{
-				 reg[ number_reg1]++;
-			sign_reg[ number_reg1] = false;
-		}
-	}
+	sign_reg[ number_reg1] = sign_bit;
 }
-
+	
 void Simmy::funcIsgn ()
 {
-	if ( sign_op1 == 0)
-		{
-				 reg[ number_reg1]--;
-			sign_reg[ number_reg1] = true;
-		} else
-		{
-				 reg[ number_reg1]++;
-			sign_reg[ number_reg1] = false;
-		}
+	sign_reg[ number_reg1] = !sign_reg[ number_reg1];
 }
 
-hostSInt32 Simmy::execute ( hostUInt32 numInstr)
+int Simmy::execute ( hostUInt32 numInstr)
 {
+	initAllParams ();
+	
 	short i = 0;
 	hostSInt32 status_exit_readInstr = 0;
 	hostSInt32 status_exit_execInstr = 0;
     
     for ( i = 0; i < numInstr; i++)
     {cout <<"i = "<< i << "\n";
-        if ( ( status_exit_readInstr = readInstr    ()) != 0) 
+        if ( ( status_exit_readInstr = readInstr ()) != 0) 
         {
-        	//goto loop1;
+        	goto loop1;
         }
         
-        if ( ( status_exit_execInstr = execInstr    ()) != 0) 
+        if ( ( status_exit_execInstr = execInstr ()) != 0) 
         {
-        	//goto loop1;
+        	goto loop1;
         }
-        cur_instr = cur_instr + 5;
+loop1:  cur_instr = cur_instr + 5;
     }
-    return reg[ 0];
+    
+    if ( sign_reg[ 1] == true)
+    {
+    	return ( int)reg[ 0];
+    }
+    if ( sign_reg[ 1] == false)
+    {
+    	return -1 * ( int)reg[ 0];
+    }
 }      
 
 int main ()
 {
-	 unsigned char a[18] = {
+	 unsigned char a[100] = {
 
         /* MOV r1, 5 */
         132,
-        4,   ///////##############
+        12,   ///////##############
         1,  
         7, 
         0, 
@@ -318,10 +333,25 @@ int main ()
         1, 
         0, 
         
+        /* ADD r0, r1 */
+        130,
+        0,  
+        0,  
+        1, 
+        0, 
+        
+       
+        
+        /* ADD r0, 20 */
+        130,
+        4,  
+        0,  
+        20, 
+        0, 
     };
 
-	Simmy b( a, 2);
-    cout << b.execute( 2);
+	Simmy b( a, 1);
+    cout << b.execute( 5) << endl;
 	return 0;
 }
 	

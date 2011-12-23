@@ -1,7 +1,16 @@
 #include <iostream>
 #include "types.h"
+#include <string.h>
+#include <memory.h>
 
-const int NUMBER_OF_REG = 16;
+const int NUMBER_OF_REG    = 16;
+
+const int EXIT_SUCCESS     = 0;
+const int DEVIDED_BY_NULL  = 2;
+const int NOT_SUPPORT      = 3;
+
+
+
 
 class Simmy
 {
@@ -18,6 +27,9 @@ class Simmy
     hostUInt8  number_reg1; // number register1
     hostUInt8  number_reg2; // number register2
 	
+	void initAllParams ();
+	
+	void funcNop   ();
 	void funcAnd   ();
 	void funcOr    ();
 	void funcXor   ();
@@ -37,5 +49,5 @@ class Simmy
 
 public:
     Simmy ( hostUInt8* bytes, hostUInt32 length);
-    hostSInt32 execute ( hostUInt32 numInstr);
+    int execute ( hostUInt32 numInstr);
 };
