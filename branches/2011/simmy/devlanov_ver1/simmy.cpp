@@ -7,6 +7,7 @@ void Simmy::initAllParams ()
 {
 	
     memset ( reg, NULL, NUMBER_OF_REG);
+    memset ( sign_reg, NULL, 2);
     opcode = 0; 	    
     op1 = 0;          
     op2 = 0;             	
@@ -66,10 +67,10 @@ hostSInt32 Simmy::readInstr ()
     }
       
     adr_instr++;
-    
+    cout << "sign_reg[ 0]" << sign_reg[ 0]<< endl;
     number_reg1 = *adr_instr;
     op1         =      reg[ number_reg1]; cout << "op1 = " << op1 << endl;
-    sign_op1    = sign_reg[ number_reg1]; cout << "sign_op1 = " << sign_op1 << endl;
+    sign_op1    = sign_reg[ number_reg1]; cout << "sign_op1 = " << (int)sign_op1 << endl;
    
     adr_instr++;
     
@@ -223,7 +224,7 @@ int  Simmy::funcDiv  ()
 	if ( op2 == 0)
 	{
 		cout << "devided by null\n" << "command DIV does not execute\n";
-		return DEVIDED_BY_NULL;
+		exit (DEVIDED_BY_NULL);
 	}
 	
 	reg[ number_reg1] = op1 / op2;

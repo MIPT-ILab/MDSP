@@ -2,6 +2,8 @@
 #include "types.h"
 #include <string.h>
 #include <memory.h>
+#include <unistd.h>
+
 
 const int NUMBER_OF_REG    = 16;
 
