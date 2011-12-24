@@ -1,3 +1,10 @@
+/** @file simmy.cpp
+ * An educational simulator for SIM computer architecture
+ * @author Denis Evlanov
+ * Copyright 2011 MDSP team
+ * Created on: 25.12.2011 09:10
+ */
+
 #include "./simmy.h"
 
 using namespace std;
