@@ -91,7 +91,7 @@ hostSInt32 Simmy::readInstr ()
     	op2 = sign_most_op2 * 256 + sign_list_op2;
     }
     cout << "op2 = " << op2 << "\n";
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESSFUL;
 }
 
 hostSInt32 Simmy::execInstr ()
@@ -101,62 +101,74 @@ hostSInt32 Simmy::execInstr ()
 	if ( opcode == 0)
 	{
 		funcNop ();
+		return status;
 	}
 	if ( opcode == 1)
 	{
 		funcAnd ();
+		return status;
 	}
 	if ( opcode == 2)
 	{
 		funcOr ();
+		return status;
 	}
 	if ( opcode == 3)
 	{
 		funcXor ();
+		return status;
 	}
 	if ( opcode == 130)
 	{
 		funcAdd ();
+		return status;
 	}
 	if ( opcode == 131)
 	{
 		sign_op2 = !sign_op2;
 		funcAdd ();               //funcSub ();
+		return status;
 	}
 	if ( opcode == 129)
 	{
 		funcMul ();
+		return status;
 	}
 	if ( opcode == 128)
 	{
 		status = funcDiv ();
+		return status;
 	}
 	if ( opcode == 132)
 	{
 		funcMov (); 
+		return status;
 	}
 	if ( opcode == 68)
 	{
 		funcNot ();
+		return status;
 	}
 	if ( opcode == 192)
 	{
 		funcDec ();
+		return status;
 	}
 	if ( opcode == 193)
 	{
 		funcInc ();
+		return status;
 	}
 	if ( opcode == 194)
 	{
 		funcSsgn ();
+		return status;
 	}
 	if ( opcode == 195)
 	{
 		funcIsgn ();
+		return status;
 	}
-	
-	return status;
 }
 
 void Simmy::funcNop  ()
@@ -196,8 +208,8 @@ void Simmy::funcAdd  ()
 		} else
 		{
 			
-			     reg[ number_reg1] = op2 - op1;
-			sign_reg[ number_reg1] = sign_op2;
+			 	     reg[ number_reg1] = op2 - op1;
+				sign_reg[ number_reg1] = sign_op2;
 		}
 	}
 }
@@ -306,11 +318,11 @@ int Simmy::execute ( hostUInt32 numInstr)
 loop1:  cur_instr = cur_instr + 5;
     }
     
-    if ( sign_reg[ 1] == true)
+    if ( sign_reg[ 0] == true)
     {
     	return ( int)reg[ 0];
     }
-    if ( sign_reg[ 1] == false)
+    if ( sign_reg[ 0] == false)
     {
     	return -1 * ( int)reg[ 0];
     }
@@ -318,7 +330,7 @@ loop1:  cur_instr = cur_instr + 5;
 
 int main ()
 {
-	 unsigned char a[100] = {
+	 unsigned char a[500] = {
 
         /* MOV r1, 5 */
         132,
@@ -349,10 +361,73 @@ int main ()
         0,  
         20, 
         0, 
+        
+        /* ISGN r0*/
+        195,
+        2,  
+        0,  
+        0, 
+        0, 
+        
+        /* SSGN r0, 0*/
+        194,
+        0,  
+        0,  
+        0, 
+        0, 
+        
+        /* INC r0 */
+        193,
+        0,  
+        0,  
+        0, 
+        0, 
+        
+        /* DEC r0*/
+        192,
+        0,  
+        0,  
+        0, 
+        0, 
+        
+        /* NOP*/
+        0,
+        0,  
+        0,  
+        0, 
+        0, 
+        
+        /* NOT r0*/
+        68,
+        0,  
+        0,  
+        0, 
+        0, 
+        
+        /* DIV r0, 100*/
+        128,
+        12,  
+        0,  
+        100, 
+        0, 
+        
+        /* MUL r0, 2*/
+        129,
+        12,  
+        0,  
+        2, 
+        0, 
+        
+        /* SUB r0, 10*/
+        131,
+        4,  
+        0,  
+        10, 
+        0, 
     };
 
 	Simmy b( a, 1);
-    cout << b.execute( 5) << endl;
+    cout << b.execute( 13) << endl;
 	return 0;
 }
 	

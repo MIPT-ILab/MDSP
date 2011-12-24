@@ -3,11 +3,13 @@
 #include <string.h>
 #include <memory.h>
 #include <unistd.h>
+#include <stdlib.h>
+
 
 
 const int NUMBER_OF_REG    = 16;
 
-const int EXIT_SUCCESS     = 0;
+const int EXIT_SUCCESSFUL  = 0;
 const int DEVIDED_BY_NULL  = 2;
 const int NOT_SUPPORT      = 3;
 
