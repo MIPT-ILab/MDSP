@@ -3,11 +3,11 @@
 using namespace std;
 
 
-void Simmy::initAllParams ()
+void Simmy::initAllParams ()                    //function that initialize null all params
 {
 	
     memset ( reg, NULL, NUMBER_OF_REG);
-    memset ( sign_reg, NULL, 2);
+    memset ( sign_reg, NULL, 2);                //2 byte because NUMBER_OF_REG bit / 8 bit = 2
     opcode = 0; 	    
     op1 = 0;          
     op2 = 0;             	
@@ -29,30 +29,30 @@ hostSInt32 Simmy::readInstr ()
                           // in order to know sign_op12 type_op2 sign_bit
      
     hostUInt8* adr_instr = cur_instr;
-    hostUInt8 sign_list_op2;
+    hostUInt8 sign_list_op2; 
     hostUInt8 sign_most_op2;
     
-    opcode = *cur_instr; cout << "opcode = " << (int)opcode << endl;
+    opcode = *cur_instr;  //cout << "opcode = " << (int)opcode << endl;
     adr_instr++;
     control = *adr_instr; 
     
     if ( control & 2)
     {
-    	sign_bit = 1; cout << "sign_bit = " << (int)sign_bit << endl;
+    	sign_bit = 1; //cout << "sign_bit = " << (int)sign_bit << endl;
     } else
     {
-    	sign_bit = 0; cout << "sign_bit = " << (int)sign_bit << endl;
+    	sign_bit = 0; //cout << "sign_bit = " << (int)sign_bit << endl;
     }
     
     if ( control & 4)
     {
-    	type_op2  = 1; cout << "type_op2 = " << (int)sign_bit << endl;
+    	type_op2  = 1; //cout << "type_op2 = " << (int)sign_bit << endl;
     } else
     {
-    	type_op2  = 0; cout << "type_op2 = " << (int)sign_bit << endl;
+    	type_op2  = 0; //cout << "type_op2 = " << (int)sign_bit << endl;
     }
 
-   	sign_op2  = control & 8;          cout << "sign_op2 = " << (int)sign_op2 << endl;
+   	sign_op2  = control & 8;  //cout << "sign_op2 = " << (int)sign_op2 << endl;
  
     if ( ( control & 8) && ( type_op2 == 0))
     {
@@ -67,16 +67,16 @@ hostSInt32 Simmy::readInstr ()
     }
       
     adr_instr++;
-    cout << "sign_reg[ 0]" << sign_reg[ 0]<< endl;
+    									  //cout << "sign_reg[ 0]" << sign_reg[ 0]<< endl;
     number_reg1 = *adr_instr;
-    op1         =      reg[ number_reg1]; cout << "op1 = " << op1 << endl;
-    sign_op1    = sign_reg[ number_reg1]; cout << "sign_op1 = " << (int)sign_op1 << endl;
+    op1         =      reg[ number_reg1]; //cout << "op1 = " << op1 << endl;
+    sign_op1    = sign_reg[ number_reg1]; //cout << "sign_op1 = " << (int)sign_op1 << endl;
    
     adr_instr++;
     
     if ( type_op2 == 0)
-    {//cout << "number_reg2 = " << number_reg2 << "\n";
-    	number_reg2 = *adr_instr; cout << "number_reg2 = " << (int)number_reg2 << "\n";
+    {									  //cout << "number_reg2 = " << number_reg2 << "\n";
+    	number_reg2 = *adr_instr; 		  //cout << "number_reg2 = " << (int)number_reg2 << "\n";
     	op2         = ( hostUInt16)reg[ number_reg2];
     	sign_op2    =         sign_reg[ number_reg2];
     }
@@ -90,7 +90,7 @@ hostSInt32 Simmy::readInstr ()
     	sign_most_op2  = *adr_instr;
     	op2 = sign_most_op2 * 256 + sign_list_op2;
     }
-    cout << "op2 = " << op2 << "\n";
+    //cout << "op2 = " << op2 << "\n";
     return EXIT_SUCCESSFUL;
 }
 
@@ -123,10 +123,10 @@ hostSInt32 Simmy::execInstr ()
 		funcAdd ();
 		return status;
 	}
-	if ( opcode == 131)
+	if ( opcode == 131)            //this is funcSub () because a - b = a + (-b)
 	{
 		sign_op2 = !sign_op2;
-		funcAdd ();               //funcSub ();
+		funcAdd ();               
 		return status;
 	}
 	if ( opcode == 129)
@@ -305,7 +305,7 @@ int Simmy::execute ( hostUInt32 numInstr)
 	hostSInt32 status_exit_execInstr = 0;
     
     for ( i = 0; i < numInstr; i++)
-    {cout <<"i = "<< i << "\n";
+    {//cout <<"i = "<< i << "\n";
         if ( ( status_exit_readInstr = readInstr ()) != 0) 
         {
         	goto loop1;
@@ -334,7 +334,7 @@ int main ()
 
         /* MOV r1, 5 */
         132,
-        12,   ///////##############
+        12,   
         1,  
         7, 
         0, 
