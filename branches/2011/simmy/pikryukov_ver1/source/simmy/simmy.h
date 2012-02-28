@@ -16,10 +16,9 @@
 namespace Simmy {
 class Simmy : private Decoder {
   private:
-    BYTE* opcode;
+    const BYTE* opcode;
   public:
-    Simmy(BYTE* bytes);
-    ~Simmy();
+    inline Simmy(const BYTE* bytes) : Decoder(), opcode(bytes) {}
     void execute(unsigned number);
 };
 }

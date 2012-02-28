@@ -19,22 +19,22 @@ void Register::print(char* buf) const {
 
 RegisterFile::RegisterFile() {
     for (unsigned i = 0; i < sizeof(reg) / sizeof(reg[0]); ++i) {
-        reg[i].value = 0;
-        reg[i].sign  = false;
+        this->reg[i].value = 0;
+        this->reg[i].sign  = false;
     }
 }
 
 void RegisterFile::writereg(BYTE index, Register x) {
-    reg[index] = x;
+    this->reg[index] = x;
 }
 
 Register RegisterFile::readreg(BYTE index) const {
-    return reg[index];
+    return this->reg[index];
 }
 
 void RegisterFile::printreg(BYTE index, char* buf) const {
-    char value[10];
-    this->reg[index].print(value);
-    std::sprintf(buf, "r%02u(%s)", index, value);
+    const Register* const printedReg = &(this->reg[index]);
+    std::sprintf(buf, "r%02u(%ux%04x)", index,
+        printedReg->sign, printedReg->value);
 }
 }

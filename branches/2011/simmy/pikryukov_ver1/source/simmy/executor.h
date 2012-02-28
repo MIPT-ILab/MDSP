@@ -31,7 +31,7 @@ class Executor {
         } type;
     };
 
-    inline Register readop(Operand p) const {
+    inline Register readop(const Operand& p) const {
         switch (p.type) {
             case Operand::CONSTANT:
                 return p.constant;
@@ -42,7 +42,7 @@ class Executor {
         }
     }
 
-    inline void printOp(Operand p, char* buf) const {
+    inline void printOp(const Operand& p, char* buf) const {
         switch (p.type) {
             case Operand::CONSTANT:
                 p.constant.print(buf);
@@ -56,7 +56,7 @@ class Executor {
         }
     }
 
-    inline void writeop(Operand p, Register data) {
+    inline void writeop(const Operand& p, Register data) {
         switch (p.type) {
             case Operand::CONSTANT:
                 assert(0);
@@ -85,9 +85,8 @@ class Executor {
     void f_ssgn();
     void f_isgn();
 
-    // Constructors
-    Executor();
-    ~Executor();
+    // Constructor
+    inline Executor() {}
 };
 }
 

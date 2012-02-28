@@ -118,7 +118,4 @@ void Executor::f_ssgn() {
     this->writeop(p1, r1);
 }
 
-Executor::Executor() {}
-
-Executor::~Executor() {}
 }  // namespace Simmy

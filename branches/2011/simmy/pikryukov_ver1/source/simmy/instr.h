@@ -13,7 +13,6 @@
 #include <string>
 
 #include <simmy/types.h>
-
 #include <simmy/executor.h>
 
 namespace Simmy {
