@@ -16,7 +16,7 @@ namespace Simmy
 
 void Register::print( char* buf) const
 {
-    std::sprintf( buf, "%ux%04x", this->sign, this->value);
+    std::sprintf( buf, "%c%04x", this->sign ? ' ' : '-', this->value);
 }
 
 RegisterFile::RegisterFile()
@@ -40,7 +40,7 @@ Register RegisterFile::readreg( BYTE index) const
 void RegisterFile::printreg( BYTE index, char* buf) const
 {
     const Register* const printedReg = &( this->reg[index]);
-    std::sprintf( buf, "r%02u(%ux%04x)", index,
-        printedReg->sign, printedReg->value);
+    std::sprintf( buf, "r%02u(%c%04x)", index,
+        printedReg->sign ? ' ' : '-', printedReg->value);
 }
 }

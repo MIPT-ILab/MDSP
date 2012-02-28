@@ -107,14 +107,44 @@ void Executor::f_not()
 void Executor::f_dec()
 {
     Register r1 = this->readop( p1);
-    --( r1.value);
+    if ( r1.value == 0x00)
+    {
+        r1.value = 0x01;
+        r1.sign  = 0;
+    }
+    else
+    {
+        if ( r1.sign)
+        {
+            --( r1.value);
+        }
+        else
+        {
+            ++( r1.value);
+        }
+    }
     this->writeop( p1, r1);
 }
 
 void Executor::f_inc()
 {
     Register r1 = this->readop( p1);
-    ++( r1.value);
+    if ( r1.value == 0x00)
+    {
+        r1.value = 0x01;
+        r1.sign  = 1;
+    }
+    else
+    {
+        if ( r1.sign)
+        {
+            ++( r1.value);
+        }
+        else
+        {
+            --( r1.value);
+        }
+    }
     this->writeop( p1, r1);
 }
 
