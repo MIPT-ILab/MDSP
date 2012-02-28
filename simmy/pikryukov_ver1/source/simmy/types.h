@@ -10,7 +10,8 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-namespace Simmy {
+namespace Simmy
+{
 
 typedef unsigned char BYTE;
 typedef signed char SBYTE;

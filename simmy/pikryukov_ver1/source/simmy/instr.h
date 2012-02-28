@@ -15,11 +15,15 @@
 #include <simmy/types.h>
 #include <simmy/executor.h>
 
-namespace Simmy {
-struct Instr {
+namespace Simmy
+{
+
+struct Instr
+{
     std::string name;
     BYTE code;
-    enum {
+    enum
+    {
         T_BIN,
         T_UNR,
         T_SGN,
@@ -27,6 +31,7 @@ struct Instr {
     } type;
     void (Executor::*exec)();
 };
+
 }
 
 #endif

@@ -9,9 +9,11 @@
 
 #include <simmy/simmy.h>
 
-int main(int ac, char *av[]) {
+int main(int ac, char *av[])
+{
     const unsigned char program[] =
-        {0x84, 0x0C, 0x01, 0x0A, 0x00, // mov r1 1x000A
+        {
+         0x84, 0x0C, 0x01, 0x0A, 0x00, // mov r1 1x000A
          0x44, 0x00, 0x02, 0x00, 0x00, // not r2
          0x01, 0x08, 0x01, 0x02, 0x00, // and r1 r2
          0x02, 0x08, 0x01, 0x02, 0x00, // or  r1 r2
@@ -29,8 +31,8 @@ int main(int ac, char *av[]) {
          0xC2, 0x00, 0x0A, 0x00, 0x00, // ssgn 0, r10
         };
 
-    Simmy::Simmy* simulator = new Simmy::Simmy(program);
-    simulator->execute(sizeof(program)/(5*sizeof(program[0])));
+    Simmy::Simmy* simulator = new Simmy::Simmy( program);
+    simulator->execute( sizeof(program) / (5 * sizeof( program[0])));
     delete simulator;
 
     return 0;

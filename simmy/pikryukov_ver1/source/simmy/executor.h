@@ -15,55 +15,66 @@
 #include <simmy/types.h>
 #include <simmy/register.h>
 
-namespace Simmy {
-class Executor {
-   protected:
+namespace Simmy 
+{
+
+class Executor
+{
+protected:
     // Registers
     RegisterFile reg;
 
     // Operands
-    struct Operand {
+    struct Operand 
+    {
         DWORD index;
         Register constant;
-        enum {
+        enum 
+        {
             CONSTANT,
             REGISTER,
         } type;
     };
 
-    inline Register readop(const Operand& p) const {
-        switch (p.type) {
+    inline Register readop( const Operand& p) const
+    {
+        switch ( p.type)
+        {
             case Operand::CONSTANT:
                 return p.constant;
             case Operand::REGISTER:
-                return reg.readreg(p.index);
+                return reg.readreg( p.index);
             default:
-                assert(0);
+                assert( 0);
         }
     }
 
-    inline void printOp(const Operand& p, char* buf) const {
-        switch (p.type) {
+    inline void printOp( const Operand& p, char* buf) const
+    {
+        switch (p.type)
+        {
             case Operand::CONSTANT:
-                p.constant.print(buf);
+                p.constant.print( buf);
                 return;
             case Operand::REGISTER:
-                reg.printreg(p.index, buf);
+                reg.printreg( p.index, buf);
                 return;
             default:
-                assert(0);
+                assert( 0);
                 return;
         }
     }
 
-    inline void writeop(const Operand& p, Register data) {
-        switch (p.type) {
-            case Operand::CONSTANT:
-                assert(0);
-                return;
+    inline void writeop( const Operand& p, Register data)
+    {
+        switch ( p.type)
+        {
             case Operand::REGISTER:
-                reg.writereg(p.index, data);
-                return;
+                reg.writereg( p.index, data);
+                return;                
+            case Operand::CONSTANT:
+            default:
+                assert( 0);
         }
     }
 
