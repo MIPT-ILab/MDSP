@@ -13,8 +13,11 @@
 
 #include "./isa.h"
 
-namespace Simmy {
-const Instr ISA::instrs[] = {
+namespace Simmy
+{
+
+const Instr ISA::instrs[] =
+{
     // Logical binary instructions
     {"and ", 0x01, Instr::T_BIN, &Executor::f_and },
     {"or  ", 0x02, Instr::T_BIN, &Executor::f_or  },
@@ -34,7 +37,7 @@ const Instr ISA::instrs[] = {
     {"isgn", 0xC3, Instr::T_UNR, &Executor::f_isgn},
 };
 
-const size_t ISA::instrs_s = sizeof(instrs) / sizeof(instrs[0]);
+const size_t ISA::instrs_s = sizeof( instrs) / sizeof( instrs[0]);
 const bool ISA::table_f = init_table();
 signed ISA::table[(BYTE)~1] = {0};
 
@@ -52,7 +55,7 @@ bool ISA::init_table() {
     return true;
 }
 
-Instr ISA::find_instrs(BYTE opcode) {
+Instr ISA::find_instrs( BYTE opcode) {
     if (table[opcode] == -1) {
         assert(0);
     }

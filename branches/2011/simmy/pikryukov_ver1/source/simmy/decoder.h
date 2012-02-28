@@ -15,11 +15,13 @@
 #include <simmy/executor.h>
 #include <simmy/instr.h>
 
-namespace Simmy {
-class Decoder : protected Executor {
+namespace Simmy
+{
+class Decoder : protected Executor
+{
   protected:
-    void decode(const BYTE* opcode, const Instr & instr);
-    void printOperands(const Instr & instr, char* buf) const;
+    void decode( const BYTE* opcode, const Instr & instr);
+    void printOperands( const Instr & instr, char* buf) const;
     inline Decoder() : Executor() {}
 };
 }

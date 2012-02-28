@@ -13,13 +13,16 @@
 #include <simmy/types.h>
 #include <simmy/decoder.h>
 
-namespace Simmy {
-class Simmy : private Decoder {
-  private:
+namespace Simmy
+{
+
+class Simmy : private Decoder
+{
+private:
     const BYTE* opcode;
-  public:
-    inline Simmy(const BYTE* bytes) : Decoder(), opcode(bytes) {}
-    void execute(unsigned number);
+public:
+    inline Simmy( const BYTE* bytes) : Decoder(), opcode( bytes) {}
+    void execute( unsigned number);
 };
 }
 

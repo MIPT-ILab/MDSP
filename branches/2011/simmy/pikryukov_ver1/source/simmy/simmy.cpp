@@ -15,30 +15,33 @@
 
 #include "./simmy.h"
 
-namespace Simmy {
+namespace Simmy
+{
 
-void Simmy::execute(unsigned number) {
+void Simmy::execute(unsigned number)
+{
     unsigned executed = 0;
-    do {
+    do
+    {
         // Decode
-        const Instr instr = ISA::find_instrs(*opcode);
-        this->decode(opcode, instr);
+        const Instr instr = ISA::find_instrs( *opcode);
+        this->decode( opcode, instr);
         
         // Take image of operands
         char operands[30];
-        this->printOperands(instr, operands);
+        this->printOperands( instr, operands);
 
         // Execute
-        (this->*(instr.exec))();
+        (this->*( instr.exec))();
 
         // Trace
         char destination[20];
-        this->printOp(p1, destination);
-        std::printf("%s %s %s\n", instr.name.c_str(), destination, operands);
+        this->printOp( p1, destination);
+        std::printf( "%s %s %s\n", instr.name.c_str(), destination, operands);
 
         // Next instruction
         opcode += 5;
     }
-    while (++executed < number);
+    while ( ++executed < number);
 }
 }  // namespace Simmy
