@@ -20,8 +20,7 @@ class Decoder : protected Executor {
   protected:
     void decode(const BYTE* opcode, const Instr & instr);
     void printOperands(const Instr & instr, char* buf) const;
-    Decoder();
-    ~Decoder();
+    inline Decoder() : Executor() {}
 };
 }
 

@@ -57,7 +57,4 @@ void Decoder::printOperands(const Instr & instr, char* buf) const {
     }
 }
 
-Decoder::Decoder() : Executor() {}
-
-Decoder::~Decoder() {}
 }

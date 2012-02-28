@@ -19,14 +19,8 @@ namespace Simmy {
 struct Register {
     bool sign;
     WORD value;
-    Register() {
-        value = 0x00;
-        sign  = false;
-    }
-    Register(bool sign_, WORD value_) {
-        value = value_;
-        sign  = sign_;
-    }
+    inline Register() : sign(false), value(0x00) {}
+    inline Register(bool sign_, WORD value_) : sign(sign_), value(value_) {}
     void print(char* buf) const;
 };
 

@@ -29,7 +29,7 @@ const Instr ISA::instrs[] = {
     {"not ", 0x44, Instr::T_UNR, &Executor::f_not },
     // Arithmetival unary instructions
     {"dec ", 0xC0, Instr::T_UNR, &Executor::f_dec },
-    {"inc ", 0xC1, Instr::T_UNR, &Executor::f_inc },    
+    {"inc ", 0xC1, Instr::T_UNR, &Executor::f_inc },
     {"ssgn", 0xC2, Instr::T_SGN, &Executor::f_ssgn},
     {"isgn", 0xC3, Instr::T_UNR, &Executor::f_isgn},
 };
