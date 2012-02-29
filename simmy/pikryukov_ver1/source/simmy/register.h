@@ -23,6 +23,8 @@ struct Register
     WORD value;
     inline Register() : sign(false), value(0x00) {}
     inline Register( bool sign_, WORD value_) : sign( sign_), value( value_) {}
+    Register(SDWORD number);
+    SDWORD sdword() const;
     void print( char* buf) const;
 };
 

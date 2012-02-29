@@ -14,6 +14,16 @@
 namespace Simmy
 {
 
+Register::Register( SDWORD number)
+{
+    this->sign  = number >= 0;
+    this->value = this->sign ? (WORD)number : (WORD)(-number);
+}
+
+SDWORD Register::sdword() const {
+    return this->sign ? this->value : -(this->value);
+}
+
 void Register::print( char* buf) const
 {
     std::sprintf( buf, "%c%04x", this->sign ? ' ' : '-', this->value);
