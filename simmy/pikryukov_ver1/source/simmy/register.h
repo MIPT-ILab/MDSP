@@ -26,6 +26,7 @@ struct Register
     Register(SDWORD number);
     SDWORD sdword() const;
     void print( char* buf) const;
+    int getValue() const;
 };
 
 class RegisterFile
@@ -37,6 +38,7 @@ public:
     void writereg( BYTE index, Register x);
     Register readreg( BYTE index) const;
     void printreg( BYTE index, char* buf) const;
+    int getValue( BYTE index) const;
 };
 }
 

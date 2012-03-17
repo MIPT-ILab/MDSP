@@ -41,11 +41,11 @@ const size_t ISA::instrs_s = sizeof( instrs) / sizeof( instrs[0]);
 
 Instr ISA::find_instrs( BYTE opcode) {
     for (unsigned i = 0; i < ISA::instrs_s; ++i) {
-		if (ISA::instrs[i].code == opcode) {			
-			return instrs[i];
-		}
+        if (ISA::instrs[i].code == opcode) {
+            return instrs[i];
+        }
     }
-	assert(0);
-	return instrs[0];
+    assert(0);
+    return instrs[0];
 }
 }

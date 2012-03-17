@@ -22,7 +22,7 @@ private:
     const BYTE* opcode;
 public:
     inline Simmy( const BYTE* bytes) : Decoder(), opcode( bytes) {}
-    void execute( unsigned number);
+    int execute( unsigned number);
 };
 }
 

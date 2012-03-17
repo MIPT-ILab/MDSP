@@ -18,7 +18,7 @@
 namespace Simmy
 {
 
-void Simmy::execute(unsigned number)
+int Simmy::execute(unsigned number)
 {
     unsigned executed = 0;
     do
@@ -43,5 +43,6 @@ void Simmy::execute(unsigned number)
         opcode += 5;
     }
     while ( ++executed < number);
+    return reg.getValue( 0);
 }
 }  // namespace Simmy
