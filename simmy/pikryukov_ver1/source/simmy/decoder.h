@@ -12,8 +12,8 @@
 
 #include <string>
 
-#include <simmy/executor.h>
-#include <simmy/instr.h>
+#include "./executor.h"
+#include "./instr.h"
 
 namespace Simmy
 {

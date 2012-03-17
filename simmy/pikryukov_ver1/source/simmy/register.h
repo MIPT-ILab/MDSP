@@ -12,7 +12,7 @@
 
 #include <string>
 
-#include <simmy/types.h>
+#include "./types.h"
 
 namespace Simmy
 {

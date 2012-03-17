@@ -10,8 +10,8 @@
 #ifndef ISA_H
 #define ISA_H
 
-#include <simmy/types.h>
-#include <simmy/instr.h>
+#include "./types.h"
+#include "./instr.h"
 
 namespace Simmy
 {

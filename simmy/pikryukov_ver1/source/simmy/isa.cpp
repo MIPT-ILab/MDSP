@@ -9,8 +9,7 @@
 
 #include <cassert>
 
-#include <simmy/executor.h>
-
+#include "./executor.h"
 #include "./isa.h"
 
 namespace Simmy

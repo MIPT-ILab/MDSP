@@ -12,8 +12,8 @@
 
 #include <cassert>
 
-#include <simmy/types.h>
-#include <simmy/register.h>
+#include "./types.h"
+#include "./register.h"
 
 namespace Simmy 
 {
