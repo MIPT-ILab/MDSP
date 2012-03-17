@@ -9,10 +9,9 @@
 
 #include <cstdio>
 
-#include <simmy/types.h>
-#include <simmy/isa.h>
-#include <simmy/instr.h>
-
+#include "./types.h"
+#include "./isa.h"
+#include "./instr.h"
 #include "./simmy.h"
 
 namespace Simmy

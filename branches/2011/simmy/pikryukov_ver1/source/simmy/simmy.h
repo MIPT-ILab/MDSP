@@ -10,8 +10,8 @@
 #ifndef CORE_H
 #define CORE_H
 
-#include <simmy/types.h>
-#include <simmy/decoder.h>
+#include "./types.h"
+#include "./decoder.h"
 
 namespace Simmy
 {

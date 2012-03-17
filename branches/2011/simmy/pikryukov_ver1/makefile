@@ -29,9 +29,6 @@ OBJ_DIR:=obj
 #all obj directories
 OBJ_DIRS:=${SRC_DIRS:$(SRC_DIR)/%=$(OBJ_DIR)/%}
 
-#include of source dirs
-CXXFLAGS:= $(CXXFLAGS) -I $(SRC_DIR)
-
 SIMMY_CPP_FILES := \
 	$(SRC_SIMMY_DIR)/simmy.cpp \
 	$(SRC_SIMMY_DIR)/executor.cpp \
