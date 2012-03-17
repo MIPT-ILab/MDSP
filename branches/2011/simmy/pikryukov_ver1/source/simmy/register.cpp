@@ -29,6 +29,11 @@ void Register::print( char* buf) const
     std::sprintf( buf, "%c%04x", this->sign ? ' ' : '-', this->value);
 }
 
+int Register::getValue() const
+{
+    return sign ? value : -(int)value;
+}
+
 RegisterFile::RegisterFile()
 {
     for ( unsigned i = 0; i < sizeof(reg) / sizeof(reg[0]); ++i) {
@@ -52,5 +57,10 @@ void RegisterFile::printreg( BYTE index, char* buf) const
     const Register* const printedReg = &( this->reg[index]);
     std::sprintf( buf, "r%02u(%c%04x)", index,
         printedReg->sign ? ' ' : '-', printedReg->value);
+}
+
+int RegisterFile::getValue( BYTE index) const
+{
+    return this->reg[index].getValue();
 }
 }
