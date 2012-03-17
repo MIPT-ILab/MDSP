@@ -45,6 +45,7 @@ protected:
             case Operand::REGISTER:
                 return reg.readreg( p.index);
             default:
+                return p.constant;
                 assert( 0);
         }
     }

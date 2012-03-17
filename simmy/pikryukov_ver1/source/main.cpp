@@ -7,7 +7,7 @@
  * Copyright 2012 MDSP team
 */
 
-#include "simmy/simmy.h"
+#include "./simmy.h"
 
 int main(int ac, char *av[])
 {
