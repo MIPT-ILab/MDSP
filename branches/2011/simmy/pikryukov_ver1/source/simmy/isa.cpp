@@ -38,27 +38,14 @@ const Instr ISA::instrs[] =
 };
 
 const size_t ISA::instrs_s = sizeof( instrs) / sizeof( instrs[0]);
-const bool ISA::table_f = init_table();
-signed ISA::table[(BYTE)~1] = {0};
-
-bool ISA::init_table() {
-    BYTE maxBYTE = ~1;
-    for (BYTE opcode = 0; opcode < maxBYTE; ++opcode) {
-        table[opcode] = -1;
-        for (unsigned i = 0; i < ISA::instrs_s; i++) {
-            if (ISA::instrs[i].code == opcode) {
-                table[opcode] = i;
-                break;
-            }
-        }
-    }
-    return true;
-}
 
 Instr ISA::find_instrs( BYTE opcode) {
-    if (table[opcode] == -1) {
-        assert(0);
+    for (unsigned i = 0; i < ISA::instrs_s; ++i) {
+		if (ISA::instrs[i].code == opcode) {			
+			return instrs[i];
+		}
     }
-    return instrs[table[opcode]];
+	assert(0);
+	return instrs[0];
 }
 }
