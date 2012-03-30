@@ -1,0 +1,69 @@
+#summary Research of an instruction cache miss rate using a simple program model
+
+= <font color="#153E7E"> Introduction </font> =
+
+In this exercise you should create a fully parametrized program model of a simple instruction cache, then using a memory trace of a rial application research how the cache miss rate depends on its size and associativity.
+
+||<font color="red">*Note:* </font> this program model does not shows performance in terms of processor clocks (or real time). It only says as many misses/hits were on a given sequence of cache request. ||
+
+= <font color="#153E7E"> Requirements </font> =
+----
+== Location in svn ==
+Create a folder in {{{https://mdsp.googlecode.com/svn/branches/2011/sandbox/<name_of_your_branch_folder>}}}. The folder name should consists of the first letter of you name + your surname + "cache". For example, for Alexander Titov the folder name is "atitov_cache".
+
+== Mandatory files ==
+In this folder you have to create two files: {{{main.cpp}}} and {{{cache.h}}}. You are not prohibited to add more files, but these two are mandatory.
+
+||<font color="red">*Note:* </font> your code has to be organized in such way that only thing that a user should do is to include {{{cache.h}}}. ||
+
+== Cache model parametrization ==
+File {{{cache.h}}} should describe a C++ class called _Cache_ which implements a functional simulator of a real instruction cache. It has to contain the following public methods:
+
+  # {{{CacheArray}}} is a class constructor that allows to customize almost all cache parameters:
+    ** {{{size}}} is a number of data bytes that can be stored in the cache, i.e. if the block size is {{{16}}} Bytes then the number of data blocks in the cache is {{{size/16}}}.
+    ** {{{ways}}} is a number of associative ways in a set, i.e. how many blocks are referred by the same index.
+    ** {{{block_size}}} is a number of Bytes in a data block.
+    ** {{{addr_size_in_bit}}} is a number of bits in address.
+  # {{{processRead}}} simulates a cache read. The given parameter, {{{addr}}}, is a request address. It is checked for hit/miss and in case of miss it evicts some old address.
+  # {{{getMissRate}}} just returns miss rate which is calculated as a ratio of total a number of missed requests to a number of total requests.
+
+{{{
+class Cache
+{
+   
+public:
+    CacheArray( unsigned int size, unsigned int ways,
+                unsigned int block_size, 
+                unsigned int addr_size_in_bit);
+
+    void processRead( unsigned int addr);
+    double getMissRate() const;
+};
+}}}
+
+You are free to add as many additional methods and classes as you want, but you cannot change these interfaces.
+
+<font color="white">. </font>
+<wiki:comment> It is just to create an empty line.</wiki:comment>
+
+= <font color="#153E7E"> Task description </font> =
+----
+Your target is to receive miss rates on different cache configurations using a real memory request trace as a input workload. Changing the cache size and associativity (number of ways) you should obtain a chart like the following one:
+
+https://mdsp.googlecode.com/svn/wiki/images/miss_rate_chart_example.png
+
+== Configurations ==
+It this study you investigate only the different combinations of cache size ({{{size}}}) and associativity ({{{ways}}}). Other parameters of the cache are not changed and always the same: {{{block_size = 4, addr_size_in_bits = 32}}}.
+
+== Input data ==
+Your program should take as a given parameter the name of a text file where addresses of cache requests are located. The example of such file you can found at [http://mdsp.googlecode.com/files/mem_trace.txt this link].
+
+<font color="red">*Note*</font> that addresses are presented in hexadecimal format, i.e {{{0x465b118}}} instead of {{{73773336}}} and separated by a space. The beginning of the file is presented below:
+
+{{{
+0x11018 0x11060 0x11030 0x11050 0x5220d0 0x11040 0x11090 0x5221a0 0x522220
+}}}
+
+Your 
+
+== Output data ==
