@@ -50,5 +50,6 @@ every time you use it. It is very inconvenient.
          * [UnitTests Unit tests]
          * [AvailableBinaries Machine code images]
          * [RegressionTesting Regular regression tests]
+ * [SimmySpecifficationVersion1 Simmy Specification]
  * [FAQ] 
  * [BestKnownMethods BKM] 
