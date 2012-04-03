@@ -32,9 +32,9 @@ class Cache
 {
    
 public:
-    CacheArray( unsigned int size, unsigned int ways,
-                unsigned int block_size, 
-                unsigned int addr_size_in_bit);
+    Cache( unsigned int size, unsigned int ways,
+           unsigned int block_size, 
+           unsigned int addr_size_in_bit);
 
     void processRead( unsigned int addr);
     double getMissRate() const;
