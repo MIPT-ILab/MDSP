@@ -52,7 +52,7 @@ void Simmy::decodeInstr()
     } else
     {
         op2 = *( ( hostUInt16*)( instr_addr + 3));
-        if ( control_byte & 8)
+        if ( !( control_byte & 8))
             op2_sign = -1;
                 else
                     op2_sign = 1;
