@@ -15,7 +15,6 @@ int main( int argc, char* argv[])
     hostUInt32 val1, val2;
     hostUInt32 i, j, k;
 
-
     // checking correct programme call
     if ( argc != 3)
     {        
@@ -31,7 +30,6 @@ int main( int argc, char* argv[])
                 return 0;
         }
     }
-
   
     for ( i = 0; i < 6; i++)
     {
