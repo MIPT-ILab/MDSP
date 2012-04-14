@@ -9,13 +9,32 @@ using namespace std;
 
 class Cache
 {
-   
+    hostUInt32 cache_length; // store number of indexes in cache
+
+    hostUInt32 index_length; // store length of index field in address
+    hostUInt32 index_field; // store bit mask "11...1" , which length is length of index field
+
+    hostUInt32 block_length; // store length of block field (offset) in address
+
+    hostUInt32 ways_number; // store number of ways in cache
+
+    hostUInt32 miss;
+    hostUInt32 request;
+
+    struct Way  // struct for storing all data with same index in cache
+    {
+        hostUInt32* set;
+        hostUInt32 next_out_id; // needed for round-robin
+    };
+
+    Way* cache_massive; // main massive for storing data addresses, which are in sscache 
 
 public:
 
     Cache( unsigned int size, unsigned int ways,
            unsigned int block_size, 
            unsigned int addr_size_in_bit);
+    ~Cache();
 
     void processRead( unsigned int addr);
     double getMissRate() const;
@@ -26,11 +45,114 @@ public:
 //                 Implementation of Cache class
 //=================================================================
 
+
+// initializing and count all class datamembers
 Cache :: Cache( unsigned int size, unsigned int ways,
-           unsigned int block_size, 
-           unsigned int addr_size_in_bit)
+                unsigned int block_size, 
+                unsigned int addr_size_in_bit)
 {
-    hostUInt32 prog_length;
+    hostUInt32 val;
+    hostUInt32 i, j;
+
+    // getting number of indexes
+    cache_length = size / ( ways * block_size);
+
+    // getting log2( number of indexes) = bits in index infield
+    index_length = 0; 
+    val = cache_length - 1;
+    while ( val != 0)
+    {
+        index_length++;
+        val = val >> 1;
+    }
+
+    // making mask 11...1 for index field
+    index_field = 0;
+    for ( i = 0; i < index_length; i++)
+    {
+        index_field = index_field << 1;
+        index_field++;
+    }   
+
+    // getting offset field length
+    block_length = 0;
+    val = block_size - 1;
+    while ( val != 0)
+    {
+        block_length++;
+        val = val >> 1;
+    }
+ 
+    // creating cache as dynamic two-dymensional massive
+    cache_massive = new Way[cache_length];
+    for ( i = 0; i < cache_length; i++)
+    {
+        cache_massive[i].next_out_id = 0; // number of block where first data will be saved
+        cache_massive[i].set = new hostUInt32 [ways]; 
+        for ( j = 0; j < ways; j++) // making cache clean
+        {
+            cache_massive[i].set[j] = 0;
+        }
+    }
+
+    ways_number = ways;
+    miss = 0;
+    request = 0;
+}
 
 
+Cache :: ~Cache()
+{
+    hostUInt32 i;
+
+    for ( i = 0; i < cache_length; i++)
+    {
+        delete[] cache_massive[i].set;
+    }
+    delete[] cache_massive;
+}
+
+
+void Cache :: processRead( unsigned int addr)
+{
+    hostUInt32 index, tag;
+    hostUInt32 miss_flag;
+    hostUInt32 i;
+
+    // getting index and tag
+    index = addr >> block_length;
+    tag = index >> index_length;
+    index = index & index_field;
+    
+    miss_flag = 1;
+    for ( i = 0; i < ways_number; i++)
+    {
+        if ( cache_massive[index].set[i] == tag)
+        {
+            miss_flag = 0;
+            break;
+        }
+    }
+
+    if ( miss_flag == 1)
+    {
+        miss++;
+        cache_massive[index].set[cache_massive[index].next_out_id] = tag;
+        cache_massive[index].next_out_id++;
+        cache_massive[index].next_out_id %= ways_number;
+    } 
+    request++;
+}
+
+
+double Cache :: getMissRate() const
+{
+    if ( request == 0)
+    {
+        cout << "\n Can't show miss rate: no one request has been done.";
+            return -1;
+    } else
+    {
+        return ( ( double)miss) / ( ( double)request);
+    }
 }
