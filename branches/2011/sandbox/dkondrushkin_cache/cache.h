@@ -84,11 +84,11 @@ Cache :: Cache( unsigned int size, unsigned int ways,
         val = val >> 1;
     }
  
-    // creating cache as dynamic two-dymensional massive
+    // creating cache as a dynamic two-dymensional massive
     cache_massive = new Way[cache_length];
     for ( i = 0; i < cache_length; i++)
     {
-        cache_massive[i].next_out_id = 0; // number of block where first data will be saved
+        cache_massive[i].next_out_id = 0; // number of the block where first data will be saved
         cache_massive[i].set = new hostUInt32 [ways]; 
         cache_massive[i].valid = new hostUInt8 [ways];
         for ( j = 0; j < ways; j++) // making cache clean
@@ -145,7 +145,7 @@ void Cache :: processRead( unsigned int addr)
         cache_massive[index].set[cache_massive[index].next_out_id] = tag;
         cache_massive[index].valid[cache_massive[index].next_out_id] = 1;
         cache_massive[index].next_out_id++;
-        cache_massive[index].next_out_id = cache_massive[index].next_out_id && ( ways_number - 1);
+        cache_massive[index].next_out_id = cache_massive[index].next_out_id & ( ways_number - 1);
     } 
     request++;
 }
