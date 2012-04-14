@@ -23,8 +23,9 @@ class Cache
 
     struct Way  // struct for storing all data with same index in cache
     {
-        hostUInt32* set;
-        hostUInt32 next_out_id; // needed for round-robin
+        hostUInt32* set; 
+        hostUInt8* valid; // store valid flags
+        hostUInt32 next_out_id; // needed for round-robin        
     };
 
     Way* cache_massive; // main massive for storing data addresses, which are in sscache 
@@ -74,7 +75,7 @@ Cache :: Cache( unsigned int size, unsigned int ways,
         index_field++;
     }   
 
-    // getting offset field length
+    // getting log2( number of block_size) = offset field length in bits
     block_length = 0;
     val = block_size - 1;
     while ( val != 0)
@@ -89,9 +90,11 @@ Cache :: Cache( unsigned int size, unsigned int ways,
     {
         cache_massive[i].next_out_id = 0; // number of block where first data will be saved
         cache_massive[i].set = new hostUInt32 [ways]; 
+        cache_massive[i].valid = new hostUInt8 [ways];
         for ( j = 0; j < ways; j++) // making cache clean
         {
             cache_massive[i].set[j] = 0;
+            cache_massive[i].valid[j] = 0;
         }
     }
 
@@ -127,19 +130,22 @@ void Cache :: processRead( unsigned int addr)
     miss_flag = 1;
     for ( i = 0; i < ways_number; i++)
     {
-        if ( cache_massive[index].set[i] == tag)
+        if ( ( cache_massive[index].set[i] == tag)
+             && ( cache_massive[index].valid[i] == 1))
         {
             miss_flag = 0;
             break;
         }
     }
 
+    // put absent data in the cache, set valit flag and chainging round-robin number
     if ( miss_flag == 1)
     {
         miss++;
         cache_massive[index].set[cache_massive[index].next_out_id] = tag;
+        cache_massive[index].valid[cache_massive[index].next_out_id] = 1;
         cache_massive[index].next_out_id++;
-        cache_massive[index].next_out_id %= ways_number;
+        cache_massive[index].next_out_id = cache_massive[index].next_out_id && ( ways_number - 1);
     } 
     request++;
 }
