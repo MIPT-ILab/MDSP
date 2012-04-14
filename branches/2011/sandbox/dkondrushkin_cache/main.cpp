@@ -13,7 +13,7 @@ int main( int argc, char* argv[])
     ifstream read_file;
     ofstream write_file;
     hostUInt32 val1, val2;
-    hostUInt32 i,j, k;
+    hostUInt32 i, j, k;
 
 
     // checking correct programme call
