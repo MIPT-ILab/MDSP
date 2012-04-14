@@ -14,9 +14,14 @@ using namespace std;
 
 int main ( int argc, char** argv)
 {
+    if ( argc != 3)
+    {
+        cout << "Error: not enough arguments. You should use: command [INPUT FILE] [OUTPUTFILE]." << endl;
+        return -1;
+    }
 	ofstream output_file(  argv[2]);
 
-	uint ways[NUMWAYS] = { 1, 2, 4, 8, 16, 0};
+	uint ways[NUMWAYS] = { 1, 2, 4, 8, 16, full};
 	uint size[NUMSIZE] = { 1024,  2048,  4096, 8192, 16384, 32768, 65536, 131072, 262144, 524288, 1048576};
 
 	for ( int i = 0; i < NUMWAYS; i++)
