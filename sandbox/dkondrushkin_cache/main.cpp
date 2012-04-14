@@ -33,7 +33,7 @@ int main( int argc, char* argv[])
     }
 
   
-    for ( i = 0; i < 1; i++)
+    for ( i = 0; i < 6; i++)
     {
         for ( j = 0; j < 11; j++ )
         {
