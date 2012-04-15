@@ -111,6 +111,7 @@ Cache :: ~Cache()
     for ( i = 0; i < cache_length; i++)
     {
         delete[] cache_massive[i].set;
+        delete[] cache_massive[i].valid;
     }
     delete[] cache_massive;
 }
