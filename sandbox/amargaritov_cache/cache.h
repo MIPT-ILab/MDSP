@@ -20,6 +20,16 @@ struct Set;
 /** Return miss rate for cache with entered characteristics and data from filename 'name'.*/
 double calcMissRate ( uint size, uint ways, uint block_size, uint addr_len, char* name);
 
+
+/**
+ * This class is emulator of processor's cache.
+ * It supports following settings:
+ * 		size 	   		 	   - is a number of data bytes that can be stored in the cache,
+ * 		ways 	   		 	   - is a number of associative ways in a set,
+ * 								 for creating full-associative cache you can use define 'full'.
+ * 		block_size 		 	   - is a number of Bytes in a data block,
+ * 		addr_size_in_bit 	   - is a number of bits in address.
+ */
 class Cache
 {
 	uint ways_; 				//number of ways can be not a power of two
@@ -35,10 +45,17 @@ class Cache
 	uint mask_tag_;
 
 	/** return index of cache for target address.*/
-	uint getIndex ( uint addr);
+	uint getIndex( uint addr);
 
 	/** return tag of target address.*/
-	uint getTag	  ( uint addr);
+	uint getTag	 ( uint addr);
+
+	/** Politics of replacement.
+	 *  If there are no free blocks in the set
+	 *  this algorithm will be used to calculate number of block in the set
+	 *  which will be replace.
+	 */
+	void replace( Set* set, uint tag);
 
 	vector<Set> cache_;
 

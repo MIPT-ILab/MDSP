@@ -12,10 +12,8 @@
 #include "cache.h"
 using namespace std;
 
-Cache::Cache( unsigned int size,
-			  unsigned int ways,
-			  unsigned int block_size,
-			  unsigned int addr_size_in_bit)
+Cache::Cache( unsigned int size, 	   unsigned int ways,
+			  unsigned int block_size, unsigned int addr_size_in_bit)
 {
 	miss_number_ = 0;
 	request_number_ = 0;
@@ -62,13 +60,13 @@ void Cache::processRead( unsigned int addr)
 		}
 	}
 	/* If there are not free places for target index, replacing will be used.
-	 * It is implementation of round-robin (RR) policy of replacing.*/
-	cache_[index].blocks_[cache_[index].replaceable_++].tag_ = tag;
-	if ( cache_[index].replaceable_ ==  ways_) cache_[index].replaceable_ = 0;
+	 * By default class it is implementation of round-robin (RR) policy of replacing.*/
+	replace( &cache_[index], tag);
 }
 
 double Cache::getMissRate() const
 {
+	if ( !request_number_) return -1;	        // exception, 'processRead' has to be used before
     return ( double) miss_number_ / ( double) request_number_;
 }
 
@@ -82,6 +80,11 @@ uint Cache::getTag( uint addr)
 	return addr >> ( block_size_in_bit_ + set_addr_in_bit_) & mask_tag_;
 }
 
+void Cache::replace ( Set* set, uint tag)
+{
+	set->blocks_[set->replaceable_++].tag_ = tag;
+	if ( set->replaceable_ ==  ways_) set->replaceable_ = 0;
+}
 
 Set::Set( uint ways)
 {

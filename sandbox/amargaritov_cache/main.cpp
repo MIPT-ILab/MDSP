@@ -7,6 +7,7 @@
 
 #include "cache.h"
 #include <fstream>
+#include <iostream>
 
 #define NUMWAYS 6
 #define NUMSIZE 11
@@ -14,11 +15,11 @@ using namespace std;
 
 int main ( int argc, char** argv)
 {
-    if ( argc != 3)
-    {
-        cout << "Error: not enough arguments. You should use: command [INPUT FILE] [OUTPUTFILE]." << endl;
-        return -1;
-    }
+	if ( argc != 3)
+	{
+		cerr << "Error: bad value of arguments. You should use: command [INPUT FILE] [OUTPUTFILE]." << endl;
+	    return -1;
+	}
 	ofstream output_file(  argv[2]);
 
 	uint ways[NUMWAYS] = { 1, 2, 4, 8, 16, full};
