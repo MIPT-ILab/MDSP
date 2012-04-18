@@ -55,7 +55,6 @@ public:
 	hostUInt8 mop2_;
 	bool typeop2_;
 	bool signop2_;
-
 };
 
 #endif /* SIMMY_H_ */
