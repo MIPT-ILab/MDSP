@@ -25,17 +25,17 @@ hostSInt32 Simmy::execute ( hostUInt32 numInstr)
 		execCurCmd  ( &curOp);
 		numInstr--;
 	}
-	return ( hostSInt32) ( reg_[0].sign_ ?
-						   reg_[0].value_ * (-1) : reg_[0].value_);
+	return  ( reg_[0].sign_ ?
+            ( hostSInt32) reg_[0].value_ : ( hostSInt32)reg_[0].value_ * ( -1));
 }
 
 void Simmy::decodeInstr  ( Operation* curOp)
 {
-	curOp->opcode_  = (*instrPointer_)++;
-	curOp->control_ = (*instrPointer_)++;
-	curOp->op1_     = (*instrPointer_)++;
-	curOp->lop2_    = (*instrPointer_)++;
-	curOp->mop2_    = (*instrPointer_)++;
+	curOp->opcode_  = *instrPointer_; instrPointer_++;
+	curOp->control_ = *instrPointer_; instrPointer_++;
+	curOp->op1_     = *instrPointer_; instrPointer_++;
+	curOp->lop2_    = *instrPointer_; instrPointer_++;
+	curOp->mop2_    = *instrPointer_; instrPointer_++;
 	curOp->typeop2_ = curOp->control_ & 4;
 	curOp->signop2_ = curOp->control_ & 8;
 	return;
@@ -44,13 +44,7 @@ void Simmy::decodeInstr  ( Operation* curOp)
 void Simmy::write ( hostSInt32 res, hostUInt8 numreg)
 {
 	reg_[numreg].value_ = (hostUInt16) fabs( res);
-	if ( res > 0)
-	{
-		reg_[numreg].sign_  = 1;
-	} else
-	{
-		reg_[numreg].sign_  = 0;
-	}
+	reg_[numreg].sign_ = res > 0;
 	return;
 }
 
@@ -59,24 +53,27 @@ void Simmy::execCurCmd ( Operation* curOp)
 	hostSInt32 op1 = 0;
 	hostSInt32 op2 = 0;
 
-	op1 = reg_[curOp->op1_].value_;
-	if ( !reg_[curOp->op1_].sign_)
-	{
-		op1 = reg_[curOp->op1_].value_ * (-1);
-	}
+    /* Op1 is always register number. */
+    op1 = reg_[curOp->op1_].value_;
+    if ( !reg_[curOp->op1_].sign_)
+    {
+        op1 *= -1;
+    }
 	if ( curOp->typeop2_)
 	{
+        /* Op2 is value. */
 		op2 = ( curOp->mop2_ << 8) + curOp->lop2_;
 		if ( !curOp->signop2_)
 		{
-			curOp->signop2_ *= -1;
+			op2 *= -1;
 		}
 	} else
 	{
+        /* Op2 is register number. */
 		op2 = reg_[curOp->lop2_].value_;
 		if ( !reg_[curOp->lop2_].sign_)
 		{
-			op1 = reg_[0].value_ * (-1);
+			op2 *= -1;
 		}
 	}
 
