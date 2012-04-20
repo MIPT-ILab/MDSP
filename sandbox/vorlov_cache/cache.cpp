@@ -13,7 +13,8 @@ Cache::Cache( unsigned int s, unsigned int w, unsigned int b, unsigned int a)
 {
     unsigned int i, j;
 
-	/* Calculation cache parametrs */
+    /* Calculation cache parametrs */
+    if ( w == 0) ways = w = s / b; // full assotiation
     size = s;
     ways = w;
     block_size = b;
@@ -21,7 +22,7 @@ Cache::Cache( unsigned int s, unsigned int w, unsigned int b, unsigned int a)
     miss_number = 0;
     request_number = 0;
 
-	/* Creating our cache */
+    /* Creating our cache */
     cache = new unsigned int*[set_number];
     for ( i = 0;  i < set_number; i++)
         cache[i] = new unsigned int[ways];
@@ -29,7 +30,7 @@ Cache::Cache( unsigned int s, unsigned int w, unsigned int b, unsigned int a)
     for ( i = 0;  i < set_number; i++)
         cache_bits[i] = new unsigned char[ways];
 
-	/* Initialisation control bits */
+    /* Initialisation control bits */
     for ( i = 0; i < set_number; i++)
 	{
         for ( j = 0; j < ways; j++)
@@ -46,12 +47,12 @@ void Cache::processRead( unsigned int addr)
 	
     ++request_number;
 
-	/* Decode adress */
+    /* Decode adress */
 	addr = addr / block_size; // deleting byte offset from adress
     set = addr % set_number; // getting set
     tag = addr / set_number; // getting tag
 
-	/* Search data in cache */
+    /* Search data in cache */
     for ( i = 0; i < ways; ++i)
 	    if ( ( tag == cache[set][i]) && ( ( cache_bits[set][i] % 2) == 1))
         {
