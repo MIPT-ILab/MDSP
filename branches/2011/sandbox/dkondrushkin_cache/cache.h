@@ -28,7 +28,7 @@ class Cache
         hostUInt32 next_out_id; // needed for round-robin        
     };
 
-    Way* cache_massive; // main massive for storing data addresses, which are in sscache 
+    Way* cache_massive; // main massive for storing data addresses, which are in cache 
 
 public:
 
