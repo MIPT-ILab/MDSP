@@ -30,7 +30,8 @@ int main( int argc, char* argv[])
                 return 0;
         }
     }
-  
+    
+	// getting miss rates for caches
     for ( i = 0; i < 6; i++)
     {
         for ( j = 0; j < 11; j++ )
