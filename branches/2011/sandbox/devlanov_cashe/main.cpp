@@ -34,7 +34,7 @@ int main( int argc, char**argv)
 	int i = 0;
 start:
 	while ( read ( fd1, (void*)cur, 1) != 0)
-	{cout << "Hello" << endl;
+	{//cout << "Hello" << endl;
 		//cout << *cur << endl;
 		if ( *cur ==  ' ' || *cur == '\0' || *cur == '\n')
 		{
@@ -42,7 +42,7 @@ start:
 			unsigned int dec_address = 0;
 			char Buffer[ MAX_SIZE_HEX_ADDRESS] = {};
 			Address.copy( Buffer, MAX_SIZE_HEX_ADDRESS - 2, 2);
-			//cout << Buffer << endl;
+			cout << Buffer << endl;
 			sscanf( Buffer,"%x",&dec_address);
 			//cout << dec_address << endl;
 			Address.clear();
