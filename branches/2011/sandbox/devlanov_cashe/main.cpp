@@ -1,12 +1,4 @@
 #include "cashe.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <string>
-#include <stdio.h>
-#include <stdlib.h>
-#include <fstream> 
 
 
 const int MAX_SIZE_HEX_ADDRESS = 15;
