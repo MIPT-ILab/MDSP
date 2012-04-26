@@ -66,12 +66,10 @@ start:		while ( read ( fd1, (void*)cur, 1) != 0)
 			cout << "hello" << endl;
 			missRate = myCashe->getMissRate();
 			output_file << missRate << ", ";
-			cout << ( myCashe->getMissRate()) << ", ";
 			delete myCashe;
 			closeFiles( fd1);
 		}
 		output_file << endl;
-		cout << endl;
 	}
 	output_file.close();
 	return 0;
