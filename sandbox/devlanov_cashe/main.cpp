@@ -9,12 +9,12 @@
 #include <fstream> 
 
 
-//#include <iostream>
 const int MAX_SIZE_HEX_ADDRESS = 15;
 const int FULL = 0;
 const int SIZE = 11;
 const int WAYS = 6;
 const int MAX_LENGTH_DEC_NUMBER = 20;
+
 using namespace std;
 
 void openFiles ( int* fd1, char** argv);
@@ -45,7 +45,7 @@ int main( int argc, char** argv)
 	{
 		for ( k = 0; k < SIZE; k++)
 		{
-			Cashe *myCashe = new Cashe( CacheSize[ k], CacheWays[ j], 4, 32);//cout << "Hello" << endl;		
+			Cashe *myCashe = new Cashe( CacheSize[ k], CacheWays[ j], 4, 32);	
 			openFiles( &fd1, argv);
 start:		while ( read ( fd1, (void*)cur, 1) != 0)
 			{
@@ -63,7 +63,6 @@ start:		while ( read ( fd1, (void*)cur, 1) != 0)
 				Address = Address + cur;
 				i++;
 			}
-			cout << "hello" << endl;
 			missRate = myCashe->getMissRate();
 			output_file << missRate << ", ";
 			delete myCashe;
