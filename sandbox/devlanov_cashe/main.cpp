@@ -65,9 +65,8 @@ start:		while ( read ( fd1, (void*)cur, 1) != 0)
 			}
 			cout << "hello" << endl;
 			missRate = myCashe->getMissRate();
-			//output_file << missRate << ", ";
+			output_file << missRate << ", ";
 			cout << ( myCashe->getMissRate()) << ", ";
-			//fflush( output_file);
 			delete myCashe;
 			closeFiles( fd1);
 		}
@@ -75,27 +74,13 @@ start:		while ( read ( fd1, (void*)cur, 1) != 0)
 		cout << endl;
 	}
 	output_file.close();
-	//cout << "miss rate = " << myCashe->getMissRate() << endl;
-	//close( fd1);
-	//close( fd2);
 	return 0;
 }
 
 void openFiles ( int* fd1, char** argv)
 {
 	char* argv1 = argv[1];
-	//cout << argv1 << endl;
-//	char* argv2 = argv[2];
-	//cout << argv2 << endl;
 	char* argv0 = argv[0];
-//	*fd2 = open( argv2, O_RDWR);
-/*	
-	if ( ( *fd2 = open( argv2, O_RDWR)) == -1)
-	{
-		cout << argv0 << ": Can't open file " << "'" << argv2 << "'"<< endl;
-		exit (-1);
-	}
-*/	
 	if ( ( *fd1 = open( argv1, O_RDONLY)) == -1)
 	{
 		cout << argv0 << ": Can't open file " << "'" << argv1 << "'"<< endl;
