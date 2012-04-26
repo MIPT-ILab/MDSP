@@ -5,6 +5,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <cmath>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string>
+#include <stdio.h>
+#include <fstream> 
 
 struct StructItem
 {
