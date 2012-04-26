@@ -11,7 +11,7 @@
 using namespace std;
 
 Cashe::Cashe( unsigned int sizeParam, unsigned int waysParam, unsigned int blockSizeParam, unsigned int addrSizeInBitParam)
-{
+{	
 	size = sizeParam;
     ways = waysParam;
     block_size = blockSizeParam; //usually block_size = 4 byte
@@ -19,103 +19,91 @@ Cashe::Cashe( unsigned int sizeParam, unsigned int waysParam, unsigned int block
     miss_ratio_priv = 0;
     hit_ratio_priv = 0;
     number_all_request_priv = 0;
-    //number_change_activ_addr = 0;
-    number_sets_priv = 1024 * size / ways / ( block_size + addr_size_in_bit / 8);
-    cout << "number_sets_priv = " << number_sets_priv << endl;
-    bit_in_cashe_index = log2 (number_sets_priv);
-    cout << "bit_in_cashe_index = " << bit_in_cashe_index << endl;
+    mask_tag = 0;
+    mask_index = 0;
+    block_offset = log2( block_size);
+   
+    if ( ways != 0)
+    {
+    	number_sets_priv = size / ways / block_size;
+    } else
+    {
+    	number_sets_priv = 1;
+    	ways = size / block_size;
+    }
     
-    cash_array = new StructItem* [ 1024 * size / ( block_size + addr_size_in_bit / 8)];
-	   
-    for ( long int l = 0; l < number_sets_priv * ways; l++)
+    bit_in_cashe_index = log2 (number_sets_priv);
+    
+    cash_array = new StructItem** [ number_sets_priv];
+	
+	for ( long int l = 0; l < number_sets_priv; l++)
     {
-    	cash_array[l] = new StructItem;	
+    	cash_array[ l] = new StructItem* [ ways];
+    	for (long int y = 0; y < ways; y++)
+    	{
+    		( cash_array[ l])[ y] = new StructItem;
+    		( ( cash_array[l])[ y])->valid = 0;
+    		( ( cash_array[l])[ y])->activ_address = 0;
+    	}
     }
-    mask = 0;//cout << "xasxaxasx" << endl;
-    for ( int j = 0; j < ( addr_size_in_bit - bit_in_cashe_index); j++)
+    
+    for ( int j = 0; j < ( addr_size_in_bit - bit_in_cashe_index - block_offset); j++)
     {
-    	mask = 1 | ( mask << 1);
+    	mask_tag   = 1 | ( mask_tag << 1);
     }
-    //cout << "xasxaxasx" << endl;
-    mask = mask << bit_in_cashe_index;
-    //cout << "MASK = " << mask << endl;
-    mask = ~mask;
-    //mask = ~mask;
-    cout << "MASK = " << mask << endl;
-    //cout << "number_sets_priv = " << number_sets_priv << endl;
-    //cout << "( cash_array[ i + k])->cash_index = " << ( cash_array[ 0])->cash_index << endl;
-    long int i = 0;
-    long int j = 0;
-    while ( i != number_sets_priv * ways)
+    for ( int m = 0; m <  bit_in_cashe_index; m++)
     {
-       	//cout << "i = " << i << " ";
-       	long int k = 0;
-       	for ( k = 0; k < ways; k++)
-       	{
-       		( cash_array[ i + k])->cash_index = j & mask; cout << "j & mask = " << (j & mask) << endl;
-       		( cash_array[ i + k])->activ_address = 0;
-       		( cash_array[ i + k])->there_is = false;
-       		( cash_array[ i + k])->number_change_activ_addr = 0;//cout << "k = " << k << " ";
-		}
-		//cout << "number_sets_priv * ways = " << number_sets_priv * ways << endl;
-		//cout << endl;
-		j++;
-		i = i + ways;
-		
-	}
-	//cout << "helohelo" << endl;
+    	mask_index = 1 | ( mask_index << 1);
+    }
+    round_robin_index = 0;
+}
+
+Cashe::~Cashe()
+{
+	for ( long int l = 0; l < number_sets_priv; l++)
+    {
+    	for (long int y = 0; y < ways; y++)
+    	{
+    		delete ( ( cash_array[ l])[ y]);
+    	}
+    	delete [] (cash_array[ l]) ;
+    }
+    delete [] cash_array;
 }
 
 void Cashe::processRead( unsigned int addr)
-{cout << "--------------------------------------" << endl;
+{
 	number_all_request_priv++;
-	cout << addr << endl;
-	cout << "mask = " << mask << endl;
-	cout << "number_all_request_priv = " << number_all_request_priv << endl;
-	//cout << ( addr & mask) << endl;
-	long int i = 0;
-	while ( ( addr & mask) != ( cash_array[i])->cash_index ) //edwefwefewf
-	{
-		cout << "--------------------" << endl << ( addr & mask) << endl << ( cash_array[i])->cash_index << endl;
-		i++;
-	}
-	cout << "i = " << i << endl;
+	addr = addr >> block_offset;
+	long int index = addr & mask_index;
+	addr = addr >> bit_in_cashe_index;
+	long int tag   = addr & mask_tag; 
+	
 	for (int k = 0; k < ways; k++)
-	{cout << "k = " << k << endl;
-	    if ( ( ( cash_array[ i+k])->activ_address == ( addr & ( ~mask)))) cout << "true" << endl;
-		if ( ( cash_array[ i+k])->there_is == false) cout << "there_is = " << ( cash_array[ i+k])->there_is << endl;
-		if ( ( ( cash_array[ i+k])->activ_address == ( addr & ( ~mask))) | ( ( cash_array[ i+k])->there_is == false))
-		{cout << "Я в условии" << endl;
-			( cash_array[ i+k])->activ_address = addr & ( ~mask);			
-			( cash_array[ i+k])->there_is = true;
-			//cout << "there_is = " << ( cash_array[ i+k])->there_is << endl;
-			cout << "addr & ( ~mask)) = " << (addr & ( ~mask)) << endl;
-			cout << "( cash_array[ i+k])->there_is = " << ( cash_array[ i+k])->there_is << endl;
+	{
+		if ( ( ( ( cash_array[ index])[ k])->activ_address == tag) && ( ( ( cash_array[ index])[ k])->valid == true))
+		{
 			hit_ratio_priv++;
 			goto end_processRead;
-		} 
+		}
 	}
-	int add_index;
-	add_index = ( ( cash_array[ i])->number_change_activ_addr);
-	( cash_array[ i+add_index])->activ_address = addr & ( ~mask);
-	if ( add_index == ways - 1)
+	
+	( ( cash_array[ index])[round_robin_index])->activ_address = tag;
+	( ( cash_array[ index])[round_robin_index])->valid = true;
+	if ( round_robin_index == ways - 1)
 	{
-		cash_array[ i]->number_change_activ_addr = 0;
+		round_robin_index = 0;
 	} else
 	{
-		cash_array[ i]->number_change_activ_addr++;
+		round_robin_index++;
 	}
+
 	miss_ratio_priv++;
-	cout << "miss_ratio_priv = " << miss_ratio_priv << endl;
-end_processRead:
-	cout << "--------------------------------------" << endl;
-	return;
+	end_processRead:
+	return;	
 }
 
 double Cashe::getMissRate()
 {
-	cout << "miss_ratio_priv = " << miss_ratio_priv << endl;
-	cout << "number_all_request_priv = " << number_all_request_priv << endl;
-	//cout << "ratio = " << (long double)(miss_ratio_priv) / (long double) (number_all_request_priv) << endl;
 	return 1.0 * miss_ratio_priv / number_all_request_priv;
 }

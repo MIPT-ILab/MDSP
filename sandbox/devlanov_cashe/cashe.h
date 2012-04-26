@@ -8,10 +8,8 @@
 
 struct StructItem
 {
-	long int cash_index;
 	long int activ_address;
-	bool there_is;
-	int number_change_activ_addr; // 0 < number_change_activ_addr < ways
+	bool valid;
 };
 
 
@@ -22,19 +20,20 @@ private:
     unsigned int ways;
     unsigned int block_size;
     unsigned int addr_size_in_bit;
+    unsigned int mask_tag;
+    long int mask_index;
     long double miss_ratio_priv;
     long double hit_ratio_priv;
     long double number_all_request_priv;
     unsigned int number_sets_priv;
     unsigned int bit_in_cashe_index; 
-    StructItem** cash_array;
-    long int mask;
-    //int number_change_activ_addr; // 0 < number_change_activ_addr < ways
+    StructItem*** cash_array;
+    long int round_robin_index;
+    unsigned int block_offset;
     
-
 public:
 	Cashe( unsigned int sizeParam, unsigned int waysParam, unsigned int blockSizeParam, unsigned int addrSizeInBitParam);
-    
+    ~Cashe();
     void processRead( unsigned int addr);
     double getMissRate();
 };
