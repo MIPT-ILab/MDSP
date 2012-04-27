@@ -8,10 +8,11 @@
  * Copyright 2011 MDSP team
  */
 
-#include "Simmy.h"
+#include "simmy.h"
 
+#include <iostream>
 
-/* class Register implementation */
+/* class Instruction implementation */
 
 Instruction::Instruction()
 {
@@ -51,7 +52,7 @@ bitset<8> Instruction::getOp1()
 
 hostSInt16 Instruction::getOp1Sign()
 {
-    return getControl()[ 2];
+    return getControl()[ 1];
 }
 
 bitset<8> Instruction::getOp2L()
@@ -107,6 +108,12 @@ void Register::setValue( bitset<16> value)
     bytes = value;
 }
 
+void Register::setValue( hostSInt64 value)
+{
+    sign = ( value > 0 ? 1 : 0);
+    bytes = ( value > 0 ? value : -value);
+}
+
 bitset<16> Register::getValue()
 {
     
@@ -133,7 +140,7 @@ Simmy::Simmy( hostUInt8* bytes, hostUInt32 length)
     len = length;
 }
 
-hostSInt32 Simmy::Execute( hostUInt32 number_of_instrs)
+hostSInt32 Simmy::execute( hostUInt32 number_of_instrs)
 {
     Instruction curr;
     for ( hostUInt32 i = 0; i < number_of_instrs; i++)
@@ -141,7 +148,9 @@ hostSInt32 Simmy::Execute( hostUInt32 number_of_instrs)
         curr.setBytes( start+i*INSTR_LEN);
         selCallOp( curr);
     }
-    return ( ( hostSInt32)regs[ 0].getValue().to_ulong()) * regs[ 0].getSign();
+    
+    return ( ( hostSInt32)regs[ 0].getValue().to_ulong()) * 
+            binToBip(regs[ 0].getSign());
 }
 
 
@@ -228,20 +237,20 @@ void Simmy::selCallOp( Instruction ins)
  * it and it's sign to the register mentioned in the instruction.
  */
 
-void Simmy::instAnd( Instruction ins)
+void Simmy::instAnd( Instruction ins) 
 {    
     Register reg; // temporary value
     if ( ins.op2IsARegister())
     {
         reg.setValue( regs[ ins.getOp1().to_ulong()].getValue() &= 
                      regs[ ins.getOp2().to_ulong()].getValue() );
-        reg.setSign(regs[ ins.getOp1().to_ulong()].getSign() &
+        reg.setSign( regs[ ins.getOp1().to_ulong()].getSign() &
                     regs[ ins.getOp2().to_ulong()].getSign() );
     } else // op2 is a value
     {
         reg.setValue( regs[ ins.getOp1().to_ulong()].getValue() &= 
                      ins.getOp2() );
-        reg.setSign(regs[ ins.getOp1().to_ulong()].getSign() &
+        reg.setSign( regs[ ins.getOp1().to_ulong()].getSign() &
                     ins.getOp2Sign());        
     }
     regs[ ins.getOp1().to_ulong()] = reg; // writing the result
@@ -288,14 +297,14 @@ void Simmy::instXor( Instruction ins)
 void Simmy::instAdd( Instruction ins)
 {
     Register reg; // temporary value
-    long tmp;
+    hostSInt64 tmp;
     if ( ins.op2IsARegister())
     {
-        tmp = binToBip(regs[ ins.getOp1().to_ulong()].getSign() )*
+        tmp = binToBip( regs[ ins.getOp1().to_ulong()].getSign() )*
                 regs[ ins.getOp1().to_ulong()].getValue().to_ulong() + 
                 binToBip(regs[ ins.getOp2().to_ulong()].getSign() )*
                 regs[ ins.getOp2L().to_ulong()].getValue().to_ulong();
-                reg.setValue( tmp);
+        reg.setValue( tmp);
         
         reg.setSign( tmp > 0 ? 1 : 0);
         
@@ -309,19 +318,19 @@ void Simmy::instAdd( Instruction ins)
         
         reg.setSign( tmp > 0 ? 1 : 0);    
     }
-    regs[ ins.getOp1().to_ulong()] = reg;    
+    regs[ ins.getOp1().to_ulong()] = reg;   
 }
 
 void Simmy::instSub( Instruction ins)
 {
     Register reg; // temporary value
-    long tmp;
+    hostSInt64 tmp;
     
     if ( ins.op2IsARegister())
     {
-        tmp = binToBip(regs[ ins.getOp1().to_ulong()].getSign() )*
+        tmp = binToBip( regs[ ins.getOp1().to_ulong()].getSign() )*
                 regs[ ins.getOp1().to_ulong()].getValue().to_ulong() - 
-                binToBip(regs[ ins.getOp2().to_ulong()].getSign() )*
+                binToBip( regs[ ins.getOp2().to_ulong()].getSign() )*
                 regs[ ins.getOp2L().to_ulong()].getValue().to_ulong();
         reg.setValue( tmp);
         
@@ -343,7 +352,7 @@ void Simmy::instSub( Instruction ins)
 void Simmy::instMul( Instruction ins)
 {
     Register reg; // temporary value
-    long tmp;
+    hostSInt64 tmp;
     
     if ( ins.op2IsARegister())
     {
@@ -372,30 +381,30 @@ void Simmy::instMul( Instruction ins)
 void Simmy::instDiv( Instruction ins)
 {
     Register reg; // temporary value
-    long tmp;
+    hostSInt64 tmp;
     
     if ( ins.op2IsARegister())
     {
-        tmp = binToBip( regs[ ins.getOp1().to_ulong()].getSign()) *
-                regs[ ins.getOp1().to_ulong()].getValue().to_ulong()/
-                binToBip(regs[ ins.getOp2().to_ulong()].getSign()) *
-                regs[ ins.getOp2L().to_ulong()].getValue().to_ulong();
+        tmp = ( ( hostSInt64) ( binToBip( 
+                regs[ ins.getOp1().to_ulong()].getSign()) *
+                regs[ ins.getOp1().to_ulong()].getValue().to_ulong()) /
+                ( hostSInt64) ( binToBip(
+                regs[ ins.getOp2().to_ulong()].getSign()) *
+                regs[ ins.getOp2L().to_ulong()].getValue().to_ulong()));
         reg.setValue( tmp);
-        
         reg.setSign( tmp > 0 ? 1 : 0);
         
     } else // op2 is a value
     {
-        tmp = binToBip( regs[ ins.getOp1().to_ulong()].getSign()) *
-                regs[ ins.getOp1().to_ulong()].getValue().to_ulong() / 
-                binToBip( ins.getOp2Sign()) *
-                ins.getOp2().to_ulong();
+        tmp = ( ( hostSInt64) ( binToBip( 
+                regs[ ins.getOp1().to_ulong()].getSign()) *
+                regs[ ins.getOp1().to_ulong()].getValue().to_ulong())) / 
+                ( ( hostSInt64)( binToBip( ins.getOp2Sign()) *
+                ins.getOp2().to_ulong()));
         reg.setValue( tmp);
-        
         reg.setSign( tmp > 0 ? 1 : 0);    
     }
     regs[ ins.getOp1().to_ulong()] = reg;    
-    
 }
 
 void Simmy::instMov( Instruction ins)
@@ -419,16 +428,17 @@ void Simmy::instNot( Instruction ins)
 {
     Register reg;
     reg.setValue( ~( regs[ ins.getOp1().to_ulong()].getValue()));
-    reg.setSign( ~( regs[ ins.getOp1().to_ulong()].getSign()));    
+    reg.setSign( regs[ ins.getOp1().to_ulong()].getSign() == 0 ? 1 : 0 );    
     regs[ ins.getOp1().to_ulong()] = reg;    
 }
 
 void Simmy::instDec( Instruction ins)
 {
     Register reg;
-    long tmp;
-    tmp = regs[ ins.getOp1().to_ulong()].getValue().to_ulong() - 1;
-    reg.setValue( abs(tmp));
+    hostSInt64 tmp;
+    tmp = binToBip( regs[ ins.getOp1().to_ulong()].getSign()) * 
+            regs[ ins.getOp1().to_ulong()].getValue().to_ulong() - 1;
+    reg.setValue( tmp > 0 ? tmp : -tmp);
     reg.setSign( tmp > 0 ? 1 : 0);
     regs[ ins.getOp1().to_ulong()] = reg;    
 }
@@ -436,25 +446,27 @@ void Simmy::instDec( Instruction ins)
 void Simmy::instInc( Instruction ins)
 {
     Register reg;
-    long tmp;
-    tmp = regs[ ins.getOp1().to_ulong()].getValue().to_ulong() + 1;
-    reg.setValue( abs(tmp));
+    hostSInt64 tmp;
+    tmp = binToBip( regs[ ins.getOp1().to_ulong()].getSign()) * 
+    regs[ ins.getOp1().to_ulong()].getValue().to_ulong() + 1;
+    reg.setValue( tmp > 0 ? tmp : -tmp);
     reg.setSign( tmp > 0 ? 1 : 0);
-    regs[ ins.getOp1().to_ulong()] = reg;      
+    regs[ ins.getOp1().to_ulong()] = reg;    
+   
 }
 
 void Simmy::instSsgn( Instruction ins)
 {
-    Register reg;
+    Register reg = regs[ ins.getOp1().to_ulong()];
     reg.setSign( ins.getOp1Sign());
     regs[ ins.getOp1().to_ulong()] = reg;    
 }
 
 void Simmy::instIsgn( Instruction ins)
 {
-    Register reg;
-    reg.setSign( ~( regs[ ins.getOp1().to_ulong()].getSign()));
-    regs[ ins.getOp1().to_ulong()] = reg;    
+    Register reg = regs[ ins.getOp1().to_ulong()];
+    reg.setSign( reg.getSign() == 1 ? 0 : 1);
+    regs[ ins.getOp1().to_ulong()] = reg;   
 }
 
 /* mapping the binary values (0,1) to bipolar (-1; 1) */

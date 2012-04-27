@@ -37,7 +37,7 @@ hostUInt8 bipToBin( hostSInt16 n);
 /**
  * A helper for concatenating bitsets.
  */
-bitset<16> operator+( bitset <8> LSB, bitset<8> MSB);
+bitset<16> operator+(bitset <8> LSB, bitset<8> MSB);
 
 /**
  *  A pair of helpers for stretching the bitsets.
@@ -87,6 +87,7 @@ public:
     Register();
     Register( bitset<16> value, hostSInt16 sgn);
     void setValue( bitset<16> value);
+    void setValue( hostSInt64 value);
     bitset <16> getValue();
     void setSign( hostUInt8  sgn);
     hostUInt8 getSign();
@@ -107,7 +108,7 @@ public:
     /* constructor */
     Simmy ( hostUInt8* bytes, hostUInt32 lenght);
     /* execute certain number of instructions */
-    hostSInt32 Execute ( hostUInt32 number_of_instrs);
+    hostSInt32 execute( hostUInt32 number_of_instrs);
     
 private:
     
