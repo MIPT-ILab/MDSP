@@ -1,0 +1,18 @@
+notifications:
+  email: false
+
+language: cpp
+
+branches:
+  only:
+  - master
+
+compiler:
+  - gcc
+  - clang
+os:
+  - linux
+
+script:
+  - cd tests
+  - ./mdsp_test_suite.sh this

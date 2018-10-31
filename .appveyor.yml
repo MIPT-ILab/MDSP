@@ -1,0 +1,22 @@
+version: "{branch}-ci-{build}"
+image: Visual Studio 2015
+
+branches:
+  only:
+  - master
+
+environment:
+  matrix:
+# - build: msvc
+  - build: cygwin
+
+build_script:
+- call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat"
+- devenv.exe /upgrade mdsp.sln
+- dir
+- PATH=C:\cygwin\bin\;c:\buildbot\bin;%PATH%
+
+test_script:
+- cd tests
+- if "%build%"=="msvc" .\run_msvs2008_tests.cmd this
+- if "%build%"=="cygwin" bash mdsp_test_suite.sh this
